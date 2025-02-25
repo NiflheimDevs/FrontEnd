@@ -5,11 +5,12 @@ e.g
 go http://ui.shadcn.com/docs/components/button
 then do what CLI says
 for button :
+```sh
 npx shadcn@latest add button
 
 how to :
 <Button variant="outline">Button</Button>
-
+```
 
 we installed axios it’s a library for http request
 to learn more
