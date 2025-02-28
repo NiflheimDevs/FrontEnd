@@ -6,11 +6,11 @@ const FooterComponent = () => {
 <div className="flex flex-col items-center justify-center w-full h-fit overflow-hidden">
       <object data="/src/assets/footer.svg" type="image/svg+xml" className="w-full h-full z-0 relative"/>
       <div className="w-[100%] absolute h-fit inset-0 mt-[5%] md:mt-[5%] sm:mt-[5%] z-1 flex flex-col text-center">
-        <h2 className="font-vazir justify-center h-fit flex w-4/5 sm:w-3/4 md:w-75/100 text-[16px] sm:text-[32px] md:text-[46px] leading-[30px] sm:leading-[55px] md:leading-[75px] text-center text-white font-bold">
+        <h2 className="font-vazir justify-center h-fit flex w-4/5 sm:w-3/4 md:w-75/100 text-[26px] sm:text-[34px] md:text-[50px] leading-[30px] sm:leading-[55px] md:leading-[75px] text-center text-white font-bold">
           نیفل هایم  
         </h2>
 
-        <h2 className="font-vazir justify-center h-fit flex w-4/5 sm:w-3/4 md:w-75/100  text-[16px] sm:text-[32px] md:text-[46px] leading-[30px] sm:leading-[55px] md:leading-[75px] text-center text-white font-bold">
+        <h2 className="font-vazir justify-center h-fit flex w-4/5 sm:w-3/4 md:w-75/100 text-[26px] sm:text-[34px] md:text-[50px] leading-[30px] sm:leading-[55px] md:leading-[75px] text-center text-white font-bold">
           گامی به سوی آینده        
         </h2>
         <div className="flex md:mt-[240px] sm:mt-[110px] mt-[100px] flex-col bg-[#1B1B1B]">
@@ -94,7 +94,7 @@ const SvgBox = ({ svgName }) => {
   return (
     <div className="flex flex-col max-w-[160px] items-center">
       <div className="md:w-[148px] md:h-[150px] sm:w-[105px] sm:h-[104px] w-[78px] h-[74px] flex border border-[#D9D9D9] bg-[#1B1B1B] items-center justify-center">
-        <object data={`/src/assets/${svgName}.svg`} type="image/svg+xml" className="md:w-[121px] md:h-[132px] sm:w-[86px] sm:h-[94px] w-[71px] h-[70px]"/>
+        <object data={`/src/assets/${svgName}.svg`} type="image/svg+xml" className="md:w-[121px] md:h-[132px] sm:w-[86px] sm:h-[94px] w-[71px] h-[70px] border-none border-[#1B1B1B]"/>
       </div>
     </div>
   );
