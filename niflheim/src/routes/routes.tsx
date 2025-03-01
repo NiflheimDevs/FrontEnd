@@ -3,7 +3,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import AuthPage from "../pages/Auth";
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
-import Footer from "../Components/FooterComponent"
+import Footer from "../Components/Footer/Footer"
+import React from "react";
 
 // Public routes (accessible by anyone)
 export const publicRoutes = [
