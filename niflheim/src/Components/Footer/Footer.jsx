@@ -15,8 +15,8 @@ const Footer = () => {
           گامی به سوی آینده        
         </h2>
         
-        <div className="flex md:mt-[115px] sm:mt-[110px] mt-[100px] flex-col bg-[#1B1B1B]">
-          <div className="gap-[14vw] px-[50px] w-full md:h-[100px] sm:h-fit h-fit flex inset-0 mt-[5px] z-1 flex flex-row md:flex-row sm:flex-row flex-col justify-center items-end flex-wrap overflow-hidden">  
+        <div className="flex md:mt-[115px] sm:mt-[110px] mt-[45px] flex-col bg-[#1B1B1B]">
+          <div className="gap-[14vw] px-[50px] w-full md:h-[100px] sm:h-fit h-fit flex inset-0 mt-[5px] z-1 md:flex-row sm:flex-row flex-col justify-center items-end flex-wrap overflow-hidden">  
               <ReviewCard
                 title="سایت زیبا و سریع دارید"
                 description="لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم ازصنعت چاپ، و با استفاده از طراحی باشد"
@@ -40,7 +40,7 @@ const Footer = () => {
                 className="md:flex sm:flex hidden"
               />
           </div>
-          <div className="flex gap-[2vw] h-fit bg-[#1B1B1B] px-[40px] w-full inset-0 md:mt-[70px] sm:mt-[70px] mt-[40px] z-1 flex flex-row flex-wrap-reverse md:justify-center sm:justify-end justify-center items-center overflow-hidden">  
+          <div className="flex gap-[2vw] h-fit bg-[#1B1B1B] px-[40px] w-full inset-0 md:mt-[70px] sm:mt-[70px] mt-[40px] z-1 flex-row flex-wrap-reverse md:justify-center sm:justify-end justify-center items-center overflow-hidden">  
             <div className="flex bg-[#1B1B1B] flex-col md:w-[160px] sm:w-[210px] w-[500px] items-center">
               <p class="font-inter text-[20px] sm:text-[26px] md:text-[24px] md:flex sm:flex hidden font-bold leading-[29.05px] tracking-[0%] text-white">
                 شبکه های اجتماعی        
@@ -65,7 +65,7 @@ const Footer = () => {
               <SvgBox svgName="e_namad"/>
             </div>
             <div className="flex bg-[#1B1B1B] justify-center items-center gap-[6vh] md:ml-[40px] sm:ml-[40px] ml-[0px] my-[30px]">
-              <div className="flex flex-wrap md:flex-row sm:flex-row flex-row bg-[#1B1B1B] md:gap-[5.2vw] sm:gap-[5vw] gap-[8vw] max-w-[780px] md:w-fit sm:w-fit w-[400px] justify-center items-center ">
+              <div className="flex flex-wrap md:flex-row sm:flex-row flex-row bg-[#1B1B1B] md:gap-[5.2vw] sm:gap-[5vw] gap-[12vw] max-w-[780px] md:w-fit sm:w-fit w-[400px] justify-center items-center ">
                 <TextComponent>قوانین و مقررات</TextComponent>
                 <TextComponent>سوالات متداول</TextComponent>
                 <TextComponent>تماس با ما</TextComponent>
@@ -73,8 +73,8 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="flex h-fit w-[95%] bg-[#1B1B1B] inset-0 mt-[30px] z-1 opacity-[0.7] flex flex-col self-center justify-center border border-white"/>
-          <div className="flex h-fit w-[95%] bg-[#1B1B1B] inset-0 my-[20px] z-1 flex flex-col self-center justify-center">  
+          <div className="flex h-fit w-[95%] bg-[#1B1B1B] inset-0 mt-[30px] z-1 opacity-[0.7] flex-col self-center justify-center border border-white"/>
+          <div className="flex h-fit w-[95%] bg-[#1B1B1B] inset-0 my-[20px] z-1 flex-col self-center justify-center">  
             <p class="font-vazirmatn text-[16px] opacity-[0.7] font-normal leading-[25px] tracking-[0%] text-center text-white">
               © تمام حقوق برای این سایت محفوظ است
             </p>
@@ -88,7 +88,7 @@ const Footer = () => {
 const ReviewCard = ({ className = "", title, description, starCount }) => {
   return (
     <div className={`flex flex-col md:max-w-[160px] sm:max-w-[200px] items-end overflow-hidden ${className}`}>
-      <h3 className="font-inter font-bold sm:text-[13px] md:text-[16px] leading-[18.15px] tracking-[0%] text-right text-white font-bold">
+      <h3 className="font-inter font-bold sm:text-[13px] md:text-[16px] leading-[18.15px] tracking-[0%] text-right text-white">
         {title}     
       </h3>
       <div className="flex flex-row mt-[3px]">
