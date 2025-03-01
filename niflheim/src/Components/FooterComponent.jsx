@@ -46,7 +46,7 @@ const FooterComponent = () => {
             <SvgBox svgName="samandehi"/>
             <SvgBox svgName="e_namad"/>
             <div className="flex bg-[#1B1B1B] justify-center items-center gap-[6vh] md:ml-[40px] sm:ml-[40px] ml-[0px] my-[30px]">
-              <div className="flex flex-wrap md:flex-row sm:flex-row flex-col bg-[#1B1B1B] md:gap-[3vw] sm:gap-[5vw] gap-[6vw] max-w-[780px] md:w-fit sm:w-fit w-[400px] justify-center items-center ">
+              <div className="flex flex-wrap md:flex-row sm:flex-row flex-row bg-[#1B1B1B] md:gap-[3vw] sm:gap-[5vw] gap-[8vw] max-w-[780px] md:w-fit sm:w-fit w-[400px] justify-center items-center ">
                 <TextComponent>قوانین و مقرارات</TextComponent>
                 <TextComponent>سوالات متداول</TextComponent>
                 <TextComponent>تماس با ما</TextComponent>
