@@ -17,7 +17,7 @@ const SignupForm = () => {
         <input
           type="email"
           placeholder="ایمیل"
-          className="w-full bg-[#E5E5E5] p-1.75 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
+          className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         />
         <object
           data="/src/assets/Email.svg"
@@ -31,7 +31,7 @@ const SignupForm = () => {
         <input
           type="text"
           placeholder="نام کاربری"
-          className="w-full bg-[#E5E5E5] p-1.75 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
+          className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         />
         <object
           data="/src/assets/User.svg"
@@ -45,7 +45,7 @@ const SignupForm = () => {
         <input
           type={showPassword1 ? "text" : "password"} 
           placeholder="رمز عبور"
-          className="w-full bg-[#E5E5E5] p-1.75 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
+          className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         />
         <button onClick={() => setShowPassword1(!showPassword1)} className="absolute left-3 top-1/2 transform -translate-y-1/2">
           <object
@@ -61,7 +61,7 @@ const SignupForm = () => {
         <input
           type={showPassword2 ? "text" : "password"} 
           placeholder="تکرار رمز عبور"
-          className="w-full bg-[#E5E5E5] p-1.75 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
+          className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         />
         <button onClick={() => setShowPassword2(!showPassword2)} className="absolute left-3 top-1/2 transform -translate-y-1/2">
           <object

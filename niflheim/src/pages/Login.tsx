@@ -53,7 +53,7 @@ const AuthPage = () => {
       <div className="flex w-full h-full">
         {/* Left Side (Login) */}
         <div
-          className="w-1/2 z-0 flex justify-center bg-[#1B1B1B] items-center relative"
+          className="md:w-1/2 sm:w-full w-full z-0 flex justify-center bg-[#1B1B1B] items-center relative"
           style={{ backgroundColor: loginBg }} 
         >
           <AnimatePresence mode="wait">
@@ -83,7 +83,7 @@ const AuthPage = () => {
 
         {/* Right Side (Signup) */}
         <div
-          className="w-1/2 flex justify-center items-center relative"
+          className="md:w-1/2 sm:w-full w-full flex justify-center items-center relative"
           style={{ backgroundColor: signupBg }} 
         >
           <AnimatePresence mode="wait">

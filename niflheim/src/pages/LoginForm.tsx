@@ -1,6 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
+
 
 const LoginForm = () => {
+  const [showPassword1, setShowPassword1] = useState(false);
   return (
     <div>
       <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4">ورود</div>
@@ -10,7 +12,7 @@ const LoginForm = () => {
         <input 
           type="email" 
           placeholder="نام کاربری / ایمیل" 
-          className="w-full bg-[#E5E5E5] p-1.75 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
+          className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         /> 
         <object
           data="/src/assets/Email.svg"
@@ -20,16 +22,18 @@ const LoginForm = () => {
       </div>
       
       <div className="relative w-full">
-        <input 
-          type="password" 
-          placeholder="رمز عبور" 
-          className="w-full bg-[#E5E5E5] p-1.75 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
+        <input
+          type={showPassword1 ? "text" : "password"} 
+          placeholder="رمز عبور"
+          className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         />
-        <object
-          data="/src/assets/Password.svg"
-          type="image/svg+xml"
-          className="w-6 h-6 absolute left-3 top-1/2 transform -translate-y-1/2" 
-        />
+        <button onClick={() => setShowPassword1(!showPassword1)} className="absolute left-3 top-1/2 transform -translate-y-1/2">
+          <object
+            data={showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
+            type="image/svg+xml"
+            className="w-6 h-6 pointer-events-none"
+          />
+        </button>
       </div>
       
       <div className="text-right text-sm mt-5 mb-4">
