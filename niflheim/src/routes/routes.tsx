@@ -3,14 +3,14 @@ import ProtectedRoute from "./ProtectedRoute";
 import AuthPage from "../pages/Auth";
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
-import Footer from "../Components/Footer/Footer"
+import Footer from "../Components/Footer/Footer";
 import React from "react";
 
 // Public routes (accessible by anyone)
 export const publicRoutes = [
   { path: "/auth", element: <AuthPage /> },
   { path: "/profile", element: <Profile /> },
-  { path: "/footer", element: <Footer /> },
+  { path: "/footer", element: <Footer /> }
 ];
 
 // Private routes (require authentication)
