@@ -8,7 +8,7 @@ import SignupForm from "./SignupForm";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [Bg, setBg] = useState("bg-gradient-to-r from-[#3674B5] to-[#18334F]");
+  const [Bg, setBg] = useState("bg-gradient-to-l from-[#3674B5] to-[#18334F]");
   const [loginImg, setloginImg] = useState("");
   const [SignImg, setSignImg] = useState("hidden");
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const AuthPage = () => {
   
   const handleSignupClick = () => {
     setIsLogin(false);
-    setBg("bg-gradient-to-l from-[#3A7D44] to-[#172533]"); 
+    setBg("bg-gradient-to-r from-[#3A7D44] to-[#172533]"); 
     setSignImg("");
     setloginImg("hidden");
   };
