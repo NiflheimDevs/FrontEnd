@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../store/slices/authSlice"; 
+import { login } from "../store/slices/authSlice";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 
@@ -15,21 +15,20 @@ const AuthPage = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    dispatch(login()); 
-    navigate("/dashboard"); 
+    dispatch(login());
+    navigate("/dashboard");
   };
 
-  
   const handleSignupClick = () => {
     setIsLogin(false);
-    setBg("bg-gradient-to-r from-[#3A7D44] to-[#172533]"); 
+    setBg("bg-gradient-to-r from-[#3A7D44] to-[#172533]");
     setSignImg("");
     setloginImg("hidden");
   };
 
   const handleLoginClick = () => {
     setIsLogin(true);
-    setBg("bg-gradient-to-r from-[#18334F] to-[#3674B5]"); 
+    setBg("bg-gradient-to-r from-[#18334F] to-[#3674B5]");
     setSignImg("hidden");
     setloginImg("");
   };
@@ -46,9 +45,54 @@ const AuthPage = () => {
 
       {/* Main Authentication Container */}
       <div className={`flex w-full h-full justify-center ${Bg}`}>
+        {/* Right Side (Signup) */}
+        <div
+          className={`md:w-48/100 sm:w-full ${
+            isLogin ? "w-0" : "w-full"
+          } flex justify-center items-center relative`}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key="signup"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
+              <object
+                data="/src/assets/login.svg"
+                type="image/svg+xml"
+                className={`md:w-[425px] md:h-[590px] sm:w-[300px] sm:h-[450px] w-0 h-0  ${loginImg}`}
+              />
+            </motion.div>
+            {!isLogin && (
+              <motion.div
+                key="signup"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="w-96 p-6 rounded-lg"
+              >
+                <SignupForm />
+                <div className=" text-center md:w-full sm:w-8/10 text-[#D9D9D9] font-[vazirmatn] mt-8 text-[24px] font-bold text-sm">
+                  حساب کاربری دارید؟
+                  <button
+                    onClick={handleLoginClick}
+                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 hover:text-green-600"
+                  >
+                    ورود
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
         {/* Left Side (Login) */}
         <div
-          className={`md:w-48/100 sm:w-full ${!isLogin ? "w-0" : "w-full"} flex justify-center items-center relative`}
+          className={`md:w-48/100 sm:w-full ${
+            !isLogin ? "w-0" : "w-full"
+          } flex justify-center items-center relative`}
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -58,7 +102,11 @@ const AuthPage = () => {
               exit={{ opacity: 0, x: 50 }}
               transition={{ duration: 0.6, ease: "easeInOut" }}
             >
-            <object data="/src/assets/signup.svg" type="image/svg+xml" className={`md:w-[480px] md:h-[590px] sm:w-[300px] sm:h-[450px] w-0 h-0  ${SignImg}`}/>
+              <object
+                data="/src/assets/signup.svg"
+                type="image/svg+xml"
+                className={`md:w-[480px] md:h-[590px] sm:w-[300px] sm:h-[450px] w-0 h-0  ${SignImg}`}
+              />
             </motion.div>
             {isLogin && (
               <motion.div
@@ -71,51 +119,13 @@ const AuthPage = () => {
               >
                 <LoginForm />
                 <div className="text-center md:w-full sm:w-8/10 text-[#D9D9D9] font-[vazirmatn] mt-8 text-[24px] font-bold text-sm">
+                  حساب کاربری ندارید؟
                   <button
-                    onClick={handleSignupClick} 
+                    onClick={handleSignupClick}
                     className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 hover:text-blue-600"
                   >
                     ثبت نام
                   </button>
-                  حساب کاربری ندارید؟
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Right Side (Signup) */}
-        <div
-          className={`md:w-48/100 sm:w-full ${isLogin ? "w-0" : "w-full"} flex justify-center items-center relative`}
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key="signup"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }} 
-            >
-              <object data="/src/assets/login.svg" type="image/svg+xml" className={`md:w-[425px] md:h-[590px] sm:w-[300px] sm:h-[450px] w-0 h-0  ${loginImg}`}/>
-            </motion.div>
-            {!isLogin && (
-              <motion.div
-                key="signup"
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="w-96 p-6 rounded-lg"
-              >
-                <SignupForm />
-                <div className="text-center md:w-full sm:w-8/10 text-[#D9D9D9] font-[vazirmatn] mt-8 text-[24px] font-bold text-sm">
-                  <button
-                    onClick={handleLoginClick} 
-                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 hover:text-green-600"
-                  >
-                    ورود
-                  </button>
-                  حساب کاربری دارید؟
                 </div>
               </motion.div>
             )}

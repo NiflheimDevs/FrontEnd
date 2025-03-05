@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
+
+
 @custom-variant dark (&:is(.dark *));
 
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap');
@@ -9,6 +11,16 @@ body {
   font-family: 'Vazirmatn', sans-serif;
 }
 
+
+html {
+  direction: rtl;
+  unicode-bidi: embed;
+}
+
+.ltr {
+  direction: ltr;
+  unicode-bidi: embed;
+}
 
 
 :root {
