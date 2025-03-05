@@ -2,43 +2,64 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../store/slices/authSlice"; // Import login action
+import { login } from "../store/slices/authSlice"; 
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [Bg, setBg] = useState("bg-gradient-to-r from-[#3674B5] to-[#18334F]");
+  const [loginImg, setloginImg] = useState("");
+  const [SignImg, setSignImg] = useState("hidden");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    dispatch(login()); // Simulate login
-    navigate("/dashboard"); // Redirect to dashboard after login
+    dispatch(login()); 
+    navigate("/dashboard"); 
+  };
+
+  
+  const handleSignupClick = () => {
+    setIsLogin(false);
+    setBg("bg-gradient-to-l from-[#3A7D44] to-[#172533]"); 
+    setSignImg("");
+    setloginImg("hidden");
+  };
+
+  const handleLoginClick = () => {
+    setIsLogin(true);
+    setBg("bg-gradient-to-r from-[#18334F] to-[#3674B5]"); 
+    setSignImg("hidden");
+    setloginImg("");
   };
 
   return (
-    <div className="flex h-screen w-full bg-gray-900 text-white relative overflow-hidden">
+    <div className="flex h-screen w-full text-white relative overflow-hidden">
       {/* Dark Background Section */}
       <motion.div
         initial={{ x: 0 }}
         animate={{ x: isLogin ? "0%" : "100%" }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
-        className="w-1/2 h-full bg-black absolute top-0"
+        className="w-1/2 h-full absolute top-0"
       ></motion.div>
 
-      {/* Home Button */}
-      <button
-        onClick={() => navigate("/")}
-        className="absolute top-5 left-5 bg-[#1f2737] px-4 py-2 rounded-lg hover:bg-[#364052] transition"
-      >
-        Home
-      </button>
-
       {/* Main Authentication Container */}
-      <div className="flex w-full h-full">
+      <div className={`flex w-full h-full justify-center ${Bg}`}>
         {/* Left Side (Login) */}
-        <div className="w-1/2 flex justify-center items-center relative">
+        <div
+          className={`md:w-48/100 sm:w-full ${!isLogin ? "w-0" : "w-full"} flex justify-center items-center relative`}
+        >
           <AnimatePresence mode="wait">
+            <motion.div
+              key="login"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 50 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
+            <object data="/src/assets/signup.svg" type="image/svg+xml" className={`md:w-[480px] md:h-[590px] sm:w-[300px] sm:h-[450px] w-0 h-0  ${SignImg}`}/>
+            </motion.div>
             {isLogin && (
               <motion.div
                 key="login"
@@ -46,42 +67,37 @@ const AuthPage = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 50 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="w-96 p-6 bg-gray-800 rounded-lg shadow-lg"
+                className="w-96 p-6 rounded-lg"
               >
                 <LoginForm />
-                <div className="text-center mt-4 text-sm">
-                  حساب کاربری ندارید؟
+                <div className="text-center md:w-full sm:w-8/10 text-[#D9D9D9] font-[vazirmatn] mt-8 text-[24px] font-bold text-sm">
                   <button
-                    onClick={() => setIsLogin(false)}
-                    className="text-green-400 ml-1 hover:underline"
+                    onClick={handleSignupClick} 
+                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 hover:text-blue-600"
                   >
                     ثبت نام
                   </button>
+                  حساب کاربری ندارید؟
                 </div>
-
-                {/* Redirect to Dashboard Button */}
-                <button
-                  onClick={() => navigate("/dashboard")}
-                  className="w-full bg-yellow-500 py-2 rounded-md hover:bg-yellow-600 transition mt-4"
-                >
-                  Go to Dashboard (Manually)
-                </button>
-
-                {/* Simulated Login Button */}
-                <button
-                  onClick={handleLogin}
-                  className="w-full bg-blue-500 py-2 rounded-md hover:bg-blue-600 transition mt-4"
-                >
-                  ورود (Login & Redirect)
-                </button>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
         {/* Right Side (Signup) */}
-        <div className="w-1/2 flex justify-center items-center relative">
+        <div
+          className={`md:w-48/100 sm:w-full ${isLogin ? "w-0" : "w-full"} flex justify-center items-center relative`}
+        >
           <AnimatePresence mode="wait">
+            <motion.div
+              key="signup"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }} 
+            >
+              <object data="/src/assets/login.svg" type="image/svg+xml" className={`md:w-[425px] md:h-[590px] sm:w-[300px] sm:h-[450px] w-0 h-0  ${loginImg}`}/>
+            </motion.div>
             {!isLogin && (
               <motion.div
                 key="signup"
@@ -89,26 +105,18 @@ const AuthPage = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="w-96 p-6 bg-gray-800 rounded-lg shadow-lg"
+                className="w-96 p-6 rounded-lg"
               >
                 <SignupForm />
-                <div className="text-center mt-4 text-sm">
-                  حساب کاربری دارید؟
+                <div className="text-center md:w-full sm:w-8/10 text-[#D9D9D9] font-[vazirmatn] mt-8 text-[24px] font-bold text-sm">
                   <button
-                    onClick={() => setIsLogin(true)}
-                    className="text-blue-400 ml-1 hover:underline"
+                    onClick={handleLoginClick} 
+                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 hover:text-green-600"
                   >
                     ورود
                   </button>
+                  حساب کاربری دارید؟
                 </div>
-
-                {/* Redirect to Dashboard Button */}
-                <button
-                  onClick={() => navigate("/dashboard")}
-                  className="w-full bg-yellow-500 py-2 rounded-md hover:bg-yellow-600 transition mt-4"
-                >
-                  Go to Dashboard (Manually)
-                </button>
               </motion.div>
             )}
           </AnimatePresence>
