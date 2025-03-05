@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../store/slices/authSlice";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
+import React from "react";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
