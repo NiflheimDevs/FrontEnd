@@ -35,7 +35,6 @@ const AuthPage = () => {
 
   return (
     <div className="flex h-screen w-full text-white relative overflow-hidden">
-      {/* Dark Background Section */}
       <motion.div
         initial={{ x: 0 }}
         animate={{ x: isLogin ? "0%" : "100%" }}
