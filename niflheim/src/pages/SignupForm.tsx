@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 
 const SignupForm = () => {
   const [showPassword1, setShowPassword1] = useState(false);
