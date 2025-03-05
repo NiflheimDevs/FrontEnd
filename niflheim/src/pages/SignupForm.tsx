@@ -6,11 +6,11 @@ const SignupForm = () => {
   const [showPassword2, setShowPassword2] = useState(false);
 
   return (
-    <div>
+    <div className="md:w-full sm:w-8/10">
       <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4">
         ثبت نام
       </div>
-      <div className="w-82 rounded-2xl h-0.75 bg-green-500 mx-auto mt-2 mb-6"></div>
+      <div className="w-full rounded-2xl h-0.75 bg-green-500 mx-auto mt-2 mb-6"></div>
 
       {/* فیلد ایمیل */}
       <div className="relative w-full">
@@ -47,7 +47,7 @@ const SignupForm = () => {
           placeholder="رمز عبور"
           className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         />
-        <button onClick={() => setShowPassword1(!showPassword1)} className="absolute left-3 top-1/2 transform -translate-y-1/2">
+        <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer absolute left-3 top-1/2 transform -translate-y-1/2">
           <object
             data={showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
             type="image/svg+xml"
@@ -63,7 +63,7 @@ const SignupForm = () => {
           placeholder="تکرار رمز عبور"
           className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         />
-        <button onClick={() => setShowPassword2(!showPassword2)} className="absolute left-3 top-1/2 transform -translate-y-1/2">
+        <button onClick={() => setShowPassword2(!showPassword2)} className="cursor-pointer absolute left-3 top-1/2 transform -translate-y-1/2">
           <object
             data={showPassword2 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
             type="image/svg+xml"
@@ -73,7 +73,7 @@ const SignupForm = () => {
       </div>
 
       {/* دکمه تایید و ادامه */}
-      <button className="w-full rounded-[18px] mt-5 bg-[#3A7D44] py-3 hover:bg-green-600 transition">
+      <button className="w-full cursor-pointer rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-green-600 transition">
         <p className="text-white font-[vazirmatn] font-extralight">
           تایید و ادامه
         </p>
