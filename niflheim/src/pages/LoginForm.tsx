@@ -18,7 +18,7 @@ const LoginForm = () => {
         <object
           data="/src/assets/Email.svg"
           type="image/svg+xml"
-          className="w-6 h-6 absolute left-3 top-1/2 transform -translate-y-1/2" 
+          className="w-6.5 h-6.5 absolute left-3 top-1/2 transform -translate-y-1/2" 
         />
       </div>
       
@@ -28,11 +28,11 @@ const LoginForm = () => {
           placeholder="رمز عبور"
           className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         />
-        <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer absolute left-3 top-1/2 transform -translate-y-1/2">
+        <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2">
           <object
             data={showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
             type="image/svg+xml"
-            className="w-6 h-6 pointer-events-none"
+            className="w-6.5 h-6.5 pointer-events-none"
           />
         </button>
       </div>
