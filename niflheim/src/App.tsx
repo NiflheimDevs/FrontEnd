@@ -1,6 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/routes"; // Import the router
 import { NotificationProvider } from "./Notification/NotificationProvider"; // Import the provider
+import React from "react";
 
 const App = () => {
   return (
