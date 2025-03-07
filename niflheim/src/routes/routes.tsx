@@ -3,14 +3,17 @@ import ProtectedRoute from "./ProtectedRoute";
 import AuthPage from "../pages/Auth";
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
+import Verify from "../pages/MobileVerify";
 import Footer from "../Components/Footer/Footer";
 import React from "react";
+import MobileVerify from "../pages/MobileVerify";
 
 // Public routes (accessible by anyone)
 export const publicRoutes = [
   { path: "/auth", element: <AuthPage /> },
   { path: "/profile", element: <Profile /> },
-  { path: "/footer", element: <Footer /> }
+  { path: "/footer", element: <Footer /> },
+  { path: "/verify", element: <MobileVerify /> }
 ];
 
 // Private routes (require authentication)
