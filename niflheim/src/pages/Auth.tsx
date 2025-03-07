@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../store/slices/authSlice";
-import LoginForm from "./LoginForm";
-import SignupForm from "./SignupForm";
+import LoginForm from "../Components/Auth/LoginForm";
+import SignupForm from "../Components/Auth/SignupForm";
 import React from "react";
 
 const AuthPage = () => {
