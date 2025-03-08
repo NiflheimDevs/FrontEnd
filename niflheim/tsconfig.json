@@ -7,7 +7,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+    },
+    "skipLibCheck": true,
+    "typeRoots": ["./node_modules/@types", "./node_modules/swiper"]
   }
 }
