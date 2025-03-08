@@ -6,7 +6,7 @@ import OtpInput from 'react-otp-input';
 
 const MobileVerify = () => {
     const [token, setTokens] = useState<string>("");
-    const [timeLeft, setTimeLeft] = useState(120); 
+    const [timeLeft, setTimeLeft] = useState(5); 
     const [isScaled, setIsScaled] = useState(false);
 
     useEffect(() => {
@@ -70,15 +70,15 @@ const MobileVerify = () => {
                                 value={token}
                                 onChange={setTokens}
                                 numInputs={5}
-                                containerStyle={"w-full justify-center items-center flex"}
+                                containerStyle={"w-full md:mt-5 sm:mt-5 mt-7 justify-center items-center flex"}
                                 inputType="tel"
-                                inputStyle={"flex md:h-[46px] sm:h-[46px] h-[35px] md:scale-125 sm:scale-125 scale-145 font-[vazirmatn] font-normal md:text-[33px] sm:text-[33px] text-[24px] text-black text-center bg-gray-300 rounded-[18px] border-2 border-gray-300 transition-all ease-in-out duration-300 shadow-md focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg md:mx-[15px] sm:mx-[15px] mx-[12px]"}
+                                inputStyle={"flex md:h-[43px] sm:h-[46px] h-[30px] md:scale-135 sm:scale-135 scale-200 font-[vazirmatn] font-normal md:text-[33px] sm:text-[33px] text-[24px] text-black text-center bg-gray-300 rounded-[18px] border-2 border-gray-300 transition-all ease-in-out duration-300 shadow-md focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg md:mx-[15px] sm:mx-[15px] mx-[17px]"}
                                 renderInput={(props) => <input {...props} />}
                             />
                         </motion.div>
                     </div>
                     
-                    <div className="flex w-fit h-fit flex-row mt-5 justify-center">
+                    <div className={`flex w-fit h-fit flex-row md:mt-8 sm:mt-8 mt-10 justify-center ${timeLeft != 0 ? "" : "ring-2 p-2 rounded-2xl"}`}>
                         <motion.div
                             key="verify3"
                             initial={{ opacity: 0, x: -50 }}
@@ -87,15 +87,17 @@ const MobileVerify = () => {
                             transition={{ duration: 0.6, ease: "easeInOut" }}
                             >
                             <div className="flex flex-row w-fit h-fit mx-4">
-                                {timeLeft != 0 
-                                ?
+                                {timeLeft != 0 ?
                                 <p className={`w-fit text-right md:text-[20px] sm:text-[18px] text-[16px] text-white font-[vazirmatn] font-normal`}>
-                                    زمان باقی‌مانده تا دریافت مجدد کد
+                                    دریافت مجدد کد
                                 </p>
                                 :
-                                <p className={`w-fit text-right md:text-[20px] sm:text-[18px] text-[16px] text-white font-[vazirmatn] font-normal`}>
-                                    برای دریافت مجدد کد کلیک کنید
-                                </p>
+                                <button className={`cursor-pointer w-fit h-fit`}
+                                    onClick={handleTimeOut}>   
+                                    <p className={`w-fit text-right md:text-[20px] sm:text-[18px] text-[16px] text-white font-[vazirmatn] font-normal`}>
+                                        دریافت مجدد کد
+                                    </p>
+                                </button>
                                 }
                             </div>
                             
@@ -148,7 +150,7 @@ const MobileVerify = () => {
                         </motion.div>
                     </div>
 
-                    <div className="flex w-fit h-fit my-4">
+                    <div className="flex w-fit h-fit my-3">
                         <motion.div
                             key="verify6"
                             initial={{ opacity: 0, x: -50 }}
