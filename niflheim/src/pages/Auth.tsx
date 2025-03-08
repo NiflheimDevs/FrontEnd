@@ -53,7 +53,7 @@ const AuthPage = () => {
         >
           <AnimatePresence mode="wait">
             <motion.div
-              key="signup"
+              key="signup1"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
@@ -67,7 +67,7 @@ const AuthPage = () => {
             </motion.div>
             {!isLogin && (
               <motion.div
-                key="signup"
+                key="signup2"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
@@ -96,7 +96,7 @@ const AuthPage = () => {
         >
           <AnimatePresence mode="wait">
             <motion.div
-              key="login"
+              key="login1"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 50 }}
@@ -110,7 +110,7 @@ const AuthPage = () => {
             </motion.div>
             {isLogin && (
               <motion.div
-                key="login"
+                key="login2"
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 50 }}
