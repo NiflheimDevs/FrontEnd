@@ -10,6 +10,7 @@ import parsa from "../../assets/parsa.jpg";
 import mmd from "../../assets/mmd.jpg";
 import ali from "../../assets/ali.jpg";
 import { motion } from "framer-motion";
+import React from "react";
 
 const people = [
   {
