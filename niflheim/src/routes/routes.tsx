@@ -7,13 +7,14 @@ import Verify from "../pages/MobileVerify";
 import Footer from "../Components/Footer/Footer";
 import React from "react";
 import MobileVerify from "../pages/MobileVerify";
+import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
 
 // Public routes (accessible by anyone)
 export const publicRoutes = [
   { path: "/auth", element: <AuthPage /> },
   { path: "/profile", element: <Profile /> },
   { path: "/footer", element: <Footer /> },
-  { path: "/verify", element: <MobileVerify /> }
+  { path: "/verify", element: <MobileVerifyWrapper><MobileVerify /></MobileVerifyWrapper> }
 ];
 
 // Private routes (require authentication)
