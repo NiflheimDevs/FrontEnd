@@ -4,11 +4,8 @@ import AuthPage from "../pages/Auth";
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
 import Footer from "../Components/Footer/Footer";
-<<<<<<< HEAD
 import AboutUs from "../pages/AboutUs";
-=======
 import Error from "../pages/Error/Error";
->>>>>>> develop
 import React from "react";
 
 // Public routes (accessible by anyone)
@@ -16,11 +13,8 @@ export const publicRoutes = [
   { path: "/auth", element: <AuthPage /> },
   { path: "/profile", element: <Profile /> },
   { path: "/footer", element: <Footer /> },
-<<<<<<< HEAD
   { path: "/aboutUs", element: <AboutUs /> },
-=======
   { path: "/error", element: <Error /> },
->>>>>>> develop
 ];
 
 // Private routes (require authentication)

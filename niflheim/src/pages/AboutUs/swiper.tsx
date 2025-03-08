@@ -22,31 +22,31 @@ const people = [
     id: 2,
     name: "سبحان",
     image: sob,
-    description: "A passionate developer who loves working with Redux & React.",
+    description: "A passionate developer who loves working with Redux & React, he as well.",
   },
   {
     id: 3,
     name: "سامان",
     image: saman,
-    description: "Always bringing creative ideas and feedback to the table.",
+    description: "Always bringing creative ideas and feedback to the table., big brain",
   },
   {
     id: 4,
     name: "پارسا",
     image: parsa,
-    description: "Skilled UI/UX designer with a keen eye for Figma details.",
+    description: "Skilled UI/UX designer with a keen eye for Figma details. good robot guy",
   },
   {
     id: 5,
     name: "امیر محمد",
     image: mmd,
-    description: "Skilled UI/UX designer with a keen eye for Figma details.",
+    description: "Skilled UI/UX designer with a keen eye for Figma details., big nose and work",
   },
   {
     id: 6,
     name: "ali",
     image: ali,
-    description: "best at everything whatever he does he is the king and yeah.",
+    description: "best at everything whatever he does he is the king and yeah., im the best",
   },
 ];
 
