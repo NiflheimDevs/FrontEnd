@@ -6,7 +6,7 @@ import OtpInput from 'react-otp-input';
 
 const MobileVerify = () => {
     const [token, setTokens] = useState<string>("");
-    const [timeLeft, setTimeLeft] = useState(5); 
+    const [timeLeft, setTimeLeft] = useState(120); 
     const [isScaled, setIsScaled] = useState(false);
 
     useEffect(() => {
