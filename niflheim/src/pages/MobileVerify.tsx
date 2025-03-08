@@ -55,7 +55,7 @@ const MobileVerify = () => {
                         </motion.div>
                     </div>
                     
-                    <div className="flex w-fit h-fit ltr mt-20">
+                    <div className="flex w-fit h-fit ltr mt-20 justify-center">
                         <motion.div
                             key="verify2"
                             initial={{ opacity: 0, x: -50 }}
@@ -70,9 +70,9 @@ const MobileVerify = () => {
                                 value={token}
                                 onChange={setTokens}
                                 numInputs={5}
-                                containerStyle={"w-fit"}
+                                containerStyle={"w-full justify-center items-center flex"}
                                 inputType="tel"
-                                inputStyle={"h-[46px] scale-125 text-[36px] text-black text-center bg-gray-300 rounded-[18px] border-2 border-gray-300 transition-all ease-in-out duration-300 shadow-md focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg md:mx-[15px] sm:mx-[15px] mx-[10px]"}
+                                inputStyle={"flex md:h-[46px] sm:h-[46px] h-[35px] md:scale-125 sm:scale-125 scale-145 font-[vazirmatn] font-normal md:text-[33px] sm:text-[33px] text-[24px] text-black text-center bg-gray-300 rounded-[18px] border-2 border-gray-300 transition-all ease-in-out duration-300 shadow-md focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg md:mx-[15px] sm:mx-[15px] mx-[12px]"}
                                 renderInput={(props) => <input {...props} />}
                             />
                         </motion.div>
