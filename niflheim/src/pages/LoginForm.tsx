@@ -1,7 +1,8 @@
+import React from "react";
 import {useState} from "react";
 
-
 const LoginForm = () => {
+
   const [showPassword1, setShowPassword1] = useState(false);
   return (
     <div className="md:w-full sm:w-8/10">
@@ -11,13 +12,13 @@ const LoginForm = () => {
       <div className="relative w-full">
         <input 
           type="email" 
-          placeholder="نام کاربری / ایمیل" 
-          className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
+          placeholder="نام کاربری / تلفن‌همراه" 
+          className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]`}
         /> 
         <object
           data="/src/assets/Email.svg"
           type="image/svg+xml"
-          className="w-6 h-6 absolute left-3 top-1/2 transform -translate-y-1/2" 
+          className="w-6.5 h-6.5 pointer-events-none absolute left-3 top-1/2 transform -translate-y-1/2" 
         />
       </div>
       
@@ -25,22 +26,22 @@ const LoginForm = () => {
         <input
           type={showPassword1 ? "text" : "password"} 
           placeholder="رمز عبور"
-          className="w-full bg-[#E5E5E5] py-1.75 px-3 rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
+          className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]`}
         />
-        <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer absolute left-3 top-1/2 transform -translate-y-1/2">
+        <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2">
           <object
             data={showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
             type="image/svg+xml"
-            className="w-6 h-6 pointer-events-none"
+            className="w-6.5 h-6.5 pointer-events-none"
           />
         </button>
       </div>
       
       <div className="text-right text-sm mt-5 mb-4">
-        <a href="#" className="text-white font-[vazirmatn] font-thin hover:underline">رمز عبور خود را فراموش کردید؟</a>
+        <a href="#" className="text-white font-[vazirmatn] font-thin transition duration-200 ease-in-out hover:underline">رمز عبور خود را فراموش کردید؟</a>
       </div>
       
-      <button className="w-full cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-blue-600 transition">
+      <button className="w-full transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-blue-600">
         <p className="text-white font-[vazirmatn] font-extralight">
           تایید و ادامه
         </p>

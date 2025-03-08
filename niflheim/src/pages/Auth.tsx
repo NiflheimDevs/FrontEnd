@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../store/slices/authSlice";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
+import React from "react";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -61,7 +62,7 @@ const AuthPage = () => {
               <object
                 data="/src/assets/login.svg"
                 type="image/svg+xml"
-                className={`md:w-[425px] md:h-[590px] sm:w-[300px] sm:h-[450px] w-0 h-0  ${loginImg}`}
+                className={`md:w-[425px] md:h-[590px] sm:w-[300px] sm:h-[450px] pointer-events-none w-0 h-0  ${loginImg}`}
               />
             </motion.div>
             {!isLogin && (
@@ -78,7 +79,7 @@ const AuthPage = () => {
                   حساب کاربری دارید؟
                   <button
                     onClick={handleLoginClick}
-                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 hover:text-green-600"
+                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 transition duration-200 ease-in-out hover:text-green-600"
                   >
                     ورود
                   </button>
@@ -104,7 +105,7 @@ const AuthPage = () => {
               <object
                 data="/src/assets/signup.svg"
                 type="image/svg+xml"
-                className={`md:w-[480px] md:h-[590px] sm:w-[300px] sm:h-[450px] w-0 h-0  ${SignImg}`}
+                className={`md:w-[480px] md:h-[590px] sm:w-[300px] sm:h-[450px] pointer-events-none w-0 h-0  ${SignImg}`}
               />
             </motion.div>
             {isLogin && (
@@ -121,7 +122,7 @@ const AuthPage = () => {
                   حساب کاربری ندارید؟
                   <button
                     onClick={handleSignupClick}
-                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 hover:text-blue-600"
+                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 transition duration-200 ease-in-out hover:text-blue-600"
                   >
                     ثبت نام
                   </button>
