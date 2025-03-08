@@ -67,7 +67,7 @@ const AuthPage = () => {
             </motion.div>
             {!isLogin && (
               <motion.div
-                key="signup2"
+                key="signup1"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
@@ -110,7 +110,7 @@ const AuthPage = () => {
             </motion.div>
             {isLogin && (
               <motion.div
-                key="login2"
+                key="login1"
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 50 }}
