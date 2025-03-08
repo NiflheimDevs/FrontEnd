@@ -3,7 +3,7 @@ import "@fontsource/inter";
 
 const Footer = () => {
   return (
-<div className="ltr flex flex-col items-center justify-center w-full h-fit overflow-hidden">
+<div className="ltr flex flex-col items-center justify-center w-full h-fit relative">
       <object data="/src/assets/footer.svg" type="image/svg+xml" className="w-full h-full z-0 relative"/>
       <div className="w-[100%] absolute h-fit inset-0 mt-[5%] md:mt-[5%] sm:mt-[5%] z-1 flex flex-col text-center">
 
