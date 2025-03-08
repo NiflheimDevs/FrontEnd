@@ -1,7 +1,13 @@
 import React from "react";
 import {useState} from "react";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setMobileSession } from "../../store/slices/mobileVerifySlice";
+
 
 const SignupForm = () => {
+  const navigate = useNavigate();
+
   const [showPassword1, setShowPassword1] = useState(false);
   
   const [showPassword2, setShowPassword2] = useState(false);
@@ -14,6 +20,13 @@ const SignupForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
+
+  const dispatcher = useDispatch();
+  
+  const handleSignupClick = () => {
+    dispatcher(setMobileSession());
+    navigate('/verify');
+  };
 
   const validateUsername = (value) => {
     if (!value) {
@@ -187,7 +200,8 @@ const SignupForm = () => {
       </div>
 
       {/* دکمه تایید و ادامه */}
-      <button className="w-full cursor-pointer transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-green-600">
+      <button className="w-full cursor-pointer transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-green-600"
+        onClick={handleSignupClick}>
         <p className="text-white font-[vazirmatn] font-extralight">
           تایید و ادامه
         </p>
