@@ -28,7 +28,7 @@ const people = [
     id: 3,
     name: "سامان",
     image: saman,
-    description: "Always bringing creative ideas and feedback to the table., big brain",
+    description: "Always bringing creative ideas and feedback to the table., big brain and nose",
   },
   {
     id: 4,
