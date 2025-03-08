@@ -5,6 +5,7 @@ import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
 import Verify from "../pages/MobileVerify";
 import Footer from "../Components/Footer/Footer";
+import AboutUs from "../pages/AboutUs";
 import Error from "../pages/Error/Error";
 import React from "react";
 import MobileVerify from "../pages/MobileVerify";
@@ -15,6 +16,7 @@ export const publicRoutes = [
   { path: "/auth", element: <AuthPage /> },
   { path: "/profile", element: <Profile /> },
   { path: "/footer", element: <Footer /> },
+  { path: "/aboutUs", element: <AboutUs /> },
   { path: "/verify", element: <MobileVerifyWrapper><MobileVerify /></MobileVerifyWrapper> },
   { path: "/error", element: <Error /> }
 ];
