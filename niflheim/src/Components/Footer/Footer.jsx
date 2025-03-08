@@ -15,7 +15,7 @@ const Footer = () => {
           گامی به سوی آینده        
         </h2>
         
-        <div className="flex md:mt-[115px] sm:mt-[110px] mt-[45px] flex-col bg-[#1B1B1B]">
+        <div className="flex md:mt-[11%] sm:mt-[110px] mt-[45px] flex-col bg-[#1B1B1B]">
           <div className="gap-[14vw] px-[50px] w-full md:h-[100px] sm:h-fit h-fit flex inset-0 mt-[5px] z-1 md:flex-row sm:flex-row flex-col justify-center items-end flex-wrap overflow-hidden">  
               <ReviewCard
                 title="سایت زیبا و سریع دارید"
@@ -65,7 +65,7 @@ const Footer = () => {
               <SvgBox svgName="e_namad"/>
             </div>
             <div className="flex bg-[#1B1B1B] justify-center items-center gap-[6vh] md:ml-[40px] sm:ml-[40px] ml-[0px] my-[30px]">
-              <div className="flex flex-wrap md:flex-row sm:flex-row flex-row bg-[#1B1B1B] md:gap-[5.2vw] sm:gap-[5vw] gap-[12vw] max-w-[780px] md:w-fit sm:w-fit w-[400px] justify-center items-center ">
+              <div className="flex flex-wrap md:flex-row sm:flex-row flex-row bg-[#1B1B1B] md:gap-[5.2vw] sm:gap-[5vw] gap-[12vw] max-w-[900px] md:w-fit sm:w-fit w-[400px] justify-center items-center ">
                 <TextComponent>قوانین و مقررات</TextComponent>
                 <TextComponent>سوالات متداول</TextComponent>
                 <TextComponent>تماس با ما</TextComponent>
