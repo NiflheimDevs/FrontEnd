@@ -40,12 +40,12 @@ const Sections = () => {
           id="first-section"
           className="scale-[85%] grid md:grid-cols-2 items-center gap-12 p-8 bg-[#e5e5e5] shadow-xl rounded-xl transition-transform"
         >
-          <div className="text-center md:text-right space-y-6">
+          <div className="text-center md:text-right space-y-6 flex flex-col justify-center">
             <h2 className="text-3xl font-extrabold text-gray-800">
               بیشتر درباره ما بدانید
             </h2>
             <div
-              className={`mt-3 p-4 border rounded-lg transition-all duration-500 ${
+              className={`mt-3 p-4 border rounded-lg transition-all duration-500 flex justify-center items-center h-40 ${
                 visibleSections.first
                   ? "opacity-100 max-h-96"
                   : "opacity-0 max-h-0 overflow-hidden"
@@ -79,10 +79,10 @@ const Sections = () => {
               className="rounded-lg shadow-lg w-full max-w-[400px] hover:scale-[103%] transition-transform"
             />
           </div>
-          <div className="text-center md:text-right space-y-6">
+          <div className="text-center md:text-right space-y-6 flex flex-col justify-center">
             <h2 className="text-3xl font-extrabold text-gray-800">اهداف ما</h2>
             <div
-              className={`mt-3 p-4 border rounded-lg transition-all duration-500 ${
+              className={`mt-3 p-4 border rounded-lg transition-all duration-500 flex justify-center items-center h-40 ${
                 visibleSections.second
                   ? "opacity-100 max-h-96"
                   : "opacity-0 max-h-0 overflow-hidden"

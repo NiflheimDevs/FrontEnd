@@ -3,13 +3,10 @@ import ProtectedRoute from "./ProtectedRoute";
 import AuthPage from "../pages/Auth";
 import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
-import Verify from "../pages/MobileVerify";
 import Footer from "../Components/Footer/Footer";
 import AboutUs from "../pages/AboutUs";
 import Error from "../pages/Error/Error";
 import React from "react";
-import MobileVerify from "../pages/MobileVerify";
-import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
 
 // Public routes (accessible by anyone)
 export const publicRoutes = [
@@ -17,14 +14,12 @@ export const publicRoutes = [
   { path: "/profile", element: <Profile /> },
   { path: "/footer", element: <Footer /> },
   { path: "/aboutUs", element: <AboutUs /> },
-  { path: "/verify", element: <MobileVerifyWrapper><MobileVerify /></MobileVerifyWrapper> },
-  { path: "/error", element: <Error /> }
+
+  { path: "/error", element: <Error /> },
 ];
 
 // Private routes (require authentication)
-export const privateRoutes = [
-  { path: "/dashboard", element: <Dashboard /> },
-];
+export const privateRoutes = [{ path: "/dashboard", element: <Dashboard /> }];
 
 export const router = createBrowserRouter([
   {
@@ -37,8 +32,6 @@ export const router = createBrowserRouter([
     children: privateRoutes,
   },
 ]);
-
-
 
 /*
 How to Add New Pages?
