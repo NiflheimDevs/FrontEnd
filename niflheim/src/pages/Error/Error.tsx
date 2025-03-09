@@ -33,6 +33,7 @@ const Error = () => {
   const { errorCode, title = "خطا" } = location.state || { errorCode:"error_404", title:"404 خطا" };
   const description = errorMessages[errorCode] || "مشکلی پیش آمده است.";
 
+
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-r from-[#DA1E30] to-[#74101A] px-10 text-center">
       <div className="text-white text-4xl font-bold space-y-4">
