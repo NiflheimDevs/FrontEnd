@@ -1,5 +1,8 @@
 import img from "../../assets/aboutus.svg";
 import React, { useEffect, useState } from "react";
+import aboutus from "../../assets/AboutUs-1.webp";
+import porpuses from "../../assets/AboutUs-porpuse.webp";
+
 
 const Sections = () => {
   const [visibleSections, setVisibleSections] = useState({
@@ -60,7 +63,7 @@ const Sections = () => {
           </div>
           <div className="flex justify-center">
             <img
-              src={img}
+              src={aboutus}
               alt="Freelancers working"
               className="rounded-lg shadow-lg w-full max-w-[400px] hover:scale-[103%] transition-transform"
             />
@@ -74,7 +77,7 @@ const Sections = () => {
         >
           <div className="flex justify-center">
             <img
-              src={img}
+              src={porpuses}
               alt="Freelancers working"
               className="rounded-lg shadow-lg w-full max-w-[400px] hover:scale-[103%] transition-transform"
             />
