@@ -3,6 +3,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import kia from "../../assets/kia2.jpg";
 import sob from "../../assets/sob.jpg";
 import saman from "../../assets/saman.jpg";
@@ -17,88 +18,106 @@ const people = [
     name: "کیارش",
     image: kia,
     description: "Real coder, top-ranked in programming competitions, also my bro.",
+    instagram: "INSTAGRAM_LINK",
+    linkedin: "LINKEDIN_LINK",
   },
   {
     id: 2,
     name: "سبحان",
     image: sob,
     description: "A passionate developer who loves working with Redux & React, he as well.",
+    instagram: "INSTAGRAM_LINK",
+    linkedin: "LINKEDIN_LINK",
   },
   {
     id: 3,
     name: "سامان",
     image: saman,
     description: "Always bringing creative ideas and feedback to the table., big brain and nose",
+    instagram: "INSTAGRAM_LINK",
+    linkedin: "LINKEDIN_LINK",
   },
   {
     id: 4,
     name: "پارسا",
     image: parsa,
     description: "Skilled UI/UX designer with a keen eye for Figma details. good robot guy",
+    instagram: "INSTAGRAM_LINK",
+    linkedin: "LINKEDIN_LINK",
   },
   {
     id: 5,
     name: "امیر محمد",
     image: mmd,
     description: "Skilled UI/UX designer with a keen eye for Figma details., big nose and work",
+    instagram: "INSTAGRAM_LINK",
+    linkedin: "LINKEDIN_LINK",
   },
   {
     id: 6,
     name: "ali",
     image: ali,
     description: "best at everything whatever he does he is the king and yeah., im the best",
+    instagram: "INSTAGRAM_LINK",
+    linkedin: "LINKEDIN_LINK",
   },
 ];
 
 const SwiperSection: React.FC = () => {
   return (
-    <section className="flex flex-col items-center justify-center py-16 ">
+    <section className="flex flex-col bg-transparent items-center justify-center py-16 ">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-3xl font-bold text-gray-800 mb-8"
+        className="text-3xl font-bold text-gray-900 mb-8"
       >
         تیم ما
       </motion.h2>
 
-      <div className="relative w-full max-w-5xl">
-        <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={30}
-          slidesPerView={1}
-          navigation
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 4000, disableOnInteraction: false }}
-          breakpoints={{
-            640: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-          }}
-          className="py-6"
-        >
-          {people.map((person) => (
-            <SwiperSlide key={person.id}>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="w-full text-center p-8 border rounded-3xl  bg-white transition-all duration-300"
-              >
-                <img
-                  src={person.image}
-                  alt={person.name}
-                  className="rounded-full mx-auto w-32 h-32 mb-4  border-4 border-gray-300 hover:border-gray-500 transition-all duration-300"
-                />
-                <h3 className="text-2xl font-semibold text-gray-800">
-                  {person.name}
-                </h3>
-                <p className="text-gray-600 mt-3 text-sm leading-relaxed px-4">
-                  {person.description}
-                </p>
-              </motion.div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        spaceBetween={30}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
+        breakpoints={{
+          640: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }}
+        className="relative w-full max-w-5xl py-12"
+      >
+        {people.map((person) => (
+          <SwiperSlide key={person.id}>
+            <motion.div
+              whileHover={{ zIndex: 10 }}
+              className="relative w-full text-center p-8 border rounded-3xl bg-[#e5e5e5] transition-all duration-300"
+            >
+              <img
+                src={person.image}
+                alt={person.name}
+                className="rounded-full mx-auto w-32 h-32 mb-4 border-4 border-gray-300 hover:border-blue-600 transition-all duration-300"
+              />
+              <h3 className="text-2xl font-semibold bg-gradient-to-l from-blue-600 to-blue-300 text-transparent bg-clip-text">
+                {person.name}
+              </h3>
+              <p className="text-gray-700 mt-3 text-sm leading-relaxed px-4">
+                {person.description}
+              </p>
+              <div className="flex justify-center gap-4 mt-4">
+                <a href={person.instagram} target="_blank" rel="noopener noreferrer">
+                  <FaInstagram className="text-pink-500 text-2xl hover:text-pink-700 transition-all duration-300" />
+                </a>
+                <a href={person.linkedin} target="_blank" rel="noopener noreferrer">
+                  <FaLinkedin className="text-blue-500 text-2xl hover:text-blue-700 transition-all duration-300" />
+                </a>
+              </div>
+            </motion.div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </section>
   );
 };
