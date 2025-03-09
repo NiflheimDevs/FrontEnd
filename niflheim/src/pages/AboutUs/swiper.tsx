@@ -17,49 +17,57 @@ const people = [
     id: 1,
     name: "کیارش",
     image: kia,
-    description: "Real coder, top-ranked in programming competitions, also my bro.",
-    instagram: "INSTAGRAM_LINK",
-    linkedin: "LINKEDIN_LINK",
+    description:
+      "Real coder, top-ranked in programming competitions, also my bro.",
+    instagram: "https://www.instagram.com/k14s0h/",
+    linkedin: "https://www.linkedin.com/in/kiarash-sohrabi-687101278/",
   },
   {
     id: 2,
     name: "سبحان",
     image: sob,
-    description: "A passionate developer who loves working with Redux & React, he as well.",
-    instagram: "INSTAGRAM_LINK",
-    linkedin: "LINKEDIN_LINK",
+    description:
+      "A passionate developer who loves working with Redux & React, he as well.",
+    instagram: "https://www.instagram.com/paincarrier0_0/",
+    linkedin: "https://www.linkedin.com/in/sobhan-ranjbar-8270b718a",
   },
   {
     id: 3,
     name: "سامان",
     image: saman,
-    description: "Always bringing creative ideas and feedback to the table., big brain and nose",
-    instagram: "INSTAGRAM_LINK",
-    linkedin: "LINKEDIN_LINK",
+    description:
+      "Always bringing creative ideas and feedback to the table., big brain and nose",
+    instagram: "https://www.instagram.com/samansayad___/",
+    linkedin: "https://www.linkedin.com/in/samansayadfaal",
   },
   {
     id: 4,
     name: "پارسا",
     image: parsa,
-    description: "Skilled UI/UX designer with a keen eye for Figma details. good robot guy",
-    instagram: "INSTAGRAM_LINK",
-    linkedin: "LINKEDIN_LINK",
+    description:
+      "Skilled UI/UX designer with a keen eye for Figma details. good robot guy",
+    instagram:
+      "www.instagram.com/parsasamieee",
+    linkedin:
+      "https://www.linkedin.com/in/parsa-samiee-1500b5254?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app",
   },
   {
     id: 5,
     name: "امیر محمد",
     image: mmd,
-    description: "Skilled UI/UX designer with a keen eye for Figma details., big nose and work",
-    instagram: "INSTAGRAM_LINK",
-    linkedin: "LINKEDIN_LINK",
+    description:
+      "Skilled UI/UX designer with a keen eye for Figma details., big nose and work",
+    instagram: "https://www.instagram.com/amir_m_4163/",
+    linkedin: "https://www.linkedin.com/in/amir-mohammad-mohammadi-b593b8312/",
   },
   {
     id: 6,
-    name: "ali",
+    name: "علی",
     image: ali,
-    description: "best at everything whatever he does he is the king and yeah., im the best",
-    instagram: "INSTAGRAM_LINK",
-    linkedin: "LINKEDIN_LINK",
+    description:
+      "best at everything whatever he does he is the king and yeah., im the best",
+    instagram: "https://www.instagram.com/gholamiali41382/",
+    linkedin: "https://www.linkedin.com/in/ali-gholami-909113350/",
   },
 ];
 
@@ -107,10 +115,18 @@ const SwiperSection: React.FC = () => {
                 {person.description}
               </p>
               <div className="flex justify-center gap-4 mt-4">
-                <a href={person.instagram} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={person.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <FaInstagram className="text-pink-500 text-2xl hover:text-pink-700 transition-all duration-300" />
                 </a>
-                <a href={person.linkedin} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={person.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <FaLinkedin className="text-blue-500 text-2xl hover:text-blue-700 transition-all duration-300" />
                 </a>
               </div>

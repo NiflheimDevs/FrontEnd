@@ -3,6 +3,7 @@ import Sections from "./AboutUs/sections";
 import SwiperSection from "./AboutUs/swiper";
 import newBgImage from "../assets/aboutus.jpg";
 import { motion } from "framer-motion";
+import Footer from "../Components/Footer/Footer";
 
 const AboutUs: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -86,6 +87,9 @@ const AboutUs: React.FC = () => {
       >
         <SwiperSection />
       </motion.div>
+      <footer>
+        <Footer />  
+      </footer>
     </div>
   );
 };

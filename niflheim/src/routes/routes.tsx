@@ -6,6 +6,8 @@ import Profile from "../pages/Profile";
 import Footer from "../Components/Footer/Footer";
 import AboutUs from "../pages/AboutUs";
 import Error from "../pages/Error/Error";
+import MobileVerify from "../pages/MobileVerify";
+import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
 import React from "react";
 
 // Public routes (accessible by anyone)
