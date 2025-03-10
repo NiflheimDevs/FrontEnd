@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import React from "react";
 import OtpInput from 'react-otp-input';
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
         
 
 const MobileVerify = () => {
@@ -10,7 +12,7 @@ const MobileVerify = () => {
     const [token, setTokens] = useState<string>("");
     const [timeLeft, setTimeLeft] = useState(120); 
     const [isScaled, setIsScaled] = useState(false);
-
+    const phoneNumber = useSelector((state: RootState) => state.mobileVerify.phoneNumber);
     useEffect(() => {
         if (timeLeft === 0) return; 
         const timerId = setInterval(() => {
