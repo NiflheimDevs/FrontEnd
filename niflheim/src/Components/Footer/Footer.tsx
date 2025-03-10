@@ -75,7 +75,7 @@ const Footer = () => {
           </div>
           <div className="flex h-fit w-[95%] bg-[#1B1B1B] inset-0 mt-[30px] z-1 opacity-[0.7] flex-col self-center justify-center border border-white"/>
           <div className="flex h-fit w-[95%] bg-[#1B1B1B] inset-0 my-[20px] z-1 flex-col self-center justify-center">  
-            <p class="font-vazirmatn text-[16px] opacity-[0.7] font-normal leading-[25px] tracking-[0%] text-center text-white">
+            <p className="font-vazirmatn text-[16px] opacity-[0.7] font-normal leading-[25px] tracking-[0%] text-center text-white">
               © تمام حقوق برای این سایت محفوظ است
             </p>
           </div>
@@ -128,7 +128,7 @@ const SvgBox = ({ svgName }) => {
 
 const TextComponent = ({ children }) => {
   return (
-    <p className="font-inter md:text-[32px] sm:text-[24px] text-[24px] font-semibold leading-[38.73px] text-white tracking-[0%]">
+    <p className="font-vazirmatn text-[25px] opacity-[0.85] font-normal leading-[25px] tracking-[0%] text-center text-white">
       {children}
     </p>
   );
