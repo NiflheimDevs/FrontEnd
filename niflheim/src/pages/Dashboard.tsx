@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Bell, Search, Upload, User, Image, Menu } from "lucide-react";
 // import { Button } from "@/components/ui/button";
+import LOGO from "@/assets/BIDLANCERLOGO.svg";
 
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -9,9 +10,9 @@ export default function Dashboard() {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar (Dashboard Navigation) */}
       <aside
-        className={`fixed right-0 top-18 h-full bg-[#D4D4D4] p-5 shadow-md transition-transform ${
+        className={`fixed top-16 right-0 h-full bg-[#D4D4D4] p-5 shadow-md transition-transform ${
           isSidebarOpen ? "w-64" : "w-16"
-        } duration-300 flex flex-col items-center`}
+        } duration-300 flex flex-col items-center z-50`}
       >
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -35,31 +36,34 @@ export default function Dashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col ">
+      <main className="flex-1 flex flex-col pt-16 pr-64 bg-[#F7F7F7]">
         {" "}
-        {/* Adjust padding to prevent overlap */}
+        {/* Adjust padding */}
         {/* Header */}
-        <header className="z-10 bg-white p-4 shadow flex justify-between items-center">
+        <header className="fixed top-0 left-0 right-0 z-50 bg-white p-4 shadow flex justify-between items-center">
           <div className="flex items-center justify-between gap-4">
-            <img src="/logo.png" alt="Logo" className="h-8" />
-            <div className="relative">
-              <Search
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
-                size={18}
-              />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="pl-8 pr-4 py-1 border rounded"
-              />
-            </div>
+            <label htmlFor="">بیدلنسر</label>
+            <img src={LOGO} alt="Logo" className="h-12 w-12" />
+          </div>
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="pl-8 pr-4 py-1 border rounded"
+            />
+            <Search
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={18}
+            />
           </div>
           <Bell className="text-gray-500 cursor-pointer" />
         </header>
         {/* Form Section */}
         <section className="p-6">
+          <div className="relative">
+
+          <h2 className="text-lg font-bold mb-4">Edit Profile</h2>
           <div className="bg-white p-6 rounded shadow-md max-w-xl mx-auto">
-            <h2 className="text-lg font-bold mb-4">Edit Profile</h2>
             <div className="flex items-center gap-6">
               {/* Profile Picture */}
 
@@ -96,7 +100,7 @@ export default function Dashboard() {
                 <label className="text-sm text-gray-600">شماره تماس</label>
                 <input
                   type="text"
-                  placeholder="*******0911"
+                  placeholder="*********091"
                   className="w-full p-2 border rounded"
                 />
               </div>
@@ -122,12 +126,12 @@ export default function Dashboard() {
               <div className="flex justify-between items-center gap-12">
                 <label className="text-sm text-gray-600">بیوگرافی</label>
                 <textarea
-                  placeholder="Biography"
-                  className="w-full p-2 border rounded"
+                  placeholder=""
+                  className="w-full p-2 border rounded resize-none"
                 ></textarea>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 place-self-end">
                 <input type="file" className="hidden" id="resume-upload" />
                 <label
                   htmlFor="resume-upload"
@@ -136,13 +140,19 @@ export default function Dashboard() {
                   <Upload size={18} /> Upload Resume
                 </label>
               </div>
-              <input
-                type="text"
-                placeholder="Labels (comma-separated)"
-                className="w-full p-2 border rounded"
-              />
+
+              <div className="flex justify-between items-center gap-10">
+                <label className="text-sm text-gray-600">برچسب‌ها</label>
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+
               {/* <Button className="w-full bg-blue-500 text-white">Update</Button> */}
             </div>
+          </div>
           </div>
         </section>
       </main>
