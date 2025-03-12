@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
-import mobileVerifyReducer from "./slices/mobileVerifySlice";
+import mobileVerifyReducer from "./slices/SignUpSlice";
 
 export const store = configureStore({
   reducer: {
