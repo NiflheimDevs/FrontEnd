@@ -76,7 +76,7 @@ const MobileVerify = () => {
                                 numInputs={5}
                                 containerStyle={"w-full md:mt-5 sm:mt-5 mt-7 justify-center items-center flex"}
                                 inputType="tel"
-                                inputStyle={"flex md:h-[43px] sm:h-[46px] h-[30px] md:scale-135 sm:scale-135 scale-200 font-[vazirmatn] font-normal md:text-[33px] sm:text-[33px] text-[24px] text-black text-center bg-gray-300 rounded-[18px] border-2 border-gray-300 transition-all ease-in-out duration-300 shadow-md focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg md:mx-[15px] sm:mx-[15px] mx-[17px]"}
+                                inputStyle={"flex md:h-[39px] sm:h-[39px] h-[30px] md:scale-139 sm:scale-135 scale-200 font-[vazirmatn] font-normal md:text-[28px] sm:text-[28px] text-[24px] text-black text-center bg-gray-300 rounded-[18px] border-2 border-gray-300 transition-all ease-in-out duration-300 shadow-md focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg md:mx-[15px] sm:mx-[15px] mx-[17px]"}
                                 renderInput={(props) => <input {...props} />}
                             />
                         </motion.div>
