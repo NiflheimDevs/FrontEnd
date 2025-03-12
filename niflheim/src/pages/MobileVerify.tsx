@@ -3,16 +3,26 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import React from "react";
 import OtpInput from 'react-otp-input';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import {signupSendOTP , signupVerifyOTP} from "../API";
+import {useNotification} from "../Notification/NotificationProvider";
+import { setSignUpSession } from "../store/slices/SignUpSlice";
+import {errorMapper} from "../pages/Error/Error";
         
 
 const MobileVerify = () => {
+    const dispatcher = useDispatch();
     const navigate = useNavigate();
+    const { error: notifyError, success: notifySuccess } = useNotification();
     const [token, setTokens] = useState<string>("");
     const [timeLeft, setTimeLeft] = useState(120); 
     const [isScaled, setIsScaled] = useState(false);
-    const phoneNumber = useSelector((state: RootState) => state.mobileVerify.phoneNumber);
+    const SessionID = useSelector((state: RootState) => state.mobileVerify.SessionID);
+    const Username = useSelector((state: RootState) => state.mobileVerify.Username);
+    const Password = useSelector((state: RootState) => state.mobileVerify.Password);
+    const Phone = useSelector((state: RootState) => state.mobileVerify.Phone);
+
     useEffect(() => {
         if (timeLeft === 0) return; 
         const timerId = setInterval(() => {
@@ -36,8 +46,35 @@ const MobileVerify = () => {
     const minutes = Math.floor(timeLeft / 60); 
     const seconds = timeLeft % 60; 
 
-    const handleTimeOut = () => {
-        setTimeLeft(120)
+    const handleTimeOut = async () => {
+        try {
+        const response = await signupSendOTP({
+            phonenumber: Phone?.toString() ?? "",
+            username: Username?.toString() ?? "",
+            password: Password?.toString() ?? ""
+        });
+        
+    
+        const sessionData = {
+            SessionID: response,
+            Phone: Phone,
+            Password: Password,
+            Username: Username,
+        }
+        dispatcher(setSignUpSession(sessionData));
+        notifySuccess(`کد تایید به شماره ${Phone} ارسال شد`);
+        } catch (error) {
+        const errorData = error;
+        if (errorData.tag && errorData.errors?.length > 0) {
+            const allErrors = errorData.errors; 
+    
+            const errorMessages = allErrors.map((err) => errorMapper(err));
+    
+            notifyError(`${errorMessages.join(" ")}`);
+        } else {
+            notifyError(`${errorMapper(errorData)}`);
+        }
+        }
     }
         
     return (
