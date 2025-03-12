@@ -2,14 +2,14 @@ import React from "react";
 import {useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setMobileSession } from "../../store/slices/mobileVerifySlice";
+import { setSignUpSession } from "../../store/slices/SignUpSlice";
 import {signupSendOTP} from "../../API";
 import {useNotification} from "../../Notification/NotificationProvider";
 import {errorMapper} from "../../pages/Error/Error";
 
 const SignupForm = () => {
   const navigate = useNavigate();
-  const { error: notifyError } = useNotification();
+  const { error: notifyError, success: notifySuccess } = useNotification();
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
 
@@ -26,14 +26,21 @@ const SignupForm = () => {
   
   const handleSignupClick = async () => {
     try {
-      dispatcher(setMobileSession(phone));
       const response = await signupSendOTP({
         phonenumber: phone,
         username: username,
         password: password,
-      });
+      });      
+
+      const sessionData = {
+        SessionID: response,
+        Phone: phone,
+        Password: password,
+        Username: username,
+      }
+      dispatcher(setSignUpSession(sessionData));
+      notifySuccess(`کد تایید به شماره ${phone} ارسال شد`);
       navigate('/verify');
-      console.log("✅ ثبت نام موفق بود:", response);
     } catch (error) {
       const errorData = error;
       if (errorData.tag && errorData.errors?.length > 0) {
@@ -61,6 +68,12 @@ const SignupForm = () => {
   };
   
   const validatePassword = (value) => {
+    if (value === passwordRepeat) {
+      setIsValidPassRepeat(true);
+    } else if (value != passwordRepeat) {
+      setIsValidPassRepeat(false);
+    }
+
     if (!value) {
       return null;
     } else if (value.length < 8) {
