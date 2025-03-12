@@ -11,6 +11,8 @@ import MobileVerify from "../pages/MobileVerify";
 import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
 import React from "react";
 
+import CreateProject from "../pages/CreateProject/CreateProject";
+
 // Public routes (accessible by anyone)
 export const publicRoutes = [
   { path: "/auth", element: <AuthPage /> },
@@ -27,6 +29,7 @@ export const publicRoutes = [
   },
   { path: "/error", element: <Error /> },
   { path: "/dashboard", element: <Dashboard /> },
+  { path: "/createproject", element: <CreateProject /> },
 ];
 
 // Private routes (require authentication)
