@@ -10,6 +10,7 @@ import AboutUs from "../pages/AboutUs";
 import Error from "../pages/Error/Error";
 import MobileVerify from "../pages/MobileVerify";
 import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
+import ForgetPassword from "../pages/ForgetPassword";
 import React from "react";
 
 // Public routes (accessible by anyone)
@@ -19,7 +20,8 @@ export const publicRoutes = [
   { path: "/footer", element: <Footer /> },
   { path: "/aboutUs", element: <AboutUs /> },
   { path: "/verify", element: <MobileVerifyWrapper><MobileVerify /></MobileVerifyWrapper> },
-  { path: "/error", element: <Error /> }
+  { path: "/error", element: <Error /> },
+  { path: "/forgetpass", element: <ForgetPassword /> }
 ];
 
 // Private routes (require authentication)
