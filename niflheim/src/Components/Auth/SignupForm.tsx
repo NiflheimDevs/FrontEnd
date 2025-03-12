@@ -3,11 +3,9 @@ import {useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setMobileSession } from "../../store/slices/mobileVerifySlice";
-import axios from "axios";
+import {signupSendOTP} from "../../API";
 import {useNotification} from "../../Notification/NotificationProvider";
 import {errorMapper} from "../../pages/Error/Error";
-
-const API_URL = "http://172.17.11.52:8080/signup/send-otp";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -25,32 +23,11 @@ const SignupForm = () => {
   const [passwordRepeat, setPasswordRepeat] = useState("");
 
   const dispatcher = useDispatch();
-  const signupVerify = async (userData: { 
-    phonenumber: string; 
-    username: string; 
-    password: string; 
-  }) => {
-    try {
-      const response = await axios.post(
-        API_URL,
-        userData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      return response.data;
-    } catch (error: any) {
-      throw error.response?.data || "خطا در ارسال درخواست!";
-    }
-  };
-  
   
   const handleSignupClick = async () => {
     try {
       dispatcher(setMobileSession(phone));
-      const response = await signupVerify({
+      const response = await signupSendOTP({
         phonenumber: phone,
         username: username,
         password: password,
