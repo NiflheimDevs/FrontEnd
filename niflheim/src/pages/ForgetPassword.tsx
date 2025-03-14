@@ -27,9 +27,9 @@ const ForgetPassword = () =>
         setIsValidPhone(validatePhone(value));
     };
   return (
-    <div className="w-screen h-screen p-8 flex flex-col md:flex-row justify-center items-center bg-gradient-to-r from-[#18334F] to-[#3674B5]">
-        <div className={`flex-1 max-w-[600px] ${!ispic ? "w-0" : "w-full"} flex justify-center items-center relative`}>
-          <div className="flex flex-col justify-center items-center text-center w-full md:w-[80%] relative">  
+    <div className="w-screen h-screen p-8 gap-[10vw] flex flex-col sm:py-100 md:py-0 py-0 md:flex-row justify-center items-center bg-gradient-to-r from-[#18334F] to-[#3674B5]">
+        <div className={` ${!ispic ? "w-0" : "w-full"} flex justify-center items-center relative`}>
+          <div className="flex flex-col justify-center items-center text-center w-full max-w-[400px] md:w-[80%] relative">  
               <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4 text-[#D9D9D9]">
                 رمزت رو فراموش کردی؟ <br/>
                 برو لینکی که پیامک می‌شه رو دنبال کن 
@@ -62,11 +62,11 @@ const ForgetPassword = () =>
               </button>
           </div>
         </div>
-      <div className="flex-1 flex justify-center items-center mt-8 md:mt-0">
+      <div className="flex justify-center w-1/2 items-center mt-8 md:mt-0">
         <object
         data={LadyPic}
         type="image/svg+xml" 
-        className="pointer-events-none w-full max-w-[880px] md:w-[480px] sm:w-[400px] md:flex sm:flex hidden" 
+        className="pointer-events-none md:h-[480px] w-auto sm:h-[400px] md:flex sm:flex hidden" 
       />
       </div>
     </div>
