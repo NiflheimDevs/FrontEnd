@@ -21,7 +21,7 @@ export const publicRoutes = [
   { path: "/aboutUs", element: <AboutUs /> },
   { path: "/verify", element: <MobileVerifyWrapper><MobileVerify /></MobileVerifyWrapper> },
   { path: "/error", element: <Error /> },
-  { path: "/forgetpass", element: <ForgetPassword /> }
+  { path: "/forgetpassword", element: <ForgetPassword /> }
 ];
 
 // Private routes (require authentication)

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import {useState} from "react";
 
 const LoginForm = () => {
@@ -38,7 +39,12 @@ const LoginForm = () => {
       </div>
       
       <div className="text-right text-sm mt-5 mb-4">
-        <a href="#" className="text-white font-[vazirmatn] font-thin transition duration-200 ease-in-out hover:underline">رمز عبور خود را فراموش کردید؟</a>
+        <Link 
+         to="/forgetpassword" 
+         className="text-white font-[vazirmatn] font-thin transition duration-200 ease-in-out hover:underline"
+        >
+         رمز عبور خود را فراموش کردید؟
+        </Link>
       </div>
       
       <button className="w-full transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-blue-600">
