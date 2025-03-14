@@ -3,89 +3,73 @@ import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import PhoneIcon from '/src/assets/Phone.svg';
-import LadyPic from '/src/assets/ForgetPass2.svg';
+import LadyPic from '/src/assets/ForgetPass.svg';
 
 const ForgetPassword = () => 
 {
     const [phone, setPhone] = useState("");
     const [isValidPhone, setIsValidPhone] = useState<boolean | null>(null); 
+    const [ispic, setIspic] = useState(true);
 
-    const validatePhone = (value) => 
+    const validatePhone = (value: string) => 
     {
-        if (!value) 
-            {
-                return false;
-            } 
-        else if (!/^09[0-9]{9}$/.test(value)) 
-            {
-                return false; 
-            }
-        else 
+      if (!value) 
         {
-            return true;
-        }
+          return false;
+        } 
+      return /^09[0-9]{9}$/.test(value);
     };
+
     const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => 
     {
         const value = e.target.value;
         setPhone(value);
         setIsValidPhone(validatePhone(value));
     };
-
-
-    return (
-    <div className="w-screen h-screen flex justify-center items-center bg-gradient-to-r from-[#18334F] to-[#3674B5]">
-
-        <div className="grid grid-cols-1 md:grid-cols-2 h-[100vh] w-[90%] max-w-full items-center p-8">
-            {/* Right Side - Text */}
-
-            <div className="flex flex-col justify-center text-center min-w-[100px]">                
-                <h1 className="text-center md:w-full sm:w-8/10 text-[#D9D9D9] font-[vazirmatn] mt-8 text-[40px] font-bold text-sm">
-
-                رمزت رو فراموش کردی؟ <br></br>
+  return (
+    <div className="w-screen h-screen p-8 flex flex-col md:flex-row justify-center items-center bg-gradient-to-r from-[#18334F] to-[#3674B5]">
+        <div className={`flex-1 max-w-[600px] ${!ispic ? "w-0" : "w-full"} flex justify-center items-center relative`}>
+          <div className="flex flex-col justify-center items-center text-center w-full md:w-[80%] relative">  
+              <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4 text-[#D9D9D9]">
+                رمزت رو فراموش کردی؟ <br/>
                 برو لینکی که پیامک می‌شه رو دنبال کن 
-                </h1>
-                <div className="relative w-full">
-                    <input
-                        type="text"
-                        placeholder="تلفن‌همراه"
-                        value={phone}
-                        onChange={handleChangePhone}
-                        className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white  rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]
-                            ${isValidPhone === false
-                                ? "focus:ring-3 ring-red-500"
-                                : isValidPhone === true
-                                ? "focus:ring-3 ring-green-500"
-                                : "focus:ring-3 ring-gray-300"
-                            }`
-                        }
-                    />
-                    <img
-                        src={PhoneIcon}
-                        alt="image/svg+xml"
-                        className="w-6.5 h-6.5 pointer-events-none absolute left-3 top-8 transform -translate-y-1/2"
-                    />
-                    <button className="w-full transition duration-20 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-blue-600">
-                        <p className="text-white font-[vazirmatn] font-extralight">
-                         تایید و ادامه
-                        </p>
-                    </button>
-                </div>
-      
-            </div>
-        
-             {/* Left Side - SVG */}
-            <div className="flex w-screen ">
+              </div>
+              <div className="w-full rounded-2xl h-0.75 bg-blue-500 mx-auto mt-2 mb-6"></div>
+              <div className="relative w-full max-w-[400px]">
+                <input 
+                  type="tel" 
+                  placeholder=" تلفن‌همراه" 
+                  value={phone}
+                  onChange={handleChangePhone}
+                  className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]${isValidPhone === false
+                  ? "focus:ring-3 ring-red-500"
+                  : isValidPhone === true
+                  ? "focus:ring-3 ring-green-500"
+                  : "focus:ring-3 ring-gray-300"
+                  }`}
+                /> 
                 <object
-                    data={LadyPic}
-                    type="image/svg+xml" 
-                    className={`flex md:w-[500px] sm:w-[440px] pointer-events-none w-[330px] h-fit `}
+                data="/src/assets/phone.svg"
+                type="image/svg+xml"
+                className="w-6.5 h-6.5 pointer-events-none absolute left-3 top-1/2 transform -translate-y-1/2" 
                 />
-            </div>
-           
+              </div>
+
+              <button className="w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-blue-600">
+                <p className="text-white font-[vazirmatn] font-extralight">
+                  تایید و ادامه
+                </p>
+              </button>
+          </div>
         </div>
-            
+      <div className="flex-1 flex justify-center items-center mt-8 md:mt-0">
+        <object
+        data={LadyPic}
+        type="image/svg+xml" 
+        className="pointer-events-none w-full max-w-[880px] md:w-[480px] sm:w-[400px] md:flex sm:flex hidden" 
+      />
+      </div>
     </div>
-    );
-};
+  );
+}
 export default ForgetPassword;
