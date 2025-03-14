@@ -15,11 +15,6 @@ const AuthPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    dispatch(login());
-    navigate("/dashboard");
-  };
-
   const handleSignupClick = () => {
     setIsLogin(false);
     setBg("bg-gradient-to-r from-[#3A7D44] to-[#172533]");

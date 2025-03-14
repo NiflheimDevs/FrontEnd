@@ -1,9 +1,56 @@
 import React from "react";
 import {useState} from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {Login} from "../../API";
+import {useNotification} from "../../Notification/NotificationProvider";
+import {errorMapper} from "../../pages/Error/Error";
 
 const LoginForm = () => {
-
+  const dispatcher = useDispatch();
+  const navigate = useNavigate();
+  const { error: notifyError, success: notifySuccess } = useNotification();
   const [showPassword1, setShowPassword1] = useState(false);
+  const [Password, setPassword] = useState("");
+  const [Identifier, setIdentifier] = useState("");
+  const [isValidIdentifier, setIsValidIdentifier] = useState<boolean | null>(null); 
+  const [isValidPass, setIsValidPass] = useState<boolean | null>(null); 
+  
+  const handleLogin = async () => {
+    try {
+      await Login({
+        identifier: Identifier,
+        password: Password
+      });
+
+      notifySuccess(`ورود شما با موفقیت انجام شد`);
+    } 
+    catch (error) {
+        const errorData = error;
+        if (errorData.tag && errorData.errors?.length > 0) {
+            const allErrors = errorData.errors; 
+    
+            const errorMessages = allErrors.map((err) => errorMapper(err));
+    
+            notifyError(`${errorMessages.join(" ")}`);
+        } 
+        else {
+            notifyError(`${errorMapper(errorData)}`);
+        }
+    }
+    navigate("/dashboard");
+  };
+
+  const handleChangeIdentifier = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setIdentifier(value);
+  };
+
+  const handleChangePass = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPassword(value);
+  };
+
   return (
     <div className="md:w-full sm:w-8/10">
       <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4">ورود</div>
@@ -13,6 +60,8 @@ const LoginForm = () => {
         <input 
           type="email" 
           placeholder="نام کاربری / تلفن‌همراه" 
+          value={Identifier}
+          onChange={handleChangeIdentifier}
           className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]`}
         /> 
         <object
@@ -26,6 +75,8 @@ const LoginForm = () => {
         <input
           type={showPassword1 ? "text" : "password"} 
           placeholder="رمز عبور"
+          value={Password}
+          onChange={handleChangePass}
           className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]`}
         />
         <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2">

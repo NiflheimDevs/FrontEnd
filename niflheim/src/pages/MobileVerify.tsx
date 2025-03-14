@@ -46,34 +46,60 @@ const MobileVerify = () => {
     const minutes = Math.floor(timeLeft / 60); 
     const seconds = timeLeft % 60; 
 
+    const HandleVerify = async () => {
+        try {
+            await signupVerifyOTP({
+                code: token,
+                sessionid: SessionID?.toString() ?? ""
+            });
+
+            notifySuccess(`ورود شما با موفقیت انجام شد`);
+        } 
+        catch (error) {
+            const errorData = error;
+            if (errorData.tag && errorData.errors?.length > 0) {
+                const allErrors = errorData.errors; 
+        
+                const errorMessages = allErrors.map((err) => errorMapper(err));
+        
+                notifyError(`${errorMessages.join(" ")}`);
+            } 
+            else {
+                notifyError(`${errorMapper(errorData)}`);
+            }
+        }
+    }
+
     const handleTimeOut = async () => {
         try {
-        const response = await signupSendOTP({
-            phonenumber: Phone?.toString() ?? "",
-            username: Username?.toString() ?? "",
-            password: Password?.toString() ?? ""
-        });
+            const response = await signupSendOTP({
+                phonenumber: Phone?.toString() ?? "",
+                username: Username?.toString() ?? "",
+                password: Password?.toString() ?? ""
+            });
+            
+            const sessionData = {
+                SessionID: response,
+                Phone: Phone,
+                Password: Password,
+                Username: Username,
+            }
+            dispatcher(setSignUpSession(sessionData));
+            notifySuccess(`کد تایید به شماره ${Phone} ارسال شد`);
+            setTimeLeft(120);
+        } 
+        catch (error) {
+            const errorData = error;
+            if (errorData.tag && errorData.errors?.length > 0) {
+                const allErrors = errorData.errors; 
         
-    
-        const sessionData = {
-            SessionID: response,
-            Phone: Phone,
-            Password: Password,
-            Username: Username,
-        }
-        dispatcher(setSignUpSession(sessionData));
-        notifySuccess(`کد تایید به شماره ${Phone} ارسال شد`);
-        } catch (error) {
-        const errorData = error;
-        if (errorData.tag && errorData.errors?.length > 0) {
-            const allErrors = errorData.errors; 
-    
-            const errorMessages = allErrors.map((err) => errorMapper(err));
-    
-            notifyError(`${errorMessages.join(" ")}`);
-        } else {
-            notifyError(`${errorMapper(errorData)}`);
-        }
+                const errorMessages = allErrors.map((err) => errorMapper(err));
+        
+                notifyError(`${errorMessages.join(" ")}`);
+            } 
+            else {
+                notifyError(`${errorMapper(errorData)}`);
+            }
         }
     }
         
@@ -200,7 +226,7 @@ const MobileVerify = () => {
                             transition={{ duration: 0.6, ease: "easeInOut" }}
                             >
                             
-                            <button className="w-full cursor-pointer transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-green-600">
+                            <button className="w-full cursor-pointer transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-green-600" onClick={HandleVerify}>
                                 <p className="text-white w-80 font-[vazirmatn] font-extralight">
                                     ادامه
                                 </p>
