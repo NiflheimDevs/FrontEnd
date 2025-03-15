@@ -1,7 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Image, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { updateProfileField, setProfile } from "../../store/slices/profileSlice"; 
+import {
+  updateProfileField,
+  setProfile,
+} from "../../store/slices/profileSlice";
 import axios from "axios";
 import { RootState } from "../../store/store";
 import { useState } from "react";
@@ -9,12 +12,25 @@ import { useState } from "react";
 export default function ProfileForm() {
   const dispatch = useDispatch();
   const profile = useSelector((state: RootState) => state.profile);
-  const [loading, setLoading] = useState(false); 
-  const [error, setError] = useState<string | null>(null); 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const skills = [
-    "Django", "React", "Golang", "C#", "C++", "Python", "Java", "Node.js",
-    "TypeScript", "Flutter", "Swift", "Kotlin", "PHP", "Ruby on Rails", "Vue.js",
+    "Django",
+    "React",
+    "Golang",
+    "C#",
+    "C++",
+    "Python",
+    "Java",
+    "Node.js",
+    "TypeScript",
+    "Flutter",
+    "Swift",
+    "Kotlin",
+    "PHP",
+    "Ruby on Rails",
+    "Vue.js",
   ];
 
   const handleInputChange = (field: keyof ProfileState, value: any) => {
@@ -22,7 +38,10 @@ export default function ProfileForm() {
   };
 
   // Handle file input changes (profile picture and resume)
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: "profilePicture" | "resume") => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: "profilePicture" | "resume"
+  ) => {
     const file = e.target.files?.[0];
     if (file) {
       if (field === "profilePicture" && !file.type.startsWith("image/")) {
@@ -47,13 +66,18 @@ export default function ProfileForm() {
     formData.append("email", profile.email);
     formData.append("bio", profile.bio);
     formData.append("skills", JSON.stringify(profile.skills));
-    if (profile.profilePicture) formData.append("profilePicture", profile.profilePicture);
+    if (profile.profilePicture)
+      formData.append("profilePicture", profile.profilePicture);
     if (profile.resume) formData.append("resume", profile.resume);
 
     try {
-      const response = await axios.post("https://103.75.196.227:8080", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post(
+        "https://103.75.196.227:8080",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       console.log("Profile updated successfully:", response.data);
       // Optionally update Redux state with backend response
       dispatch(setProfile(response.data));
@@ -67,8 +91,8 @@ export default function ProfileForm() {
 
   return (
     <section className="p-4 md:p-6">
-      <h2 className="text-2xl font-bold mb-4 text-center">حساب کاربری</h2>
       <div className="bg-white pt-10 pr-4 pl-4 pb-7 md:pt-14 md:pr-25 md:pl-25 rounded shadow-md max-w-4xl mx-auto relative">
+        <h2 className="text-2xl font-bold mb-4 text-center">حساب کاربری</h2>
         <div className="border-t border-gray-300 w-full mb-4"></div>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -76,7 +100,9 @@ export default function ProfileForm() {
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="flex flex-col gap-4 flex-1 w-full">
             <div className="flex flex-col md:flex-row justify-start items-center gap-4">
-              <label className="font-semibold text-base text-gray-600 w-24">نام</label>
+              <label className="font-semibold text-base text-gray-600 w-24">
+                نام
+              </label>
               <input
                 type="text"
                 value={profile.firstName}
@@ -85,7 +111,9 @@ export default function ProfileForm() {
               />
             </div>
             <div className="flex flex-col md:flex-row justify-start items-center gap-4">
-              <label className="font-semibold text-base text-gray-600 w-24">نام خانوادگی</label>
+              <label className="font-semibold text-base text-gray-600 w-24">
+                نام خانوادگی
+              </label>
               <input
                 type="text"
                 value={profile.lastName}
@@ -112,13 +140,17 @@ export default function ProfileForm() {
                 <Image className="text-gray-500" size={36} />
               )}
             </label>
-            <span className="mt-2 font-semibold text-base text-gray-600">پروفایل</span>
+            <span className="mt-2 font-semibold text-base text-gray-600">
+              پروفایل
+            </span>
           </div>
         </div>
 
         <div className="space-y-4 mt-4">
           <div className="flex flex-col md:flex-row justify-start items-center gap-4">
-            <label className="font-semibold text-base text-gray-600 w-24">شماره تماس</label>
+            <label className="font-semibold text-base text-gray-600 w-24">
+              شماره تماس
+            </label>
             <input
               type="text"
               value={profile.phoneNumber}
@@ -128,7 +160,9 @@ export default function ProfileForm() {
             />
           </div>
           <div className="flex flex-col md:flex-row justify-start items-center gap-4">
-            <label className="font-semibold text-base text-gray-600 w-24">نام کاربری</label>
+            <label className="font-semibold text-base text-gray-600 w-24">
+              نام کاربری
+            </label>
             <input
               type="text"
               value={profile.username}
@@ -137,7 +171,9 @@ export default function ProfileForm() {
             />
           </div>
           <div className="flex flex-col md:flex-row justify-start items-center gap-4">
-            <label className="font-semibold text-base text-gray-600 w-24">ایمیل</label>
+            <label className="font-semibold text-base text-gray-600 w-24">
+              ایمیل
+            </label>
             <input
               type="email"
               value={profile.email}
@@ -147,7 +183,9 @@ export default function ProfileForm() {
             />
           </div>
           <div className="flex flex-col md:flex-row justify-start items-center gap-4">
-            <label className="font-semibold text-base text-gray-600 w-24">بیوگرافی</label>
+            <label className="font-semibold text-base text-gray-600 w-24">
+              بیوگرافی
+            </label>
             <textarea
               value={profile.bio}
               onChange={(e) => handleInputChange("bio", e.target.value)}
@@ -170,7 +208,9 @@ export default function ProfileForm() {
             </label>
           </div>
           <div className="flex flex-col md:flex-row justify-start items-center gap-4 mb-15">
-            <label className="font-semibold text-base text-gray-600 w-24">برچسب‌ها</label>
+            <label className="font-semibold text-base text-gray-600 w-24">
+              برچسب‌ها
+            </label>
             <select
               multiple
               value={profile.skills}

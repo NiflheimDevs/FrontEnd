@@ -11,7 +11,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen bg-[#F7F7F7]" dir="rtl">
+    <div className="flex h-fit bg-[#F7F7F7]" dir="rtl">
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main className="flex-1 flex flex-col pt-16 pr-4 md:pr-24">
         <Header toggleSidebar={toggleSidebar} />
