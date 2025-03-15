@@ -64,7 +64,7 @@ const ChangePassword = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
           transition={{ duration: 0.3 }}
-          className="w-screen h-screen p-8 gap-[10vw] flex flex-col sm:py-100 md:py-0 py-0 md:flex-row justify-center items-center bg-gradient-to-r from-[#18334F] to-[#3674B5]"
+          className="w-screen h-screen p-8 gap-[10vw] flex flex-col sm:py-100 md:py-0 py-0 md:flex-row justify-center items-center bg-gradient-to-r from-[#3674B5] to-[#18334F]"
         >
           {/* Form Container */}
         <motion.div
@@ -168,7 +168,7 @@ const ChangePassword = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
-            className="flex justify-center w-1/2 items-center mt-8 md:mt-0 md:ml-30"
+            className="flex justify-center w-1/2 items-center mt-8 md:mt-0 md:ml-15"
         >
             <object
               data={LadyPic}

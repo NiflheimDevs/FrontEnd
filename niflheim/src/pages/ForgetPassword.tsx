@@ -26,8 +26,8 @@ const ForgetPassword = () => {
     setIsValidPhone(validatePhone(value));
   };
    const handleCompleteClick = () => {
-      dispatcher(setMobileSession());
-      navigate('/verify');
+      // dispatcher(setMobileSession());
+      // navigate('/verify');
     };
 
   return (
@@ -116,7 +116,7 @@ const ForgetPassword = () => {
           />
         </motion.div>
       </motion.div>
-      </AnimatePresence>
+    </AnimatePresence>
   );
 };
 
