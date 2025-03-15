@@ -1,29 +1,23 @@
+import { useState } from "react";
+import Sidebar from "../Components/DashboardComp/Sidebar";
+import Header from "../Components/DashboardComp/Header";
+import ProfileForm from "../Components/DashboardComp/ProfileForm";
 import React from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logout } from "../store/slices/authSlice";
 
-const Dashboard = () => {
-  const dispatch = useDispatch();
+export default function Dashboard() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-gray-900 text-white">
-      <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
-      
-      <Link to="/profile">
-        <button className="bg-green-500 px-6 py-2 rounded-md hover:bg-green-600 transition">
-          Go to Profile
-        </button>
-      </Link>
-
-      <button
-        onClick={() => dispatch(logout())}
-        className="mt-4 bg-red-500 px-6 py-2 rounded-md hover:bg-red-600 transition"
-      >
-        Logout
-      </button>
+    <div className="flex h-screen bg-[#F7F7F7]" dir="rtl">
+      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <main className="flex-1 flex flex-col pt-16 pr-4 md:pr-24">
+        <Header toggleSidebar={toggleSidebar} />
+        <ProfileForm />
+      </main>
     </div>
   );
-};
-
-export default Dashboard;
+}

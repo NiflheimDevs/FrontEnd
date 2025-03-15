@@ -5,7 +5,6 @@ import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
 import Footer from "../Components/Footer/Footer";
 
-
 import AboutUs from "../pages/AboutUs";
 import Error from "../pages/Error/Error";
 import MobileVerify from "../pages/MobileVerify";
@@ -14,17 +13,27 @@ import ForgetPassword from "../pages/ForgetPassword";
 import ChangePassword from "../pages/ChangePassword";
 import React from "react";
 
+import CreateProject from "../pages/CreateProject/CreateProject";
+
 // Public routes (accessible by anyone)
 export const publicRoutes = [
   { path: "/auth", element: <AuthPage /> },
   { path: "/profile", element: <Profile /> },
   { path: "/footer", element: <Footer /> },
   { path: "/aboutUs", element: <AboutUs /> },
-  { path: "/verify", element: <MobileVerifyWrapper><MobileVerify /></MobileVerifyWrapper> },
+  {
+    path: "/verify",
+    element: (
+      <MobileVerifyWrapper>
+        <MobileVerify />
+      </MobileVerifyWrapper>
+    ),
+  },
   { path: "/error", element: <Error /> },
+  { path: "/dashboard", element: <Dashboard /> },
+  { path: "/createproject", element: <CreateProject /> },
   { path: "/forgetpassword", element: <ForgetPassword /> },
   { path: "/changepassword", element: <ChangePassword /> },
-
 ];
 
 // Private routes (require authentication)
