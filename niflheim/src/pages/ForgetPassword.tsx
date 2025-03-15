@@ -54,9 +54,10 @@ const ForgetPassword = () => {
             >
               <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4 text-[#D9D9D9]">
                 رمزت رو فراموش کردی؟ <br/>
-                برو لینکی که پیامک می‌شه رو دنبال کن 
+                شمارت رو وارد کن تا کمکت کنم
               </div>
               <div className="w-full rounded-2xl h-0.75 bg-blue-500 mx-auto mt-2 mb-6"></div>
+              
             </motion.div>
 
             <motion.div
@@ -84,15 +85,21 @@ const ForgetPassword = () => {
               
             </motion.div>
 
-
+            <motion.div
+                initial={{ y: +50 }}
+                animate={{ y: 0 }}
+                transition={{ type: 'spring' }}
+                className="relative w-full max-w-[400px]"
+            >
               <button className="w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-blue-600"
-              onClick={handleCompleteClick}>
+                onClick={handleCompleteClick}>
                 <p className="text-white font-[vazirmatn] font-extralight">
                   تایید و ادامه
                 </p>
               </button>
-
+            </motion.div>
           </div>
+            
         </motion.div>
 
         {/* Image Container */}
@@ -109,7 +116,7 @@ const ForgetPassword = () => {
           />
         </motion.div>
       </motion.div>
-    </AnimatePresence>
+      </AnimatePresence>
   );
 };
 
