@@ -13,6 +13,7 @@ import React from "react";
 
 import CreateProject from "../pages/CreateProject/CreateProject";
 import MyProjects from "../pages/MyProjects";
+import Biders from "../pages/Biders/Biders";
 
 // Public routes (accessible by anyone)
 export const publicRoutes = [
@@ -32,6 +33,7 @@ export const publicRoutes = [
   { path: "/dashboard", element: <Dashboard /> },
   { path: "/createproject", element: <CreateProject /> },
   { path: "/myprojects", element: <MyProjects /> },
+  { path: "/biders", element: <Biders /> },
 ];
 
 // Private routes (require authentication)
