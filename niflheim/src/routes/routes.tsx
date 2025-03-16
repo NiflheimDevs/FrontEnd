@@ -9,8 +9,11 @@ import AboutUs from "../pages/AboutUs";
 import Error from "../pages/Error/Error";
 import MobileVerify from "../pages/MobileVerify";
 import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
-import ForgetPassword from "../pages/ForgetPassword";
-import ChangePassword from "../pages/ChangePassword";
+import MobileVerifyWrapperForgetPass from "../wrapper/MobileVerifyWrapperForgetPass";
+import ForgetPassword from "../pages/ForgetPass/ForgetPassword";
+import ChangePassword from "../pages/ForgetPass/ChangePassword";
+import MobileVerifyforgetpass from "../pages/ForgetPass/MobileVerifyForgetPass";
+
 import React from "react";
 
 import CreateProject from "../pages/CreateProject/CreateProject";
@@ -38,6 +41,14 @@ export const publicRoutes = [
   { path: "/biders", element: <Biders /> },
   { path: "/forgetpassword", element: <ForgetPassword /> },
   { path: "/changepassword", element: <ChangePassword /> },
+  {
+    path: "/mobileverifyforgetpass",
+    element: (
+      <MobileVerifyWrapperForgetPass>
+        <MobileVerifyforgetpass />
+      </MobileVerifyWrapperForgetPass>
+    ),
+  },
 ];
 
 // Private routes (require authentication)

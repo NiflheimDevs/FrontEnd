@@ -43,7 +43,7 @@ const LoginForm = () => {
          to="/forgetpassword" 
          className="text-white font-[vazirmatn] font-thin transition duration-200 ease-in-out hover:underline"
         >
-         رمز عبور خود را فراموش کردید؟
+         &nbsp;رمز عبور خود را فراموش کردید؟
         </Link>
       </div>
       
