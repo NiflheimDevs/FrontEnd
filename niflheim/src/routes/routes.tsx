@@ -9,6 +9,8 @@ import AboutUs from "../pages/AboutUs";
 import Error from "../pages/Error/Error";
 import MobileVerify from "../pages/MobileVerify";
 import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
+import ForgetPassword from "../pages/ForgetPassword";
+import ChangePassword from "../pages/ChangePassword";
 import React from "react";
 
 import CreateProject from "../pages/CreateProject/CreateProject";
@@ -34,6 +36,8 @@ export const publicRoutes = [
   { path: "/createproject", element: <CreateProject /> },
   { path: "/myprojects", element: <MyProjects /> },
   { path: "/biders", element: <Biders /> },
+  { path: "/forgetpassword", element: <ForgetPassword /> },
+  { path: "/changepassword", element: <ChangePassword /> },
 ];
 
 // Private routes (require authentication)
