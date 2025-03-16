@@ -86,11 +86,9 @@ export default function ProfileForm() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log("Profile updated successfully:", response.data);
       dispatch(setProfile(response.data));
     } catch (err) {
       setError("خطایی در ارسال اطلاعات رخ داد. لطفاً دوباره تلاش کنید.");
-      console.error(err);
     } finally {
       setLoading(false);
     }
