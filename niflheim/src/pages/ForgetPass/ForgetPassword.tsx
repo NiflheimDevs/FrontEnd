@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from "framer-motion";
-import { setMobileSession } from "../store/slices/mobileVerifySlice";
+import { setMobileSession } from "../../store/slices/mobileVerifySlice";
 import PhoneIcon from '/src/assets/Phone.svg';
 import LadyPic from '/src/assets/ForgetPass.svg';
 
@@ -26,8 +26,8 @@ const ForgetPassword = () => {
     setIsValidPhone(validatePhone(value));
   };
    const handleCompleteClick = () => {
-      // dispatcher(setMobileSession());
-      // navigate('/verify');
+      dispatcher(setMobileSession());
+      navigate('/mobileverifyforgetpass');
     };
 
   return (
