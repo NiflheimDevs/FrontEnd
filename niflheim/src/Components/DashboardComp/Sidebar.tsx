@@ -19,11 +19,11 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
 
   return (
     <aside
-      className={`fixed top-16 right-0 rounded-tl-3xl rounded-bl-3xl h-[calc(100vh-4rem)] bg-[#D4D4D4] p-5 shadow-md transition-all duration-300 z-50
+      className={`fixed top-16 right-0 rounded-tl-3xl rounded-bl-3xl h-[calc(100vh-4rem)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-300 z-50
         ${
           isSidebarOpen ? "w-48" : "w-20"
-        } md:w-20 md:hover:w-48 group flex flex-col items-center
-        ${isSidebarOpen ? "block" : "hidden"} md:block`}
+        } sm:w-20 sm:hover:w-48 w-full group flex flex-col
+        ${isSidebarOpen ? "block" : "hidden"} sm:block`}
     >
       <nav className="flex flex-col justify-between h-full">
         {/* Top Section */}
@@ -33,16 +33,16 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
           >
             <img src={dashboard} alt="Dashboard" className="w-6 h-6" />
-            <span className="absolute right-14 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
+            <span className="absolute right-14 sm:opacity-0 sm:group-hover:opacity-100  transition-opacity duration-300 text-gray-800">
               داشبورد
             </span>
           </Link>
           <Link
-            to="/projects"
+            to="/myprojects"
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
           >
             <img src={projects} alt="Projects" className="w-6 h-6" />
-            <span className="absolute right-14 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
+            <span className="absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
               پروژه ها
             </span>
           </Link>
@@ -51,7 +51,7 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
           >
             <img src={Wallet} alt="Wallet" className="w-6 h-6" />
-            <span className="absolute right-14 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
+            <span className="absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
               کیف پول
             </span>
           </Link>
@@ -60,7 +60,7 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
           >
             <img src={profile} alt="Profile" className="w-6 h-6" />
-            <span className="absolute right-14 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
+            <span className="absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
               پروفایل
             </span>
           </Link>
@@ -69,7 +69,7 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
           >
             <img src={messages} alt="Messages" className="w-6 h-6" />
-            <span className="absolute right-14 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
+            <span className="absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
               پیام ها
             </span>
           </Link>
@@ -82,7 +82,7 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
           >
             <img src={settings} alt="Setting" className="w-6 h-6" />
-            <span className="absolute right-14 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
+            <span className="absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
               تنظیمات
             </span>
           </Link>
@@ -92,7 +92,7 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
           >
             <img src={exit} alt="exit" className="w-6 h-6" />
-            <span className="cursor-pointer absolute right-14 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
+            <span className="cursor-pointer absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800">
               خروج
             </span>
           </button>

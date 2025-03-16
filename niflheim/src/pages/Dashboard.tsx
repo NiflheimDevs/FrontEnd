@@ -2,6 +2,7 @@ import { useState } from "react";
 import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
 import ProfileForm from "../Components/DashboardComp/ProfileForm";
+import React from "react";
 
 export default function Dashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
