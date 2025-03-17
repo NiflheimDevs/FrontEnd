@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../store/slices/authSlice";
+import { signout } from "../store/slices/authSlice";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const Dashboard = () => {
       </Link>
 
       <button
-        onClick={() => dispatch(logout())}
+        onClick={() => dispatch(signout())}
         className="mt-4 bg-red-500 px-6 py-2 rounded-md hover:bg-red-600 transition"
       >
         Logout

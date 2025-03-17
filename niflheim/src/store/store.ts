@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
-import mobileVerifyReducer from "./slices/SignUpSlice";
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
-    mobileVerify: mobileVerifyReducer,
+    auth: authReducer
   },
 });
 

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import {signupSendOTP , signupVerifyOTP} from "../API";
 import {useNotification} from "../Notification/NotificationProvider";
-import { setSignUpSession } from "../store/slices/SignUpSlice";
+import { authenticate } from "../store/slices/authSlice";
 import {errorMapper} from "../pages/Error/Error";
         
 
@@ -18,10 +18,10 @@ const MobileVerify = () => {
     const [token, setTokens] = useState<string>("");
     const [timeLeft, setTimeLeft] = useState(120); 
     const [isScaled, setIsScaled] = useState(false);
-    const SessionID = useSelector((state: RootState) => state.mobileVerify.SessionID);
-    const Username = useSelector((state: RootState) => state.mobileVerify.Username);
-    const Password = useSelector((state: RootState) => state.mobileVerify.Password);
-    const Phone = useSelector((state: RootState) => state.mobileVerify.Phone);
+    const SessionID = useSelector((state: RootState) => state.auth.SessionID);
+    const Username = useSelector((state: RootState) => state.auth.Username);
+    const Password = useSelector((state: RootState) => state.auth.Password);
+    const Phone = useSelector((state: RootState) => state.auth.Phone);
 
     useEffect(() => {
         if (timeLeft === 0) return; 
@@ -84,7 +84,7 @@ const MobileVerify = () => {
                 Password: Password,
                 Username: Username,
             }
-            dispatcher(setSignUpSession(sessionData));
+            dispatcher(authenticate(sessionData));
             notifySuccess(`کد تایید به شماره ${Phone} ارسال شد`);
             setTimeLeft(120);
         } 

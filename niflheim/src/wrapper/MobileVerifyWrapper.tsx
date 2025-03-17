@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 export default function MobileVerifyWrapper({children}) {
-    const {mobileSession} = useSelector((state: any) => state.mobileVerify)
+    const {mobileSession} = useSelector((state: any) => state.mobileSession)
     const navigate = useNavigate();
 
     useEffect(()=>{
