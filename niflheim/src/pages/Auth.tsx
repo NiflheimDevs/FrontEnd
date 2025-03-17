@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { login } from "../store/slices/authSlice";
+import { authenticate } from "../store/slices/authSlice";
 import LoginForm from "../Components/Auth/LoginForm";
 import SignupForm from "../Components/Auth/SignupForm";
 import React from "react";
@@ -12,8 +12,6 @@ const AuthPage = () => {
   const [Bg, setBg] = useState("bg-gradient-to-l from-[#3674B5] to-[#18334F]");
   const [loginImg, setloginImg] = useState("");
   const [SignImg, setSignImg] = useState("hidden");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleSignupClick = () => {
     setIsLogin(false);

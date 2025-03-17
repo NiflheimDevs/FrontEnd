@@ -2,7 +2,7 @@ import React from "react";
 import {useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setSignUpSession } from "../../store/slices/SignUpSlice";
+import { authenticate } from "../../store/slices/authSlice";
 import {signupSendOTP} from "../../API";
 import {useNotification} from "../../Notification/NotificationProvider";
 import {errorMapper} from "../../pages/Error/Error";
@@ -38,7 +38,7 @@ const SignupForm = () => {
         Password: password,
         Username: username,
       }
-      dispatcher(setSignUpSession(sessionData));
+      dispatcher(authenticate(sessionData));
       notifySuccess(`کد تایید به شماره ${phone} ارسال شد`);
       navigate('/verify');
     } catch (error) {
