@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 // Base URL for your API (replace with your actual backend URL)
 const BASE_URL = "http://your-api-url.com/api";
@@ -146,5 +147,17 @@ const apiServices = {
   },
   
 };
+
+// ارسال داده به بک‌اند با استفاده از createAsyncThunk
+export const createProject = createAsyncThunk(
+  "project/createProject",
+  async (projectData: FormData, { rejectWithValue }) => {
+    try {
+      return await apiServices.createProject(projectData);
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
 export default apiServices;
