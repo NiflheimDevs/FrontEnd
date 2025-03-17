@@ -39,7 +39,7 @@ const ForgetPassword = () => {
         });
         const sessionData = {
           Phone: phone,
-          mobileSession : response
+          SessionID : response
         }
         notifySuccess(`کد تایید به شماره ${phone} ارسال شد`);
         dispatcher(authenticate(sessionData));
