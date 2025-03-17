@@ -3,9 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from "framer-motion";
 import LadyPic from '/src/assets/Changepass.svg';
+import React from "react";
+import {ChangePass} from "../../API";
+import {useNotification} from "../../Notification/NotificationProvider";
+import {errorMapper} from "../../pages/Error/Error";
 
 const ChangePassword = () => {
-
+    const { error: notifyError, success: notifySuccess } = useNotification();
     const [ispic, setIspic] = useState(true);
     const navigate = useNavigate();
     const dispatcher = useDispatch();
@@ -52,9 +56,25 @@ const ChangePassword = () => {
         setIsValidPassRepeat(validatePasswordRepeat(value));
       };
 
-     const handleCompleteClick = () => {
-    //    #dispatcher(setMobileSession());
-    //     navigate('#');
+     const handleCompleteClick = async () => {
+        try {
+            await ChangePass({
+              new_password: password
+            });            
+            notifySuccess(`رمز عبور شما با موفقیت تغییر کرد`);
+          } 
+          catch (error) {
+            const errorData = error;
+          if (errorData.tag && errorData.errors?.length > 0) {
+            const allErrors = errorData.errors; 
+            const errorMessages = allErrors.map((err) => errorMapper(err));
+            notifyError(`${errorMessages.join(" ")}`);
+          } 
+          else {
+            notifyError(`${errorMapper(errorData)}`);
+          }
+        }
+        navigate('/auth');
     };
 
     return (
@@ -79,19 +99,19 @@ const ChangePassword = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
             >
-            <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4 text-[#D9D9D9]">
-                    رمز جدیدت رو وارد  کن                
-            </div>
-                <div className="w-full rounded-2xl h-0.75 bg-blue-500 mx-auto mt-2 mb-6"></div>
+              <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4 text-[#D9D9D9]">
+                رمز جدیدت رو وارد  کن                
+              </div>
+              <div className="w-full rounded-2xl h-0.75 bg-blue-500 mx-auto mt-2 mb-6"></div>
             </motion.div>
   
-        {/* فیلد رمز عبور */}
-        <motion.div
+          {/* فیلد رمز عبور */}
+          <motion.div
             initial={{ x: -50 }}
             animate={{ x: 0 }}
             transition={{ type: 'spring' }}
             className="relative w-full max-w-[400px]"
-        >
+          >
             <div className="relative w-full">
                 <input
                     type={showPassword1 ? "text" : "password"} 
@@ -106,32 +126,28 @@ const ChangePassword = () => {
                         }`}
                 />
                 <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2">
-                    <object
-                        data={showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
-                        type="image/svg+xml"
-                        className="w-6.5 h-6.5 pointer-events-none"
-                />
-            </button>
-        </div>
-        
-        </motion.div>
-
-        
-    
-      {/* فیلد تکرار رمز عبور */}
-      <motion.div
+                  <object
+                    data={showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
+                    type="image/svg+xml"
+                    className="w-6.5 h-6.5 pointer-events-none"
+                  />
+                </button>
+            </div>
+          </motion.div>
+          {/* فیلد تکرار رمز عبور */}
+          <motion.div
             initial={{ x: +50 }}
             animate={{ x: 0 }}
             transition={{ type: 'spring' }}
             className="relative w-full max-w-[400px]"
-        >
-        <div className="relative w-full">
+          >
+          <div className="relative w-full">
             <input
-                type={showPassword2 ? "text" : "password"} 
-                placeholder="تکرار رمز عبور"
-                value={passwordRepeat}
-                onChange={handleChangePassRepeat}
-                className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]${isValidPassRepeat === false
+              type={showPassword2 ? "text" : "password"} 
+              placeholder="تکرار رمز عبور"
+              value={passwordRepeat}
+              onChange={handleChangePassRepeat}
+              className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]${isValidPassRepeat === false
                     ? "focus:ring-3 ring-red-500"
                     : isValidPassRepeat === true
                     ? "focus:ring-3 ring-green-500"
@@ -145,20 +161,21 @@ const ChangePassword = () => {
                     className="w-6.5 h-6.5 pointer-events-none"
                 />
             </button>
-        </div>
+          </div>
             </motion.div>
             <motion.div
-                initial={{ y: +50 }}
-                animate={{ y: 0 }}
-                transition={{ type: 'spring' }}
-                className="relative w-full max-w-[400px]"
+              initial={{ y: +50 }}
+              animate={{ y: 0 }}
+              transition={{ type: 'spring' }}
+              className="relative w-full max-w-[400px]"
             >
-                <button className="w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-blue-600"
-                    onClick={handleCompleteClick}>
-                    <p className="text-white font-[vazirmatn] font-extralight">
-                        تایید و ادامه
-                    </p>
-                </button>
+              <button className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3  ${!(isValidPassRepeat === true && isValidPass === true ) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
+                disabled={!(isValidPassRepeat === true && isValidPass === true ) ? true : false}
+                onClick={handleCompleteClick}>
+                <p className="text-white font-[vazirmatn] font-extralight">
+                  تایید و ادامه
+                </p>
+              </button>
             </motion.div>
         </div>
         </motion.div>
