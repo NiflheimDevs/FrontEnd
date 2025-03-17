@@ -78,8 +78,12 @@ const MobileVerifyforgetpass = () => {
                 code: token,
             });
 
+            const sessionData = {
+                SessionID: SessionID
+            }
+
             notifySuccess(`ورود شما با موفقیت انجام شد`);
-            ChangePassPermission();
+            ChangePassPermission(sessionData);
             navigate('/changepassword');
         } 
         catch (error) {

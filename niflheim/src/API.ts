@@ -83,6 +83,7 @@ export const Login = async (userData: {
 
 export const ChangePass = async (userData: {
   new_password: string;
+  old_password: string;
 }) => {
   try {
     const response = await apiClient.post("/change-password", userData);

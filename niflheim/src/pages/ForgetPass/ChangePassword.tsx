@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from "framer-motion";
 import LadyPic from '/src/assets/Changepass.svg';
 import React from "react";
-import {ChangePass} from "../../API";
+import {forgetPasswordReset} from "../../API";
 import {useNotification} from "../../Notification/NotificationProvider";
 import {errorMapper} from "../../pages/Error/Error";
+import { RootState } from "../../store/store";
 
 const ChangePassword = () => {
     const { error: notifyError, success: notifySuccess } = useNotification();
@@ -19,6 +20,7 @@ const ChangePassword = () => {
     const [isValidPassRepeat, setIsValidPassRepeat] = useState<boolean | null>(null); 
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
+    const SessionID = useSelector((state: RootState) => state.auth.SessionID);
     
 
     const validatePassword = (value) => {
@@ -58,8 +60,9 @@ const ChangePassword = () => {
 
      const handleCompleteClick = async () => {
         try {
-            await ChangePass({
-              new_password: password
+            await forgetPasswordReset({
+              new_password: password,
+              sessionid : SessionID?.toString() ?? "",
             });            
             notifySuccess(`رمز عبور شما با موفقیت تغییر کرد`);
           } 

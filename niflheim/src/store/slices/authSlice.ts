@@ -43,8 +43,9 @@ const authSlice = createSlice({
       state.Password = null;
       state.Username = null;
     },
-    ChangePassPermission: (state) => {
+    ChangePassPermission: (state, action) => {
       state.canChangePassword = true;
+      state.SessionID = action.payload.SessionID;
     }
   },
 });
