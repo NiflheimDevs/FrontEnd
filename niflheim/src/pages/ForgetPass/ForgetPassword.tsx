@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from "framer-motion";
-import { setMobileSession } from "../../store/slices/mobileVerifySlice";
+import { authenticate } from "../../store/slices/authSlice";
 import PhoneIcon from '/src/assets/Phone.svg';
 import LadyPic from '/src/assets/ForgetPass.svg';
+import React from "react";
+import { RootState } from "../../store/store";
+import {forgetPasswordSendOTP} from "../../API";
+import {errorMapper} from "../../pages/Error/Error";
+import {useNotification} from "../../Notification/NotificationProvider";
 
 const ForgetPassword = () => {
   const [phone, setPhone] = useState("");
   const [isValidPhone, setIsValidPhone] = useState<boolean | null>(null); 
+  const { error: notifyError, success: notifySuccess } = useNotification();
   const [ispic, setIspic] = useState(true);
   const navigate = useNavigate();
   const dispatcher = useDispatch();
@@ -25,9 +31,31 @@ const ForgetPassword = () => {
     setPhone(value);
     setIsValidPhone(validatePhone(value));
   };
-   const handleCompleteClick = () => {
-      dispatcher(setMobileSession());
-      navigate('/mobileverifyforgetpass');
+
+   const handleCompleteClick = async () => {
+      try {
+        const response = await forgetPasswordSendOTP({
+          phonenumber : phone
+        });
+        const sessionData = {
+          Phone: phone,
+          mobileSession : response
+        }
+        notifySuccess(`کد تایید به شماره ${phone} ارسال شد`);
+        dispatcher(authenticate(sessionData));
+        navigate('/mobileverifyforgetpass');
+      } 
+      catch (error) {
+        const errorData = error;
+        if (errorData.tag && errorData.errors?.length > 0) {
+          const allErrors = errorData.errors; 
+          const errorMessages = allErrors.map((err) => errorMapper(err));
+          notifyError(`${errorMessages.join(" ")}`);
+        } 
+        else {
+          notifyError(`${errorMapper(errorData)}`);
+        }
+      }
     };
 
   return (
@@ -91,7 +119,8 @@ const ForgetPassword = () => {
                 transition={{ type: 'spring' }}
                 className="relative w-full max-w-[400px]"
             >
-              <button className="w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-blue-600"
+              <button className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(isValidPhone === true) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
+                disabled={!(isValidPhone === true) ? true : false}
                 onClick={handleCompleteClick}>
                 <p className="text-white font-[vazirmatn] font-extralight">
                   تایید و ادامه

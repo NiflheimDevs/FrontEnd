@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { ChangePass } from "../../API";
 
 interface AuthState {
   isAuthenticated: boolean;
   mobileSession: boolean;
+  canChangePassword: boolean;
   SessionID: string | null;
   Phone: string | null;
   Password: string | null;
@@ -11,6 +13,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   isAuthenticated: false,
+  canChangePassword: false,
   mobileSession: false,
   SessionID: null,
   Phone: null,
@@ -25,6 +28,7 @@ const authSlice = createSlice({
     authenticate: (state, action) => {
       state.isAuthenticated = true;
       state.mobileSession = true;
+      state.canChangePassword = false;
       state.SessionID = action.payload.SessionID;
       state.Phone = action.payload.Phone;
       state.Password = action.payload.Password;
@@ -33,13 +37,17 @@ const authSlice = createSlice({
     signout: (state) => {
       state.isAuthenticated = false;
       state.mobileSession = false;
+      state.canChangePassword = false;
       state.SessionID = null;
       state.Phone = null;
       state.Password = null;
       state.Username = null;
     },
+    ChangePassPermission: (state) => {
+      state.canChangePassword = true;
+    }
   },
 });
 
-export const { authenticate, signout } = authSlice.actions;
+export const { authenticate, signout, ChangePassPermission } = authSlice.actions;
 export default authSlice.reducer;
