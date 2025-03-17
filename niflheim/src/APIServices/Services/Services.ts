@@ -144,6 +144,7 @@ const apiServices = {
     localStorage.removeItem("token");
     window.location.href = "/auth";
   },
+  
 };
 
 export default apiServices;

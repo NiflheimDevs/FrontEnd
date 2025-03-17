@@ -34,6 +34,7 @@ export const publicRoutes = [
       </MobileVerifyWrapper>
     ),
   },
+  
   { path: "/error", element: <Error /> },
   { path: "/dashboard", element: <Dashboard /> },
   { path: "/createproject", element: <CreateProject /> },
