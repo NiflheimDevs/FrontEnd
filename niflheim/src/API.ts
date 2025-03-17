@@ -81,8 +81,7 @@ export const Login = async (userData: {
   }
 };
 
-export const ChangePassword = async (userData: {
-  old_password: string;
+export const ChangePass = async (userData: {
   new_password: string;
 }) => {
   try {
