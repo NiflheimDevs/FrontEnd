@@ -1,13 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
-import mobileVerifyReducer from "./slices/mobileVerifySlice";
-import profileReducer from "./slices/profileSlice"; // Import the new slice
+import profileReducer from "./slices/profileSlice";
+import { profile } from "console";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    mobileVerify: mobileVerifyReducer,
-    profile: profileReducer, // Add profile reducer
+    profile: profileReducer
   },
 });
 

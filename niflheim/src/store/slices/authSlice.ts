@@ -1,34 +1,61 @@
-// slices/authSlice.ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { ChangePass } from "../../API";
 
 interface AuthState {
   isAuthenticated: boolean;
-  token: string | null;
-  user: any; // Adjust based on your user data
+  mobileSession: boolean;
+  canChangePassword: boolean;
+  SessionID: string | null;
+  Phone: string | null;
+  Password: string | null;
+  Username: string | null;
 }
 
 const initialState: AuthState = {
   isAuthenticated: false,
-  token: null,
-  user: null,
+  canChangePassword: false,
+  mobileSession: false,
+  SessionID: null,
+  Phone: null,
+  Password: null,
+  Username: null
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<{ token: string; user: any }>) => {
+    authenticate: (state, action) => {
       state.isAuthenticated = true;
-      state.token = action.payload.token;
-      state.user = action.payload.user;
+      state.mobileSession = true;
+      state.canChangePassword = false;
+      state.SessionID = action.payload.SessionID;
+      state.Phone = action.payload.Phone;
+      state.Password = action.payload.Password;
+      state.Username = action.payload.Username;
     },
-    logout: (state) => {
+    signout: (state) => {
       state.isAuthenticated = false;
-      state.token = null;
-      state.user = null;
+      state.mobileSession = false;
+      state.canChangePassword = false;
+      state.SessionID = null;
+      state.Phone = null;
+      state.Password = null;
+      state.Username = null;
     },
+    ChangePassPermission: (state, action) => {
+      state.mobileSession = false;
+      state.canChangePassword = true;
+      state.SessionID = action.payload.SessionID;
+    },
+    ChangePassSessions: (state, action) => {
+      state.mobileSession = true;
+      state.canChangePassword = false;
+      state.SessionID = action.payload.SessionID;
+      state.Phone = action.payload.Phone;
+    }
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { authenticate, signout, ChangePassPermission, ChangePassSessions } = authSlice.actions;
 export default authSlice.reducer;

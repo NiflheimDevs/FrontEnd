@@ -3,13 +3,25 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import React from "react";
 import OtpInput from 'react-otp-input';
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import {signupSendOTP , signupVerifyOTP} from "../API";
+import {useNotification} from "../Notification/NotificationProvider";
+import { authenticate } from "../store/slices/authSlice";
+import {errorMapper} from "../pages/Error/Error";
         
 
 const MobileVerify = () => {
+    const dispatcher = useDispatch();
     const navigate = useNavigate();
+    const { error: notifyError, success: notifySuccess } = useNotification();
     const [token, setTokens] = useState<string>("");
     const [timeLeft, setTimeLeft] = useState(120); 
     const [isScaled, setIsScaled] = useState(false);
+    const SessionID = useSelector((state: RootState) => state.auth.SessionID);
+    const Username = useSelector((state: RootState) => state.auth.Username);
+    const Password = useSelector((state: RootState) => state.auth.Password);
+    const Phone = useSelector((state: RootState) => state.auth.Phone);
 
     useEffect(() => {
         if (timeLeft === 0) return; 
@@ -34,8 +46,61 @@ const MobileVerify = () => {
     const minutes = Math.floor(timeLeft / 60); 
     const seconds = timeLeft % 60; 
 
-    const handleTimeOut = () => {
-        setTimeLeft(120)
+    const HandleVerify = async () => {
+        try {
+            await signupVerifyOTP({
+                code: token,
+                sessionid: SessionID?.toString() ?? ""
+            });
+
+            notifySuccess(`ورود شما با موفقیت انجام شد`);
+        } 
+        catch (error) {
+            const errorData = error;
+            if (errorData.tag && errorData.errors?.length > 0) {
+                const allErrors = errorData.errors; 
+        
+                const errorMessages = allErrors.map((err) => errorMapper(err));
+        
+                notifyError(`${errorMessages.join(" ")}`);
+            } 
+            else {
+                notifyError(`${errorMapper(errorData)}`);
+            }
+        }
+    }
+
+    const handleTimeOut = async () => {
+        try {
+            const response = await signupSendOTP({
+                phonenumber: Phone?.toString() ?? "",
+                username: Username?.toString() ?? "",
+                password: Password?.toString() ?? ""
+            });
+            
+            const sessionData = {
+                SessionID: response,
+                Phone: Phone,
+                Password: Password,
+                Username: Username,
+            }
+            dispatcher(authenticate(sessionData));
+            notifySuccess(`کد تایید به شماره ${Phone} ارسال شد`);
+            setTimeLeft(120);
+        } 
+        catch (error) {
+            const errorData = error;
+            if (errorData.tag && errorData.errors?.length > 0) {
+                const allErrors = errorData.errors; 
+        
+                const errorMessages = allErrors.map((err) => errorMapper(err));
+        
+                notifyError(`${errorMessages.join(" ")}`);
+            } 
+            else {
+                notifyError(`${errorMapper(errorData)}`);
+            }
+        }
     }
         
     return (
@@ -50,7 +115,7 @@ const MobileVerify = () => {
                             transition={{ duration: 0.6, ease: "easeInOut" }}
                             >
                             <object
-                                data="/src/assets/Otp.svg"
+                                data="/src/assets/Otp_G.svg"
                                 type="image/svg+xml"
                                 className={`md:w-[540px] sm:w-[400px] pointer-events-none w-[330px] h-fit`}
                             />
@@ -74,7 +139,7 @@ const MobileVerify = () => {
                                 numInputs={5}
                                 containerStyle={"w-full md:mt-5 sm:mt-5 mt-7 justify-center items-center flex"}
                                 inputType="tel"
-                                inputStyle={"flex md:h-[43px] sm:h-[46px] h-[30px] md:scale-135 sm:scale-135 scale-200 font-[vazirmatn] font-normal md:text-[33px] sm:text-[33px] text-[24px] text-black text-center bg-gray-300 rounded-[18px] border-2 border-gray-300 transition-all ease-in-out duration-300 shadow-md focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg md:mx-[15px] sm:mx-[15px] mx-[17px]"}
+                                inputStyle={"flex md:h-[39px] sm:h-[39px] h-[30px] md:scale-139 sm:scale-135 scale-200 font-[vazirmatn] font-normal md:text-[28px] sm:text-[28px] text-[24px] text-black text-center bg-gray-300 rounded-[18px] border-2 border-gray-300 transition-all ease-in-out duration-300 shadow-md focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg md:mx-[15px] sm:mx-[15px] mx-[17px]"}
                                 renderInput={(props) => <input {...props} />}
                             />
                         </motion.div>
@@ -161,7 +226,9 @@ const MobileVerify = () => {
                             transition={{ duration: 0.6, ease: "easeInOut" }}
                             >
                             
-                            <button className="w-full cursor-pointer transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-green-600">
+                            <button className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(token.length === 5) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
+                                disabled={!(token.length === 5) ? true : false} 
+                                onClick={HandleVerify}>
                                 <p className="text-white w-80 font-[vazirmatn] font-extralight">
                                     ادامه
                                 </p>

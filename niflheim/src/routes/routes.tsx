@@ -16,9 +16,11 @@ import MobileVerifyforgetpass from "../pages/ForgetPass/MobileVerifyForgetPass";
 
 import React from "react";
 
+
 import CreateProject from "../pages/CreateProject/CreateProject";
 import MyProjects from "../pages/MyProjects";
 import Biders from "../pages/Biders/Biders";
+
 
 // Public routes (accessible by anyone)
 export const publicRoutes = [
@@ -42,14 +44,8 @@ export const publicRoutes = [
   { path: "/biders", element: <Biders /> },
   { path: "/forgetpassword", element: <ForgetPassword /> },
   { path: "/changepassword", element: <ChangePassword /> },
-  {
-    path: "/mobileverifyforgetpass",
-    element: (
-      <MobileVerifyWrapperForgetPass>
-        <MobileVerifyforgetpass />
-      </MobileVerifyWrapperForgetPass>
-    ),
-  },
+  { path: "/mobileverifyforgetpass", element: <MobileVerifyWrapperForgetPass><MobileVerifyforgetpass /></MobileVerifyWrapperForgetPass> }
+
 ];
 
 // Private routes (require authentication)

@@ -3,14 +3,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import OtpInput from 'react-otp-input';
 import React from "react";
+import {forgetPasswordSendOTP , forgetPasswordVerifyOTP} from "../../API";
+import {errorMapper} from "../../pages/Error/Error";
+import {useNotification} from "../../Notification/NotificationProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { ChangePassSessions,ChangePassPermission } from "../../store/slices/authSlice";
 
         
 
 const MobileVerifyforgetpass = () => {
     const navigate = useNavigate();
+    const dispatcher = useDispatch();
     const [token, setTokens] = useState<string>("");
     const [timeLeft, setTimeLeft] = useState(120); 
     const [isScaled, setIsScaled] = useState(false);
+    const SessionID = useSelector((state: RootState) => state.auth.SessionID);
+    const Phone = useSelector((state: RootState) => state.auth.Phone);
+    const { error: notifyError, success: notifySuccess } = useNotification();
 
     useEffect(() => {
         if (timeLeft === 0) return; 
@@ -35,13 +45,61 @@ const MobileVerifyforgetpass = () => {
     const minutes = Math.floor(timeLeft / 60); 
     const seconds = timeLeft % 60; 
 
-    const handleTimeOut = () => {
-        setTimeLeft(120)
-    }
-    const handleCompleteClick = () => {
-         
-         navigate('/changepassword');
-      };
+    const handleTimeOut = async () => {
+        try {
+            const response = await forgetPasswordSendOTP({
+                phonenumber: Phone?.toString() ?? ""
+            });            
+            const sessionData = {
+                SessionID: response,
+                Phone: Phone
+            }
+            dispatcher(ChangePassSessions(sessionData));
+            notifySuccess(`کد تایید به شماره ${Phone} ارسال شد`);
+            setTimeLeft(120);
+        } 
+        catch (error) {
+            const errorData = error;
+            if (errorData.tag && errorData.errors?.length > 0) {
+                const allErrors = errorData.errors; 
+            
+                const errorMessages = allErrors.map((err) => errorMapper(err));
+            
+                notifyError(`${errorMessages.join(" ")}`);
+            } 
+            else {
+                notifyError(`${errorMapper(errorData)}`);
+            }
+        }
+    };
+    const handleCompleteClick = async () => {
+        try {
+            const response = await forgetPasswordVerifyOTP({
+                sessionid: SessionID?.toString() ?? "",
+                code: token,
+            });
+            const sessionData = {
+                SessionID: response
+            }
+
+            notifySuccess(`ورود شما با موفقیت انجام شد`);
+            dispatcher(ChangePassPermission(sessionData));
+            navigate('/changepassword');
+        } 
+        catch (error) {
+            const errorData = error;
+            if (errorData.tag && errorData.errors?.length > 0) {
+                const allErrors = errorData.errors; 
+        
+                const errorMessages = allErrors.map((err) => errorMapper(err));
+        
+                notifyError(`${errorMessages.join(" ")}`);
+            } 
+            else {
+                notifyError(`${errorMapper(errorData)}`);
+            }
+        }
+    };
         
     return (
         <div className="flex h-screen w-full text-white flex-col bg-gradient-to-r from-[#18334F] to-[#3674B5] justify-center items-center overflow-hidden">
@@ -55,7 +113,7 @@ const MobileVerifyforgetpass = () => {
                             transition={{ duration: 0.6, ease: "easeInOut" }}
                             >
                             <object
-                                data="/src/assets/Otp.svg"
+                                data="/src/assets/Otp_B.svg"
                                 type="image/svg+xml"
                                 className={`md:w-[540px] sm:w-[400px] pointer-events-none w-[330px] h-fit`}
                             />
@@ -146,7 +204,7 @@ const MobileVerifyforgetpass = () => {
                                 <button className={`cursor-pointer w-fit h-fit hover:scale-115 transition-all duration-200 ease-in-out ${isScaled ? "scale-110" : "scale-100"}`}
                                     onClick={handleTimeOut}>
                                     <object
-                                    data="/src/assets/Clock_G.svg"
+                                    data="/src/assets/Clock_B.svg"
                                     type="image/svg+xml"
                                     className="w-6.5 h-6.5 pointer-events-none flex transform origin-center"
                                     />
@@ -166,7 +224,8 @@ const MobileVerifyforgetpass = () => {
                             transition={{ duration: 0.6, ease: "easeInOut" }}
                             >
                             
-                            <button className="w-full cursor-pointer transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-green-600"
+                            <button className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(token.length === 5) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
+                                disabled={!(token.length === 5) ? true : false}
                                 onClick={handleCompleteClick}>
                                 <p className="text-white w-80 font-[vazirmatn] font-extralight">
                                     ادامه
@@ -180,3 +239,7 @@ const MobileVerifyforgetpass = () => {
 };
 
 export default MobileVerifyforgetpass;
+function dispatcher(arg0: any) {
+    throw new Error("Function not implemented.");
+}
+

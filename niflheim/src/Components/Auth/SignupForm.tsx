@@ -2,14 +2,15 @@ import React from "react";
 import {useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setMobileSession } from "../../store/slices/mobileVerifySlice";
-
+import { authenticate } from "../../store/slices/authSlice";
+import {signupSendOTP} from "../../API";
+import {useNotification} from "../../Notification/NotificationProvider";
+import {errorMapper} from "../../pages/Error/Error";
 
 const SignupForm = () => {
   const navigate = useNavigate();
-
+  const { error: notifyError, success: notifySuccess } = useNotification();
   const [showPassword1, setShowPassword1] = useState(false);
-  
   const [showPassword2, setShowPassword2] = useState(false);
 
   const [isValidUser, setIsValidUser] = useState<boolean | null>(null); 
@@ -23,23 +24,43 @@ const SignupForm = () => {
 
   const dispatcher = useDispatch();
   
-  const handleSignupClick = () => {
-    dispatcher(setMobileSession());
-    navigate('/verify');
+  const handleSignupClick = async () => {
+    try {
+      const response = await signupSendOTP({
+        phonenumber: phone,
+        username: username,
+        password: password,
+      });      
+
+      const sessionData = {
+        SessionID: response,
+        Phone: phone,
+        Password: password,
+        Username: username,
+      }
+      dispatcher(authenticate(sessionData));
+      notifySuccess(`کد تایید به شماره ${phone} ارسال شد`);
+      navigate('/verify');
+    } catch (error) {
+      const errorData = error;
+      if (errorData.tag && errorData.errors?.length > 0) {
+        const allErrors = errorData.errors; 
+  
+        const errorMessages = allErrors.map((err) => errorMapper(err));
+  
+        notifyError(`${errorMessages.join(" ")}`);
+      } else {
+        notifyError(`${errorMapper(errorData)}`);
+      }
+    }
   };
 
   const validateUsername = (value) => {
     if (!value) {
+      return null;
+    } else if (value.length < 2) {
       return false;
-    } else if (value.length < 8) {
-      return false;
-    } else if (value.length > 16) {
-      return false;
-    }  else if (!/\d/.test(value)) {
-      return false;
-    } else if (!/[A-Z]/.test(value)) {
-      return false;
-    } else if (!/[a-z]/.test(value)) {
+    } else if (value.length > 32) {
       return false;
     } else {
       return true;
@@ -47,8 +68,14 @@ const SignupForm = () => {
   };
   
   const validatePassword = (value) => {
+    if (value === passwordRepeat) {
+      setIsValidPassRepeat(true);
+    } else if (value != passwordRepeat) {
+      setIsValidPassRepeat(false);
+    }
+
     if (!value) {
-      return false;
+      return null;
     } else if (value.length < 8) {
       return false;
     } else if (!/\d/.test(value)) {
@@ -63,7 +90,9 @@ const SignupForm = () => {
   };
 
   const validatePasswordRepeat = (value) => {
-    if (value != password) {
+    if (!value) {
+      return null;
+    } else if (value != password) {
       return false;
     } else {
       return true;
@@ -72,7 +101,7 @@ const SignupForm = () => {
 
   const validatePhone = (value) => {
     if (!value) {
-      return false;
+      return null;
     } else if (!/^09[0-9]{9}$/.test(value)) {
       return false;
     } else {
@@ -200,8 +229,9 @@ const SignupForm = () => {
       </div>
 
       {/* دکمه تایید و ادامه */}
-      <button className="w-full cursor-pointer transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 hover:bg-green-600"
-        onClick={handleSignupClick}>
+      <button className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(isValidPassRepeat === true && isValidPass === true && isValidPhone === true && isValidUser === true) ? "opacity-60" : "hover:bg-green-600 cursor-pointer "}`}
+        onClick={handleSignupClick}
+        disabled={!(isValidPassRepeat === true && isValidPass === true && isValidPhone === true && isValidUser === true) ? true : false}>
         <p className="text-white font-[vazirmatn] font-extralight">
           تایید و ادامه
         </p>
