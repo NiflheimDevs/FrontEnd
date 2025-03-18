@@ -44,11 +44,18 @@ const authSlice = createSlice({
       state.Username = null;
     },
     ChangePassPermission: (state, action) => {
+      state.mobileSession = false;
       state.canChangePassword = true;
       state.SessionID = action.payload.SessionID;
+    },
+    ChangePassSessions: (state, action) => {
+      state.mobileSession = true;
+      state.canChangePassword = false;
+      state.SessionID = action.payload.SessionID;
+      state.Phone = action.payload.Phone;
     }
   },
 });
 
-export const { authenticate, signout, ChangePassPermission } = authSlice.actions;
+export const { authenticate, signout, ChangePassPermission, ChangePassSessions } = authSlice.actions;
 export default authSlice.reducer;

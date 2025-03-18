@@ -23,8 +23,8 @@ const LoginForm = () => {
         identifier: Identifier,
         password: Password
       });
-
       notifySuccess(`ورود شما با موفقیت انجام شد`);
+      navigate("/dashboard");
     } 
     catch (error) {
         const errorData = error;
@@ -39,7 +39,6 @@ const LoginForm = () => {
             notifyError(`${errorMapper(errorData)}`);
         }
     }
-    navigate("/dashboard");
   };
 
   const handleChangeIdentifier = (e: React.ChangeEvent<HTMLInputElement>) => {

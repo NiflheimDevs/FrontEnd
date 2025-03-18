@@ -6,14 +6,15 @@ import React from "react";
 import {forgetPasswordSendOTP , forgetPasswordVerifyOTP} from "../../API";
 import {errorMapper} from "../../pages/Error/Error";
 import {useNotification} from "../../Notification/NotificationProvider";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { authenticate,ChangePassPermission } from "../../store/slices/authSlice";
+import { ChangePassSessions,ChangePassPermission } from "../../store/slices/authSlice";
 
         
 
 const MobileVerifyforgetpass = () => {
     const navigate = useNavigate();
+    const dispatcher = useDispatch();
     const [token, setTokens] = useState<string>("");
     const [timeLeft, setTimeLeft] = useState(120); 
     const [isScaled, setIsScaled] = useState(false);
@@ -53,7 +54,7 @@ const MobileVerifyforgetpass = () => {
                 SessionID: response,
                 Phone: Phone
             }
-            dispatcher(authenticate(sessionData));
+            dispatcher(ChangePassSessions(sessionData));
             notifySuccess(`کد تایید به شماره ${Phone} ارسال شد`);
             setTimeLeft(120);
         } 
@@ -73,17 +74,16 @@ const MobileVerifyforgetpass = () => {
     };
     const handleCompleteClick = async () => {
         try {
-            await forgetPasswordVerifyOTP({
+            const response = await forgetPasswordVerifyOTP({
                 sessionid: SessionID?.toString() ?? "",
                 code: token,
             });
-
             const sessionData = {
-                SessionID: SessionID
+                SessionID: response
             }
 
             notifySuccess(`ورود شما با موفقیت انجام شد`);
-            ChangePassPermission(sessionData);
+            dispatcher(ChangePassPermission(sessionData));
             navigate('/changepassword');
         } 
         catch (error) {

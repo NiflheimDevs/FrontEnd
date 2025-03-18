@@ -65,6 +65,7 @@ const ChangePassword = () => {
               sessionid : SessionID?.toString() ?? "",
             });            
             notifySuccess(`رمز عبور شما با موفقیت تغییر کرد`);
+            navigate('/auth');
           } 
           catch (error) {
             const errorData = error;
@@ -77,7 +78,6 @@ const ChangePassword = () => {
             notifyError(`${errorMapper(errorData)}`);
           }
         }
-        navigate('/auth');
     };
 
     return (

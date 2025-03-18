@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from "framer-motion";
-import { authenticate } from "../../store/slices/authSlice";
+import { ChangePassSessions } from "../../store/slices/authSlice";
 import PhoneIcon from '/src/assets/Phone.svg';
 import LadyPic from '/src/assets/ForgetPass.svg';
 import React from "react";
@@ -42,7 +42,7 @@ const ForgetPassword = () => {
           SessionID : response
         }
         notifySuccess(`کد تایید به شماره ${phone} ارسال شد`);
-        dispatcher(authenticate(sessionData));
+        dispatcher(ChangePassSessions(sessionData));
         navigate('/mobileverifyforgetpass');
       } 
       catch (error) {
