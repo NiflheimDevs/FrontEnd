@@ -9,8 +9,7 @@ import axios from "axios";
 import { RootState } from "../../store/store";
 import { useState } from "react";
 import React from "react";
-import apiServices from "../../APIServices/Services/Services"
-
+import apiServices from "../../APIServices/Services/Services";
 export default function ProfileForm() {
   const dispatch = useDispatch();
   const profile = useSelector((state: RootState) => state.profile);
@@ -79,15 +78,13 @@ export default function ProfileForm() {
       formData.append("profilePicture", profile.profilePicture);
     if (profile.resume) formData.append("resume", profile.resume);
 
-    try{
+    try {
       const response = await apiServices.updateProfile(formData);
       dispatch(setProfile(response.data));
-      
-    }
-    catch(err){
+    } catch (err) {
       setError("خطایی در ارسال اطلاعات رخ داد. لطفاً دوباره تلاش کنید.");
-    }
-    finally{
+      console.log(err);
+    } finally {
       setLoading(false);
     }
   };

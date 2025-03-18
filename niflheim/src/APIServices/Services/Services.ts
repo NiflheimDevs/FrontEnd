@@ -1,54 +1,99 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
+import { jwtDecode } from "jwt-decode";
 
-// Base URL for your API (replace with your actual backend URL)
-const BASE_URL = "http://your-api-url.com/api";
+// Base URL for your API (use environment variable in production)
+const BASE_URL = "https://103.75.196.227:8080";
+
+// Interface for JWT token payload (for type safety)
+interface TokenPayload {
+  exp: number;
+}
 
 // Create an Axios instance
 const api: AxiosInstance = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000, // 10 seconds timeout
+  timeout: 10000, 
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Add a request interceptor to include the JWT token in headers
+// Check if token is expired (with a 60-second buffer)
+const isTokenExpired = (token: string): boolean => {
+  try {
+    const { exp } = jwtDecode<TokenPayload>(token);
+    const currentTime = Math.floor(Date.now() / 1000);
+    return exp - currentTime <= 60; // Refresh if expiring within 60 seconds
+  } catch (error) {
+    console.error("Invalid token:", error);
+    return true; // Assume expired if decoding fails
+  }
+};
+
+// Refresh token logic
+const refreshToken = async (): Promise<string | null> => {
+  const token = localStorage.getItem("token");
+  const refreshTokenValue = localStorage.getItem("refreshToken"); // Assuming you store a refresh token
+  if (!token || !refreshTokenValue) return null;
+
+  if (isTokenExpired(token)) {
+    try {
+      const response = await axios.post(`${BASE_URL}/auth/token/refresh`, {
+        refresh: refreshTokenValue,
+      });
+      const newToken = response.data.token;
+      localStorage.setItem("token", newToken);
+      return newToken;
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      window.location.href = "/auth"; // Redirect to login
+      return null;
+    }
+  }
+  return token;
+};
+
+// Request interceptor to attach token and refresh if needed
 api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
+  async (config) => {
+    let token = localStorage.getItem("token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      token = await refreshToken(); // Refresh if expired
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
-  (error: AxiosError) => {
-    return Promise.reject(error);
-  }
+  (error: AxiosError) => Promise.reject(error)
 );
 
-// Add a response interceptor to handle errors globally
+// Response interceptor for global error handling
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      // Unauthorized: Token might be expired or invalid
       localStorage.removeItem("token");
-      window.location.href = "/auth"; // Redirect to login page
+      localStorage.removeItem("refreshToken");
+      window.location.href = "/auth"; // Redirect to login
     }
     return Promise.reject(error);
   }
 );
 
-// Define the API service object
+// API service object
 const apiServices = {
   // Login API
   async login(email: string, password: string): Promise<any> {
     try {
       const response = await api.post("/auth/login", { email, password });
-      const { token } = response.data;
-      localStorage.setItem("token", token); // Store token in localStorage
+      const { token, refreshToken } = response.data; // Assuming refresh token is returned
+      localStorage.setItem("token", token);
+      if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       throw error.response?.data || "Login failed";
     }
   },
@@ -56,25 +101,22 @@ const apiServices = {
   // Signup API
   async signup(email: string, password: string, phone: string): Promise<any> {
     try {
-      const response = await api.post("/auth/signup", {
-        email,
-        password,
-        phone,
-      });
-      const { token } = response.data;
+      const response = await api.post("/auth/signup", { email, password, phone });
+      const { token, refreshToken } = response.data;
       localStorage.setItem("token", token);
+      if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       throw error.response?.data || "Signup failed";
     }
   },
 
-  // Forgot Password API (Send phone number to get OTP)
+  // Forgot Password API
   async forgotPassword(phone: string): Promise<any> {
     try {
       const response = await api.post("/auth/forgot-password", { phone });
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       throw error.response?.data || "Failed to send OTP";
     }
   },
@@ -84,7 +126,7 @@ const apiServices = {
     try {
       const response = await api.post("/auth/verify-otp", { phone, otp });
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       throw error.response?.data || "OTP verification failed";
     }
   },
@@ -94,37 +136,41 @@ const apiServices = {
     try {
       const response = await api.post("/auth/change-password", { newPassword });
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       throw error.response?.data || "Password change failed";
     }
   },
 
-  // Get User Profile API
-  async getProfile(): Promise<any> {
+  // Get User Profile API (with optional query params)
+  async getProfile(params?: Record<string, string>): Promise<any> {
     try {
-      const response = await api.get("/user/profile");
+      const response = await api.get("/user/profile", { params });
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       throw error.response?.data || "Failed to fetch profile";
     }
   },
 
-  // Update User Profile API
-  async updateProfile(data: any): Promise<any> {
+  // Update User Profile API (supports FormData for file uploads)
+  async updateProfile(data: FormData): Promise<any> {
     try {
-      const response = await api.put("/user/profile", data);
+      const response = await api.put("/user/profile", data, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set for file uploads
+        },
+      });
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       throw error.response?.data || "Failed to update profile";
     }
   },
 
-  // Get Projects API
-  async getProjects(): Promise<any> {
+  // Get Projects API (with optional query params)
+  async getProjects(params?: Record<string, string>): Promise<any> {
     try {
-      const response = await api.get("/projects");
+      const response = await api.get("/projects", { params });
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       throw error.response?.data || "Failed to fetch projects";
     }
   },
@@ -134,17 +180,62 @@ const apiServices = {
     try {
       const response = await api.post("/projects", { title, description });
       return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
       throw error.response?.data || "Failed to create project";
     }
   },
 
-  // Logout (optional: clear token and redirect)
+  // Logout
   logout(): void {
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     window.location.href = "/auth";
   },
-  
 };
 
 export default apiServices;
+
+
+
+
+// // async post(url : string , data:any,headers?:any) : Promise<any>{
+// //   try{
+// //     const response = await api.post(url,data,{headers});
+// //     return response;
+// //   }catch (error:any){
+// //     throw error.response?.data || `POST request to ${url} failed`;
+// //   }
+// // },
+
+// // async get(url:string , params?:any):Promise<any>{
+// //   try{
+// //     const response = await api.put(url,{params});
+// //     return response;
+// //   }catch(error:any){
+// //     throw error.response?.data || `GET request to ${url} failed`;
+// //   }
+// // },
+
+// // async put(url:string,data:any,headers?:any):Promise<any>{
+// //   try{
+// //     const response = await api.put(url,data,{headers});
+// //     return response;
+// //   }catch(error:any){
+// //     throw error.response?.data || `PUT request to ${url} failed`;
+// //   }
+// // },
+
+
+// // async delete(url:string,):Promise<any>{
+// //   try{
+// //     const response = await api.delete(url);
+// //     return response;
+// //   }catch(error:any){
+// //     throw error.response?.data || `PUT request to ${url} failed`;
+// //   }
+// // },
+
+// // logout():void{
+// //   localStorage.removeItem("token");
+// //   window.location.href = "/auth"
+// // }
