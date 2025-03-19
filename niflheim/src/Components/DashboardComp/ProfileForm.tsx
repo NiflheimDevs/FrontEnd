@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Image, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { updateProfileField, setProfile } from "../../store/slices/profileSlice";
+import {
+  updateProfileField,
+  setProfile,
+} from "../../store/slices/profileSlice";
 import axios from "axios";
 import { RootState } from "../../store/store";
 import { useState } from "react";
 import React from "react";
-
+import apiServices from "../../APIServices/Services/Services";
 export default function ProfileForm() {
   const dispatch = useDispatch();
   const profile = useSelector((state: RootState) => state.profile);
@@ -16,15 +19,32 @@ export default function ProfileForm() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const skills = [
-    "Django", "React", "Golang", "C#", "C++", "Python", "Java", "Node.js",
-    "TypeScript", "Flutter", "Swift", "Kotlin", "PHP", "Ruby on Rails", "Vue.js",
+    "Django",
+    "React",
+    "Golang",
+    "C#",
+    "C++",
+    "Python",
+    "Java",
+    "Node.js",
+    "TypeScript",
+    "Flutter",
+    "Swift",
+    "Kotlin",
+    "PHP",
+    "Ruby on Rails",
+    "Vue.js",
   ];
 
   const handleInputChange = (field: keyof ProfileState, value: any) => {
     dispatch(updateProfileField({ field, value }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, field: "profilePicture" | "resume") => {
+  // Handle file input changes (profile picture and resume)
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: "profilePicture" | "resume"
+  ) => {
     const file = e.target.files?.[0];
     if (file) {
       if (field === "profilePicture" && !file.type.startsWith("image/")) {
@@ -40,7 +60,7 @@ export default function ProfileForm() {
   const handleRemoveResume = () => {
     dispatch(updateProfileField({ field: "resume", value: null }));
     setResumeName(null);
-  };  
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -54,18 +74,16 @@ export default function ProfileForm() {
     formData.append("email", profile.email);
     formData.append("bio", profile.bio);
     formData.append("skills", JSON.stringify(profile.skills));
-    if (profile.profilePicture) formData.append("profilePicture", profile.profilePicture);
+    if (profile.profilePicture)
+      formData.append("profilePicture", profile.profilePicture);
     if (profile.resume) formData.append("resume", profile.resume);
 
     try {
-      const response = await axios.post("https://103.75.196.227:8080", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      console.log("Profile updated successfully:", response.data);
+      const response = await apiServices.updateProfile(formData);
       dispatch(setProfile(response.data));
     } catch (err) {
       setError("خطایی در ارسال اطلاعات رخ داد. لطفاً دوباره تلاش کنید.");
-      console.error(err);
+      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -75,7 +93,7 @@ export default function ProfileForm() {
     <>
       <div
         className="fixed inset-0 bg-[#F7F7F7] z-[-1]"
-        style={{ backgroundColor: "#F7F7F7" }} 
+        style={{ backgroundColor: "#F7F7F7" }}
       ></div>
       <section className="p-4 md:p-6 lg:p-8 bg-[#F7F7F7]">
         <h2 className="text-2xl font-bold mb-4 text-center">حساب کاربری</h2>
@@ -110,7 +128,9 @@ export default function ProfileForm() {
           {/* فرم ورودی‌ها */}
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row gap-2">
-              <label className="font-semibold text-gray-600 w-24 text-right">نام</label>
+              <label className="font-semibold text-gray-600 w-24 text-right">
+                نام
+              </label>
               <input
                 type="text"
                 value={profile.firstName}
@@ -119,7 +139,9 @@ export default function ProfileForm() {
               />
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
-              <label className="font-semibold text-gray-600 w-24 text-right">نام خانوادگی</label>
+              <label className="font-semibold text-gray-600 w-24 text-right">
+                نام خانوادگی
+              </label>
               <input
                 type="text"
                 value={profile.lastName}
@@ -128,17 +150,23 @@ export default function ProfileForm() {
               />
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
-              <label className="font-semibold text-gray-600 w-24 text-right">شماره تماس</label>
+              <label className="font-semibold text-gray-600 w-24 text-right">
+                شماره تماس
+              </label>
               <input
                 type="text"
                 value={profile.phoneNumber}
-                onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("phoneNumber", e.target.value)
+                }
                 placeholder="*********09"
                 className="w-full sm:flex-1 p-2 border-2 rounded text-right [direction:rtl]"
               />
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
-              <label className="font-semibold text-gray-600 w-24 text-right">نام کاربری</label>
+              <label className="font-semibold text-gray-600 w-24 text-right">
+                نام کاربری
+              </label>
               <input
                 type="text"
                 value={profile.username}
@@ -147,7 +175,9 @@ export default function ProfileForm() {
               />
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
-              <label className="font-semibold text-gray-600 w-24 text-right">ایمیل</label>
+              <label className="font-semibold text-gray-600 w-24 text-right">
+                ایمیل
+              </label>
               <input
                 type="email"
                 value={profile.email}
@@ -157,7 +187,9 @@ export default function ProfileForm() {
               />
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
-              <label className="font-semibold text-gray-600 w-24 text-right">بیوگرافی</label>
+              <label className="font-semibold text-gray-600 w-24 text-right">
+                بیوگرافی
+              </label>
               <textarea
                 value={profile.bio}
                 onChange={(e) => handleInputChange("bio", e.target.value)}
@@ -169,7 +201,9 @@ export default function ProfileForm() {
           {/* بخش آپلود رزومه و برچسب‌ها */}
           <div className="mt-6 space-y-6">
             <div className="flex flex-col sm:flex-row gap-2 text-right">
-              <label className="font-semibold text-gray-600 w-24 text-right">برچسب‌ها</label>
+              <label className="font-semibold text-gray-600 w-24 text-right">
+                برچسب‌ها
+              </label>
               <div className="w-full sm:flex-1">
                 {/* نمایش چیپ‌های انتخاب‌شده */}
                 <div className="flex flex-wrap gap-2 mb-2 min-h-[40px] p-2 border-2 rounded bg-gray-50">
@@ -193,12 +227,19 @@ export default function ProfileForm() {
                           viewBox="0 0 24 24"
                           xmlns="http://www.w3.org/2000/svg"
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          ></path>
                         </svg>
                       </span>
                     ))
                   ) : (
-                    <span className="text-gray-400 text-sm">مهارتی انتخاب نشده</span>
+                    <span className="text-gray-400 text-sm">
+                      مهارتی انتخاب نشده
+                    </span>
                   )}
                 </div>
 
@@ -210,7 +251,9 @@ export default function ProfileForm() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onFocus={() => setIsDropdownOpen(true)}
-                    onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
+                    onBlur={() =>
+                      setTimeout(() => setIsDropdownOpen(false), 200)
+                    }
                     className="w-full p-2 border-2 rounded text-right [direction:rtl] bg-white"
                   />
                   {isDropdownOpen && (
@@ -219,16 +262,21 @@ export default function ProfileForm() {
                         .filter(
                           (skill) =>
                             !profile.skills.includes(skill) &&
-                            skill.toLowerCase().includes(searchTerm.toLowerCase())
+                            skill
+                              .toLowerCase()
+                              .includes(searchTerm.toLowerCase())
                         )
                         .map((skill) => (
                           <li
                             key={skill}
                             className="p-2 text-right [direction:rtl] hover:bg-gray-100 cursor-pointer"
                             onMouseDown={() =>
-                              handleInputChange("skills", [...profile.skills, skill].filter(
-                                (v, i, a) => a.indexOf(v) === i
-                              ))
+                              handleInputChange(
+                                "skills",
+                                [...profile.skills, skill].filter(
+                                  (v, i, a) => a.indexOf(v) === i
+                                )
+                              )
                             }
                           >
                             {skill}
@@ -243,7 +291,9 @@ export default function ProfileForm() {
             {/* بخش آپلود رزومه و دکمه ارسال در یک ردیف */}
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                <label className="font-semibold text-gray-600 w-24 text-right">آپلود رزومه</label>
+                <label className="font-semibold text-gray-600 w-24 text-right">
+                  آپلود رزومه
+                </label>
                 <div className="flex items-center gap-3 w-full sm:w-auto">
                   <label className="relative cursor-pointer bg-[#3E79DE] py-2.5 text-white px-5 rounded-[20px] flex items-center gap-2 hover:bg-blue-600 transition-colors shadow-[0_4px_10px_rgba(0,0,0,0.2)]">
                     <Upload size={18} />
@@ -256,25 +306,27 @@ export default function ProfileForm() {
                   </label>
                   {resumeName && (
                     <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-700 bg-gray-100 px-2 py-1 rounded-lg border border-gray-300">
-                      {resumeName}
-                    </span>
-                    <button
-                      onClick={handleRemoveResume}
-                      className="text-gray-500 hover:text-red-500 transition-colors"
-                    >
-                      <X size={16} />
-                    </button>
-                  </div>
+                      <span className="text-sm text-gray-700 bg-gray-100 px-2 py-1 rounded-lg border border-gray-300">
+                        {resumeName}
+                      </span>
+                      <button
+                        onClick={handleRemoveResume}
+                        className="text-gray-500 hover:text-red-500 transition-colors"
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col items-end">
-              <button className="w-50 flex justify-center items-center transition duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-2.5 hover:bg-blue-600"
+              <button
+                className="w-50 flex justify-center items-center transition duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-2.5 hover:bg-blue-600"
                 onClick={handleSubmit}
-                disabled={loading}>
+                disabled={loading}
+              >
                 <p className="text-white font-[vazirmatn] font-extralight">
                   {loading ? "در حال ارسال..." : "به‌روزرسانی پروفایل"}
                 </p>

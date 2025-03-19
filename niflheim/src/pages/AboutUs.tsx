@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sections from "./AboutUs/sections";
 import SwiperSection from "./AboutUs/swiper";
-import newBgImage from "../assets/aboutus.jpg";
+import newBgImage from "../assets/aboutus/aboutus.jpg";
 import { motion } from "framer-motion";
 import Footer from "../Components/Footer/Footer";
 

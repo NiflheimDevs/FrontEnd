@@ -1,7 +1,6 @@
-import img from "../../assets/aboutus.svg";
 import React, { useEffect, useState } from "react";
-import aboutus from "../../assets/AboutUs-1.webp";
-import porpuses from "../../assets/AboutUs-porpuse.webp";
+import aboutus from "../../assets/aboutus/AboutUs-1.webp";
+import porpuses from "../../assets/aboutus/AboutUs-porpuse.webp";
 
 
 const Sections = () => {
