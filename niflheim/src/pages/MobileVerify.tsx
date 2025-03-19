@@ -226,7 +226,7 @@ const MobileVerify = () => {
                             transition={{ duration: 0.6, ease: "easeInOut" }}
                             >
                             
-                            <button className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(token.length === 5) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
+                            <button className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(token.length === 5) ? "opacity-60" : "hover:bg-green-600  cursor-pointer "}`}
                                 disabled={!(token.length === 5) ? true : false} 
                                 onClick={HandleVerify}>
                                 <p className="text-white w-80 font-[vazirmatn] font-extralight">

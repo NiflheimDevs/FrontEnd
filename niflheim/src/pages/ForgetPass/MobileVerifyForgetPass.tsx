@@ -84,7 +84,7 @@ const MobileVerifyforgetpass = () => {
 
             notifySuccess(`ورود شما با موفقیت انجام شد`);
             dispatcher(ChangePassPermission(sessionData));
-            navigate('/changepassword');
+            navigate('/ResetPass');
         } 
         catch (error) {
             const errorData = error;

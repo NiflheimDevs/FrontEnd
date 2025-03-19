@@ -11,8 +11,9 @@ import MobileVerify from "../pages/MobileVerify";
 import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
 import MobileVerifyWrapperForgetPass from "../wrapper/MobileVerifyWrapperForgetPass";
 import ForgetPassword from "../pages/ForgetPass/ForgetPassword";
-import ChangePassword from "../pages/ForgetPass/ChangePassword";
+import ChangePasswordonForget from "../pages/ForgetPass/ChangePasswordonForget";
 import MobileVerifyforgetpass from "../pages/ForgetPass/MobileVerifyForgetPass";
+import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
 
 import React from "react";
 
@@ -40,9 +41,9 @@ export const publicRoutes = [
   { path: "/dashboard", element: <Dashboard /> },
   { path: "/createproject", element: <CreateProject /> },
   { path: "/forgetpassword", element: <ForgetPassword /> },
-  { path: "/changepassword", element: <ChangePassword /> },
-  { path: "/mobileverifyforgetpass", element: <MobileVerifyWrapperForgetPass><MobileVerifyforgetpass /></MobileVerifyWrapperForgetPass> }
-
+  { path: "/Resetpass", element: <ChangePasswordonForget /> },
+  { path: "/ForgetPassVerify", element: <MobileVerifyWrapperForgetPass><MobileVerifyforgetpass /></MobileVerifyWrapperForgetPass> },
+  { path: "/ChangePass", element: <ChangePasswordManually /> }
 ];
 
 // Private routes (require authentication)
