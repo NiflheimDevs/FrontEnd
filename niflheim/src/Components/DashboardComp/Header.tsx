@@ -44,7 +44,7 @@ export default function Header({ toggleSidebar }) {
         <div className="relative md:flex sm:flex hidden h-fit w-[60%] mr-6 items-center">
           <input
             type="text"
-            placeholder="جست جو"
+            placeholder="جستجو"
             className="border-1 py-2 pr-14 mx-2 rounded w-[80%] border-blue-600 text-right"
           />
           <button className="absolute right-2 top-0 bottom-0 bg-blue-600 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-blue-600/50 transition-all duration-300 text-[#FFFFFF] px-4 rounded-r flex items-center cursor-pointer">
@@ -61,6 +61,7 @@ export default function Header({ toggleSidebar }) {
               data={SearchIcon}
               type="image/svg+xml"
               className="h-6 scale-95 pointer-events-none"
+              tabIndex={-1}
             />
           </button>
 
@@ -69,6 +70,7 @@ export default function Header({ toggleSidebar }) {
               data={BELL}
               type="image/svg+xml"
               className="h-6 pointer-events-none"
+              tabIndex={-1}
             />
           </button>
 
@@ -77,6 +79,7 @@ export default function Header({ toggleSidebar }) {
               data={Mail}
               type="image/svg+xml"
               className="h-6 pointer-events-none"
+              tabIndex={-1}
             />
           </button>
 
@@ -85,6 +88,7 @@ export default function Header({ toggleSidebar }) {
               data={FAQ}
               type="image/svg+xml"
               className="h-6 pointer-events-none"
+              tabIndex={-1}
             />
           </button>
 
@@ -93,6 +97,7 @@ export default function Header({ toggleSidebar }) {
               src={ProfileDefault}
               className="rounded-full object-cover min-w-8 pointer-events-none"
               alt="Profile"
+              tabIndex={-1}
             />
           </button>
         </div>
