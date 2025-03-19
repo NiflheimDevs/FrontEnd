@@ -13,6 +13,8 @@ import React from "react";
 import MobileVerify from "../pages/MobileVerify";
 import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
 
+
+
 // Public routes (accessible by anyone)
 export const publicRoutes = [
   { path: "/auth", element: <AuthPage /> },
@@ -37,6 +39,10 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />, // Wrap private routes with auth check
     children: privateRoutes,
+  },
+  {
+    path: "*",
+    element: <Error />, // error page
   },
 ]);
 
