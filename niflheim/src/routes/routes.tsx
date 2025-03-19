@@ -14,6 +14,7 @@ import ForgetPassword from "../pages/ForgetPass/ForgetPassword";
 import ChangePasswordonForget from "../pages/ForgetPass/ChangePasswordonForget";
 import MobileVerifyforgetpass from "../pages/ForgetPass/MobileVerifyForgetPass";
 import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
+import Wallet from "../Components/DashboardComp/Wallet";
 
 import React from "react";
 
@@ -48,7 +49,8 @@ export const publicRoutes = [
   { path: "/forgetpassword", element: <ForgetPassword /> },
   { path: "/Resetpass", element: <ChangePasswordonForget /> },
   { path: "/ForgetPassVerify", element: <MobileVerifyWrapperForgetPass><MobileVerifyforgetpass /></MobileVerifyWrapperForgetPass> },
-  { path: "/ChangePass", element: <ChangePasswordManually /> }
+  { path: "/ChangePass", element: <ChangePasswordManually /> },
+  { path: "/wallet", element: <Wallet /> }
 ];
 
 // Private routes (require authentication)

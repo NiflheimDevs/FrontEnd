@@ -158,6 +158,7 @@ const SignupForm = () => {
           data="/src/assets/User.svg"
           type="image/svg+xml"
           className="w-6.5 h-6.5 pointer-events-none absolute left-3 top-1/2 transform -translate-y-1/2"
+          tabIndex={-1}
         />
       </div>
 
@@ -179,6 +180,7 @@ const SignupForm = () => {
           data="/src/assets/Phone.svg"
           type="image/svg+xml"
           className="w-6.5 h-6.5 pointer-events-none absolute left-3 top-1/2 transform -translate-y-1/2"
+          tabIndex={-1}
         />
       </div>
 
