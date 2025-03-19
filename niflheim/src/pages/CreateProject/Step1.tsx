@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 //import Header from "@/components/DashboardComp/Header";
-import { useNotification } from "../../Notification/NotificationProvider"
 interface Step1Props {
   formData: { name: string; skills: string; description: string; files: File | null };
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
@@ -8,7 +7,7 @@ interface Step1Props {
   nextStep: () => void;
 }
 
-const Step1: React.FC<Step1Props> = ({ formData, handleChange, handleFileChange, nextStep }) => {
+const Step1: React.FC<{ formData?: any; handleChange: any; handleFileChange: any; nextStep: any; }> = ({ formData = {}, handleChange, handleFileChange, nextStep }) => {
   // Backend is down, so using a static list for now
   // useEffect(() => {
   //   fetchSkills().then(setSkillsList); // Fetch skills from backend
@@ -30,12 +29,10 @@ const Step1: React.FC<Step1Props> = ({ formData, handleChange, handleFileChange,
     setErrors("");
     return true;
   };
-  const { error : notifyerror } = useNotification();    
+     
   const handleNextStep = () => {
     if (validateForm()) {
       nextStep();
-    } else {
-        notifyerror(errors);
     }
   };
 

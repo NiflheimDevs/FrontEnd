@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 // Base URL for your API (use environment variable in production)
 const BASE_URL = "https://103.75.196.227:8080";
@@ -192,6 +193,18 @@ const apiServices = {
     window.location.href = "/auth";
   },
 };
+
+// ارسال داده به بک‌اند با استفاده از createAsyncThunk
+export const createProject = createAsyncThunk(
+  "project/createProject",
+  async (projectData: FormData, { rejectWithValue }) => {
+    try {
+      return await apiServices.createProject(projectData);
+    } catch (error: any) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
 export default apiServices;
 
