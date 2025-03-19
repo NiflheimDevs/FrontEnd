@@ -11,8 +11,9 @@ import MobileVerify from "../pages/MobileVerify";
 import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
 import MobileVerifyWrapperForgetPass from "../wrapper/MobileVerifyWrapperForgetPass";
 import ForgetPassword from "../pages/ForgetPass/ForgetPassword";
-import ChangePassword from "../pages/ForgetPass/ChangePassword";
+import ChangePasswordonForget from "../pages/ForgetPass/ChangePasswordonForget";
 import MobileVerifyforgetpass from "../pages/ForgetPass/MobileVerifyForgetPass";
+import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
 
 import React from "react";
 
@@ -20,6 +21,8 @@ import React from "react";
 import CreateProject from "../pages/CreateProject/CreateProject";
 import MyProjects from "../pages/MyProjects";
 import Biders from "../pages/Biders/Biders";
+
+
 
 
 // Public routes (accessible by anyone)
@@ -43,9 +46,9 @@ export const publicRoutes = [
   { path: "/myprojects", element: <MyProjects /> },
   { path: "/biders", element: <Biders /> },
   { path: "/forgetpassword", element: <ForgetPassword /> },
-  { path: "/changepassword", element: <ChangePassword /> },
-  { path: "/mobileverifyforgetpass", element: <MobileVerifyWrapperForgetPass><MobileVerifyforgetpass /></MobileVerifyWrapperForgetPass> }
-
+  { path: "/Resetpass", element: <ChangePasswordonForget /> },
+  { path: "/ForgetPassVerify", element: <MobileVerifyWrapperForgetPass><MobileVerifyforgetpass /></MobileVerifyWrapperForgetPass> },
+  { path: "/ChangePass", element: <ChangePasswordManually /> }
 ];
 
 // Private routes (require authentication)
@@ -60,6 +63,10 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />, // Wrap private routes with auth check
     children: privateRoutes,
+  },
+  {
+    path: "*",
+    element: <Error />, // error page
   },
 ]);
 
