@@ -20,6 +20,8 @@ import React from "react";
 import CreateProject from "../pages/CreateProject/CreateProject";
 
 
+
+
 // Public routes (accessible by anyone)
 export const publicRoutes = [
   { path: "/auth", element: <AuthPage /> },
@@ -55,6 +57,10 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />, // Wrap private routes with auth check
     children: privateRoutes,
+  },
+  {
+    path: "*",
+    element: <Error />, // error page
   },
 ]);
 
