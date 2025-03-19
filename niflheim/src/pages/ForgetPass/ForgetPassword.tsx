@@ -43,7 +43,7 @@ const ForgetPassword = () => {
         }
         notifySuccess(`کد تایید به شماره ${phone} ارسال شد`);
         dispatcher(ChangePassSessions(sessionData));
-        navigate('/mobileverifyforgetpass');
+        navigate('/ForgetPassVerify');
       } 
       catch (error) {
         const errorData = error;
@@ -88,37 +88,25 @@ const ForgetPassword = () => {
               
             </motion.div>
 
-            <motion.div
-              initial={{ x: -50 }}
-              animate={{ x: 0 }}
-              transition={{ type: 'spring' }}
-              className="relative w-full max-w-[400px]"
-            >
+            <div className="relative w-full max-w-[400px]">
               <input 
-                type="tel" 
-                placeholder=" تلفن‌همراه" 
-                value={phone}
-                onChange={handleChangePhone}
-                className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn] ${
-                  isValidPhone === false ? "ring-red-500" :
-                  isValidPhone === true ? "ring-green-500" :
-                  "ring-gray-300"
-                }`}
+              type="tel" 
+              placeholder=" تلفن‌همراه" 
+              value={phone}
+              onChange={handleChangePhone}
+              className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn] ${
+                isValidPhone === false ? "ring-red-500" :
+                isValidPhone === true ? "ring-green-500" :
+                "ring-gray-300"
+              }`}
               /> 
               <object
-                data={PhoneIcon}
-                type="image/svg+xml"
-                className="w-6.5 h-6.5 pointer-events-none absolute left-3 top-1/2 transform -translate-y-1/2" 
+              data={PhoneIcon}
+              type="image/svg+xml"
+              className="w-6.5 h-6.5 pointer-events-none absolute left-3 top-1/2 transform -translate-y-1/2" 
               />
-              
-            </motion.div>
+            </div>
 
-            <motion.div
-                initial={{ y: +50 }}
-                animate={{ y: 0 }}
-                transition={{ type: 'spring' }}
-                className="relative w-full max-w-[400px]"
-            >
               <button className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(isValidPhone === true) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
                 disabled={!(isValidPhone === true) ? true : false}
                 onClick={handleCompleteClick}>
@@ -126,7 +114,6 @@ const ForgetPassword = () => {
                   تایید و ادامه
                 </p>
               </button>
-            </motion.div>
           </div>
             
         </motion.div>

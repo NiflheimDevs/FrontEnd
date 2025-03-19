@@ -4,23 +4,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { motion, AnimatePresence } from "framer-motion";
 import LadyPic from '/src/assets/Changepass.svg';
 import React from "react";
-import {forgetPasswordReset} from "../../API";
+import {ChangePass} from "../../API";
 import {useNotification} from "../../Notification/NotificationProvider";
-import {errorMapper} from "../../pages/Error/Error";
+import {errorMapper} from "../Error/Error";
 import { RootState } from "../../store/store";
 
-const ChangePassword = () => {
+const ChangePasswordManually = () => {
     const { error: notifyError, success: notifySuccess } = useNotification();
     const [ispic, setIspic] = useState(true);
     const navigate = useNavigate();
     const dispatcher = useDispatch();
+    const [showPassword0, setShowPassword0] = useState(false); 
     const [showPassword1, setShowPassword1] = useState(false); 
     const [showPassword2, setShowPassword2] = useState(false);
     const [isValidPass, setIsValidPass] = useState<boolean | null>(null); 
     const [isValidPassRepeat, setIsValidPassRepeat] = useState<boolean | null>(null); 
+    const [passwordold, setPasswordold] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
-    const SessionID = useSelector((state: RootState) => state.auth.SessionID);
+    // const SessionID = useSelector((state: RootState) => state.auth.SessionID);
     
 
     const validatePassword = (value) => {
@@ -46,12 +48,16 @@ const ChangePassword = () => {
         }
     };    
   
+    const handleChangePassOld = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setPasswordold(value);
+      setIsValidPass(validatePassword(value));
+    };
     const handleChangePass = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setPassword(value);
         setIsValidPass(validatePassword(value));
       };
-    
       const handleChangePassRepeat = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setPasswordRepeat(value);
@@ -60,9 +66,9 @@ const ChangePassword = () => {
 
      const handleCompleteClick = async () => {
         try {
-            await forgetPasswordReset({
+            await ChangePass({
               new_password: password,
-              sessionid : SessionID?.toString() ?? "",
+              old_password: passwordold
             });            
             notifySuccess(`رمز عبور شما با موفقیت تغییر کرد`);
             navigate('/auth');
@@ -108,42 +114,53 @@ const ChangePassword = () => {
               <div className="w-full rounded-2xl h-0.75 bg-blue-500 mx-auto mt-2 mb-6"></div>
             </motion.div>
   
-          {/* فیلد رمز عبور */}
-          <motion.div
-            initial={{ x: -50 }}
-            animate={{ x: 0 }}
-            transition={{ type: 'spring' }}
-            className="relative w-full max-w-[400px]"
-          >
+            {/* فیلد رمز عبور قدیمی */}
             <div className="relative w-full">
-                <input
-                    type={showPassword1 ? "text" : "password"} 
-                    placeholder="رمز عبور"
-                    value={password}
-                    onChange={handleChangePass}
-                    className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]${isValidPass === false
-                        ? "focus:ring-3 ring-red-500"
-                        : isValidPass === true
-                        ? "focus:ring-3 ring-green-500"
-                        : "focus:ring-3 ring-gray-300"
-                        }`}
+              <input
+                type={showPassword0 ? "text" : "password"} 
+                placeholder="رمز عبور قدیمی"
+                value={passwordold}
+                onChange={handleChangePassOld}
+                className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]${isValidPass === false
+                  ? "focus:ring-3 ring-red-500"
+                  : isValidPass === true
+                  ? "focus:ring-3 ring-green-500"
+                  : "focus:ring-3 ring-gray-300"
+                  }`}
+              />
+              <button onClick={() => setShowPassword0(!showPassword0)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2">
+                <object
+                data={showPassword0 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
+                type="image/svg+xml"
+                className="w-6.5 h-6.5 pointer-events-none"
                 />
-                <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2">
-                  <object
-                    data={showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
-                    type="image/svg+xml"
-                    className="w-6.5 h-6.5 pointer-events-none"
-                  />
-                </button>
+              </button>
             </div>
-          </motion.div>
+
+            {/* فیلد رمز عبور */}
+            <div className="relative w-full">
+              <input
+                type={showPassword1 ? "text" : "password"} 
+                placeholder="رمز عبور"
+                value={password}
+                onChange={handleChangePass}
+                className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]${isValidPass === false
+                  ? "focus:ring-3 ring-red-500"
+                  : isValidPass === true
+                  ? "focus:ring-3 ring-green-500"
+                  : "focus:ring-3 ring-gray-300"
+                  }`}
+              />
+              <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2">
+                <object
+                data={showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
+                type="image/svg+xml"
+                className="w-6.5 h-6.5 pointer-events-none"
+                />
+              </button>
+            </div>
+
           {/* فیلد تکرار رمز عبور */}
-          <motion.div
-            initial={{ x: +50 }}
-            animate={{ x: 0 }}
-            transition={{ type: 'spring' }}
-            className="relative w-full max-w-[400px]"
-          >
           <div className="relative w-full">
             <input
               type={showPassword2 ? "text" : "password"} 
@@ -165,13 +182,6 @@ const ChangePassword = () => {
                 />
             </button>
           </div>
-            </motion.div>
-            <motion.div
-              initial={{ y: +50 }}
-              animate={{ y: 0 }}
-              transition={{ type: 'spring' }}
-              className="relative w-full max-w-[400px]"
-            >
               <button className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3  ${!(isValidPassRepeat === true && isValidPass === true ) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
                 disabled={!(isValidPassRepeat === true && isValidPass === true ) ? true : false}
                 onClick={handleCompleteClick}>
@@ -179,7 +189,6 @@ const ChangePassword = () => {
                   تایید و ادامه
                 </p>
               </button>
-            </motion.div>
         </div>
         </motion.div>
   
@@ -200,5 +209,5 @@ const ChangePassword = () => {
       </AnimatePresence>
       );        
 };
-export default ChangePassword;
+export default ChangePasswordManually;
 
