@@ -459,7 +459,7 @@ const MyProjects = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentPage}
-            className="mt-12 mb-16 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 px-4"
+            className="mt-12 mb-16 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
