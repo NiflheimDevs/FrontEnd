@@ -40,11 +40,14 @@ const errorMessages = {
   error_404: "صفحه مورد نظر پیدا نشد.",
 };
 
+const errorMapper = (errorCode) => {
+  return errorMessages[errorCode] || "مشکلی پیش آمده است.";
+};
 
 const Error = () => {
   const location = useLocation();
-  const { errorCode, title } = location.state || { errorCode: "error_404", title: "404 خطا" };
-  const description = errorMessages[errorCode] || "مشکلی پیش آمده است.";
+  const { errorCode, title = "خطا" } = location.state || { errorCode: "error_404", title: "404 خطا" };
+  const description = errorMapper(errorCode);
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-r from-[#DA1E30] to-[#74101A] px-10 text-center">
@@ -61,4 +64,5 @@ const Error = () => {
   );
 };
 
-export default Error;
+export default Error; 
+export { errorMapper, errorMessages }; 
