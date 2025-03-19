@@ -4,12 +4,12 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
-import kia from "../../assets/kia2.jpg";
-import sob from "../../assets/sob.jpg";
-import saman from "../../assets/saman.jpg";
-import parsa from "../../assets/parsa.jpg";
-import mmd from "../../assets/mmd.jpg";
-import ali from "../../assets/ali.jpg";
+import kia from "../../assets/aboutus/kia2.jpg";
+import sob from "../../assets/aboutus/sob.jpg";
+import saman from "../../assets/aboutus/saman.jpg";
+import parsa from "../../assets/aboutus/parsa.jpg";
+import mmd from "../../assets/aboutus/mmd.jpg";
+import ali from "../../assets/aboutus/ali.jpg";
 import { motion } from "framer-motion";
 
 const people = [

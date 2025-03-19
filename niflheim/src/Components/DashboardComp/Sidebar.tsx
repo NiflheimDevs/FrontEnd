@@ -47,7 +47,7 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
 
   return (
     <aside
-      className={`fixed top-16 right-0 rounded-tl-3xl rounded-bl-3xl h-[calc(100vh-4rem)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-300 z-50
+      className={`fixed top-19 right-0 rounded-tl-3xl rounded-bl-3xl h-[calc(100vh-4rem)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-300 z-50
         ${
           isSidebarOpen ? "w-48" : "w-20"
         } sm:w-20 sm:hover:w-48 w-full group flex flex-col
