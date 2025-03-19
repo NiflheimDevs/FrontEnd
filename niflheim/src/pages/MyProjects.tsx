@@ -310,7 +310,7 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
-import { Button } from "@/components/ui/button";
+import { Button } from "../Components/ui/button";
 import { FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import avatar from "@/assets/myproject/avatars.png";
@@ -440,7 +440,7 @@ const MyProjects = () => {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-4xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
           >
             پروژه های من
           </motion.h2>
@@ -500,7 +500,7 @@ const MyProjects = () => {
                   <p className="text-white text-[13.3px] opacity-70 font-semibold tracking-wider">
                     {project.title}
                   </p>
-                  <p className="text-white font-bold text-[22.34px] mt-2 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                  <p className="font-bold text-[22.34px] mt-2 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                     {project.description}
                   </p>
                 </div>
