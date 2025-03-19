@@ -207,6 +207,7 @@ const MobileVerifyforgetpass = () => {
                                     data="/src/assets/Clock_B.svg"
                                     type="image/svg+xml"
                                     className="w-6.5 h-6.5 pointer-events-none flex transform origin-center"
+                                    tabIndex={-1}
                                     />
                                 </button>
                                 }
