@@ -8,6 +8,7 @@ import Wallet from "@/assets/Dashboard/Credit.svg";
 import messages from "@/assets/Dashboard/Message.svg";
 import settings from "@/assets/Dashboard/Settings.svg";
 import exit from "@/assets/Dashboard/DoorOpen.svg";
+import React from "react";
 
 export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
   const navigate = useNavigate();
@@ -131,7 +132,7 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
                   ویرایش پروفایل
                 </Link>
                 <Link
-                  to="/changepassword"
+                  to="/changepass"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-300"
                 >
                   تغییر رمز
