@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface ProfileState {
+export interface ProfileState {
   firstName: string;
   lastName: string;
   phoneNumber: string;
   username: string;
   email: string;
   bio: string;
-  resume: File | null;
   skills: string[];
-  profilePicture: File | null;
+  skillProficiency: { [key: string]: string };
+  workExperiences: { companyName: string; website: string; duration: string }[]; 
 }
 
 const initialState: ProfileState = {
@@ -19,9 +19,9 @@ const initialState: ProfileState = {
   username: "",
   email: "",
   bio: "",
-  resume: null,
   skills: [],
-  profilePicture: null,
+  skillProficiency: {},
+  workExperiences: [],
 };
 
 const profileSlice = createSlice({
