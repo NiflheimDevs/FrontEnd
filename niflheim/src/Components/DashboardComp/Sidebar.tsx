@@ -8,6 +8,7 @@ import Wallet from "@/assets/Dashboard/Credit.svg";
 import messages from "@/assets/Dashboard/Message.svg";
 import settings from "@/assets/Dashboard/Settings.svg";
 import exit from "@/assets/Dashboard/DoorOpen.svg";
+import React from "react";
 
 export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
   const navigate = useNavigate();
@@ -125,13 +126,13 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
             {isProfileOpen && isHovered && (
               <div className="absolute right-0 mt-2 w-48 bg-gray-200 rounded-lg shadow-lg z-50">
                 <Link
-                  to="/profile/edit"
+                  to="/profile"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-300"
                 >
                   ویرایش پروفایل
                 </Link>
                 <Link
-                  to="/changepassword"
+                  to="/changepass"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-300"
                 >
                   تغییر رمز

@@ -118,6 +118,7 @@ const ChangePasswordManually = () => {
             <div className="relative w-full">
               <input
                 type={showPassword0 ? "text" : "password"} 
+                tabIndex={1}
                 placeholder="رمز عبور قدیمی"
                 value={passwordold}
                 onChange={handleChangePassOld}
@@ -141,6 +142,7 @@ const ChangePasswordManually = () => {
             <div className="relative w-full">
               <input
                 type={showPassword1 ? "text" : "password"} 
+                tabIndex={2}
                 placeholder="رمز عبور"
                 value={password}
                 onChange={handleChangePass}
@@ -164,6 +166,7 @@ const ChangePasswordManually = () => {
           <div className="relative w-full">
             <input
               type={showPassword2 ? "text" : "password"} 
+              tabIndex={3}
               placeholder="تکرار رمز عبور"
               value={passwordRepeat}
               onChange={handleChangePassRepeat}
@@ -182,8 +185,9 @@ const ChangePasswordManually = () => {
                 />
             </button>
           </div>
-              <button className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3  ${!(isValidPassRepeat === true && isValidPass === true ) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
+              <button className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3  ${!(isValidPassRepeat === true && isValidPass === true ) ? "opacity-60" : "hover:bg-blue-600 focus:bg-blue-600  cursor-pointer "}`}
                 disabled={!(isValidPassRepeat === true && isValidPass === true ) ? true : false}
+                tabIndex={4}
                 onClick={handleCompleteClick}>
                 <p className="text-white font-[vazirmatn] font-extralight">
                   تایید و ادامه

@@ -64,7 +64,7 @@ export default function Header({ toggleSidebar }: any) {
         </div>
 
         {/* Right Section: Icons */}
-        <div className="flex w-fit h-fit items-center gap-5">
+        <div className="flex w-fit h-fit items-center md:gap-5 sm:gap-5 gap-[3vw]">
           <button
             className="w-fit h-fit md:hidden sm:hidden flex cursor-pointer hover:scale-115 hover:animate-shake"
             onClick={openModal}
