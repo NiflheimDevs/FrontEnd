@@ -20,7 +20,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
   return (
     <NotificationContext.Provider value={{ success, error, info, warning }}>
       {children}
-      <ToastContainer className={"pl-[8vw]"} position="top-right" autoClose={3000} />
+      <ToastContainer className={"pl-[8vw] font-[vazirmatn]"} position="top-right" autoClose={3000} />
     </NotificationContext.Provider>
   );
 };
