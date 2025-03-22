@@ -117,7 +117,7 @@ export default function Header({ toggleSidebar }) {
             <div className="relative md:hidden sm:hidden flex h-fit w-full items-center justify-center">
               <input
                 type="text"
-                placeholder="جست جو"
+                placeholder="جستجو"
                 className="border-1 py-2 pr-13 mx-2 rounded w-full bg-white border-blue-600 text-right"
               />
               <button className="absolute right-2 top-0 bottom-0 bg-blue-600 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-blue-600/50 transition-all duration-300 text-[#FFFFFF] px-4 rounded-r flex items-center cursor-pointer"

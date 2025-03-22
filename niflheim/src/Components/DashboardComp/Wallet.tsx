@@ -14,9 +14,13 @@ type Transaction = {
 
 const Wallet = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [balance, setBalance] = useState(0); // Initialize balance state
+  const [balance, setBalance] = useState(0); 
   const [currentPage, setCurrentPage] = useState(1);
-  const transactionsPerPage = 5; // Set transactions per page to 5
+  const [activityFilter, setActivityFilter] = useState('all'); 
+  const [isActivityFilterOpen, setIsActivityFilterOpen] = useState(false); 
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc'); 
+  const [sortBy, setSortBy] = useState<'date' | 'amount'>('date'); 
+  const transactionsPerPage = 5; 
 
   const transactions: Transaction[] = [
     { id: 1, date: "2023-10-01", activity: "واریز", description: "پروژه‌ی سایت", amount: 5000 },
@@ -31,23 +35,137 @@ const Wallet = () => {
     { id: 10, date: "2023-10-15", activity: "واریز", description: "پروژه‌ی اپلیکیشن", amount: 3000 },
     { id: 11, date: "2023-10-20", activity: "برداشت", description: "خرید تجهیزات", amount: -2000 },
     { id: 12, date: "2023-10-25", activity: "واریز", description: "پروژه‌ی جدید", amount: 4000 },
-  ]; // Added more transactions for pagination
+    { id: 13, date: "2023-10-01", activity: "واریز", description: "پروژه‌ی سایت", amount: 5000 },
+    { id: 14, date: "2023-10-05", activity: "برداشت", description: "", amount: -1500 },
+    { id: 15, date: "2023-10-10", activity: "واریز", description: "پروژه‌ی طراحی لوگو", amount: 2000 },
+    { id: 16, date: "2023-10-15", activity: "واریز", description: "پروژه‌ی اپلیکیشن", amount: 3000 },
+    { id: 17, date: "2023-10-20", activity: "برداشت", description: "خرید تجهیزات", amount: -2000 },
+    { id: 18, date: "2023-10-25", activity: "واریز", description: "پروژه‌ی جدید", amount: 4000 },
+    { id: 19, date: "2023-10-01", activity: "واریز", description: "پروژه‌ی سایت", amount: 5000 },
+    { id: 20, date: "2023-10-05", activity: "برداشت", description: "", amount: -1500 },
+    { id: 21, date: "2023-10-10", activity: "واریز", description: "پروژه‌ی طراحی لوگو", amount: 2000 },
+    { id: 22, date: "2023-10-15", activity: "واریز", description: "پروژه‌ی اپلیکیشن", amount: 3000 },
+    { id: 23, date: "2023-10-20", activity: "برداشت", description: "خرید تجهیزات", amount: -2000 },
+    { id: 24, date: "2023-10-25", activity: "واریز", description: "پروژه‌ی جدید", amount: 4000 },
+    { id: 25, date: "2023-10-01", activity: "واریز", description: "پروژه‌ی سایت", amount: 5000 },
+    { id: 26, date: "2023-10-05", activity: "برداشت", description: "", amount: -1500 },
+    { id: 27, date: "2023-10-10", activity: "واریز", description: "پروژه‌ی طراحی لوگو", amount: 2000 },
+    { id: 28, date: "2023-10-15", activity: "واریز", description: "پروژه‌ی اپلیکیشن", amount: 3000 },
+    { id: 29, date: "2023-10-20", activity: "برداشت", description: "خرید تجهیزات", amount: -2000 },
+    { id: 30, date: "2023-10-25", activity: "واریز", description: "پروژه‌ی جدید", amount: 4000 },
+    { id: 31, date: "2023-10-01", activity: "واریز", description: "پروژه‌ی سایت", amount: 5000 },
+    { id: 32, date: "2023-10-05", activity: "برداشت", description: "", amount: -1500 },
+    { id: 33, date: "2023-10-10", activity: "واریز", description: "پروژه‌ی طراحی لوگو", amount: 2000 },
+    { id: 34, date: "2023-10-15", activity: "واریز", description: "پروژه‌ی اپلیکیشن", amount: 3000 },
+    { id: 35, date: "2023-10-20", activity: "برداشت", description: "خرید تجهیزات", amount: -2000 },
+    { id: 36, date: "2023-10-25", activity: "واریز", description: "پروژه‌ی جدید", amount: 4000 },
+  ]; 
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const totalPages = Math.ceil(transactions.length / transactionsPerPage) || 1;
+  const filteredTransactions = activityFilter === 'all' 
+    ? transactions 
+    : transactions.filter(t => t.activity === activityFilter);
+
+  const sortedTransactions = [...filteredTransactions].sort((a, b) => {
+    if (sortBy === 'date') {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return sortDirection === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
+    } else if (sortBy === 'amount') {
+      return sortDirection === 'asc' ? a.amount - b.amount : b.amount - a.amount;
+    }
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sortedTransactions.length / transactionsPerPage) || 1;
   const indexOfLastTransaction = currentPage * transactionsPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - transactionsPerPage;
-  const currentTransactions = transactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
+  const currentTransactions = sortedTransactions.slice(indexOfFirstTransaction, indexOfLastTransaction);
 
   const goToNextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
   const goToPreviousPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
   const goToPage = (pageNumber: number) => setCurrentPage(pageNumber);
 
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+
+    if (startPage > 1) {
+      pageNumbers.push(
+        <button
+          key={1}
+          onClick={() => goToPage(1)}
+          className={`cursor-pointer px-4 py-2 mx-1 ${
+            currentPage === 1 
+              ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg' 
+              : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
+          } rounded-md transition-all duration-300 font-medium`}
+        >
+          1
+        </button>
+      );
+      if (startPage > 2) {
+        pageNumbers.push(
+          <span key="start-ellipsis" className="px-2 text-gray-500">
+            ...
+          </span>
+        );
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => goToPage(i)}
+          className={`cursor-pointer px-4 py-2 mx-1 ${
+            currentPage === i 
+              ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg' 
+              : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
+          } rounded-md transition-all duration-300 font-medium`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        pageNumbers.push(
+          <span key="end-ellipsis" className="px-2 text-gray-500">
+            ...
+          </span>
+        );
+      }
+      pageNumbers.push(
+        <button
+          key={totalPages}
+          onClick={() => goToPage(totalPages)}
+          className={`cursor-pointer px-4 py-2 mx-1 ${
+            currentPage === totalPages 
+              ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg' 
+              : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
+          } rounded-md transition-all duration-300 font-medium`}
+        >
+          {totalPages}
+        </button>
+      );
+    }
+
+    return pageNumbers;
+  };
+
   return (
-    <div className="flex h-screen w-full bg-[#F7F7F7]">
+  <>
+    <div
+      className="fixed inset-0 bg-[#F7F7F7] z-[-1]"
+      style={{ backgroundColor: "#F7F7F7" }}
+    ></div>
+    <div className="flex h-full w-full bg-[#F7F7F7]" >
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main className="flex-1 flex flex-col pt-16 pr-4 md:pr-24">
         <Header toggleSidebar={toggleSidebar} />
@@ -71,10 +189,61 @@ const Wallet = () => {
             <table className="w-full text-center">
               <thead>
                 <tr className="border-b">
-                  <th className="text-lg font-semibold py-2">تاریخ</th>
-                  <th className="text-lg font-semibold py-2">فعالیت</th>
+                  <th className="text-lg font-semibold py-2 cursor-pointer" onClick={() => { setSortBy('date'); setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc'); }}>
+                    تاریخ {sortBy === 'date' && (sortDirection === 'asc' ? '▲' : '▼')}
+                  </th>
+                  <th className="text-lg font-semibold py-2 relative">
+                    <div className="flex items-center justify-center cursor-pointer" onClick={() => setIsActivityFilterOpen(!isActivityFilterOpen)}>
+                      <span>فعالیت</span>
+                      <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                      </svg>
+                    </div>
+                    {isActivityFilterOpen && (
+                      <div className="absolute top-full left-0 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+                        <button 
+                          onClick={() => {
+                            setActivityFilter('all');
+                            setIsActivityFilterOpen(false);
+                            setCurrentPage(1);
+                          }}
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                        >
+                          همه
+                        </button>
+                        <button 
+                          onClick={() => {
+                            setActivityFilter('واریز');
+                            setIsActivityFilterOpen(false);
+                            setCurrentPage(1);
+                          }}
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                        >
+                          واریز
+                        </button>
+                        <button 
+                          onClick={() => {
+                            setActivityFilter('برداشت');
+                            setIsActivityFilterOpen(false);
+                            setCurrentPage(1);
+                          }}
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                        >
+                          برداشت
+                        </button>
+                      </div>
+                    )}
+                    {/* Display the selected filter on the bar */}
+                    {activityFilter !== 'all' && (
+                      <span className="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 rounded-full text-xs mt-1 mr-1">
+                        {activityFilter}
+                      </span>
+                    )}
+                  </th>
                   <th className="text-lg font-semibold py-2">توضیحات</th>
-                  <th className="text-lg font-semibold py-2">مقدار</th>
+                  <th className="text-lg font-semibold py-2 cursor-pointer" onClick={() => { setSortBy('amount'); setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc'); }}>
+                    مبلغ {sortBy === 'amount' && (sortDirection === 'asc' ? '▲' : '▼')}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -88,39 +257,41 @@ const Wallet = () => {
                 ))}
               </tbody>
             </table>
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center items-center mt-6 gap-2">
               <button
                 onClick={goToPreviousPage}
                 disabled={currentPage === 1}
-                className="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400 transition-all duration-300"
+                className={`cursor-pointer px-4 py-2 rounded-md ${
+                  currentPage === 1
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
+                } transition-all duration-300 font-medium`}
               >
                 قبلی
               </button>
-              {Array.from({ length: totalPages }, (_, index) => (
-                <button
-                  key={index + 1}
-                  onClick={() => goToPage(index + 1)}
-                  className={`px-4 py-2 mx-1 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'} rounded hover:bg-gray-400 transition-all duration-300`}
-                >
-                  {index + 1}
-                </button>
-              ))}
+              {renderPageNumbers()}
               <button
                 onClick={goToNextPage}
                 disabled={currentPage === totalPages}
-                className="px-4 py-2 mx-1 bg-gray-300 rounded hover:bg-gray-400 transition-all duration-300"
+                className={`cursor-pointer px-4 py-2 rounded-md ${
+                  currentPage === totalPages
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
+                } transition-all duration-300 font-medium`}
               >
                 بعدی
               </button>
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center h-64 mt-8">
+
+        <div className="flex flex-col items-center justify-center h-64 mt-2">
           <img src={walletPic} alt="Illustration" />
           <p className="mt md:mt-0">شروع همیشه انگیزه دهنده است</p>
         </div>
       </main>
     </div>
+  </>
   );
 }
 
