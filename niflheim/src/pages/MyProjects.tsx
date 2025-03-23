@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
@@ -7,12 +6,13 @@ import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
 import { Button } from "../Components/ui/button";
 import { FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import avatar from "@/assets/myproject/avatars.png";
 import pencil from "@/assets/myproject/PencilSquare.png";
 import { MdArrowDropDown } from "react-icons/md";
+import { getUserProject } from "../API"; // Adjust the import path
 
-// Card animation variants
+// Card animation variants for project cards
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.8, rotateX: 90 },
   visible: {
@@ -30,38 +30,42 @@ const cardVariants = {
   },
 };
 
-// Button animation variants (simplified for Active Orders)
+// Button animation variants for pagination buttons
 const buttonVariants = {
-  hover: { scale: 1.05, transition: { duration: 0.3 } }, // Removed rotate to prevent bugs
+  hover: { scale: 1.05, transition: { duration: 0.3 } },
   tap: { scale: 0.95 },
 };
 
 const MyProjects = () => {
+  // State management for sidebar, pagination, and project data
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const navigate = useNavigate();
+  const [projects, setProjects] = useState([]);
+  const [totalProjects, setTotalProjects] = useState(0);
   const projectsPerPage = 4;
 
-  const [projects, setProjects] = useState([
-    { id: 1, title: "مرحله : انتخاب کارفرما ", description: "سایت فروشگاهی " },
-    { id: 2, title: "مرحله : انتخاب کارفرما ", description: "سایت فروشگاهی " },
-    { id: 3, title: "مرحله : انتخاب کارفرما ", description: "سایت فروشگاهی " },
-    { id: 4, title: "مرحله : انتخاب کارفرما ", description: "سایت فروشگاهی " },
-    { id: 5, title: "مرحله : انتخاب کارفرما ", description: "سایت فروشگاهی " },
-    { id: 6, title: "مرحله : انتخاب کارفرما ", description: "سایت فروشگاهی " },
-    { id: 7, title: "مرحله : انتخاب کارفرما ", description: "سایت فروشگاهی " },
-    { id: 8, title: "مرحله : انتخاب کارفرما ", description: "سایت فروشگاهی " },
-    { id: 9, title: "مرحله : انتخاب کارفرما ", description: "سایت فروشگاهی " },
-    {
-      id: 10,
-      title: "مرحله : انتخاب کارفرما ۰",
-      description: "سایت فروشگاهی ۰",
-    },
-  ]);
-
+  // Toggle sidebar visibility
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  const totalPages = Math.ceil(projects.length / projectsPerPage) || 1;
+  // Fetch projects from the API when the page changes
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const offset = (currentPage - 1) * projectsPerPage;
+        const limit = projectsPerPage;
+        const data = await getUserProject(offset, limit);
+        setProjects(data);
+        setTotalProjects(data.length); // Adjust if API returns total count
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
+
+    fetchProjects();
+  }, [currentPage]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(totalProjects / projectsPerPage) || 1;
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
   const currentProjects = projects.slice(
@@ -75,12 +79,14 @@ const MyProjects = () => {
     currentPage > 1 && setCurrentPage(currentPage - 1);
   const goToPage = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Initialize particle background effect
   const particlesInit = async (main) => {
     await loadFull(main);
   };
 
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden bg-white">
+      {/* Particle background effect */}
       <Particles
         id="tsparticles"
         init={particlesInit}
@@ -119,18 +125,19 @@ const MyProjects = () => {
             size: { value: { min: 1, max: 4 } },
           },
         }}
-        className="absolute inset-0 z-0 pointer-events-none" // Added pointer-events-none
+        className="absolute inset-0 z-0 pointer-events-none"
       />
 
+      {/* Sidebar and main content */}
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main
         className={`flex-1 flex flex-col pt-20 transition-all duration-300 ${
           isSidebarOpen ? "md:pr-64" : "md:pr-24"
         } pr-4 pl-4 relative z-10`}
       >
+        {/* Header section */}
         <Header toggleSidebar={toggleSidebar} />
         <div className="flex flex-row justify-between items-center mt-12 px-4">
-          {" "}
           <motion.h2
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -151,10 +158,11 @@ const MyProjects = () => {
           </Link>
         </div>
 
+        {/* Project cards grid */}
         <AnimatePresence mode="wait">
           <motion.div
             key={currentPage}
-            className="mt-12 mb-16 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4"
+            className="mt-12 mb-16 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -162,7 +170,7 @@ const MyProjects = () => {
           >
             {currentProjects.map((project, index) => (
               <motion.div
-                key={project.id}
+                key={project.project_id}
                 variants={cardVariants}
                 initial="hidden"
                 animate="visible"
@@ -170,19 +178,7 @@ const MyProjects = () => {
                 whileHover="hover"
                 className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full md:w-[335.06px] h-[246.92px] border border-blue-500/50 flex flex-col p-6 glowing-card overflow-hidden"
               >
-                <motion.div
-                  className="absolute w-40 h-40 bg-blue-400/30 rounded-full blur-3xl"
-                  animate={{
-                    x: [0, 20, -20, 0],
-                    y: [0, -20, 20, 0],
-                    scale: [1, 1.2, 1],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
+                {/* Removed the blurred background effect */}
                 <motion.img
                   src={avatar}
                   alt="image"
@@ -193,17 +189,15 @@ const MyProjects = () => {
                 />
                 <div className="flex flex-col justify-center flex-grow pb-5 z-10">
                   <p className="text-white text-[13.3px] opacity-70 font-semibold tracking-wider">
-                    {project.title}
+                    مرحله: انتخاب کارفرما
                   </p>
                   <p className="font-bold text-[22.34px] mt-2 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                    {project.title}
+                  </p>
+                  <p className="text-white text-[13.3px] mt-1">
                     {project.description}
                   </p>
                 </div>
-                {/* <motion.div
-                  variants={buttonVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                > */}
                 <Button className="bg-gradient-to-l from-[#5189CA] to-[#1E3A8A] absolute bottom-[61px] left-[20px] border w-[124px] h-[42.34px] flex items-center justify-between pr-0 glowing-shadow z-10 text-white hover:bg-gradient-to-l hover:from-[#1E3A8A] hover:to-[#5189CA]">
                   <div className="flex items-center">
                     <MdArrowDropDown className="text-white pb-1 size-7" />
@@ -212,7 +206,6 @@ const MyProjects = () => {
                     </span>
                   </div>
                 </Button>
-                {/* </motion.div> */}
                 <motion.button
                   whileHover={{
                     scale: 1.3,
@@ -228,6 +221,8 @@ const MyProjects = () => {
           </motion.div>
         </AnimatePresence>
       </main>
+
+      {/* Pagination footer */}
       <footer className="bg-white ltr place-items-center border-t border-gray-200 self-center p-4 w-full relative z-10">
         <div className="flex justify-center items-center gap-4">
           <motion.button
