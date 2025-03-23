@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { motion, AnimatePresence } from "framer-motion"; // اضافه کردن framer-motion
 import React from "react";
-
+//import apiServices from "../../APIServices/Services/Services";
 export default function ProfileForm() {
   const dispatch = useDispatch();
   const profile = useSelector((state: RootState) => state.profile);
@@ -133,14 +133,15 @@ export default function ProfileForm() {
       workExperiences,
     };
 
-    try {
-      dispatch(setProfile(updatedProfile));
-      notifySuccess("پروفایل با موفقیت به‌روزرسانی شد");
-    } catch (err) {
-      notifyError(`خطا در به‌روزرسانی پروفایل: ${err.message}`);
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   const response = await apiServices.updateProfile(formData);
+    //   dispatch(setProfile(response.data));
+    // } catch (err) {
+    //   setError("خطایی در ارسال اطلاعات رخ داد. لطفاً دوباره تلاش کنید.");
+    //   console.log(err);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   // انیمیشن‌ها برای چیپس‌ها
