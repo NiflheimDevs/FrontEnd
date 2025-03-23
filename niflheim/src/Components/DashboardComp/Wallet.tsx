@@ -169,51 +169,51 @@ const Wallet = () => {
     <div className="animate-pulse">
       <div className="flex flex-col md:flex-row justify-between items-start mt-8 space-y-4 md:space-y-0 md:space-x-4">
         <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
-          <Skeleton width="100%" height="24px" className="mb-4" />
+          <Skeleton width="100%" height="24px" className="shiny-skeleton mb-4" />
           <div className="text-center mb-4">
-            <Skeleton width="50%" height="32px" className="mb-2" />
-            <Skeleton width="30%" height="16px" />
+            <Skeleton width="50%" height="32px" className="shiny-skeleton mb-2" />
+            <Skeleton className="shiny-skeleton" width="30%" height="16px" />
           </div>
           <div className="flex justify-between">
-            <Skeleton width="45%" height="32px" />
-            <Skeleton width="45%" height="32px" />
+            <Skeleton className="shiny-skeleton" width="45%" height="32px" />
+            <Skeleton className="shiny-skeleton" width="45%" height="32px" />
           </div>
         </div>
         <div className="w-full md:w-2/3 bg-white p-6 rounded-lg shadow-md">
-          <Skeleton width="100%" height="32px" className="mb-4" />
+          <Skeleton width="100%" height="32px" className="shiny-skeleton mb-4" />
           <table className="w-full text-center">
             <thead>
               <tr className="border-b">
-                <th><Skeleton width="100%" height="24px" /></th>
-                <th><Skeleton width="100%" height="24px" /></th>
-                <th><Skeleton width="100%" height="24px" /></th>
-                <th><Skeleton width="100%" height="24px" /></th>
+                <th><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></th>
+                <th><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></th>
+                <th><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></th>
+                <th><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></th>
               </tr>
             </thead>
             <tbody>
               {[...Array(transactionsPerPage)].map((_, index) => (
                 <tr key={index} className="border-b">
-                  <td><Skeleton width="100%" height="24px" /></td>
-                  <td><Skeleton width="100%" height="24px" /></td>
-                  <td><Skeleton width="100%" height="24px" /></td>
-                  <td><Skeleton width="100%" height="24px" /></td>
+                  <td><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></td>
+                  <td><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></td>
+                  <td><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></td>
+                  <td><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></td>
                 </tr>
               ))}
             </tbody>
           </table>
           <div className="flex justify-center items-center mt-6 gap-2">
-            <Skeleton width="64px" height="32px" />
+            <Skeleton className="shiny-skeleton"  width="64px" height="32px" />
             {[...Array(3)].map((_, index) => (
-              <Skeleton key={index} width="32px" height="32px" className="mx-1" />
+              <Skeleton key={index} width="32px" height="32px" className="shiny-skeleton mx-1" />
             ))}
-            <Skeleton width="64px" height="32px" />
+            <Skeleton className="shiny-skeleton"  width="64px" height="32px" />
           </div>
         </div>
       </div>
       <div className="flex flex-col items-center justify-center h-60 mt-4">
         <div className="flex flex-col items-center">
-          <Skeleton width="250px" height="100px" className="full border border-gray-300" />
-          <Skeleton width="200px" height="20px" className="mt-2 bg-gray-200 rounded" />
+          <Skeleton width="250px" height="100px" className="shiny-skeleton full border border-gray-300" />
+          <Skeleton width="200px" height="20px" className="shiny-skeleton mt-2 bg-gray-200 rounded" />
         </div>
       </div>
     </div>
@@ -350,7 +350,7 @@ const Wallet = () => {
             )}
             <div className="flex flex-col items-center justify-center h-64 mt-2">
               {isLoading ? (
-                <Skeleton width="100px" height="100px" />
+                <Skeleton className="shiny-skeleton"  width="100px" height="100px" />
               ) : (
                 <>
                   <img src={walletPic} alt="Illustration" />

@@ -44,6 +44,37 @@ html {
   animation: shake 0.8s ease-in-out;
 }
 
+.shiny-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #e0e0e0;
+}
+
+.shiny-skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 50%; 
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 100%
+  );
+  animation: shine 1.2s ease-in-out infinite; 
+  transform: translateX(-100%);
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
