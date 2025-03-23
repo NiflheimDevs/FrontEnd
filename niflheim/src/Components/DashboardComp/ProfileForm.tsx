@@ -45,7 +45,6 @@ const initialProfile: Profile = {
   workExperiences: [],
   resume: null,
 };
-
 export default function ProfileForm() {
   const dispatch = useDispatch();
   const profileFromRedux = useSelector((state: { profile: Profile }) => state.profile);

@@ -1,7 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import AuthPage from "../pages/Auth";
-import Dashboard from "../pages/Dashboard";
 import Profile from "../pages/Profile";
 import Footer from "../Components/Footer/Footer";
 
@@ -15,13 +14,14 @@ import ChangePasswordonForget from "../pages/ForgetPass/ChangePasswordonForget";
 import MobileVerifyforgetpass from "../pages/ForgetPass/MobileVerifyForgetPass";
 import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
 import Wallet from "../Components/DashboardComp/Wallet";
-
+import Chat from "../pages/Chat"
 import React from "react";
 
 
 import CreateProject from "../pages/CreateProject/CreateProject";
 import MyProjects from "../pages/MyProjects";
 import Biders from "../pages/Biders/Biders";
+import path from "path";
 
 
 
@@ -42,7 +42,6 @@ export const publicRoutes = [
   },
   
   { path: "/error", element: <Error /> },
-  { path: "/dashboard", element: <Dashboard /> },
   { path: "/createproject", element: <CreateProject /> },
   { path: "/myprojects", element: <MyProjects /> },
   { path: "/biders", element: <Biders /> },
@@ -50,11 +49,13 @@ export const publicRoutes = [
   { path: "/Resetpass", element: <ChangePasswordonForget /> },
   { path: "/ForgetPassVerify", element: <MobileVerifyWrapperForgetPass><MobileVerifyforgetpass /></MobileVerifyWrapperForgetPass> },
   { path: "/ChangePass", element: <ChangePasswordManually /> },
-  { path: "/wallet", element: <Wallet /> }
+  { path: "/wallet", element: <Wallet /> },
+  {path : "/Chat" , element : <Chat/>}
+
 ];
 
 // Private routes (require authentication)
-export const privateRoutes = [{ path: "/dashboard", element: <Dashboard /> }];
+export const privateRoutes = [];
 
 export const router = createBrowserRouter([
   {

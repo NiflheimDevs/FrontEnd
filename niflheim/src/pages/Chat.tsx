@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
-import React from "react";
+import ChatMessageArea from "./MessageBox/ChatMessageArea";
 
-export default function Dashboard() {
+export default function Profile() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -11,10 +11,11 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-fit bg-[#F7F7F7]" dir="rtl">
+    <div className="flex min-h-screen w-full bg-gradient-to-br from-[#71C2F4] to-[#000D6E]">
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main className="flex-1 flex flex-col pt-16 md:pr-24 sm:pr-24 pr-0">
         <Header toggleSidebar={toggleSidebar} />
+        <ChatMessageArea />
       </main>
     </div>
   );

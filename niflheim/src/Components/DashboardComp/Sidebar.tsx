@@ -142,7 +142,7 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
           </div>
 
           <Link
-            to="/messages"
+            to="/chat"
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
           >
             <img src={messages} alt="Messages" className="w-6 h-6" />
