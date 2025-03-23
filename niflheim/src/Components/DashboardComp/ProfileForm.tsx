@@ -20,7 +20,6 @@ interface WorkExperience {
   isOngoing?: boolean;
   skills: string[];
   skillProficiency: { [key: string]: string };
-}
 
 interface Profile {
   phoneNumber: string;
@@ -84,7 +83,6 @@ export default function ProfileForm() {
     const timerId = setInterval(() => {
       setTimeLeft((prevTime) => prevTime - 1);
     }, 1000);
-
     return () => clearInterval(timerId);
   }, [timeLeft, showOtpSection]);
 
@@ -276,14 +274,11 @@ export default function ProfileForm() {
       Object.keys(exp.skillProficiency).length === 0
     );
   };
-
   const validateForm = () => {
     let errors: {
       skills?: string[];
       workExperiences?: { index: number; fields: (keyof WorkExperience)[] }[];
     } = {};
-
-    // ولیدیشن مهارت‌های اصلی
     if (localProfile.skills.length > 0) {
       const missingProficiencies = localProfile.skills.filter(
         (skill) => !localProfile.skillProficiency[skill]
@@ -293,19 +288,17 @@ export default function ProfileForm() {
         notifyError("میزان تسلط برای تمام مهارت‌ها باید مشخص شده باشد.");
       }
     }
-
-    // ولیدیشن سوابق کاری
     if (localProfile.workExperiences.length > 0) {
       const workErrors = localProfile.workExperiences
         .map((exp, index) => {
           const missingFields: (keyof WorkExperience)[] = [];
-          if (!isWorkExperienceEmpty(exp)) { // فقط اگه خالی نباشه چک کن
+          if (!isWorkExperienceEmpty(exp)) { 
             if (!exp.companyName) missingFields.push("companyName");
             if (!exp.jobTitle) missingFields.push("jobTitle");
             if (!exp.startDate) missingFields.push("startDate");
             if (!exp.duration) missingFields.push("duration");
             if (!exp.isOngoing && !exp.endDate) missingFields.push("endDate");
-            if (exp.skills.length === 0) missingFields.push("skills"); // چک کردن خالی بودن مهارت‌ها
+            if (exp.skills.length === 0) missingFields.push("skills"); 
             if (exp.skills.length > 0) {
               const missingProficiencies = exp.skills.filter(
                 (skill) => !exp.skillProficiency[skill]
@@ -332,8 +325,6 @@ export default function ProfileForm() {
   const handleSubmit = () => {
     setLoading(true);
     setError(null);
-
-    // حذف کارت‌های خالی قبل از ولیدیشن
     const filteredWorkExperiences = localProfile.workExperiences.filter(
       (exp) => !isWorkExperienceEmpty(exp)
     );
@@ -343,7 +334,6 @@ export default function ProfileForm() {
     }));
     setWorkSearchTerms((prev) => prev.slice(0, filteredWorkExperiences.length));
     setWorkDropdowns((prev) => prev.slice(0, filteredWorkExperiences.length));
-
     if (!validateForm()) {
       setLoading(false);
       setTimeout(() => {
@@ -985,7 +975,6 @@ export default function ProfileForm() {
                                   هنوز در حال همکاری هستم
                                 </label>
                               </div>
-
                               {/* Skills Section for Work Experience */}
                               <div className="mt-4">
                                 <h3 className="text-sm font-semibold text-gray-600 text-right mb-2">
