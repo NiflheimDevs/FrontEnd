@@ -210,145 +210,157 @@ const Wallet = () => {
           </div>
         </div>
       </div>
+      <div className="flex flex-col items-center justify-center h-60 mt-4">
+        <div className="flex flex-col items-center">
+          <Skeleton width="250px" height="100px" className="full border border-gray-300" />
+          <Skeleton width="200px" height="20px" className="mt-2 bg-gray-200 rounded" />
+        </div>
+      </div>
     </div>
   );
 
   return (
-  <>
-    <div
-      className="fixed inset-0 bg-[#F7F7F7] z-[-1]"
-      style={{ backgroundColor: "#F7F7F7" }}
-    ></div>
-    <div className="flex h-full w-full bg-[#F7F7F7]" >
-      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <main className="flex-1 flex flex-col pt-16 pr-4 md:pr-24">
-        <Header toggleSidebar={toggleSidebar} />
-        {isLoading ? (
-          renderSkeleton()
-        ) : (
-          <div className="flex flex-col md:flex-row justify-between items-start mt-8 space-y-4 md:space-y-0 md:space-x-4">
-            <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold mb-4">کیف پول</h2>
-              <div className="text-center mb-4">
-                <p className="text-2xl font-bold">{balance}</p>
-                <p>ریال</p>
+    <>
+      <div
+        className="fixed inset-0 bg-[#F7F7F7] z-[-1]"
+        style={{ backgroundColor: "#F7F7F7" }}
+      ></div>
+      <div className="flex h-full w-full bg-[#F7F7F7]">
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <main className="flex-1 flex flex-col pt-16 pr-4 md:pr-24">
+          <Header toggleSidebar={toggleSidebar} />
+            {isLoading ? (
+              renderSkeleton()
+            ) : (
+              <div className="flex flex-col md:flex-row justify-between items-start mt-8 space-y-4 md:space-y-0 md:space-x-4">
+                <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
+                  <h2 className="text-lg font-semibold mb-4">کیف پول</h2>
+                  <div className="text-center mb-4">
+                    <p className="text-2xl font-bold">{balance}</p>
+                    <p>ریال</p>
+                  </div>
+                  <div className="flex justify-between">
+                    <button className="cursor-pointer bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition-all duration-300">
+                      <span>واریز</span>
+                    </button>
+                    <button className="cursor-pointer bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition-all duration-300">
+                      <span>برداشت</span>
+                    </button>
+                  </div>
+                </div>
+                <div className="w-full md:w-2/3 bg-white p-6 rounded-lg shadow-md">
+                  <table className="w-full text-center">
+                    <thead>
+                      <tr className="border-b">
+                        <th className="text-lg font-semibold py-2 cursor-pointer" onClick={() => { setSortBy('date'); setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc'); }}>
+                          تاریخ {sortBy === 'date' && (sortDirection === 'asc' ? '▲' : '▼')}
+                        </th>
+                        <th className="text-lg font-semibold py-2 relative">
+                          <div className="flex items-center justify-center cursor-pointer" onClick={() => setIsActivityFilterOpen(!isActivityFilterOpen)}>
+                            <span>فعالیت</span>
+                            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                          </div>
+                          {isActivityFilterOpen && (
+                            <div className="absolute top-full left-0 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+                              <button 
+                                onClick={() => {
+                                  setActivityFilter('all');
+                                  setIsActivityFilterOpen(false);
+                                  setCurrentPage(1);
+                                }}
+                                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                              >
+                                همه
+                              </button>
+                              <button 
+                                onClick={() => {
+                                  setActivityFilter('واریز');
+                                  setIsActivityFilterOpen(false);
+                                  setCurrentPage(1);
+                                }}
+                                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                              >
+                                واریز
+                              </button>
+                              <button 
+                                onClick={() => {
+                                  setActivityFilter('برداشت');
+                                  setIsActivityFilterOpen(false);
+                                  setCurrentPage(1);
+                                }}
+                                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                              >
+                                برداشت
+                              </button>
+                            </div>
+                          )}
+                          {activityFilter !== 'all' && (
+                            <span className="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 rounded-full text-xs mt-1 mr-1">
+                              {activityFilter}
+                            </span>
+                          )}
+                        </th>
+                        <th className="text-lg font-semibold py-2">توضیحات</th>
+                        <th className="text-lg font-semibold py-2 cursor-pointer" onClick={() => { setSortBy('amount'); setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc'); }}>
+                          مبلغ {sortBy === 'amount' && (sortDirection === 'asc' ? '▲' : '▼')}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentTransactions.map((transaction) => (
+                        <tr key={transaction.id} className="border-b">
+                          <td className="py-2">{transaction.date}</td>
+                          <td className="py-2">{transaction.activity}</td>
+                          <td className="py-2">{transaction.description}</td>
+                          <td className="py-2">{transaction.amount}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="flex justify-center items-center mt-6 gap-2">
+                    <button
+                      onClick={goToPreviousPage}
+                      disabled={currentPage === 1}
+                      className={`cursor-pointer px-4 py-2 rounded-md ${
+                        currentPage === 1
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
+                      } transition-all duration-300 font-medium`}
+                    >
+                      قبلی
+                    </button>
+                    {renderPageNumbers()}
+                    <button
+                      onClick={goToNextPage}
+                      disabled={currentPage === totalPages}
+                      className={`cursor-pointer px-4 py-2 rounded-md ${
+                        currentPage === totalPages
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
+                      } transition-all duration-300 font-medium`}
+                    >
+                      بعدی
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <button className="cursor-pointer bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition-all duration-300">
-                  <span>واریز</span>
-                </button>
-                <button className="cursor-pointer bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition-all duration-300">
-                  <span>برداشت</span>
-                </button>
-              </div>
+            
+            )}
+            <div className="flex flex-col items-center justify-center h-64 mt-2">
+              {isLoading ? (
+                <Skeleton width="100px" height="100px" />
+              ) : (
+                <>
+                  <img src={walletPic} alt="Illustration" />
+                  <p className="mt md:mt-0">شروع همیشه انگیزه دهنده است</p>
+                </>
+              )}
             </div>
-            <div className="w-full md:w-2/3 bg-white p-6 rounded-lg shadow-md">
-              <table className="w-full text-center">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-lg font-semibold py-2 cursor-pointer" onClick={() => { setSortBy('date'); setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc'); }}>
-                      تاریخ {sortBy === 'date' && (sortDirection === 'asc' ? '▲' : '▼')}
-                    </th>
-                    <th className="text-lg font-semibold py-2 relative">
-                      <div className="flex items-center justify-center cursor-pointer" onClick={() => setIsActivityFilterOpen(!isActivityFilterOpen)}>
-                        <span>فعالیت</span>
-                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                      </div>
-                      {isActivityFilterOpen && (
-                        <div className="absolute top-full left-0 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                          <button 
-                            onClick={() => {
-                              setActivityFilter('all');
-                              setIsActivityFilterOpen(false);
-                              setCurrentPage(1);
-                            }}
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                          >
-                            همه
-                          </button>
-                          <button 
-                            onClick={() => {
-                              setActivityFilter('واریز');
-                              setIsActivityFilterOpen(false);
-                              setCurrentPage(1);
-                            }}
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                          >
-                            واریز
-                          </button>
-                          <button 
-                            onClick={() => {
-                              setActivityFilter('برداشت');
-                              setIsActivityFilterOpen(false);
-                              setCurrentPage(1);
-                            }}
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                          >
-                            برداشت
-                          </button>
-                        </div>
-                      )}
-                      {/* Display the selected filter on the bar */}
-                      {activityFilter !== 'all' && (
-                        <span className="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 rounded-full text-xs mt-1 mr-1">
-                          {activityFilter}
-                        </span>
-                      )}
-                    </th>
-                    <th className="text-lg font-semibold py-2">توضیحات</th>
-                    <th className="text-lg font-semibold py-2 cursor-pointer" onClick={() => { setSortBy('amount'); setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc'); }}>
-                      مبلغ {sortBy === 'amount' && (sortDirection === 'asc' ? '▲' : '▼')}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {currentTransactions.map((transaction) => (
-                    <tr key={transaction.id} className="border-b">
-                      <td className="py-2">{transaction.date}</td>
-                      <td className="py-2">{transaction.activity}</td>
-                      <td className="py-2">{transaction.description}</td>
-                      <td className="py-2">{transaction.amount}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="flex justify-center items-center mt-6 gap-2">
-                <button
-                  onClick={goToPreviousPage}
-                  disabled={currentPage === 1}
-                  className={`cursor-pointer px-4 py-2 rounded-md ${
-                    currentPage === 1
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
-                  } transition-all duration-300 font-medium`}
-                >
-                  قبلی
-                </button>
-                {renderPageNumbers()}
-                <button
-                  onClick={goToNextPage}
-                  disabled={currentPage === totalPages}
-                  className={`cursor-pointer px-4 py-2 rounded-md ${
-                    currentPage === totalPages
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white border border-gray-300 text-gray-600 hover:bg-gray-50'
-                  } transition-all duration-300 font-medium`}
-                >
-                  بعدی
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className="flex flex-col items-center justify-center h-64 mt-2">
-          <img src={walletPic} alt="Illustration" />
-          <p className="mt md:mt-0">شروع همیشه انگیزه دهنده است</p>
-        </div>
-      </main>
-    </div>
-  </>
+        </main>
+      </div>
+    </>
   );
 }
 
