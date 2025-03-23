@@ -20,6 +20,7 @@ interface WorkExperience {
   isOngoing?: boolean;
   skills: string[];
   skillProficiency: { [key: string]: string };
+}
 
 interface Profile {
   phoneNumber: string;
