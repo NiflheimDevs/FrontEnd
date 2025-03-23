@@ -130,7 +130,7 @@ export default function Header({ toggleSidebar }: any) {
             <div className="relative md:hidden sm:hidden flex h-fit w-full items-center justify-center">
               <input
                 type="text"
-                placeholder="جست جو"
+                placeholder="جستجو"
                 className="border-1 py-2 pr-13 mx-2 rounded w-full bg-white border-blue-600 text-right"
               />
               <button
