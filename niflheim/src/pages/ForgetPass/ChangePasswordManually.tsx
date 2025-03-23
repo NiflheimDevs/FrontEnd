@@ -22,7 +22,7 @@ const ChangePasswordManually = () => {
     const [passwordold, setPasswordold] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRepeat, setPasswordRepeat] = useState("");
-    // const SessionID = useSelector((state: RootState) => state.auth.SessionID);
+    const SessionID = useSelector((state: RootState) => state.auth.SessionID);
     
 
     const validatePassword = (value) => {
@@ -67,6 +67,7 @@ const ChangePasswordManually = () => {
      const handleCompleteClick = async () => {
         try {
             await ChangePass({
+              bearer: SessionID?.toString() ?? "", 
               new_password: password,
               old_password: passwordold
             });            
@@ -84,6 +85,10 @@ const ChangePasswordManually = () => {
             notifyError(`${errorMapper(errorData)}`);
           }
         }
+    };
+
+    const handleCancelClick = () => {
+        navigate('/dashboard', { state: { referrer: 'ChangePasswordManually' } });
     };
 
     return (
@@ -185,14 +190,27 @@ const ChangePasswordManually = () => {
                 />
             </button>
           </div>
-              <button className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3  ${!(isValidPassRepeat === true && isValidPass === true ) ? "opacity-60" : "hover:bg-blue-600 focus:bg-blue-600  cursor-pointer "}`}
-                disabled={!(isValidPassRepeat === true && isValidPass === true ) ? true : false}
+            <div className="flex w-full justify-between mt-6">
+              <button 
+                className="w-[40%] max-w-[150px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#D9D9D9] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-2 hover:bg-gray-400 focus:bg-gray-400"
+                tabIndex={5}
+                onClick={handleCancelClick}
+              >
+                <p className="text-black font-[vazirmatn] font-medium">
+                  بازگشت
+                </p>
+              </button>
+              <button 
+                className={`w-[60%] max-w-[250px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-4 ${!(isValidPassRepeat === true && isValidPass === true) ? "opacity-60 cursor-not-allowed" : "hover:bg-blue-600 focus:bg-blue-600"}`}
+                disabled={!(isValidPassRepeat === true && isValidPass === true)}
                 tabIndex={4}
-                onClick={handleCompleteClick}>
-                <p className="text-white font-[vazirmatn] font-extralight">
+                onClick={handleCompleteClick}
+              >
+                <p className="text-white font-[vazirmatn] font-medium">
                   تایید و ادامه
                 </p>
               </button>
+            </div>
         </div>
         </motion.div>
   
@@ -214,4 +232,3 @@ const ChangePasswordManually = () => {
       );        
 };
 export default ChangePasswordManually;
-
