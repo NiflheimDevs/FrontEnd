@@ -20,6 +20,8 @@ import React from "react";
 
 
 import CreateProject from "../pages/CreateProject/CreateProject";
+import MyProjects from "../pages/MyProjects";
+import Biders from "../pages/Biders/Biders";
 
 
 
@@ -38,9 +40,12 @@ export const publicRoutes = [
       </MobileVerifyWrapper>
     ),
   },
+  
   { path: "/error", element: <Error /> },
   { path: "/dashboard", element: <Dashboard /> },
   { path: "/createproject", element: <CreateProject /> },
+  { path: "/myprojects", element: <MyProjects /> },
+  { path: "/biders", element: <Biders /> },
   { path: "/forgetpassword", element: <ForgetPassword /> },
   { path: "/Resetpass", element: <ChangePasswordonForget /> },
   { path: "/ForgetPassVerify", element: <MobileVerifyWrapperForgetPass><MobileVerifyforgetpass /></MobileVerifyWrapperForgetPass> },

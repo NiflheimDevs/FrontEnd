@@ -11,7 +11,6 @@ type Transaction = {
   description: string;
   amount: number;
 };
-
 const Wallet = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [balance, setBalance] = useState(0); 
@@ -60,11 +59,9 @@ const Wallet = () => {
     { id: 35, date: "2023-10-20", activity: "برداشت", description: "خرید تجهیزات", amount: -2000 },
     { id: 36, date: "2023-10-25", activity: "واریز", description: "پروژه‌ی جدید", amount: 4000 },
   ]; 
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
   const filteredTransactions = activityFilter === 'all' 
     ? transactions 
     : transactions.filter(t => t.activity === activityFilter);
@@ -284,7 +281,6 @@ const Wallet = () => {
             </div>
           </div>
         </div>
-
         <div className="flex flex-col items-center justify-center h-64 mt-2">
           <img src={walletPic} alt="Illustration" />
           <p className="mt md:mt-0">شروع همیشه انگیزه دهنده است</p>

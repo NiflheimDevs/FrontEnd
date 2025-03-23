@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
-import ProfileForm from "../Components/DashboardComp/ProfileForm";
 import React from "react";
 
 export default function Dashboard() {
@@ -12,11 +11,10 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen bg-[#F7F7F7]" dir="rtl">
+    <div className="flex h-fit bg-[#F7F7F7]" dir="rtl">
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <main className="flex-1 flex flex-col pt-16 pr-4 md:pr-24">
+      <main className="flex-1 flex flex-col pt-16 md:pr-24 sm:pr-24 pr-0">
         <Header toggleSidebar={toggleSidebar} />
-        <ProfileForm />
       </main>
     </div>
   );
