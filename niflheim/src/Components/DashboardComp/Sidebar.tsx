@@ -8,17 +8,25 @@ import Wallet from "@/assets/Dashboard/Credit.svg";
 import messages from "@/assets/Dashboard/Message.svg";
 import settings from "@/assets/Dashboard/Settings.svg";
 import exit from "@/assets/Dashboard/DoorOpen.svg";
+import { useNotification } from "../../Notification/NotificationProvider";
 import React from "react";
+import { logout } from "../../API"; // Adjust the path
 
-export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
+interface SidebarProps {
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
+}
+
+export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   const navigate = useNavigate();
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false); // New state to track hover
+  const [isHovered, setIsHovered] = useState(false);
+  const { success: notifySuccess } = useNotification();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/Auth");
+    logout(); // Use the imported logout function which handles token removal and navigation
+    notifySuccess("شما خارج شدید"); // Show success notification
     console.log("User logged out");
   };
 
@@ -34,24 +42,20 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
     }
   };
 
-  // Handle mouse enter
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
 
-  // Handle mouse leave
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setIsProjectsOpen(false); // Close projects dropdown
-    setIsProfileOpen(false); // Close profile dropdown
+    setIsProjectsOpen(false);
+    setIsProfileOpen(false);
   };
 
   return (
     <aside
       className={`fixed top-19 right-0 rounded-tl-3xl rounded-bl-3xl h-[calc(100vh-4rem)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-300 z-50
-        ${
-          isSidebarOpen ? "w-48" : "w-20"
-        } sm:w-20 sm:hover:w-48 w-full group flex flex-col
+        ${isSidebarOpen ? "w-48" : "w-20"} sm:w-20 sm:hover:w-48 w-full group flex flex-col
         ${isSidebarOpen ? "block" : "hidden"} sm:block`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -81,7 +85,6 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
               </span>
               <MdArrowDropDown className="absolute right-10 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800" />
             </button>
-            {/* Dropdown Menu for Projects - Visible on Click and Hover */}
             {isProjectsOpen && isHovered && (
               <div className="absolute right-0 mt-2 w-48 bg-gray-200 rounded-lg shadow-lg z-50">
                 <Link
@@ -122,7 +125,6 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
               </span>
               <MdArrowDropDown className="absolute right-10 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800" />
             </button>
-            {/* Dropdown Menu for Profile - Visible on Click and Hover */}
             {isProfileOpen && isHovered && (
               <div className="absolute right-0 mt-2 w-48 bg-gray-200 rounded-lg shadow-lg z-50">
                 <Link

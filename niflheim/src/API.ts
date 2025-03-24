@@ -13,15 +13,29 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("authToken");
-    if (token) {
+    
+    // Exclude endpoints that shouldn't have auth tokens
+    const publicRoutes = [
+      '/login',
+      '/signup/send-otp',
+      '/signup/verify',
+      '/forget-password/send-otp',
+      '/forget-password/verify',
+      '/forget-password/reset',
+      '/refresh-token', // Usually handled separately
+    ];
+
+    if (token && !publicRoutes.includes(config.url || "")) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => {
     return Promise.reject(error);
   }
 );
+
 
 // Response interceptor to handle token expiry
 apiClient.interceptors.response.use(
@@ -179,5 +193,5 @@ export const getUserProject = async (offset: number, limit: number) => {
 export const logout = () => {
   localStorage.removeItem("authToken");
   localStorage.removeItem("refreshToken");
-  window.location.href = "/login"; // Adjust based on your routing
+  window.location.href = "/auth"; // Adjust based on your routing
 };
