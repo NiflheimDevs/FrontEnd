@@ -14,17 +14,14 @@ import ChangePasswordonForget from "../pages/ForgetPass/ChangePasswordonForget";
 import MobileVerifyforgetpass from "../pages/ForgetPass/MobileVerifyForgetPass";
 import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
 import Wallet from "../Components/DashboardComp/Wallet";
-import Chat from "../pages/Chat"
+import Chat from "../pages/Chat";
+import DashboardMain from "../pages/Dashboard";
 import React from "react";
-
 
 import CreateProject from "../pages/CreateProject/CreateProject";
 import MyProjects from "../pages/MyProjects";
 import Biders from "../pages/Biders/Biders";
 import path from "path";
-
-
-
 
 // Public routes (accessible by anyone)
 export const publicRoutes = [
@@ -40,18 +37,25 @@ export const publicRoutes = [
       </MobileVerifyWrapper>
     ),
   },
-  
+
   { path: "/error", element: <Error /> },
   { path: "/createproject", element: <CreateProject /> },
   { path: "/myprojects", element: <MyProjects /> },
   { path: "/biders", element: <Biders /> },
   { path: "/forgetpassword", element: <ForgetPassword /> },
   { path: "/Resetpass", element: <ChangePasswordonForget /> },
-  { path: "/ForgetPassVerify", element: <MobileVerifyWrapperForgetPass><MobileVerifyforgetpass /></MobileVerifyWrapperForgetPass> },
+  {
+    path: "/ForgetPassVerify",
+    element: (
+      <MobileVerifyWrapperForgetPass>
+        <MobileVerifyforgetpass />
+      </MobileVerifyWrapperForgetPass>
+    ),
+  },
   { path: "/ChangePass", element: <ChangePasswordManually /> },
   { path: "/wallet", element: <Wallet /> },
-  {path : "/Chat" , element : <Chat/>}
-
+  { path: "/Chat", element: <Chat /> },
+  { path: "/dashboard", element: <DashboardMain /> },
 ];
 
 // Private routes (require authentication)
