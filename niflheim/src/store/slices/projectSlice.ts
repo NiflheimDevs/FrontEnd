@@ -1,63 +1,71 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { authAxios } from '@/config/auth';
 
-// مدل ویژگی‌ها
-interface Feature {
-  id: string;
-  name: string;
-  price: number;
-}
-
+// Define project interface
 interface ProjectState {
   name: string;
-  skills: string;
   description: string;
+  tags: number[];
+  label: string[];
   files: File | null;
-  selectedFeatures: Feature[]; // تغییر به آرایه‌ای از ویژگی‌ها
+  loading: boolean;
+  error: string | null;
 }
 
+// Initial state
 const initialState: ProjectState = {
-  name: "",
-  skills: "",
-  description: "",
+  name: '',
+  description: '',
+  tags: [],
+  label: [],
   files: null,
-  selectedFeatures: [],
+  loading: false,
+  error: null
 };
 
-// درخواست برای ارسال پروژه به بک‌اند
+// Create async thunk for project creation
 export const createProject = createAsyncThunk(
-  "project/createProject",
-  async (projectData: FormData) => {
-    const response = await axios.post("/api/projects", projectData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    return response.data;
+  'project/create',
+  async (formData: FormData, { rejectWithValue }) => {
+    try {
+      // Use authAxios instead of axios to include auth headers
+      const response = await authAxios.post('/project/create', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'خطا در ایجاد پروژه');
+    }
   }
 );
 
+// Create the project slice
 const projectSlice = createSlice({
-  name: "project",
+  name: 'project',
   initialState,
   reducers: {
     setProjectData: (state, action: PayloadAction<Partial<ProjectState>>) => {
       return { ...state, ...action.payload };
     },
-    toggleFeature: (state, action: PayloadAction<Feature>) => {
-      const feature = action.payload;
-      const exists = state.selectedFeatures.find(f => f.id === feature.id);
-      if (exists) {
-        state.selectedFeatures = state.selectedFeatures.filter(f => f.id !== feature.id);
-      } else {
-        state.selectedFeatures.push(feature);
-      }
-    },
+    resetProject: () => initialState
   },
   extraReducers: (builder) => {
-    builder.addCase(createProject.fulfilled, (state) => {
-      return initialState; // پاک کردن داده‌ها بعد از ارسال موفق
-    });
-  },
+    builder
+      .addCase(createProject.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createProject.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(createProject.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+  }
 });
 
-export const { setProjectData, toggleFeature } = projectSlice.actions;
+export const { setProjectData, resetProject } = projectSlice.actions;
 export default projectSlice.reducer;

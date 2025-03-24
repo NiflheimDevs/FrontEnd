@@ -1,109 +1,115 @@
 import React, { useState } from "react";
-//import Header from "@/components/DashboardComp/Header";
+
 interface Step1Props {
-  formData: { name: string; skills: string; description: string; files: File | null };
+  formData: { 
+    name: string; 
+    description: string; 
+    files: File | null;
+  };
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   nextStep: () => void;
 }
 
-const Step1: React.FC<{ formData?: any; handleChange: any; handleFileChange: any; nextStep: any; }> = ({ formData = {}, handleChange, handleFileChange, nextStep }) => {
-  // Backend is down, so using a static list for now
-  // useEffect(() => {
-  //   fetchSkills().then(setSkillsList); // Fetch skills from backend
-  // }, [fetchSkills]);
-
-  const [skillsList] = useState<string[]>(["JavaScript", "Python", "React", "Node.js"]); // Temporary data
-  const [errors, setErrors] = useState<string>("");
+const Step1: React.FC<Step1Props> = ({ formData, handleChange, handleFileChange, nextStep }) => {
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [focused, setFocused] = useState<{ [key: string]: boolean }>({});
 
   const validateForm = () => {
-    if (formData.name.trim().length < 5) {
-      setErrors("نام پروژه باید حداقل ۵ کاراکتر باشد.");
-      return false;
+    const newErrors: {[key: string]: string} = {};
+    
+    if (!formData.name || formData.name.trim().length < 5) {
+      newErrors.name = "عنوان پروژه باید حداقل ۵ کاراکتر باشد.";
     }
-    if (formData.description.trim().length < 20) {
-      setErrors("توضیحات پروژه باید حداقل ۲۰ کاراکتر باشد.");
-      return false;
+    
+    if (!formData.description || formData.description.trim().length < 20) {
+      newErrors.description = "توضیحات پروژه باید حداقل ۲۰ کاراکتر باشد.";
     }
-    setErrors("");
-    return true;
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
-     
+
   const handleNextStep = () => {
     if (validateForm()) {
       nextStep();
     }
   };
 
-  return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">مرحله ۱: اطلاعات پروژه</h2>
+  const handleFocus = (field: string) => {
+    setFocused(prev => ({ ...prev, [field]: true }));
+  };
 
-      <div className="mb-4">
-        <label
-          className={`block text-sm ${focused.name ? "text-blue-600" : "text-gray-600"}`}
-        >
-          نام پروژه
+  const handleBlur = (field: string) => {
+    setFocused(prev => ({ ...prev, [field]: false }));
+  };
+
+  return (
+    <div className="p-6 bg-white rounded-lg">
+      <h2 className="text-xl font-semibold mb-6 text-right">اطلاعات اصلی پروژه</h2>
+
+      <div className="mb-6">
+        <label className={`block text-sm mb-1 text-right ${focused.name ? "text-blue-600" : "text-gray-600"}`}>
+          عنوان پروژه *
         </label>
         <input
           type="text"
           id="name"
-          value={formData.name}
+          value={formData.name || ''}
           onChange={handleChange}
-          onFocus={() => setFocused({ ...focused, name: true })}
-          onBlur={() => setFocused({ ...focused, name: false })}
-          className="w-full p-2 mt-1 border rounded focus:ring focus:ring-blue-300"
-          placeholder="نام پروژه را وارد کنید"
-          required
+          onFocus={() => handleFocus('name')}
+          onBlur={() => handleBlur('name')}
+          className={`w-full p-3 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring focus:ring-blue-300 text-right`}
+          placeholder="عنوان پروژه را وارد کنید"
+          dir="rtl"
         />
+        {errors.name && <p className="text-red-500 text-sm mt-1 text-right">{errors.name}</p>}
       </div>
 
-      <div className="mb-4">
-        <label className="block text-sm text-gray-600">مهارت‌های مورد نیاز</label>
-        <select
-          id="skills"
-          value={formData.skills}
-          onChange={handleChange}
-          className="w-full p-2 mt-1 border rounded focus:ring focus:ring-blue-300"
-          required
-        >
-          <option value="">انتخاب کنید</option>
-          {skillsList.map((skill) => (
-            <option key={skill} value={skill}>{skill}</option>
-          ))}
-        </select>
-      </div>
-
-      <div className="mb-4">
-        <label
-          className={`block text-sm ${focused.description ? "text-blue-600" : "text-gray-600"}`}
-        >
-          توضیحات پروژه
+      <div className="mb-6">
+        <label className={`block text-sm mb-1 text-right ${focused.description ? "text-blue-600" : "text-gray-600"}`}>
+          توضیحات پروژه *
         </label>
         <textarea
           id="description"
-          value={formData.description}
+          value={formData.description || ''}
           onChange={handleChange}
-          onFocus={() => setFocused({ ...focused, description: true })}
-          onBlur={() => setFocused({ ...focused, description: false })}
-          className="w-full p-2 mt-1 border resize-none rounded focus:ring focus:ring-blue-300"
-          rows={3}
-          required
+          onFocus={() => handleFocus('description')}
+          onBlur={() => handleBlur('description')}
+          className={`w-full p-3 border ${errors.description ? 'border-red-500' : 'border-gray-300'} resize-none rounded-lg focus:ring focus:ring-blue-300 text-right`}
+          rows={6}
+          placeholder="توضیحات کامل پروژه را وارد کنید"
+          dir="rtl"
         />
+        {errors.description && <p className="text-red-500 text-sm mt-1 text-right">{errors.description}</p>}
       </div>
 
-      <div className="mb-4">
-        <label className="block text-sm text-gray-600">آپلود فایل (اختیاری)</label>
-        <input type="file" onChange={handleFileChange} className="w-full p-2 mt-1 border rounded" />
+      <div className="mb-6">
+        <label className="block text-sm mb-1 text-right text-gray-600">
+          فایل ضمیمه (اختیاری)
+        </label>
+        <div className="border border-dashed border-gray-300 rounded-lg p-4 text-center">
+          <input 
+            type="file" 
+            onChange={handleFileChange} 
+            className="hidden" 
+            id="projectFile" 
+          />
+          <label htmlFor="projectFile" className="cursor-pointer text-blue-500 hover:text-blue-700">
+            برای آپلود فایل کلیک کنید یا فایل را اینجا رها کنید
+          </label>
+          {formData.files && (
+            <p className="mt-2 text-sm text-gray-600">
+              {formData.files.name}
+            </p>
+          )}
+        </div>
       </div>
 
-      {errors && <p className="text-red-500 text-sm mb-4">{errors}</p>}
-
-      <div className="flex justify-end mt-4">
+      <div className="flex justify-end mt-8">
         <button
           onClick={handleNextStep}
-          className={`px-6 py-2 rounded shadow-lg text-white bg-[#5993F6] hover:bg-[#3E79DE]`}
+          className="px-6 py-3 rounded-lg text-white bg-blue-500 hover:bg-blue-600 transition duration-200"
         >
           مرحله بعد
         </button>
