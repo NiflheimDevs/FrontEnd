@@ -210,12 +210,7 @@ const Wallet = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center h-60 mt-4">
-        <div className="flex flex-col items-center">
-          <Skeleton width="250px" height="100px" className="shiny-skeleton full border border-gray-300" />
-          <Skeleton width="200px" height="20px" className="shiny-skeleton mt-2 bg-gray-200 rounded" />
-        </div>
-      </div>
+
     </div>
   );
 
@@ -350,7 +345,12 @@ const Wallet = () => {
             )}
             <div className="flex flex-col items-center justify-center h-64 mt-2">
               {isLoading ? (
-                <Skeleton className="shiny-skeleton"  width="100px" height="100px" />
+                      <div className="flex flex-col items-center justify-center h-60 mt-4">
+                      <div className="flex flex-col items-center">
+                        <Skeleton width="250px" height="100px" className="shiny-skeleton full border border-gray-300" />
+                        <Skeleton width="200px" height="20px" className="shiny-skeleton mt-2 bg-gray-200 rounded" />
+                      </div>
+                    </div>
               ) : (
                 <>
                   <img src={walletPic} alt="Illustration" />
