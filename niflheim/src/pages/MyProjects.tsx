@@ -22,9 +22,8 @@ const cardVariants = {
   },
   exit: { opacity: 0, scale: 0.8, rotateX: -90, transition: { duration: 0.5 } },
   hover: {
-    scale: 1.05,
-    rotateY: 10,
-    boxShadow: "0px 0px 30px rgba(81, 137, 202, 0.8)",
+    scale: 1.03, // Slightly reduced scale for subtlety
+    boxShadow: "0px 0px 20px rgba(81, 137, 202, 0.6)", // Adjusted shadow for less intensity
     transition: { duration: 0.3 },
   },
 };
