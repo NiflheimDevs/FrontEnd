@@ -8,18 +8,26 @@ import Wallet from "@/assets/Dashboard/Credit.svg";
 import messages from "@/assets/Dashboard/Message.svg";
 import settings from "@/assets/Dashboard/Settings.svg";
 import exit from "@/assets/Dashboard/DoorOpen.svg";
+import { useNotification } from "../../Notification/NotificationProvider";
 import React from "react";
+import { logout } from "../../API"; // Adjust the path
 
-export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
+interface SidebarProps {
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
+}
+
+export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
   const navigate = useNavigate();
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const { success: notifySuccess } = useNotification();
   const location = useLocation();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/Auth");
+    logout(); // Use the imported logout function which handles token removal and navigation
+    notifySuccess("شما خارج شدید"); // Show success notification
     console.log("User logged out");
   };
 
@@ -84,19 +92,18 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
             {isProjectsOpen && isHovered && (
               <div className="absolute right-0 mt-2 w-48 bg-gray-200 rounded-lg shadow-lg z-50">
                 <Link
-                  to="/myprojects/active"
-                  className={`block px-4 py-2 hover:bg-gray-300 ${isActive("/myprojects/active") || isActive("/myprojects") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
+                  to="/myprojects"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300"
                 >
-                  پروژه‌های فعال
-                  {(isActive("/myprojects/active") || isActive("/myprojects")) && <div className="absolute left-0 w-1 h-full bg-blue-400"></div>}
+                  پروژه های من
                 </Link>
                 <Link
-                  to="/myprojects/completed"
-                  className={`block px-4 py-2 hover:bg-gray-300 ${isActive("/myprojects/completed") || isActive("/myprojects") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
+                  to="/"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300"
                 >
-                  پروژه‌های تکمیل شده
-                  {(isActive("/myprojects/completed") || isActive("/myprojects")) && <div className="absolute left-0 w-1 h-full bg-blue-400"></div>}
+                  پیشنهادات
                 </Link>
+                
               </div>
             )}
           </div>

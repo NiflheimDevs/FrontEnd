@@ -1,74 +1,126 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { toggleFeature } from "@/store/slices/projectSlice";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setProjectData } from '@/store/slices/projectSlice';
 
-interface Step2Props {
-  prevStep: () => void;
-  nextStep: () => void;
+interface Tag {
+  ID: number;
+  Name: string;
 }
 
-const Step2: React.FC<Step2Props> = ({ prevStep, nextStep }) => {
-  const dispatch = useDispatch();
-  const { selectedFeatures } = useSelector((state: RootState) => state.project);
+interface Step2Props {
+  formData: {
+    tags: number[];
+    label: string[];
+  };
+  tags: Tag[];
+  onNext: () => void;
+  onPrev: () => void;
+}
 
-  const features = [
-    { id: "unlimited", name: "ثبت رایگان", describe: "ثبت پروژه رایگان به مناسبت آغاز فعالیت سایت!", price: 0 },
-    { id: "urgent", name: "پروژه فوری", describe: "پروژه فوری برای جلب توجه فریلنسر‌های حرفه‌ای.", price: 109000 },
-    { id: "featured", name: "پروژه برجسته", describe: "افزایش شانس دریافت پیشنهادهای بهتر.", price: 295000 },
+const Step2: React.FC<Step2Props> = ({ formData, tags, onNext, onPrev }) => {
+  const dispatch = useDispatch();
+  const [selectedTags, setSelectedTags] = useState<number[]>(formData.tags);
+  const [selectedLabels, setSelectedLabels] = useState<string[]>(formData.label);
+  const [error, setError] = useState('');
+
+  // Predefined labels with prices
+  const predefinedLabels = [
+    { name: 'فوری', price: 202000 },
+    { name: 'برجسته', price: 150000 },
+    { name: 'رایگان', price: 0 }
   ];
 
-  // محاسبه مجموع مبلغ ویژگی‌های انتخاب‌شده
-  const totalPrice = selectedFeatures.reduce((sum, feature) => sum + feature.price, 0);
+  const toggleTag = (tagId: number) => {
+    const newSelectedTags = selectedTags.includes(tagId)
+      ? selectedTags.filter(id => id !== tagId)
+      : [...selectedTags, tagId];
+    
+    setSelectedTags(newSelectedTags);
+  };
+
+  const toggleLabel = (label: string) => {
+    // Allow multiple label selections
+    const newSelectedLabels = selectedLabels.includes(label)
+      ? selectedLabels.filter(l => l !== label)
+      : [...selectedLabels, label];
+    
+    setSelectedLabels(newSelectedLabels);
+  };
+
+  const handleNext = () => {
+    if (selectedTags.length === 0) {
+      setError('حداقل یک تگ را انتخاب کنید');
+      return;
+    }
+
+    if (selectedLabels.length === 0) {
+      setError('حداقل یک برچسب را انتخاب کنید');
+      return;
+    }
+
+    dispatch(setProjectData({ 
+      tags: selectedTags, 
+      label: selectedLabels 
+    }));
+    
+    onNext();
+  };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-lg font-bold mb-4">انتخاب ویژگی‌های پروژه</h2>
+    <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
+      <h2 className="text-2xl mb-6 text-center text-gray-800 font-bold">انتخاب تگ‌ها و برچسب‌ها</h2>
 
-      <div className="space-y-4">
-        {features.map((feature) => {
-          const isSelected = selectedFeatures.some(f => f.id === feature.id);
-          const isMandatory = feature.id === "unlimited"; // این ویژگی اجباری است
-
-          return (
+      <div className="mb-6 p-4 bg-gray-50 rounded-md">
+        <h3 className="mb-3 text-lg font-semibold text-gray-700">انتخاب تگ‌ها</h3>
+        <div className="flex flex-wrap gap-3">
+          {tags.map(tag => (
             <button
-              key={feature.id}
-              onClick={() => !isMandatory && dispatch(toggleFeature(feature))}
-              className={`w-full border-2 ${isSelected ? "border-blue-500" : ""} 
-                ${isMandatory ? " border-blue-500" : "hover:border-blue-400"} 
-                rounded-lg p-4 flex items-start transition-all`}
-              disabled={isMandatory}
+              key={tag.ID}
+              onClick={() => toggleTag(tag.ID)}
+              className={`px-4 py-2 rounded-full transition-all duration-200 ${
+                selectedTags.includes(tag.ID) 
+                  ? 'bg-blue-500 text-white scale-105' 
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
             >
-              <div className="flex-1">
-                <div className="flex items-center mb-2">
-                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-medium">
-                    {feature.name}
-                  </span>
-                </div>
-                <p className="text-gray-600 text-sm">{feature.describe}</p>
-                <div className="flex items-center mt-2">
-                  <span className="text-xl font-bold">
-                    {feature.price ? `${feature.price.toLocaleString()} تومان` : "رایگان"}
-                  </span>
-                </div>
-              </div>
+              {tag.Name}
             </button>
-          );
-        })}
+          ))}
+        </div>
+        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
       </div>
 
-      {/* نمایش مجموع مبلغ پرداختی */}
-      <div className="mt-6 p-4 bg-gray-100 rounded-lg flex justify-between items-center">
-        <span className="text-lg font-bold">جمع کل:</span>
-        <span className="text-lg font-bold text-blue-600">{totalPrice.toLocaleString()} تومان</span>
+      <div className="mb-6 p-4 bg-gray-50 rounded-md">
+        <h3 className="mb-3 text-lg font-semibold text-gray-700">انتخاب برچسب‌ها</h3>
+        <div className="flex flex-wrap gap-3">
+          {predefinedLabels.map(label => (
+            <button
+              key={label.name}
+              onClick={() => toggleLabel(label.name)}
+              className={`px-4 py-2 rounded-full transition-all duration-200 ${
+                selectedLabels.includes(label.name) 
+                  ? 'bg-green-500 text-white scale-105' 
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              {label.name} - {label.price.toLocaleString()} تومان
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="flex justify-between mt-8">
-        <button onClick={prevStep} className="bg-gray-300 text-gray-700 px-6 py-2 rounded shadow hover:bg-gray-400 transition-colors">
-          بازگشت
+      <div className="flex justify-between mt-6">
+        <button 
+          onClick={onPrev}
+          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors"
+        >
+          مرحله قبل
         </button>
-        <button onClick={nextStep} className="bg-blue-500 text-white px-6 py-2 rounded shadow hover:bg-blue-600 transition-colors">
-          ثبت پروژه
+        <button 
+          onClick={handleNext}
+          className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors"
+        >
+          مرحله بعد
         </button>
       </div>
     </div>
