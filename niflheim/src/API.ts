@@ -22,7 +22,7 @@ apiClient.interceptors.request.use(
       '/forget-password/send-otp',
       '/forget-password/verify',
       '/forget-password/reset',
-      '/refresh-token', // Usually handled separately
+      '/refresh-token',
     ];
 
     if (token && !publicRoutes.includes(config.url || "")) {
