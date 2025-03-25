@@ -10,23 +10,21 @@ import { errorMapper } from "../Error/Error";
 import { RootState } from "../../store/store";
 
 const ChangePasswordManually = () => {
-    const { error: notifyError, success: notifySuccess } = useNotification();
-    const [ispic, setIspic] = useState(true);
-    const navigate = useNavigate();
-    const dispatcher = useDispatch();
-    const [showPassword0, setShowPassword0] = useState(false); 
-    const [showPassword1, setShowPassword1] = useState(false); 
-    const [showPassword2, setShowPassword2] = useState(false);
-    const [isValidPass, setIsValidPass] = useState<boolean | null>(null); 
-    const [isValidPassRepeat, setIsValidPassRepeat] = useState<boolean | null>(null); 
-    const [passwordold, setPasswordold] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordRepeat, setPasswordRepeat] = useState("");
-    const SessionID = useSelector((state: RootState) => state.auth.SessionID);
-    
-
-  const validatePassword = (value) => {
-    if (!value) {
+	const { error: notifyError, success: notifySuccess } = useNotification();
+	const [ispic, setIspic] = useState(true);
+	const navigate = useNavigate();
+	const dispatcher = useDispatch();
+	const [showPassword0, setShowPassword0] = useState(false); 
+	const [showPassword1, setShowPassword1] = useState(false); 
+	const [showPassword2, setShowPassword2] = useState(false); 
+	const [isValidPass, setIsValidPass] = useState<boolean | null>(null); 
+	const [isValidPassRepeat, setIsValidPassRepeat] = useState<boolean | null>(null); 
+	const [passwordold, setPasswordold] = useState("");
+	const [password, setPassword] = useState("");
+	const [passwordRepeat, setPasswordRepeat] = useState("");
+	const SessionID = useSelector((state: RootState) => state.auth.SessionID);
+	const validatePassword = (value) => {
+	if (!value) {
       return false;
     } else if (value.length < 8) {
       return false;
@@ -40,15 +38,14 @@ const ChangePasswordManually = () => {
       return true;
     }
   };
-  const validatePasswordRepeat = (value) => {
+	const validatePasswordRepeat = (value) => {
     if (value != password) {
       return false;
     } else {
       return true;
     }
   };
-
-  const handleChangePassOld = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChangePassOld = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPasswordold(value);
     setIsValidPass(validatePassword(value));
@@ -63,8 +60,7 @@ const ChangePasswordManually = () => {
     setPasswordRepeat(value);
     setIsValidPassRepeat(validatePasswordRepeat(value));
   };
-
-     const handleCompleteClick = async () => {
+	const handleCompleteClick = async () => {
         try {
             await ChangePass({
               bearer: SessionID?.toString() ?? "", 
@@ -86,11 +82,10 @@ const ChangePasswordManually = () => {
           }
         }
     };
-
-    const handleCancelClick = () => {
+	const handleCancelClick = () => {
         navigate('/dashboard', { state: { referrer: 'ChangePasswordManually' } });
     };
-
+	
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -214,6 +209,25 @@ const ChangePasswordManually = () => {
                   type="image/svg+xml"
                   className="w-6.5 h-6.5 pointer-events-none"
                 />
+              </button>
+            </div>
+            <button
+              className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3  ${
+                !(isValidPassRepeat === true && isValidPass === true)
+                  ? "opacity-60"
+                  : "hover:bg-blue-600 focus:bg-blue-600  cursor-pointer "
+              }`}
+              disabled={
+                !(isValidPassRepeat === true && isValidPass === true)
+                  ? true
+                  : false
+              }
+              tabIndex={4}
+              onClick={handleCompleteClick}
+            >
+              <p className="text-white font-[vazirmatn] font-extralight">
+                تایید و ادامه
+              </p>
             </button>
           </div>
             <div className="flex w-full justify-between mt-6">

@@ -146,6 +146,7 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
 
           <Link
             to="/chat"
+
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/chat") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
           >
             <img src={messages} alt="chat" className="w-6 h-6" />

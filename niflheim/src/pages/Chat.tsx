@@ -16,11 +16,9 @@ export default function Profile() {
       setIsLoading(false);
     }, 2000); // Simulating a 2-second delay
   }, []);
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-  
   const renderSkeleton = () => (
     <div className="flex flex-col md:flex-row mt-6 p-3 md:p-5 w-full max-w-[1080px] h-[88vh] mx-auto shiny-skeleton rounded-2xl" dir="rtl">
       {/* Chat List */}
@@ -38,20 +36,16 @@ export default function Profile() {
         </div>
       </div>
       {/* Chat Window */}
-      <div className="flex flex-col flex-1 min-h-0 mt-4 md:mt-0 md:ml-3 shiny-skeleton rounded-2xl"> </div>
-     
+      <div className="flex flex-col flex-1 min-h-0 mt-4 md:mt-0 md:ml-3 shiny-skeleton rounded-2xl"> </div> 
     </div>
-      
- 
   );
-
-
 
   return (
     <div className="flex min-h-screen w-full bg-gradient-to-br from-[#71C2F4] to-[#000D6E]">
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main className="flex-1 flex flex-col pt-16 md:pr-24 sm:pr-24 pr-0">
         <Header toggleSidebar={toggleSidebar} />
+
         {isLoading ? (
               renderSkeleton()
             ) : (
