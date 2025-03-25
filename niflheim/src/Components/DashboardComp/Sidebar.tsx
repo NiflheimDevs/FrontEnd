@@ -146,10 +146,10 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: any) {
 
           <Link
             to="/chat"
-            className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/messages") ? "font-bold text-black bg-blue-500" : "text-gray-800"}`}
+            className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/chat") ? "font-bold text-black bg-blue-500" : "text-gray-800"}`}
           >
             <img src={messages} alt="chat" className="w-6 h-6" />
-            <span className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/messages") ? "text-white" : "text-gray-800"}`}>
+            <span className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/chat") ? "text-white" : "text-gray-800"}`}>
               پیام ها
             </span>
             {isActive("/chat") && <div className="absolute left-0 w-1 h-full bg-blue-700"></div>}

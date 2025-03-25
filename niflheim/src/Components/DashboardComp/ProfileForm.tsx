@@ -8,7 +8,7 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { setProfile } from "../../store/slices/profileSlice";
-import OtpInput from "react-otp-input"; 
+import OtpInput from "react-otp-input";
 
 interface WorkExperience {
   companyName: string;
@@ -18,6 +18,8 @@ interface WorkExperience {
   startDate?: string;
   endDate?: string;
   isOngoing?: boolean;
+  skills: string[];
+  skillProficiency: { [key: string]: string };
 }
 
 interface Profile {
@@ -43,7 +45,6 @@ const initialProfile: Profile = {
   workExperiences: [],
   resume: null,
 };
-
 export default function ProfileForm() {
   const dispatch = useDispatch();
   const profileFromRedux = useSelector((state: { profile: Profile }) => state.profile);
@@ -54,8 +55,10 @@ export default function ProfileForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resumeName, setResumeName] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [mainSkillsSearchTerm, setMainSkillsSearchTerm] = useState("");
+  const [isMainSkillsDropdownOpen, setIsMainSkillsDropdownOpen] = useState(false);
+  const [workSearchTerms, setWorkSearchTerms] = useState<string[]>([]);
+  const [workDropdowns, setWorkDropdowns] = useState<boolean[]>([]);
   const [profilePictureFile, setProfilePictureFile] = useState<File | null>(null);
   const [validationErrors, setValidationErrors] = useState<{
     skills?: string[];
@@ -63,7 +66,6 @@ export default function ProfileForm() {
   }>({});
   const { error: notifyError, success: notifySuccess } = useNotification();
 
-  // حالت‌های جدید برای OTP و تایمر
   const [token, setTokens] = useState<string>("");
   const [timeLeft, setTimeLeft] = useState(120);
   const [isScaled, setIsScaled] = useState(false);
@@ -72,6 +74,8 @@ export default function ProfileForm() {
   useEffect(() => {
     dispatch(setProfile(initialProfile));
     setLocalProfile(initialProfile);
+    setWorkSearchTerms([]);
+    setWorkDropdowns([]);
   }, [dispatch]);
 
   useEffect(() => {
@@ -79,7 +83,6 @@ export default function ProfileForm() {
     const timerId = setInterval(() => {
       setTimeLeft((prevTime) => prevTime - 1);
     }, 1000);
-
     return () => clearInterval(timerId);
   }, [timeLeft, showOtpSection]);
 
@@ -94,13 +97,12 @@ export default function ProfileForm() {
   }, [timeLeft, showOtpSection]);
 
   const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, ''); 
+    e.target.value = e.target.value.replace(/[^0-9]/g, '');
     const value = e.target.value;
     setLocalProfile((prev) => ({ ...prev, phoneNumber: value }));
-    if(value.startsWith('09') && value.length == 11){
+    if (value.startsWith('09') && value.length === 11) {
       setChangedPhone(value !== profileFromRedux.phoneNumber);
-    }
-    else {
+    } else {
       setChangedPhone(false);
     }
   };
@@ -122,9 +124,21 @@ export default function ProfileForm() {
       ...prev,
       workExperiences: [
         ...prev.workExperiences,
-        { companyName: "", website: "", duration: "", jobTitle: "", startDate: "", endDate: "", isOngoing: false },
+        {
+          companyName: "",
+          website: "",
+          duration: "",
+          jobTitle: "",
+          startDate: "",
+          endDate: "",
+          isOngoing: false,
+          skills: [],
+          skillProficiency: {},
+        },
       ],
     }));
+    setWorkSearchTerms((prev) => [...prev, ""]);
+    setWorkDropdowns((prev) => [...prev, false]);
   };
 
   const handleRemoveWorkExperience = (index: number) => {
@@ -132,6 +146,8 @@ export default function ProfileForm() {
       ...prev,
       workExperiences: prev.workExperiences.filter((_, i) => i !== index),
     }));
+    setWorkSearchTerms((prev) => prev.filter((_, i) => i !== index));
+    setWorkDropdowns((prev) => prev.filter((_, i) => i !== index));
     setValidationErrors((prev) => ({
       ...prev,
       workExperiences: prev.workExperiences?.filter((err) => err.index !== index),
@@ -141,7 +157,7 @@ export default function ProfileForm() {
   const handleWorkExperienceChange = (
     index: number,
     field: keyof WorkExperience,
-    value: string | boolean
+    value: string | boolean | string[]
   ) => {
     setLocalProfile((prev) => {
       const updatedExperiences = prev.workExperiences.map((exp, i) => {
@@ -150,7 +166,35 @@ export default function ProfileForm() {
           if (field === "isOngoing" && value === true) {
             updatedExp.endDate = "";
           }
+          if (field === "skills" && Array.isArray(value)) {
+            const newProficiency = { ...updatedExp.skillProficiency };
+            Object.keys(newProficiency).forEach((skill) => {
+              if (!value.includes(skill)) {
+                delete newProficiency[skill];
+              }
+            });
+            updatedExp.skillProficiency = newProficiency;
+          }
           return updatedExp;
+        }
+        return exp;
+      });
+      return { ...prev, workExperiences: updatedExperiences };
+    });
+  };
+
+  const handleWorkSkillProficiencyChange = (
+    index: number,
+    skill: string,
+    level: string
+  ) => {
+    setLocalProfile((prev) => {
+      const updatedExperiences = prev.workExperiences.map((exp, i) => {
+        if (i === index) {
+          return {
+            ...exp,
+            skillProficiency: { ...exp.skillProficiency, [skill]: level },
+          };
         }
         return exp;
       });
@@ -217,12 +261,24 @@ export default function ProfileForm() {
     }));
   };
 
+  const isWorkExperienceEmpty = (exp: WorkExperience) => {
+    return (
+      !exp.companyName &&
+      !exp.website &&
+      !exp.duration &&
+      !exp.jobTitle &&
+      !exp.startDate &&
+      !exp.endDate &&
+      !exp.isOngoing &&
+      exp.skills.length === 0 &&
+      Object.keys(exp.skillProficiency).length === 0
+    );
+  };
   const validateForm = () => {
     let errors: {
       skills?: string[];
       workExperiences?: { index: number; fields: (keyof WorkExperience)[] }[];
     } = {};
-
     if (localProfile.skills.length > 0) {
       const missingProficiencies = localProfile.skills.filter(
         (skill) => !localProfile.skillProficiency[skill]
@@ -232,17 +288,26 @@ export default function ProfileForm() {
         notifyError("میزان تسلط برای تمام مهارت‌ها باید مشخص شده باشد.");
       }
     }
-
     if (localProfile.workExperiences.length > 0) {
       const workErrors = localProfile.workExperiences
         .map((exp, index) => {
           const missingFields: (keyof WorkExperience)[] = [];
-          if (!exp.companyName) missingFields.push("companyName");
-          if (!exp.jobTitle) missingFields.push("jobTitle");
-          if (!exp.startDate) missingFields.push("startDate");
-          if (!exp.duration) missingFields.push("duration");
-          if (!exp.isOngoing && !exp.endDate) missingFields.push("endDate");
-
+          if (!isWorkExperienceEmpty(exp)) { 
+            if (!exp.companyName) missingFields.push("companyName");
+            if (!exp.jobTitle) missingFields.push("jobTitle");
+            if (!exp.startDate) missingFields.push("startDate");
+            if (!exp.duration) missingFields.push("duration");
+            if (!exp.isOngoing && !exp.endDate) missingFields.push("endDate");
+            if (exp.skills.length === 0) missingFields.push("skills"); 
+            if (exp.skills.length > 0) {
+              const missingProficiencies = exp.skills.filter(
+                (skill) => !exp.skillProficiency[skill]
+              );
+              if (missingProficiencies.length > 0) {
+                missingFields.push("skillProficiency");
+              }
+            }
+          }
           return missingFields.length > 0 ? { index, fields: missingFields } : null;
         })
         .filter((err) => err !== null) as { index: number; fields: (keyof WorkExperience)[] }[];
@@ -260,7 +325,15 @@ export default function ProfileForm() {
   const handleSubmit = () => {
     setLoading(true);
     setError(null);
-
+    const filteredWorkExperiences = localProfile.workExperiences.filter(
+      (exp) => !isWorkExperienceEmpty(exp)
+    );
+    setLocalProfile((prev) => ({
+      ...prev,
+      workExperiences: filteredWorkExperiences,
+    }));
+    setWorkSearchTerms((prev) => prev.slice(0, filteredWorkExperiences.length));
+    setWorkDropdowns((prev) => prev.slice(0, filteredWorkExperiences.length));
     if (!validateForm()) {
       setLoading(false);
       setTimeout(() => {
@@ -283,10 +356,10 @@ export default function ProfileForm() {
   const seconds = timeLeft % 60;
 
   const HandleVerify = async () => {
-    notifySuccess(`ورود شما با موفقیت انجام شد`);
+    notifySuccess(`شماره تماس شما با موفقیت تغییر کرد.`);
     setShowOtpSection(false);
-    setTimeLeft(120); 
-    setTokens(""); 
+    setTimeLeft(120);
+    setTokens("");
   };
 
   const handleTimeOut = async () => {
@@ -298,8 +371,8 @@ export default function ProfileForm() {
   const handlePhoneChangeSubmit = () => {
     if (changedPhone) {
       setShowOtpSection(true);
-      setTimeLeft(120); 
-      setTokens(""); 
+      setTimeLeft(120);
+      setTokens("");
       notifySuccess("کد تأیید به شماره جدید ارسال شد");
     }
   };
@@ -539,7 +612,7 @@ export default function ProfileForm() {
                             isScaled ? "scale-110" : "scale-100"
                           }`}
                           onClick={handleTimeOut}
-                          tabIndex={8}
+                          tabIndex={9}
                         >
                           <object
                             data="/src/assets/Clock_B.svg"
@@ -562,7 +635,7 @@ export default function ProfileForm() {
                       }`}
                       disabled={token.length !== 5}
                       onClick={HandleVerify}
-                      tabIndex={8}
+                      tabIndex={10}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-square-check-big"><path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5"/><path d="m9 11 3 3L22 4"/></svg>
                       <p className="text-white font-[vazirmatn] font-extralight">تغییر شماره</p>
@@ -581,7 +654,7 @@ export default function ProfileForm() {
                 value={localProfile.firstName}
                 onChange={(e) => handleInputChange("firstName", e.target.value)}
                 className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
-                tabIndex={9}
+                tabIndex={11}
               />
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
@@ -593,7 +666,7 @@ export default function ProfileForm() {
                 value={localProfile.lastName}
                 onChange={(e) => handleInputChange("lastName", e.target.value)}
                 className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
-                tabIndex={10}
+                tabIndex={12}
               />
             </div>
           </div>
@@ -651,15 +724,15 @@ export default function ProfileForm() {
                   <input
                     type="text"
                     placeholder="جستجوی مهارت..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onFocus={() => setIsDropdownOpen(true)}
-                    onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
+                    value={mainSkillsSearchTerm}
+                    onChange={(e) => setMainSkillsSearchTerm(e.target.value)}
+                    onFocus={() => setIsMainSkillsDropdownOpen(true)}
+                    onBlur={() => setTimeout(() => setIsMainSkillsDropdownOpen(false), 200)}
                     className="w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white"
-                    tabIndex={11}
+                    tabIndex={13}
                   />
                   <AnimatePresence>
-                    {isDropdownOpen && (
+                    {isMainSkillsDropdownOpen && (
                       <motion.ul
                         variants={dropdownVariants}
                         initial="hidden"
@@ -671,7 +744,7 @@ export default function ProfileForm() {
                           .filter(
                             (skill) =>
                               !localProfile.skills.includes(skill) &&
-                              skill.toLowerCase().includes(searchTerm.toLowerCase())
+                              skill.toLowerCase().includes(mainSkillsSearchTerm.toLowerCase())
                           )
                           .map((skill) => (
                             <motion.li
@@ -715,10 +788,10 @@ export default function ProfileForm() {
                             onChange={(e) => handleProficiencyChange(skill, e.target.value)}
                             className={`px-3 py-1 border-2 rounded-lg text-right [direction:rtl] bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-blue-400 ${
                               validationErrors.skills?.includes(skill)
-                                ? "border-red-500 ring-2 ring-red-500"
-                                : "border-gray-300"
+                                ? "text-red-500"
+                                : "text-gray-400"
                             }`}
-                            tabIndex={12 + skillIndex}
+                            tabIndex={14 + skillIndex}
                           >
                             <option value="" disabled>
                               انتخاب سطح
@@ -749,6 +822,7 @@ export default function ProfileForm() {
                         const workError = validationErrors.workExperiences?.find(
                           (err) => err.index === index
                         );
+                        const baseTabIndex = 14 + localProfile.skills.length + index * 10;
                         return (
                           <motion.div
                             key={index}
@@ -760,12 +834,12 @@ export default function ProfileForm() {
                           >
                             <button
                               onClick={() => handleRemoveWorkExperience(index)}
-                              className="bg-black bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-200 ease-in-out hover:scale-110 cursor-pointer absolute top-2 right-2"
-                              tabIndex={12 + localProfile.skills.length + index * 6 + 1}
+                              className="absolute top-2 right-2 bg-black bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-200 ease-in-out hover:scale-110 cursor-pointer"
+                              tabIndex={baseTabIndex}
                             >
                               <X size={20} color="white" />
                             </button>
-                            <div className="flex flex-col gap-3">
+                            <div className="flex flex-col gap-3 mt-8">
                               <div className="flex items-center gap-2">
                                 <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right">
                                   اسم شرکت
@@ -779,10 +853,10 @@ export default function ProfileForm() {
                                   placeholder="گوگل"
                                   className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
                                     workError?.fields.includes("companyName")
-                                      ? "border-red-500 ring-2 ring-red-500"
-                                      : "border-gray-300"
+                                      ? "placeholder-red-500"
+                                      : "placeholder-gray-400"
                                   }`}
-                                  tabIndex={12 + localProfile.skills.length + index * 6 + 2}
+                                  tabIndex={baseTabIndex + 1}
                                 />
                               </div>
                               <div className="flex items-center gap-2">
@@ -796,10 +870,10 @@ export default function ProfileForm() {
                                   }
                                   className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-700 ${
                                     workError?.fields.includes("jobTitle")
-                                      ? "border-red-500 ring-2 ring-red-500"
-                                      : "border-gray-300"
+                                      ? "text-red-500"
+                                      : "text-gray-400"
                                   }`}
-                                  tabIndex={12 + localProfile.skills.length + index * 6 + 3}
+                                  tabIndex={baseTabIndex + 2}
                                 >
                                   <option value="" disabled>
                                     انتخاب عنوان شغلی
@@ -835,10 +909,10 @@ export default function ProfileForm() {
                                       placeholder="تاریخ شروع را انتخاب کنید"
                                       className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
                                         workError?.fields.includes("startDate")
-                                          ? "border-red-500 ring-2 ring-red-500"
-                                          : "border-gray-300"
+                                          ? "placeholder-red-500"
+                                          : "placeholder-gray-400"
                                       }`}
-                                      tabIndex={12 + localProfile.skills.length + index * 6 + 4}
+                                      tabIndex={baseTabIndex + 3}
                                       readOnly
                                     />
                                   )}
@@ -876,10 +950,10 @@ export default function ProfileForm() {
                                           placeholder="تاریخ اتمام را انتخاب کنید"
                                           className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
                                             workError?.fields.includes("endDate")
-                                              ? "border-red-500 ring-2 ring-red-500"
-                                              : "border-gray-300"
+                                              ? "placeholder-red-500"
+                                              : "placeholder-gray-400"
                                           }`}
-                                          tabIndex={12 + localProfile.skills.length + index * 6 + 5}
+                                          tabIndex={baseTabIndex + 4}
                                           readOnly
                                         />
                                       )}
@@ -896,10 +970,120 @@ export default function ProfileForm() {
                                       handleWorkExperienceChange(index, "isOngoing", e.target.checked)
                                     }
                                     className="w-5 h-5 rounded border-2 border-gray-300 text-blue-500 focus:ring-blue-500 transition-all duration-200"
-                                    tabIndex={12 + localProfile.skills.length + index * 6 + 6}
+                                    tabIndex={baseTabIndex + 5}
                                   />
                                   هنوز در حال همکاری هستم
                                 </label>
+                              </div>
+                              {/* Skills Section for Work Experience */}
+                              <div className="mt-4">
+                                <h3 className="text-sm font-semibold text-gray-600 text-right mb-2">
+                                  مهارت‌های استفاده شده
+                                </h3>
+                                <div className="flex flex-wrap gap-2 mb-2 min-h-[40px] p-2 border-2 rounded-lg bg-white">
+                                  <AnimatePresence>
+                                    {exp.skills.length > 0 ? (
+                                      exp.skills.map((skill) => (
+                                        <motion.span
+                                          key={skill}
+                                          variants={chipVariants}
+                                          initial="hidden"
+                                          animate="visible"
+                                          exit="exit"
+                                          className="flex items-center gap-1 bg-blue-500 text-white text-sm px-2 py-1 rounded-full cursor-pointer hover:bg-blue-600 transition-colors"
+                                          onClick={() =>
+                                            handleWorkExperienceChange(
+                                              index,
+                                              "skills",
+                                              exp.skills.filter((s) => s !== skill)
+                                            )
+                                          }
+                                        >
+                                          {skill}
+                                          <svg
+                                            className="w-3 h-3"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                          >
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              strokeWidth="2"
+                                              d="M6 18L18 6M6 6l12 12"
+                                            />
+                                          </svg>
+                                        </motion.span>
+                                      ))
+                                    ) : (
+                                      <span className={`text-sm ${workError?.fields.includes("skills") ? "text-red-500" : "text-gray-400"}`}>
+                                        مهارتی انتخاب نشده
+                                      </span>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                                <div className="relative mt-2">
+                                  <input
+                                    type="text"
+                                    placeholder="جستجوی مهارت..."
+                                    value={workSearchTerms[index] || ""}
+                                    onChange={(e) => {
+                                      const newSearchTerms = [...workSearchTerms];
+                                      newSearchTerms[index] = e.target.value;
+                                      setWorkSearchTerms(newSearchTerms);
+                                    }}
+                                    onFocus={() => {
+                                      const newDropdowns = [...workDropdowns];
+                                      newDropdowns[index] = true;
+                                      setWorkDropdowns(newDropdowns);
+                                    }}
+                                    onBlur={() =>
+                                      setTimeout(() => {
+                                        const newDropdowns = [...workDropdowns];
+                                        newDropdowns[index] = false;
+                                        setWorkDropdowns(newDropdowns);
+                                      }, 200)
+                                    }
+                                    className="w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white"
+                                    tabIndex={baseTabIndex + 6}
+                                  />
+                                  <AnimatePresence>
+                                    {workDropdowns[index] && (
+                                      <motion.ul
+                                        variants={dropdownVariants}
+                                        initial="hidden"
+                                        animate="visible"
+                                        exit="exit"
+                                        className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto border-2 rounded-lg bg-white shadow-md"
+                                      >
+                                        {skills
+                                          .filter(
+                                            (skill) =>
+                                              !exp.skills.includes(skill) &&
+                                              skill.toLowerCase().includes((workSearchTerms[index] || "").toLowerCase())
+                                          )
+                                          .map((skill) => (
+                                            <motion.li
+                                              key={skill}
+                                              className="p-2 text-right [direction:rtl] hover:bg-gray-100 cursor-pointer"
+                                              onMouseDown={() =>
+                                                handleWorkExperienceChange(
+                                                  index,
+                                                  "skills",
+                                                  [...exp.skills, skill].filter(
+                                                    (v, i, a) => a.indexOf(v) === i
+                                                  )
+                                                )
+                                              }
+                                            >
+                                              {skill}
+                                            </motion.li>
+                                          ))}
+                                      </motion.ul>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
                               </div>
                             </div>
                           </motion.div>
@@ -912,7 +1096,7 @@ export default function ProfileForm() {
                   <button
                     onClick={handleAddWorkExperience}
                     className="mt-2 bg-[#3E79DE] text-white py-2 px-4 rounded-[20px] shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 focus:shadow-lg"
-                    tabIndex={12 + localProfile.skills.length + localProfile.workExperiences.length * 6 + 1}
+                    tabIndex={14 + localProfile.skills.length + localProfile.workExperiences.length * 10}
                   >
                     + افزودن سابقه کاری
                   </button>
@@ -932,7 +1116,7 @@ export default function ProfileForm() {
                     type="file"
                     onChange={(e) => handleFileChange(e, "resume")}
                     className="absolute inset-0 opacity-0 cursor-pointer focus:outline-none"
-                    tabIndex={12 + localProfile.skills.length + localProfile.workExperiences.length * 6 + 2}
+                    tabIndex={14 + localProfile.skills.length + localProfile.workExperiences.length * 10 + 1}
                   />
                 </label>
                 {resumeName && (
@@ -943,7 +1127,7 @@ export default function ProfileForm() {
                     <button
                       onClick={handleRemoveResume}
                       className="text-gray-500 hover:text-red-500 transition-colors"
-                      tabIndex={12 + localProfile.skills.length + localProfile.workExperiences.length * 6 + 3}
+                      tabIndex={14 + localProfile.skills.length + localProfile.workExperiences.length * 10 + 2}
                     >
                       <X size={16} />
                     </button>
@@ -957,7 +1141,7 @@ export default function ProfileForm() {
                 className="w-50 flex justify-center items-center transition-all duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 focus:shadow-lg"
                 onClick={handleSubmit}
                 disabled={loading}
-                tabIndex={12 + localProfile.skills.length + localProfile.workExperiences.length * 6 + 4}
+                tabIndex={14 + localProfile.skills.length + localProfile.workExperiences.length * 10 + 3}
               >
                 <p className="text-white font-[vazirmatn] font-extralight">
                   {loading ? "در حال ارسال..." : "بروزرسانی پروفایل"}
