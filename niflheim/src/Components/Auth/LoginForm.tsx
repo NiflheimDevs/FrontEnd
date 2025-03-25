@@ -121,11 +121,12 @@ const LoginForm = () => {
             : "focus:ring-3 ring-gray-300"
             }`}
         />
-        <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2">
+        <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"tabIndex={-1}>
           <object
             data={showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
             type="image/svg+xml"
             className="w-6.5 h-6.5 pointer-events-none"
+            tabIndex={-1}
           />
         </button>
       </div>
@@ -142,7 +143,7 @@ const LoginForm = () => {
       <button className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(isValidPass === true && isValidPass === true && isValidIdentifier === true) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
         onClick={handleLogin}
         disabled={!(isValidIdentifier === true && isValidPass === true) ? true : false}>
-        <p className="text-white font-[vazirmatn] font-extralight">
+        <p className="text-white font-[vazirmatn] font-extralight"tabIndex={0}>
           تایید و ادامه
         </p>
       </button>
