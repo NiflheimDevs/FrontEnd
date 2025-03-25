@@ -143,7 +143,7 @@ const LoginForm = () => {
       <button className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(isValidPass === true && isValidPass === true && isValidIdentifier === true) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
         onClick={handleLogin}
         disabled={!(isValidIdentifier === true && isValidPass === true) ? true : false}>
-        <p className="text-white font-[vazirmatn] font-extralight">
+        <p className="text-white font-[vazirmatn] font-extralight"tabIndex={0}>
           تایید و ادامه
         </p>
       </button>

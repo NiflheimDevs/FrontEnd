@@ -6,6 +6,7 @@ import Step2 from "@/pages/CreateProject/Step2";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { setProjectData, createProject } from "@/store/slices/projectSlice";
+import { Skeleton } from 'primereact/skeleton';
 
 const CreateProject: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -50,14 +51,14 @@ const CreateProject: React.FC = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const renderSkeleton = () => (
     <>
-    <div className="p-6 space-y-6 animate-pulse justify-center items-center flex flex-col">
-    <div className="h-6 w-1/3 bg-gray-300 rounded"></div>
-    <div className="h-12 w-2/3 bg-gray-300 rounded"></div>
-    <div className="h-12 w-2/3 bg-gray-300 rounded"></div>
-    <div className="h-24 w-2/3 bg-gray-300 rounded"></div>
-    <div className="h-12 w-2/3 bg-gray-300 rounded"></div>
+    <div className="p-6 space-y-6 animate-pulse justify-center items-center flex flex-col ">
+    <div className="h-6 w-1/3  bg-gray-300 rounded shiny-skeleton"></div>
+    <div className="h-12 w-2/3 bg-gray-300 rounded shiny-skeleton"></div>
+    <div className="h-12 w-2/3 bg-gray-300 rounded shiny-skeleton"></div>
+    <div className="h-24 w-2/3 bg-gray-300 rounded shiny-skeleton"></div>
+    <div className="h-12 w-2/3 bg-gray-300 rounded shiny-skeleton"></div>
     </div>
-    <div className="h-10 w-32 bg-gray-400 rounded justify-start flex flex-col items-start mr-auto ml-55 " ></div>
+    <div className="h-10 w-32 bg-gray-400 rounded justify-start flex flex-col items-start mr-auto ml-55 shiny-skeleton"></div>
     </>
   );
 

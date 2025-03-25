@@ -23,8 +23,9 @@ const ChangePasswordManually = () => {
 	const [password, setPassword] = useState("");
 	const [passwordRepeat, setPasswordRepeat] = useState("");
 	const SessionID = useSelector((state: RootState) => state.auth.SessionID);
+
 	const validatePassword = (value) => {
-	if (!value) {
+	  if (!value) {
       return false;
     } else if (value.length < 8) {
       return false;
@@ -211,25 +212,6 @@ const ChangePasswordManually = () => {
                 />
               </button>
             </div>
-            <button
-              className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3  ${
-                !(isValidPassRepeat === true && isValidPass === true)
-                  ? "opacity-60"
-                  : "hover:bg-blue-600 focus:bg-blue-600  cursor-pointer "
-              }`}
-              disabled={
-                !(isValidPassRepeat === true && isValidPass === true)
-                  ? true
-                  : false
-              }
-              tabIndex={4}
-              onClick={handleCompleteClick}
-            >
-              <p className="text-white font-[vazirmatn] font-extralight">
-                تایید و ادامه
-              </p>
-            </button>
-          </div>
             <div className="flex w-full justify-between mt-6">
               <button 
                 className="w-[40%] max-w-[150px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#D9D9D9] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-2 hover:bg-gray-400 focus:bg-gray-400"
