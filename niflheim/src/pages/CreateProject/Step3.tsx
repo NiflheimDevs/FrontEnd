@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface Tag {
   ID: number;
@@ -14,102 +14,114 @@ interface Step3Props {
     files: File | null;
   };
   tags: Tag[];
-  prevStep: () => void;
-  handleSubmit: () => void;
-  isLoading: boolean;
+  onSubmit: () => void;
+  onPrev: () => void;
 }
 
 const Step3: React.FC<Step3Props> = ({ 
   formData, 
-  tags,
-  prevStep, 
-  handleSubmit,
-  isLoading
+  tags, 
+  onSubmit, 
+  onPrev 
 }) => {
-  // Find tag names from IDs
+  // Find tag names for selected tag IDs
   const getTagNames = () => {
-    return formData.tags?.map(tagId => {
-      const tag = tags.find(t => t.ID === tagId);
-      return tag ? tag.Name : '';
-    }).filter(Boolean) || [];
+    return formData.tags
+      .map(tagId => tags.find(t => t.ID === tagId)?.Name)
+      .filter(Boolean);
+  };
+
+  // Get total price for selected labels
+  const getLabelPrice = () => {
+    const labelPrices: {[key: string]: number} = {
+      'فوری': 202000,
+      'برجسته': 150000,
+      'رایگان': 0
+    };
+    
+    return formData.label.reduce((total, label) => {
+      return total + (labelPrices[label] || 0);
+    }, 0);
+  };
+
+  // Format price with thousand separators
+  const formatPrice = (price: number) => {
+    return price.toLocaleString('fa-IR', { useGrouping: true }) + ' تومان';
+  };
+
+  // Truncate text if it's too long
+  const truncateText = (text: string, maxLength: number) => {
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg">
-      <h2 className="text-xl font-semibold mb-6 text-right">بررسی نهایی و ثبت پروژه</h2>
+    <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
+      <h2 className="text-2xl mb-6 text-center text-gray-800 font-bold">بررسی نهایی پروژه</h2>
 
-      <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <h3 className="font-medium text-lg mb-3 text-right">اطلاعات پروژه</h3>
-        
-        <div className="mb-4">
-          <p className="text-sm text-gray-500 mb-1 text-right">عنوان پروژه:</p>
-          <p className="text-right">{formData.name}</p>
-        </div>
-        
-        <div className="mb-4">
-          <p className="text-sm text-gray-500 mb-1 text-right">توضیحات پروژه:</p>
-          <p className="text-right whitespace-pre-line">{formData.description}</p>
-        </div>
-        
-        <div className="mb-4">
-          <p className="text-sm text-gray-500 mb-1 text-right">تگ‌ها:</p>
-          <div className="flex flex-wrap gap-2 justify-end">
+      <div className="bg-gray-50 p-6 rounded-md border border-gray-200 mb-6">
+        <div className="space-y-4">
+          <div>
+            <strong className="text-gray-700 block mb-1">عنوان:</strong> 
+            <p className="text-gray-900">{formData.name}</p>
+          </div>
+          
+          <div>
+            <strong className="text-gray-700 block mb-1">توضیحات:</strong> 
+            <p className="text-gray-900 break-words whitespace-pre-wrap">
+              {truncateText(formData.description, 200)}
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            <strong className="text-gray-700 block mb-1 w-full">تگ‌ها:</strong> 
             {getTagNames().map((tagName, index) => (
-              <span key={index} className="bg-blue-100 text-blue-700 px-2 py-1 rounded-lg text-sm">
+              <span 
+                key={index} 
+                className="bg-blue-100 text-blue-800 text-xs px-2.5 py-0.5 rounded-full"
+              >
                 {tagName}
               </span>
             ))}
           </div>
-        </div>
-        
-        {formData.label && formData.label.length > 0 && (
-          <div className="mb-4">
-            <p className="text-sm text-gray-500 mb-1 text-right">برچسب‌ها:</p>
-            <div className="flex flex-wrap gap-2 justify-end">
-              {formData.label.map((label, index) => (
-                <span key={index} className="bg-green-100 text-green-700 px-2 py-1 rounded-lg text-sm">
-                  {label}
-                </span>
-              ))}
-            </div>
+          
+          <div className="flex flex-wrap gap-2">
+            <strong className="text-gray-700 block mb-1 w-full">برچسب‌ها:</strong> 
+            {formData.label.map((label, index) => (
+              <span 
+                key={index} 
+                className="bg-green-100 text-green-800 text-xs px-2.5 py-0.5 rounded-full"
+              >
+                {label}
+              </span>
+            ))}
           </div>
-        )}
-        
-        {formData.files && (
+          
           <div>
-            <p className="text-sm text-gray-500 mb-1 text-right">فایل ضمیمه:</p>
-            <p className="text-right">{formData.files.name}</p>
+            <strong className="text-gray-700 block mb-1">قیمت پروژه:</strong> 
+            <p className="text-green-600 font-bold">{formatPrice(getLabelPrice())}</p>
           </div>
-        )}
+          
+          {formData.files && (
+            <div>
+              <strong className="text-gray-700 block mb-1">فایل ضمیمه:</strong> 
+              <p className="text-gray-900">{formData.files.name}</p>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-6">
-        <p className="text-right text-yellow-700">
-          لطفا قبل از ثبت نهایی پروژه، اطلاعات وارد شده را با دقت بررسی کنید. پس از ثبت، امکان ویرایش برخی اطلاعات وجود ندارد.
-        </p>
-      </div>
-
-      <div className="flex justify-between mt-8">
-        <button
-          onClick={prevStep}
-          className="px-6 py-3 rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300 transition duration-200"
-          disabled={isLoading}
+      <div className="flex justify-between">
+        <button 
+          onClick={onPrev}
+          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors"
         >
           مرحله قبل
         </button>
-        <button
-          onClick={handleSubmit}
-          className={`px-6 py-3 rounded-lg text-white ${isLoading ? 'bg-blue-400' : 'bg-blue-500 hover:bg-blue-600'} transition duration-200`}
-          disabled={isLoading}
+        <button 
+          onClick={onSubmit}
+          className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors"
         >
-          {isLoading ? (
-            <>
-              <span className="inline-block animate-spin mr-2">⟳</span>
-              در حال ثبت...
-            </>
-          ) : (
-            'ثبت نهایی پروژه'
-          )}
+          ثبت نهایی پروژه
         </button>
       </div>
     </div>

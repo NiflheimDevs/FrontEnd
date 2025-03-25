@@ -195,3 +195,46 @@ export const logout = () => {
   localStorage.removeItem("refreshToken");
   window.location.href = "/auth"; // Adjust based on your routing
 };
+
+export const getTags = async () => {
+  try {
+    const response = await apiClient.get("/tags");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت تگ‌ها";
+  }
+};
+
+export const createProject = async (formData: FormData) => {
+  try {
+    // Get the token from localStorage
+    const token = localStorage.getItem('authToken');
+
+    // If no token is found, throw an error
+    if (!token) {
+      throw new Error('توکن احراز هویت یافت نشد');
+    }
+
+    // Send the request with the Authorization header
+    const response = await apiClient.post('/project/create', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}` // Add the token to the headers
+      }
+    });
+    return response.data;
+  } catch (error: any) {
+    // Handle different types of errors
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      throw error.response.data || 'خطا در ایجاد پروژه';
+    } else if (error.request) {
+      // The request was made but no response was received
+      throw 'خطا در ارتباط با سرور';
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      throw error.message || 'خطا نامشخص';
+    }
+  }
+};

@@ -1,115 +1,118 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setProjectData } from '@/store/slices/projectSlice';
 
 interface Step1Props {
-  formData: { 
-    name: string; 
-    description: string; 
+  formData: {
+    name: string;
+    description: string;
     files: File | null;
   };
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  nextStep: () => void;
+  onNext: () => void;
 }
 
-const Step1: React.FC<Step1Props> = ({ formData, handleChange, handleFileChange, nextStep }) => {
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
-  const [focused, setFocused] = useState<{ [key: string]: boolean }>({});
+const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const MAX_DESCRIPTION_WORDS = 250;
 
-  const validateForm = () => {
-    const newErrors: {[key: string]: string} = {};
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
     
+    if (id === 'description') {
+      // Count words and limit to 250
+      const words = value.trim().split(/\s+/);
+      if (words.length <= MAX_DESCRIPTION_WORDS) {
+        dispatch(setProjectData({ [id]: value }));
+      }
+    } else {
+      dispatch(setProjectData({ [id]: value }));
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      dispatch(setProjectData({ files: e.target.files[0] }));
+    }
+  };
+
+  const validateStep = () => {
+    const newErrors: { [key: string]: string } = {};
+    const descriptionWords = formData.description ? formData.description.trim().split(/\s+/) : [];
+
     if (!formData.name || formData.name.trim().length < 5) {
-      newErrors.name = "عنوان پروژه باید حداقل ۵ کاراکتر باشد.";
+      newErrors.name = 'عنوان پروژه باید حداقل 5 کاراکتر باشد';
     }
-    
-    if (!formData.description || formData.description.trim().length < 20) {
-      newErrors.description = "توضیحات پروژه باید حداقل ۲۰ کاراکتر باشد.";
+
+    if (!formData.description || descriptionWords.length < 20) {
+      newErrors.description = 'توضیحات پروژه باید حداقل 20 کلمه باشد';
     }
-    
+
+    if (descriptionWords.length > MAX_DESCRIPTION_WORDS) {
+      newErrors.description = `توضیحات نباید بیشتر از ${MAX_DESCRIPTION_WORDS} کلمه باشد`;
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleNextStep = () => {
-    if (validateForm()) {
-      nextStep();
+  const handleNext = () => {
+    if (validateStep()) {
+      onNext();
     }
   };
 
-  const handleFocus = (field: string) => {
-    setFocused(prev => ({ ...prev, [field]: true }));
-  };
-
-  const handleBlur = (field: string) => {
-    setFocused(prev => ({ ...prev, [field]: false }));
-  };
+  const wordCount = formData.description ? formData.description.trim().split(/\s+/).length : 0;
 
   return (
-    <div className="p-6 bg-white rounded-lg">
-      <h2 className="text-xl font-semibold mb-6 text-right">اطلاعات اصلی پروژه</h2>
+    <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
+      <h2 className="text-2xl mb-6 text-center text-gray-800 font-bold">اطلاعات اولیه پروژه</h2>
 
-      <div className="mb-6">
-        <label className={`block text-sm mb-1 text-right ${focused.name ? "text-blue-600" : "text-gray-600"}`}>
-          عنوان پروژه *
-        </label>
-        <input
-          type="text"
-          id="name"
-          value={formData.name || ''}
-          onChange={handleChange}
-          onFocus={() => handleFocus('name')}
-          onBlur={() => handleBlur('name')}
-          className={`w-full p-3 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring focus:ring-blue-300 text-right`}
-          placeholder="عنوان پروژه را وارد کنید"
-          dir="rtl"
-        />
-        {errors.name && <p className="text-red-500 text-sm mt-1 text-right">{errors.name}</p>}
-      </div>
-
-      <div className="mb-6">
-        <label className={`block text-sm mb-1 text-right ${focused.description ? "text-blue-600" : "text-gray-600"}`}>
-          توضیحات پروژه *
-        </label>
-        <textarea
-          id="description"
-          value={formData.description || ''}
-          onChange={handleChange}
-          onFocus={() => handleFocus('description')}
-          onBlur={() => handleBlur('description')}
-          className={`w-full p-3 border ${errors.description ? 'border-red-500' : 'border-gray-300'} resize-none rounded-lg focus:ring focus:ring-blue-300 text-right`}
-          rows={6}
-          placeholder="توضیحات کامل پروژه را وارد کنید"
-          dir="rtl"
-        />
-        {errors.description && <p className="text-red-500 text-sm mt-1 text-right">{errors.description}</p>}
-      </div>
-
-      <div className="mb-6">
-        <label className="block text-sm mb-1 text-right text-gray-600">
-          فایل ضمیمه (اختیاری)
-        </label>
-        <div className="border border-dashed border-gray-300 rounded-lg p-4 text-center">
-          <input 
-            type="file" 
-            onChange={handleFileChange} 
-            className="hidden" 
-            id="projectFile" 
+      <div className="space-y-6">
+        <div>
+          <label htmlFor="name" className="block mb-2 text-gray-700 font-semibold">عنوان پروژه</label>
+          <input
+            type="text"
+            id="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+            placeholder="عنوان پروژه را وارد کنید"
           />
-          <label htmlFor="projectFile" className="cursor-pointer text-blue-500 hover:text-blue-700">
-            برای آپلود فایل کلیک کنید یا فایل را اینجا رها کنید
-          </label>
-          {formData.files && (
-            <p className="mt-2 text-sm text-gray-600">
-              {formData.files.name}
-            </p>
-          )}
+          {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
         </div>
-      </div>
 
-      <div className="flex justify-end mt-8">
-        <button
-          onClick={handleNextStep}
-          className="px-6 py-3 rounded-lg text-white bg-blue-500 hover:bg-blue-600 transition duration-200"
+        <div>
+          <label htmlFor="description" className="block mb-2 text-gray-700 font-semibold">توضیحات پروژه</label>
+          <div className="relative">
+            <textarea
+              id="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none"
+              rows={4}
+              placeholder="توضیحات کامل پروژه را وارد کنید"
+            />
+            <div className="text-sm text-gray-500 mt-1 text-left">
+              {wordCount} / {MAX_DESCRIPTION_WORDS} کلمه
+            </div>
+            {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="file" className="block mb-2 text-gray-700 font-semibold">فایل ضمیمه (اختیاری)</label>
+          <input
+            type="file"
+            id="file"
+            onChange={handleFileChange}
+            className="w-full p-3 border border-gray-300 rounded-md file:ml-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+          />
+        </div>
+
+        <button 
+          onClick={handleNext}
+          className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 transition-colors duration-200 mt-4"
         >
           مرحله بعد
         </button>

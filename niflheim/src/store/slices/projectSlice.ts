@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { authAxios } from '@/config/auth';
+import { createProject as createProjectAPI } from '../../API';
 
-// Define project interface
+// Define the project state interface
 interface ProjectState {
   name: string;
   description: string;
@@ -10,6 +10,7 @@ interface ProjectState {
   files: File | null;
   loading: boolean;
   error: string | null;
+  success: boolean;
 }
 
 // Initial state
@@ -17,31 +18,27 @@ const initialState: ProjectState = {
   name: '',
   description: '',
   tags: [],
-  label: [],
+  label: ['رایگان'], // Default to 'رایگان'
   files: null,
   loading: false,
-  error: null
+  error: null,
+  success: false
 };
 
-// Create async thunk for project creation
+// Async thunk for creating a project
 export const createProject = createAsyncThunk(
-  'project/create',
+  'project/createProject',
   async (formData: FormData, { rejectWithValue }) => {
     try {
-      // Use authAxios instead of axios to include auth headers
-      const response = await authAxios.post('/project/create', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      return response.data;
+      const response = await createProjectAPI(formData);
+      return response;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'خطا در ایجاد پروژه');
+      return rejectWithValue(error.message || 'خطا در ایجاد پروژه');
     }
   }
 );
 
-// Create the project slice
+// Project slice
 const projectSlice = createSlice({
   name: 'project',
   initialState,
@@ -56,12 +53,16 @@ const projectSlice = createSlice({
       .addCase(createProject.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.success = false;
       })
       .addCase(createProject.fulfilled, (state) => {
         state.loading = false;
+        state.success = true;
+        state.error = null;
       })
       .addCase(createProject.rejected, (state, action) => {
         state.loading = false;
+        state.success = false;
         state.error = action.payload as string;
       });
   }

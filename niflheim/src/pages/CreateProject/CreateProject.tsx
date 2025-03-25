@@ -1,129 +1,118 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { 
+  setProjectData, 
+  resetProject, 
+  createProject 
+} from '@/store/slices/projectSlice';
+import { getTags } from '../../API';
 import Header from "@/components/DashboardComp/Header";
 import Sidebar from "@/components/DashboardComp/Sidebar";
-import Step1 from "@/pages/CreateProject/Step1";
-import Step2 from "@/pages/CreateProject/Step2";
-import Step3 from "@/pages/CreateProject/Step3";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { setProjectData, resetProject, createProject } from "@/store/slices/projectSlice";
-import { authAxios } from "@/config/auth";
+import Step1 from './Step1';
+import Step2 from './Step2';
+import Step3 from './Step3';
 
-// Tag interface
 interface Tag {
   ID: number;
   Name: string;
 }
 
 const CreateProject: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [step, setStep] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState(1);
   const [tags, setTags] = useState<Tag[]>([]);
-  const [success, setSuccess] = useState(false);
-  
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
   const project = useSelector((state: RootState) => state.project);
-
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+ 
   // Fetch tags on component mount
   useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const fetchedTags = await getTags();
+        setTags(fetchedTags);
+        
+        // If no tags are found, log an error
+        if (fetchedTags.length === 0) {
+          console.error('No tags retrieved');
+        }
+      } catch (error) {
+        console.error('Error fetching tags:', error);
+      }
+    };
+    
     fetchTags();
   }, []);
 
-  // Fetch tags from API
-  const fetchTags = async () => {
-    try {
-      const response = await authAxios.get('/tags');
-      setTags(response.data);
-    } catch (error) {
-      console.error('Error fetching tags:', error);
-      setError('خطا در دریافت تگ‌ها. لطفا مجددا تلاش کنید.');
-    }
-  };
+  // Navigation methods
+  const nextStep = () => setCurrentStep(current => current + 1);
+  const prevStep = () => setCurrentStep(current => current - 1);
 
-  // Handle text input change
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    dispatch(setProjectData({ [e.target.id]: e.target.value }));
-  };
-
-  // Handle file upload
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      dispatch(setProjectData({ files: e.target.files[0] }));
-    }
-  };
-
-  // Handle tag selection
-  const handleTagChange = (selectedTags: number[]) => {
-    dispatch(setProjectData({ tags: selectedTags }));
-  };
-
-  // Handle label selection
-  const handleLabelChange = (selectedLabels: string[]) => {
-    dispatch(setProjectData({ label: selectedLabels }));
-  };
-
-  // Submit form
+  // Form submission handler
   const handleSubmit = async () => {
-    setIsLoading(true);
-    setError(null);
+    const formData = new FormData();
+    formData.append('name', project.name);
+    formData.append('description', project.description);
     
+    // Add the selected label (price)
+    const selectedLabel = project.label[0];
+    const labelPrices: {[key: string]: number} = {
+      'فوری': 202000,
+      'برجسته': 150000,
+      'رایگان': 0
+    };
+    formData.append('price', labelPrices[selectedLabel].toString());
+    
+    // Append tags
+    project.tags.forEach(tag => 
+      formData.append('tags[]', tag.toString())
+    );
+    
+    // Append the selected label
+    formData.append('labels[]', selectedLabel);
+    
+    // Append file if exists
+    if (project.files) {
+      formData.append('file', project.files);
+    }
+
     try {
-      // Create a FormData object to handle file uploads
-      const formData = new FormData();
-      formData.append('title', project.name);
-      formData.append('description', project.description);
-      
-      // Append tags as a JSON string
-      formData.append('tags', JSON.stringify(project.tags));
-      
-      // Append labels as a JSON string
-      formData.append('label', JSON.stringify(project.label || []));
-      
-      // Append file if it exists
-      if (project.files) {
-        formData.append('file', project.files);
-      }
-      
-      // Use the Redux thunk action to create the project
-      const resultAction = await dispatch(createProject(formData) as any);
-      
-      if (createProject.fulfilled.match(resultAction)) {
-        setSuccess(true);
-        setTimeout(() => {
-          dispatch(resetProject());
-          navigate('/dashboard/projects');
-        }, 2000);
-      } else {
-        // If the action was rejected, extract the error message
-        setError(resultAction.payload as string || 'خطا در ایجاد پروژه. لطفا مجددا تلاش کنید.');
-      }
-    } catch (error: any) {
-      console.error('Error creating project:', error);
-      setError('خطا در ایجاد پروژه. لطفا مجددا تلاش کنید.');
-    } finally {
-      setIsLoading(false);
+      await dispatch(createProject(formData) as any).unwrap();
+      navigate('/projects');
+    } catch (error) {
+      console.error('Project creation failed:', error);
     }
   };
-
-  // Next & Previous steps
-  const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="container mx-auto p-4">
+      {/* Progress Indicator */}
+      <div className="flex justify-center mb-8">
+        {[1, 2, 3].map(step => (
+          <div 
+            key={step} 
+            className={`w-10 h-10 mx-2 rounded-full flex items-center justify-center 
+              ${currentStep === step ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          >
+            {step}
+          </div>
+        ))}
+      </div>
+
+
+      {/* <div className="flex h-screen bg-gray-100"> */}
       {/* Sidebar */}
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col mt-16 w-full bg-[#F7F7F7] lg:pr-64 md:pr-0">
+      {/* </div><main className="flex-1 flex flex-col mt-16 w-full bg-[#F7F7F7] lg:pr-64 md:pr-0"> */}
         <Header toggleSidebar={toggleSidebar} />
 
-        {/* Progress Bar */}
+        {/* Progress Bar
         <div className="w-full px-4 py-6">
           <div className="max-w-3xl mx-auto">
             <div className="flex items-center justify-between mb-4 sm:gap-0 md:gap-0">
@@ -140,55 +129,34 @@ const CreateProject: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        {/* Step Content */}
-        <div className="flex justify-center px-4 sm:w-full md:w-full">
-          <div className="w-[90%] sm:w-[60%] md:w-[80%] p-6 bg-white rounded-lg shadow-md">
-            {error && (
-              <div className="mb-4 p-2 bg-red-100 border border-red-300 text-red-700 rounded">
-                {error}
-              </div>
-            )}
-            
-            {success && (
-              <div className="mb-4 p-2 bg-green-100 border border-green-300 text-green-700 rounded">
-                پروژه با موفقیت ایجاد شد! در حال انتقال به صفحه پروژه‌ها...
-              </div>
-            )}
-            
-            {step === 1 && (
-              <Step1 
-                formData={project} 
-                handleChange={handleChange} 
-                handleFileChange={handleFileChange} 
-                nextStep={nextStep} 
-              />
-            )}
-            
-            {step === 2 && (
-              <Step2 
-                formData={project}
-                tags={tags}
-                handleTagChange={handleTagChange}
-                handleLabelChange={handleLabelChange}
-                nextStep={nextStep}
-                prevStep={prevStep}
-              />
-            )}
-            
-            {step === 3 && (
-              <Step3 
-                formData={project}
-                tags={tags}
-                prevStep={prevStep}
-                handleSubmit={handleSubmit}
-                isLoading={isLoading}
-              />
-            )}
-          </div>
-        </div>
-      </main>
+
+      {/* Step Components */}
+      {currentStep === 1 && (
+        <Step1 
+          formData={project} 
+          onNext={nextStep} 
+        />
+      )}
+      
+      {currentStep === 2 && (
+        <Step2 
+          formData={project} 
+          tags={tags}
+          onNext={nextStep} 
+          onPrev={prevStep} 
+        />
+      )}
+      
+      {currentStep === 3 && (
+        <Step3 
+          formData={project} 
+          tags={tags}
+          onSubmit={handleSubmit} 
+          onPrev={prevStep} 
+        />
+      )}
     </div>
   );
 };
