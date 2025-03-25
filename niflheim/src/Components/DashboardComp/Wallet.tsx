@@ -181,7 +181,7 @@ const Wallet = () => {
         </div>
         <div className="w-full md:w-2/3 bg-white p-6 rounded-lg shadow-md">
           <Skeleton width="100%" height="32px" className="shiny-skeleton mb-4" />
-          <table className="w-full text-center">
+          <table className="w-full text-center shiny-skeleton">
             <thead>
               <tr className="border-b">
                 <th><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></th>
@@ -193,10 +193,10 @@ const Wallet = () => {
             <tbody>
               {[...Array(transactionsPerPage)].map((_, index) => (
                 <tr key={index} className="border-b">
-                  <td><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></td>
-                  <td><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></td>
-                  <td><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></td>
-                  <td><Skeleton className="shiny-skeleton"  width="100%" height="24px" /></td>
+                  <td><Skeleton width="100%" height="24px" /></td>
+                  <td><Skeleton width="100%" height="24px" /></td>
+                  <td><Skeleton width="100%" height="24px" /></td>
+                  <td><Skeleton width="100%" height="24px" /></td>
                 </tr>
               ))}
             </tbody>

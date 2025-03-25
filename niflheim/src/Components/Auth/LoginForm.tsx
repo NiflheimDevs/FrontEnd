@@ -121,11 +121,12 @@ const LoginForm = () => {
             : "focus:ring-3 ring-gray-300"
             }`}
         />
-        <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2">
+        <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"tabIndex={-1}>
           <object
             data={showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"} 
             type="image/svg+xml"
             className="w-6.5 h-6.5 pointer-events-none"
+            tabIndex={-1}
           />
         </button>
       </div>
