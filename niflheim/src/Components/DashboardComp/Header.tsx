@@ -39,14 +39,14 @@ export default function Header({ toggleSidebar }: any) {
           {/* Hamburger Menu Button */}
           <button
             onClick={toggleSidebar}
-            className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake sm:hidden"
+            className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake sm:hidden transition-all duration-400 ease-out"
           >
             <Menu size={24} className="text-gray-600" />
           </button>
 
           {/* Logo and Title */}
           <div className="flex w-fit h-fit items-center">
-            <label className="text-lg font-semibold">بیدلنسر</label>
+            <label className="text-lg font-semibold md:flex sm:flex hidden">بیدلنسر</label>
             <img src={LOGO} alt="Logo" className="h-11 w-14" />
           </div>
         </div>
@@ -58,7 +58,7 @@ export default function Header({ toggleSidebar }: any) {
             placeholder="جستجو"
             className="border-1 py-2 pr-14 mx-2 rounded w-[80%] border-blue-600 text-right"
           />
-          <button className="absolute right-2 top-0 bottom-0 bg-blue-600 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-blue-600/50 transition-all duration-300 text-[#FFFFFF] px-4 rounded-r flex items-center cursor-pointer">
+          <button className="absolute right-2 top-0 bottom-0 bg-blue-600 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-blue-600/50 transition-all duration-400 text-[#FFFFFF] px-4 rounded-r flex items-center cursor-pointer">
             <Search size={18} />
           </button>
         </div>
@@ -66,7 +66,7 @@ export default function Header({ toggleSidebar }: any) {
         {/* Right Section: Icons */}
         <div className="flex w-fit h-fit items-center md:gap-5 sm:gap-5 gap-[3vw]">
           <button
-            className="w-fit h-fit md:hidden sm:hidden flex cursor-pointer hover:scale-115 hover:animate-shake"
+            className="w-fit h-fit md:hidden sm:hidden flex cursor-pointer hover:scale-115 hover:animate-shake transition-all duration-400 ease-out"
             onClick={openModal}
           >
             <object
@@ -77,7 +77,7 @@ export default function Header({ toggleSidebar }: any) {
             />
           </button>
 
-          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
+          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
             <object
               data={BELL}
               type="image/svg+xml"
@@ -86,7 +86,7 @@ export default function Header({ toggleSidebar }: any) {
             />
           </button>
 
-          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
+          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
             <object
               data={Mail}
               type="image/svg+xml"
@@ -95,7 +95,7 @@ export default function Header({ toggleSidebar }: any) {
             />
           </button>
 
-          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
+          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
             <object
               data={FAQ}
               type="image/svg+xml"
@@ -134,7 +134,7 @@ export default function Header({ toggleSidebar }: any) {
                 className="border-1 py-2 pr-13 mx-2 rounded w-full bg-white border-blue-600 text-right"
               />
               <button
-                className="absolute right-2 top-0 bottom-0 bg-blue-600 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-blue-600/50 transition-all duration-300 text-[#FFFFFF] px-4 rounded-r flex items-center cursor-pointer"
+                className="absolute right-2 top-0 bottom-0 bg-blue-600 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-blue-600/50 transition-all duration-400 text-[#FFFFFF] px-4 rounded-r flex items-center cursor-pointer"
                 onClick={closeModal}
               >
                 <Search size={18} />
