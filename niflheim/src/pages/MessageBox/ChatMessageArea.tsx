@@ -67,10 +67,15 @@ const Messages = () => {
             <div
               key={chat.id}
               onClick={() => handleChatSelect(chat)}
-              className={`flex items-center p-2 cursor-pointer rounded-xl hover:bg-blue-100 hover:shadow-md transition-all duration-400 ease-in-out ${
+              className={`flex items-center py-2 cursor-pointer rounded-xl hover:bg-blue-100 hover:shadow-md transition-all duration-400 ease-in-out ${
                 selectedChat.id === chat.id ? "bg-gray-50" : "bg-gray-300"
               }`}
             >
+              <img
+                src={ProfileDefault}
+                alt="Profile"
+                className="w-10 h-10 rounded-full mx-3"
+              />
               <div className="flex-1 text-right">
                 <p className="text-md font-medium text-gray-800">{chat.name}</p>
                 <p className="text-[10px] text-gray-500 truncate">{chat.lastMessage}</p>
@@ -87,17 +92,17 @@ const Messages = () => {
         }`}
       >
         {/* Header */}
-        <div className="flex w-full h-[60px] md:h-[75px] bg-white/50 items-center rounded-t-2xl shadow-md p-1">
+        <div className="flex w-full h-[60px] md:h-[75px] bg-white/50 items-center rounded-t-2xl shadow-md">
           <button
             onClick={handleBackToChatList}
-            className="md:hidden text-gray-800 hover:text-blue-600 transition-colors duration-400 p-1 ease-in-out mr-2"
+            className="md:hidden text-gray-800 hover:text-blue-600 transition-colors duration-400 ease-in-out mr-2"
           >
             <ArrowRight size={24} />
           </button>
           <img
             src={ProfileDefault}
             alt="Profile"
-            className="w-10 h-10 rounded-full ml-3"
+            className="w-10 h-10 rounded-full mx-3"
           />
           <h2 className="text-lg font-semibold text-gray-800">{selectedChat.name}</h2>
         </div>
