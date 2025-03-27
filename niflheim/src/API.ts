@@ -182,12 +182,70 @@ export const ChangePass = async (userData: {
 };
 
 // New API function for Get User Project
+// export const getUserProject = async (offset: number, limit: number) => {
+//   try {
+//     const response = await apiClient.get("/project", {
+//       params: { offset, limit },
+//     });
+//     return response.data;
+//   } catch (error: any) {
+//     throw error.response?.data || "خطا در ارسال درخواست!";
+//   }
+// };
+
+// export const getUserProject = async (offset: number, limit: number) => {
+//   try {
+//     const token = localStorage.getItem('authToken');
+//     console.log('Current Auth Token:', token);
+//     console.log('Request Params:', { offset, limit });
+
+//     const response = await apiClient.get("/project", {
+//       params: { 
+//         offset: offset, 
+//         limit: limit 
+//       },
+//       headers: {
+//         // Optionally add token manually if interceptor isn't working
+//         ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+//       }
+//     });
+
+//     console.log('Projects Response:', response.data);
+    
+//     // Check if the response is in the expected format
+//     if (!Array.isArray(response.data)) {
+//       console.warn('Unexpected response format:', response.data);
+//       return [];
+//     }
+
+//     return response.data;
+//   } catch (error: any) {
+//     console.error('Error fetching projects:', error);
+    
+//     // More detailed error logging
+//     if (error.response) {
+//       console.error('Error Response:', error.response.data);
+//       console.error('Error Status:', error.response.status);
+//       console.error('Error Headers:', error.response.headers);
+//     }
+
+//     throw error.response?.data || "خطا در ارسال درخواست!";
+//   }
+// };
+
 export const getUserProject = async (offset: number, limit: number) => {
   try {
     const response = await apiClient.get("/project", {
-      params: { offset, limit },
+      params: { 
+        offset: offset, 
+        limit: limit 
+      }
     });
-    return response.data;
+
+    // Extract projects from the response
+    const projects = response.data.projects || [];
+
+    return projects;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }

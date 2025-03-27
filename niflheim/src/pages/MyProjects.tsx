@@ -41,24 +41,63 @@ const MyProjects = () => {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
+  // useEffect(() => {
+  //   const fetchProjects = async () => {
+  //     try {
+  //       const offset = (currentPage - 1) * projectsPerPage;
+  //       const data = await getUserProject(offset, projectsPerPage);
+  //       const projectData = Array.isArray(data) ? data : [];
+  //       setProjects(projectData);
+  //       setTotalProjects(projectData.length); // Update if API provides total count
+  //     } catch (error) {
+  //       console.error("Error fetching projects:", error);
+  //       setProjects([]);
+  //       setTotalProjects(0);
+  //     }
+  //   };
+
+  //   fetchProjects();
+  // }, [currentPage]);
+
+  // useEffect(() => {
+  //   const fetchProjects = async () => {
+  //     try {
+  //       const offset = (currentPage - 1) * projectsPerPage;
+  //       const data = await getUserProject(offset, projectsPerPage);
+  //       const projectData = Array.isArray(data) ? data : [];
+  //       setProjects(projectData);
+  //       setTotalProjects(projectData.length);
+  //     } catch (error) {
+  //       console.error("Error fetching projects:", error);
+  //       // Optionally show a user-friendly error message
+  //       // setError("Unable to fetch projects");
+  //       setProjects([]);
+  //       setTotalProjects(0);
+  //     }
+  //   };
+  
+  //   fetchProjects();
+  // }, [currentPage]);
+
+
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const offset = (currentPage - 1) * projectsPerPage;
-        const data = await getUserProject(offset, projectsPerPage);
-        const projectData = Array.isArray(data) ? data : [];
+        const projectData = await getUserProject(offset, projectsPerPage);
         setProjects(projectData);
-        setTotalProjects(projectData.length); // Update if API provides total count
+        setTotalProjects(projectData.length);
+        console.log(projectData);
       } catch (error) {
         console.error("Error fetching projects:", error);
         setProjects([]);
         setTotalProjects(0);
       }
     };
-
+  
     fetchProjects();
   }, [currentPage]);
-
+  
   const totalPages = Math.ceil(totalProjects / projectsPerPage) || 1;
   const currentProjects = projects.slice(
     (currentPage - 1) * projectsPerPage,
@@ -110,7 +149,7 @@ const MyProjects = () => {
             >
               {currentProjects.map((project, index) => (
                 <motion.div
-                  key={project.project_id}
+                  key={`project-${project.project_id}`}
                   variants={cardVariants}
                   initial="hidden"
                   animate="visible"
