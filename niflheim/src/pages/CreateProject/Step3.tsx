@@ -1,8 +1,21 @@
 import React from 'react';
+import { 
+  FaProjectDiagram, 
+  FaTags, 
+  FaMoneyBillWave, 
+  FaFileArchive 
+} from 'react-icons/fa';
 
 interface Tag {
-  ID: number;
-  Name: string;
+  id: number;
+  name: string;
+}
+
+interface Label {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
 }
 
 interface Step3Props {
@@ -10,10 +23,11 @@ interface Step3Props {
     name: string;
     description: string;
     tags: number[];
-    label: string[];
+    label: number[];
     files: File | null;
   };
   tags: Tag[];
+  labels: Label[];
   onSubmit: () => void;
   onPrev: () => void;
 }
@@ -21,32 +35,20 @@ interface Step3Props {
 const Step3: React.FC<Step3Props> = ({ 
   formData, 
   tags, 
+  labels, 
   onSubmit, 
   onPrev 
 }) => {
   // Find tag names for selected tag IDs
   const getTagNames = () => {
     return formData.tags
-      .map(tagId => tags.find(t => t.ID === tagId)?.Name)
+      .map(tagId => tags.find(t => t.id === tagId)?.name)
       .filter(Boolean);
   };
 
-  // Get total price for selected labels
-  const getLabelPrice = () => {
-    const labelPrices: {[key: string]: number} = {
-      'فوری': 202000,
-      'برجسته': 150000,
-      'رایگان': 0
-    };
-    
-    return formData.label.reduce((total, label) => {
-      return total + (labelPrices[label] || 0);
-    }, 0);
-  };
-
-  // Format price with thousand separators
-  const formatPrice = (price: number) => {
-    return price.toLocaleString('fa-IR', { useGrouping: true }) + ' تومان';
+  // Get label details
+  const getSelectedLabel = () => {
+    return labels.find(l => l.id === formData.label[0]);
   };
 
   // Truncate text if it's too long
@@ -55,71 +57,100 @@ const Step3: React.FC<Step3Props> = ({
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
-      <h2 className="text-2xl mb-6 text-center text-gray-800 font-bold">بررسی نهایی پروژه</h2>
-
-      <div className="bg-gray-50 p-6 rounded-md border border-gray-200 mb-6">
-        <div className="space-y-4">
+    <div className="space-y-6">
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="flex items-center mb-4">
+          <FaProjectDiagram className="text-blue-600 ml-3 text-2xl" />
+          <h2 className="text-xl font-bold text-gray-800">اطلاعات پروژه</h2>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <strong className="text-gray-700 block mb-1">عنوان:</strong> 
-            <p className="text-gray-900">{formData.name}</p>
+            <strong className="text-gray-600 block mb-2">عنوان پروژه:</strong>
+            <p className="bg-gray-50 p-2 rounded">{formData.name}</p>
           </div>
           
           <div>
-            <strong className="text-gray-700 block mb-1">توضیحات:</strong> 
-            <p className="text-gray-900 break-words whitespace-pre-wrap">
+            <strong className="text-gray-600 block mb-2">توضیحات:</strong>
+            <p className="bg-gray-50 p-2 rounded line-clamp-3">
               {truncateText(formData.description, 200)}
             </p>
           </div>
-          
-          <div className="flex flex-wrap gap-2">
-            <strong className="text-gray-700 block mb-1 w-full">تگ‌ها:</strong> 
-            {getTagNames().map((tagName, index) => (
-              <span 
-                key={index} 
-                className="bg-blue-100 text-blue-800 text-xs px-2.5 py-0.5 rounded-full"
-              >
-                {tagName}
-              </span>
-            ))}
-          </div>
-          
-          <div className="flex flex-wrap gap-2">
-            <strong className="text-gray-700 block mb-1 w-full">برچسب‌ها:</strong> 
-            {formData.label.map((label, index) => (
-              <span 
-                key={index} 
-                className="bg-green-100 text-green-800 text-xs px-2.5 py-0.5 rounded-full"
-              >
-                {label}
-              </span>
-            ))}
-          </div>
-          
-          <div>
-            <strong className="text-gray-700 block mb-1">قیمت پروژه:</strong> 
-            <p className="text-green-600 font-bold">{formatPrice(getLabelPrice())}</p>
-          </div>
-          
-          {formData.files && (
-            <div>
-              <strong className="text-gray-700 block mb-1">فایل ضمیمه:</strong> 
-              <p className="text-gray-900">{formData.files.name}</p>
-            </div>
-          )}
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="flex items-center mb-4">
+          <FaTags className="text-green-600 ml-3 text-2xl" />
+          <h2 className="text-xl font-bold text-gray-800">تگ‌ها و برچسب</h2>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <strong className="text-gray-600 block mb-2">تگ‌های انتخاب شده:</strong>
+            <div className="flex flex-wrap gap-2">
+              {getTagNames().map((tagName, index) => (
+                <span 
+                  key={index} 
+                  className="bg-blue-100 text-blue-800 text-xs px-2.5 py-0.5 rounded-full"
+                >
+                  {tagName}
+                </span>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <strong className="text-gray-600 block mb-2">برچسب انتخاب شده:</strong>
+            {getSelectedLabel() && (
+              <div className="bg-green-100 text-green-800 text-xs px-2.5 py-0.5 rounded-full inline-block">
+                {getSelectedLabel()?.name}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="flex items-center mb-4">
+          <FaMoneyBillWave className="text-purple-600 ml-3 text-2xl" />
+          <h2 className="text-xl font-bold text-gray-800">جزئیات مالی</h2>
+        </div>
+        
+        <div>
+          <strong className="text-gray-600 block mb-2">هزینه پروژه:</strong>
+          <p className="text-green-600 font-bold">
+            {getSelectedLabel()?.price === 0 
+              ? 'رایگان' 
+              : `${getSelectedLabel()?.price.toLocaleString()} تومان`}
+          </p>
+        </div>
+      </div>
+
+      {formData.files && (
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="flex items-center mb-4">
+            <FaFileArchive className="text-orange-600 ml-3 text-2xl" />
+            <h2 className="text-xl font-bold text-gray-800">فایل ضمیمه</h2>
+          </div>
+          
+          <div>
+            <strong className="text-gray-600 block mb-2">نام فایل:</strong>
+            <p className="bg-gray-50 p-2 rounded">{formData.files.name}</p>
+          </div>
+        </div>
+      )}
+
+      <div className="flex justify-between mt-6">
         <button 
           onClick={onPrev}
-          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors"
+          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center"
         >
           مرحله قبل
         </button>
         <button 
           onClick={onSubmit}
-          className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors"
+          className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors flex items-center"
         >
           ثبت نهایی پروژه
         </button>

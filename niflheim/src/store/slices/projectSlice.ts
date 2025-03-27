@@ -28,9 +28,14 @@ const initialState: ProjectState = {
 // Async thunk for creating a project
 export const createProject = createAsyncThunk(
   'project/createProject',
-  async (formData: FormData, { rejectWithValue }) => {
+  async (projectData: {
+    title: string;
+    description: string;
+    tags: number[];
+    label: number;
+  }, { rejectWithValue }) => {
     try {
-      const response = await createProjectAPI(formData);
+      const response = await createProjectAPI(projectData);
       return response;
     } catch (error: any) {
       return rejectWithValue(error.message || 'خطا در ایجاد پروژه');

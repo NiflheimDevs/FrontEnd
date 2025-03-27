@@ -18,6 +18,7 @@ import Chat from "../pages/Chat";
 import DashboardMain from "../pages/Dashboard";
 import React from "react";
 
+import ProjectCreationConfirmation from '../pages/CreateProject/ProjectCreationConfirmation';
 import CreateProject from "../pages/CreateProject/CreateProject";
 import MyProjects from "../pages/MyProjects";
 import Biders from "../pages/Biders/Biders";
@@ -40,6 +41,7 @@ export const publicRoutes = [
 
   { path: "/error", element: <Error /> },
   { path: "/createproject", element: <CreateProject /> },
+  { path: "/project-created", element: <ProjectCreationConfirmation /> },
   { path: "/myprojects", element: <MyProjects /> },
   { path: "/biders", element: <Biders /> },
   { path: "/forgetpassword", element: <ForgetPassword /> },
