@@ -16,6 +16,9 @@ import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
 import Wallet from "../Components/DashboardComp/Wallet";
 import Chat from "../pages/Chat";
 import DashboardMain from "../pages/Dashboard";
+import React from "react";
+
+import ProjectCreationConfirmation from '../pages/CreateProject/ProjectCreationConfirmation';
 import CreateProject from "../pages/CreateProject/CreateProject";
 import MyProjects from "../pages/MyProjects";
 import Biders from "../pages/Biders/Biders";
@@ -35,6 +38,9 @@ export const publicRoutes = [
       </MobileVerifyWrapper>
     ),
   },
+
+  
+
   {
     path: "/ForgetPassVerify",
     element: (
@@ -56,6 +62,7 @@ export const privateRoutes = [
   { path: "/myprojects", element: <MyProjects /> },
   { path: "/biders", element: <Biders /> },
   { path: "/ChangePass", element: <ChangePasswordManually /> },
+  { path: "/project-created", element: <ProjectCreationConfirmation /> },
 ];
 
 // Router configuration
