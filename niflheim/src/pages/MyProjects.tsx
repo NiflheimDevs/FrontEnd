@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
 import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
 import { Button } from "../Components/ui/button";
@@ -9,9 +7,9 @@ import { FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import avatar from "@/assets/myproject/avatars.png";
 import pencil from "@/assets/myproject/PencilSquare.png";
-import { getUserProject } from "../API"; // Adjust the import path
+import { getUserProject } from "../API";
 
-// Card animation variants for project cards
+// Card animation variants
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.8, rotateX: 90 },
   visible: {
@@ -22,13 +20,13 @@ const cardVariants = {
   },
   exit: { opacity: 0, scale: 0.8, rotateX: -90, transition: { duration: 0.5 } },
   hover: {
-    scale: 1.03, // Slightly reduced scale for subtlety
-    boxShadow: "0px 0px 20px rgba(81, 137, 202, 0.6)", // Adjusted shadow for less intensity
+    scale: 1.03,
+    boxShadow: "0px 0px 20px rgba(81, 137, 202, 0.6)",
     transition: { duration: 0.3 },
   },
 };
 
-// Button animation variants for pagination buttons
+// Pagination button variants
 const buttonVariants = {
   hover: { scale: 1.05, transition: { duration: 0.3 } },
   tap: { scale: 0.95 },
@@ -43,30 +41,28 @@ const MyProjects = () => {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  // Fetch projects from the API when the page changes
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const offset = (currentPage - 1) * projectsPerPage;
-        const limit = projectsPerPage;
-        const data = await getUserProject(offset, limit);
-        setProjects(data);
-        setTotalProjects(data.length); // Update this if API provides total count separately
+        const data = await getUserProject(offset, projectsPerPage);
+        const projectData = Array.isArray(data) ? data : [];
+        setProjects(projectData);
+        setTotalProjects(projectData.length); // Update if API provides total count
       } catch (error) {
         console.error("Error fetching projects:", error);
+        setProjects([]);
+        setTotalProjects(0);
       }
     };
 
     fetchProjects();
   }, [currentPage]);
 
-  // Pagination logic
   const totalPages = Math.ceil(totalProjects / projectsPerPage) || 1;
-  const indexOfLastProject = currentPage * projectsPerPage;
-  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
   const currentProjects = projects.slice(
-    indexOfFirstProject,
-    indexOfLastProject
+    (currentPage - 1) * projectsPerPage,
+    currentPage * projectsPerPage
   );
 
   const goToNextPage = () =>
@@ -75,64 +71,16 @@ const MyProjects = () => {
     currentPage > 1 && setCurrentPage(currentPage - 1);
   const goToPage = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Initialize particle background effect
-  const particlesInit = async (main) => {
-    await loadFull(main);
-  };
-
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden bg-white">
-      {/* Particle background effect */}
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={{
-          background: { color: { value: "transparent" } },
-          fpsLimit: 120,
-          interactivity: {
-            events: {
-              onClick: { enable: true, mode: "push" },
-              onHover: { enable: true, mode: "repulse" },
-            },
-            modes: {
-              push: { quantity: 4 },
-              repulse: { distance: 200, duration: 0.4 },
-            },
-          },
-          particles: {
-            color: { value: "#5189CA" },
-            links: {
-              color: "#5189CA",
-              distance: 150,
-              enable: true,
-              opacity: 0.3,
-              width: 1,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: "bounce",
-              random: false,
-              speed: 2,
-            },
-            number: { density: { enable: true, area: 800 }, value: 60 },
-            opacity: { value: 0.4 },
-            shape: { type: "circle" },
-            size: { value: { min: 1, max: 4 } },
-          },
-        }}
-        className="absolute inset-0 z-0 pointer-events-none"
-      />
-
-      {/* Sidebar and main content */}
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main
-        className={`flex-1 flex flex-col pt-20 transition-all duration-300 ${
-          isSidebarOpen ? "md:pr-64" : "md:pr-24"
-        } pr-4 pl-4 relative z-10`}
+        className={`flex-1 flex flex-col pt-20 transition-all duration-300 sm:pr-24 pr-4 pl-4 relative z-10 ${
+          isSidebarOpen ? "md:pr-52" : "md:pr-28"
+        }`}
       >
         <Header toggleSidebar={toggleSidebar} />
-        <div className="flex flex-row justify-between items-center mt-12 px-4">
+        <div className="flex flex-row justify-between items-center mt-8 px-4">
           <motion.h2
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -142,10 +90,7 @@ const MyProjects = () => {
             پروژه های من
           </motion.h2>
           <Link to="/createproject">
-            <motion.div
-              whileHover={{ scale: 1.2, rotate: 360 }}
-              whileTap={{ scale: 0.9 }}
-            >
+            <motion.div whileHover={{ scale: 1.05 }}>
               <Button className="border rounded-full bg-gradient-to-r from-purple-500 to-blue-600 text-white px-6 py-3 glowing-shadow hover:from-blue-600 hover:to-purple-500">
                 + ساخت پروژه
               </Button>
@@ -153,12 +98,11 @@ const MyProjects = () => {
           </Link>
         </div>
 
-        {/* Project cards or fallback UI */}
         <AnimatePresence mode="wait">
           {currentProjects.length > 0 ? (
             <motion.div
               key={currentPage}
-              className="mt-12 mb-16 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-4"
+              className="mt-12 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 w-full max-w-[1400px] mx-auto"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -172,7 +116,7 @@ const MyProjects = () => {
                   animate="visible"
                   exit="exit"
                   whileHover="hover"
-                  className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full md:w-[335.06px] h-[246.92px] border border-blue-500/50 flex flex-col p-6 glowing-card overflow-hidden"
+                  className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-[246.92px] border border-blue-500/50 flex flex-col p-6 glowing-card overflow-hidden mx-auto"
                 >
                   <motion.img
                     src={avatar}
@@ -225,11 +169,11 @@ const MyProjects = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="mt-10 flex"
+              className="mt-10 flex justify-center w-full"
             >
               <Link
                 to="/createproject"
-                className="absolute cursor-pointer w-full max-w-[320px] h-[294px] border border-gray-300 rounded-xl hover:bg-gray-50 flex items-center justify-center"
+                className="md:absolute md:right-24 cursor-pointer w-full max-w-[320px] h-[294px] border border-gray-300 rounded-xl hover:bg-gray-50 flex items-center justify-center"
               >
                 <button className="flex cursor-pointer flex-col items-center px-4 py-2 text-blue-500">
                   <span className="text-5xl">+</span>
@@ -241,27 +185,26 @@ const MyProjects = () => {
         </AnimatePresence>
       </main>
 
-      {/* Pagination footer (only shown if projects exist) */}
-      {currentProjects.length > 0 && (
-        <footer className="bg-white ltr place-items-center border-t border-gray-200 self-center p-4 w-full relative z-10">
-          <div className="flex justify-center items-center gap-4">
-            <motion.button
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              onClick={goToPreviousPage}
-              disabled={currentPage === 1}
-              className={`flex hover:cursor-pointer items-center justify-center gap-2 w-24 h-10 rounded-full border border-gray-300 text-sm font-medium glowing-shadow ${
-                currentPage === 1
-                  ? "text-gray-400 cursor-not-allowed"
-                  : "text-gray-700 hover:bg-gray-100 transition-colors"
-              }`}
-            >
-              <FaArrowLeftLong className="w-4 h-4" />
-              <div className="pt-1 text-blue-600">Previous</div>
-            </motion.button>
+      <footer className="bg-white ltr place-items-center border-t border-gray-200 self-center p-4 w-full relative z-10">
+        <div className="flex justify-center items-center gap-4">
+          <motion.button
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            onClick={goToPreviousPage}
+            disabled={currentPage === 1 || currentProjects.length === 0}
+            className={`flex hover:cursor-pointer items-center justify-center gap-2 w-24 h-10 rounded-full border border-gray-300 text-sm font-medium glowing-shadow ${
+              currentPage === 1 || currentProjects.length === 0
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-gray-700 hover:bg-gray-100 transition-colors"
+            }`}
+          >
+            <FaArrowLeftLong className="w-4 h-4" />
+            <div className="pt-1 text-blue-600">Previous</div>
+          </motion.button>
 
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+          {currentProjects.length > 0 ? (
+            Array.from({ length: totalPages }, (_, index) => index + 1).map(
               (pageNumber) => (
                 <motion.button
                   key={pageNumber}
@@ -278,26 +221,34 @@ const MyProjects = () => {
                   {pageNumber}
                 </motion.button>
               )
-            )}
-
+            )
+          ) : (
             <motion.button
               variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              onClick={goToNextPage}
-              disabled={currentPage === totalPages}
-              className={`flex hover:cursor-pointer items-center justify-center gap-2 w-24 h-10 rounded-full border border-gray-300 text-sm font-medium glowing-shadow ${
-                currentPage === totalPages
-                  ? "text-gray-400 cursor-not-allowed"
-                  : "text-gray-700 hover:bg-gray-100 transition-colors"
-              }`}
+              className="flex items-center pt-1 justify-center w-10 h-10 rounded-full border text-gray-700 border-gray-300 cursor-not-allowed"
+              disabled
             >
-              <div className="pt-1 text-blue-600">Next</div>
-              <FaArrowRight className="w-4 h-4" />
+              0
             </motion.button>
-          </div>
-        </footer>
-      )}
+          )}
+
+          <motion.button
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            onClick={goToNextPage}
+            disabled={currentPage === totalPages || currentProjects.length === 0}
+            className={`flex hover:cursor-pointer items-center justify-center gap-2 w-24 h-10 rounded-full border border-gray-300 text-sm font-medium glowing-shadow ${
+              currentPage === totalPages || currentProjects.length === 0
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-gray-700 hover:bg-gray-100 transition-colors"
+            }`}
+          >
+            <div className="pt-1 text-blue-600">Next</div>
+            <FaArrowRight className="w-4 h-4" />
+          </motion.button>
+        </div>
+      </footer>
     </div>
   );
 };

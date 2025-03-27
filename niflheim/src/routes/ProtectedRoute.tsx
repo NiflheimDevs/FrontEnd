@@ -1,12 +1,13 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store"; // Import RootState type
+// ProtectedRoute.tsx
 import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoute = () => {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+const ProtectedRoute: React.FC = () => {
+  const token = localStorage.getItem("authToken");
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/auth" replace />;
+  // If token exists, render the child routes (private pages)
+  // If no token, redirect to /auth
+  return token ? <Outlet /> : <Navigate to="/auth" replace />;
 };
 
 export default ProtectedRoute;
