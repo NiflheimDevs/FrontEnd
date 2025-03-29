@@ -238,6 +238,7 @@ const MyProjects = () => {
                     </div>
                   </div>
                   <div className="flex gap-4 absolute bottom-[22px] left-[20px] z-10">
+                  <Link to={`/edit-project/${project.project_id}`}>
                     <motion.button
                       whileHover={{
                         scale: 1.3,
@@ -247,6 +248,7 @@ const MyProjects = () => {
                     >
                       <img src={pencil} alt="Edit" />
                     </motion.button>
+                  </Link>
                     <motion.button
                       whileHover={{
                         scale: 1.3,

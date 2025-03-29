@@ -20,6 +20,7 @@ import React from "react";
 
 import ProjectCreationConfirmation from '../pages/CreateProject/ProjectCreationConfirmation';
 import CreateProject from "../pages/CreateProject/CreateProject";
+import EditProject  from "../pages/EditProject/EditProject";
 import MyProjects from "../pages/MyProjects";
 import Biders from "../pages/Biders/Biders";
 import HomePage from "../pages/HomePage";
@@ -63,6 +64,7 @@ export const privateRoutes = [
   { path: "/biders", element: <Biders /> },
   { path: "/ChangePass", element: <ChangePasswordManually /> },
   { path: "/project-created", element: <ProjectCreationConfirmation /> },
+  { path: "/edit-project/:projectId", element: <EditProject /> },
 ];
 
 // Router configuration

@@ -166,8 +166,8 @@ export const getUserProject = async (offset, limit) => {
       }
     });
 
-    console.log("API Response:", response.data);
-
+    // console.log("API Response:", response.data);
+          
     const projects = response.data.projects || [];
     const total = projects.length; // Use the length of all projects
 
@@ -221,6 +221,26 @@ export const createProject = async (projectData) => {
     return response.data;
   } catch (error) {
     throw error.response?.data || "خطا در ایجاد پروژه";
+  }
+};
+
+export const updateProject = async (projectId, projectData) => {
+  try {
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      throw new Error("توکن احراز هویت یافت نشد");
+    }
+    
+    const response = await apiClient.put(`/project/${projectId}`, projectData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "خطا در بروزرسانی پروژه";
   }
 };
 
