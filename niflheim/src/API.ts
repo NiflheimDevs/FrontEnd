@@ -81,78 +81,57 @@ export const refreshAccessToken = async () => {
       }
     }
     return newAccessToken;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در تمدید توکن!";
   }
 };
 
-export const signupSendOTP = async (userData: {
-  phonenumber: string;
-  username: string;
-  password: string;
-}) => {
+export const signupSendOTP = async (userData) => {
   try {
     const response = await apiClient.post("/signup/send-otp", userData);
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const signupVerifyOTP = async (userData: {
-  code: string;
-  sessionid: string;
-}) => {
+export const signupVerifyOTP = async (userData) => {
   try {
     const response = await apiClient.post("/signup/verify", userData);
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const forgetPasswordSendOTP = async (userData: {
-  phonenumber: string;
-}) => {
+export const forgetPasswordSendOTP = async (userData) => {
   try {
-    const response = await apiClient.post(
-      "/forget-password/send-otp",
-      userData
-    );
+    const response = await apiClient.post("/forget-password/send-otp", userData);
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const forgetPasswordVerifyOTP = async (userData: {
-  code: string;
-  sessionid: string;
-}) => {
+export const forgetPasswordVerifyOTP = async (userData) => {
   try {
     const response = await apiClient.post("/forget-password/verify", userData);
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const forgetPasswordReset = async (userData: {
-  sessionid: string;
-  new_password: string;
-}) => {
+export const forgetPasswordReset = async (userData) => {
   try {
     const response = await apiClient.post("/forget-password/reset", userData);
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const Login = async (userData: {
-  identifier: string;
-  password: string;
-}) => {
+export const Login = async (userData) => {
   try {
     const response = await apiClient.post("/login", userData);
     const accessToken = response.data.access_token;
@@ -164,89 +143,39 @@ export const Login = async (userData: {
       localStorage.setItem("refreshToken", refreshToken);
     }
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const ChangePass = async (userData: {
-  new_password: string;
-  old_password: string;
-}) => {
+export const ChangePass = async (userData) => {
   try {
     const response = await apiClient.post("/change-password", userData);
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-// New API function for Get User Project
-// export const getUserProject = async (offset: number, limit: number) => {
-//   try {
-//     const response = await apiClient.get("/project", {
-//       params: { offset, limit },
-//     });
-//     return response.data;
-//   } catch (error: any) {
-//     throw error.response?.data || "خطا در ارسال درخواست!";
-//   }
-// };
-
-// export const getUserProject = async (offset: number, limit: number) => {
-//   try {
-//     const token = localStorage.getItem('authToken');
-//     console.log('Current Auth Token:', token);
-//     console.log('Request Params:', { offset, limit });
-
-//     const response = await apiClient.get("/project", {
-//       params: { 
-//         offset: offset, 
-//         limit: limit 
-//       },
-//       headers: {
-//         // Optionally add token manually if interceptor isn't working
-//         ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-//       }
-//     });
-
-//     console.log('Projects Response:', response.data);
-    
-//     // Check if the response is in the expected format
-//     if (!Array.isArray(response.data)) {
-//       console.warn('Unexpected response format:', response.data);
-//       return [];
-//     }
-
-//     return response.data;
-//   } catch (error: any) {
-//     console.error('Error fetching projects:', error);
-    
-//     // More detailed error logging
-//     if (error.response) {
-//       console.error('Error Response:', error.response.data);
-//       console.error('Error Status:', error.response.status);
-//       console.error('Error Headers:', error.response.headers);
-//     }
-
-//     throw error.response?.data || "خطا در ارسال درخواست!";
-//   }
-// };
-
-export const getUserProject = async (offset: number, limit: number) => {
+export const getUserProject = async (offset, limit) => {
   try {
     const response = await apiClient.get("/project", {
       params: { 
-        offset: offset, 
-        limit: limit 
+        offset: 0, // Fetch all projects
+        limit: 1000 // Set a high limit
       }
     });
 
-    // Extract projects from the response
-    const projects = response.data.projects || [];
+    console.log("API Response:", response.data);
 
-    return projects;
-  } catch (error: any) {
+    const projects = response.data.projects || [];
+    const total = projects.length; // Use the length of all projects
+
+    // Simulate pagination client-side
+    const paginatedProjects = projects.slice(offset, offset + limit);
+
+    return { projects: paginatedProjects, total };
+  } catch (error) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
@@ -257,12 +186,11 @@ export const logout = () => {
   window.location.href = "/auth"; // Adjust based on your routing
 };
 
-
 export const getLabels = async () => {
   try {
     const response = await apiClient.get("/labels");
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در دریافت برچسب‌ها";
   }
 };
@@ -271,33 +199,46 @@ export const getTags = async () => {
   try {
     const response = await apiClient.get("/tags");
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در دریافت تگ‌ها";
   }
 };
 
-
-export const createProject = async (projectData: {
-  title: string;
-  description: string;
-  tags: number[];
-  label: number;
-}) => {
+export const createProject = async (projectData) => {
   try {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
 
     if (!token) {
       throw new Error("توکن احراز هویت یافت نشد");
     }
 
-    const response = await apiClient.post('/project/create', projectData, {
+    const response = await apiClient.post("/project/create", projectData, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
     throw error.response?.data || "خطا در ایجاد پروژه";
+  }
+};
+
+export const deleteProject = async (projectId) => {
+  try {
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      throw new Error("توکن احراز هویت یافت نشد");
+    }
+
+    const response = await apiClient.delete(`/project/${projectId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "خطا در حذف پروژه";
   }
 };

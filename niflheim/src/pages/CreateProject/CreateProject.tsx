@@ -94,7 +94,7 @@ const CreateProject: React.FC = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 lg:max-w-4xl">
+    <div className="container mx-auto px-4 py-8 mt-15 lg:max-w-4xl">
       {/* Progress Indicator */}
       <div className="flex justify-center mb-12 space-x-4 lg:space-x-8">
         {StepIcons.map((step, index) => (
