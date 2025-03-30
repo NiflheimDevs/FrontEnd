@@ -41,17 +41,20 @@ export default function Profile() {
   );
 
   return (
-    <div className="flex min-h-screen w-full bg-gradient-to-br from-[#71C2F4] to-[#000D6E]">
-      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <main className="flex-1 flex flex-col pt-16 md:pr-24 sm:pr-24 pr-0">
-        <Header toggleSidebar={toggleSidebar} />
+    <>
+      <div className="fixed inset-0 bg-gradient-to-br from-[#71C2F4] to-[#000D6E] z-[-1]"></div>
+      <div className="flex min-h-screen w-full bg-gradient-to-br from-[#71C2F4] to-[#000D6E]">
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <main className="flex-1 flex flex-col pt-16 md:pr-24 sm:pr-24 md:pl-0 px-4">
+          <Header toggleSidebar={toggleSidebar} />
 
-        {isLoading ? (
-              renderSkeleton()
-            ) : (
-        <ChatMessageArea />
-            )}
-      </main>
-    </div>
+          {isLoading ? (
+                renderSkeleton()
+              ) : (
+          <ChatMessageArea />
+              )}
+        </main>
+      </div>
+    </>
   );
 }
