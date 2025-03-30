@@ -2,9 +2,7 @@ import React from 'react';
 import { 
   FaProjectDiagram, 
   FaTags, 
-  FaMoneyBillWave, 
-  FaExclamationTriangle,
-  FaInfoCircle
+  FaMoneyBillWave
 } from 'react-icons/fa';
 
 interface Tag {
@@ -27,8 +25,7 @@ interface EditStep3Props {
     label: number[];
   };
   tags: Tag[];
-  labels: Label[];
-  originalLabelId: number | null;
+  projectLabel: Label | null;
   onSubmit: () => void;
   onPrev: () => void;
 }
@@ -36,8 +33,7 @@ interface EditStep3Props {
 const EditStep3: React.FC<EditStep3Props> = ({ 
   formData, 
   tags, 
-  labels, 
-  originalLabelId,
+  projectLabel,
   onSubmit, 
   onPrev 
 }) => {
@@ -47,44 +43,9 @@ const EditStep3: React.FC<EditStep3Props> = ({
       .filter(Boolean);
   };
 
-  const getSelectedLabel = () => {
-    const labelId = formData.label && formData.label.length > 0 ? formData.label[0] : null;
-    if (!labelId) return null;
-    
-    return labels.find(l => l.id === labelId) || null;
-  };
-
-  const getOriginalLabel = () => {
-    if (!originalLabelId) return null;
-    return labels.find(l => l.id === originalLabelId) || null;
-  };
-
-  const calculatePriceDifference = () => {
-    const originalLabel = getOriginalLabel();
-    const selectedLabel = getSelectedLabel();
-    
-    if (!originalLabel || !selectedLabel || originalLabel.id === selectedLabel.id) {
-      return 0;
-    }
-    
-    const diff = selectedLabel.price - originalLabel.price;
-    return diff > 0 ? diff : 0;
-  };
-
-  const hasChanges = () => {
-    const priceDifference = calculatePriceDifference();
-    const labelChanged = originalLabelId !== (formData.label && formData.label.length > 0 ? formData.label[0] : null);
-    
-    return priceDifference > 0 || labelChanged;
-  };
-
   const truncateText = (text: string, maxLength: number) => {
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
-
-  const selectedLabel = getSelectedLabel();
-  const originalLabel = getOriginalLabel();
-  const priceDifference = calculatePriceDifference();
 
   return (
     <div className="space-y-6">
@@ -131,17 +92,10 @@ const EditStep3: React.FC<EditStep3Props> = ({
           </div>
           
           <div>
-            <strong className="text-gray-600 block mb-2">برچسب انتخاب شده:</strong>
-            {selectedLabel && (
-              <div className="bg-green-100 text-green-800 text-xs px-2.5 py-0.5 rounded-full inline-block">
-                {selectedLabel.name}
-              </div>
-            )}
-            
-            {originalLabel && selectedLabel && originalLabel.id !== selectedLabel.id && (
-              <div className="mt-2 text-xs text-blue-600">
-                <FaInfoCircle className="inline ml-1" />
-                تغییر از «{originalLabel.name}» به «{selectedLabel.name}»
+            <strong className="text-gray-600 block mb-2">برچسب پروژه:</strong>
+            {projectLabel && (
+              <div className="bg-green-100 text-green-800 px-3 py-1 rounded-md inline-block">
+                {projectLabel.name}
               </div>
             )}
           </div>
@@ -156,26 +110,14 @@ const EditStep3: React.FC<EditStep3Props> = ({
         
         <div>
           <strong className="text-gray-600 block mb-2">هزینه برچسب:</strong>
-          {selectedLabel ? (
+          {projectLabel ? (
             <p className="text-green-600 font-bold">
-              {selectedLabel.price === 0 
+              {projectLabel.price === 0 
                 ? 'رایگان' 
-                : `${selectedLabel.price.toLocaleString()} تومان`}
+                : `${projectLabel.price.toLocaleString()} تومان`}
             </p>
           ) : (
             <p className="text-red-600">برچسبی انتخاب نشده است</p>
-          )}
-          
-          {priceDifference > 0 && (
-            <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded flex items-start">
-              <FaExclamationTriangle className="text-yellow-500 mt-1 ml-2" />
-              <div>
-                <p className="text-yellow-700 font-bold">هزینه اضافی:</p>
-                <p className="text-yellow-700">
-                  برای ارتقاء برچسب از «{originalLabel?.name}» به «{selectedLabel?.name}»، مبلغ {priceDifference.toLocaleString()} تومان از کیف پول شما کسر خواهد شد.
-                </p>
-              </div>
-            </div>
           )}
         </div>
       </div>

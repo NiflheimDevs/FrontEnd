@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setProjectData } from '@/store/slices/projectSlice';
-import { FaCheck, FaLock } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 
 interface Tag {
   id: number;
@@ -21,8 +21,7 @@ interface EditStep2Props {
     label: number[];
   };
   tags: Tag[];
-  labels: Label[];
-  originalLabelId: number | null;
+  projectLabel: Label | null;
   onNext: () => void;
   onPrev: () => void;
 }
@@ -30,29 +29,20 @@ interface EditStep2Props {
 const EditStep2: React.FC<EditStep2Props> = ({ 
   formData, 
   tags, 
-  labels, 
-  originalLabelId,
+  projectLabel,
   onNext, 
   onPrev 
 }) => {
   const dispatch = useDispatch();
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
-  const [selectedLabel, setSelectedLabel] = useState<number | null>(null);
   const [error, setError] = useState('');
-
+  
   useEffect(() => {
-    
+    // Set selected tags from formData
     if (formData.tags && formData.tags.length > 0) {
       setSelectedTags([...formData.tags]);
     }
-    
-    if (formData.label && formData.label.length > 0) {
-      setSelectedLabel(formData.label[0]);
-    } else if (originalLabelId) {
-      setSelectedLabel(originalLabelId);
-      dispatch(setProjectData({ label: [originalLabelId] }));
-    }
-  }, [formData, originalLabelId, dispatch]);
+  }, [formData]);
 
   const toggleTag = (tagId: number) => {
     const newSelectedTags = selectedTags.includes(tagId)
@@ -60,35 +50,7 @@ const EditStep2: React.FC<EditStep2Props> = ({
       : [...selectedTags, tagId];
     
     setSelectedTags(newSelectedTags);
-    
     dispatch(setProjectData({ tags: newSelectedTags }));
-  };
-
-  const isLabelSelectable = (labelId: number) => {
-    if (labelId === originalLabelId || labelId === selectedLabel) {
-      return true;
-    }
-    
-    const originalLabel = labels.find(l => l.id === originalLabelId);
-    
-    if (!originalLabel) return true; 
-    
-    if (originalLabel.price === 0) {
-      const candidateLabel = labels.find(l => l.id === labelId);
-      return candidateLabel?.price === 0;
-    }
-    
-    const alreadySelectedLabels = formData.label || [];
-    
-    return !alreadySelectedLabels.includes(labelId);
-  };
-
-  const handleLabelSelect = (labelId: number) => {
-    if (isLabelSelectable(labelId)) {
-      setSelectedLabel(labelId);
-      
-      dispatch(setProjectData({ label: [labelId] }));
-    }
   };
 
   const handleNext = () => {
@@ -97,21 +59,18 @@ const EditStep2: React.FC<EditStep2Props> = ({
       return;
     }
 
-    if (!selectedLabel) {
-      setError('لطفاً یک برچسب انتخاب کنید');
+    if (!formData.label || formData.label.length === 0) {
+      setError('خطا در بارگذاری برچسب. لطفاً صفحه را بارگذاری مجدد کنید.');
       return;
     }
 
-    dispatch(setProjectData({ 
-      tags: selectedTags, 
-      label: [selectedLabel] 
-    }));
-    
+    dispatch(setProjectData({ tags: selectedTags }));
     onNext();
   };
 
   return (
     <div className="space-y-6">
+      {/* Tags selection section */}
       <div className="bg-gray-50 p-6 rounded-lg">
         <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب تگ‌ها</h3>
         <div className="flex flex-wrap gap-3">
@@ -132,52 +91,26 @@ const EditStep2: React.FC<EditStep2Props> = ({
         </div>
       </div>
 
+      {/* Label display section - read-only */}
       <div className="bg-gray-50 p-6 rounded-lg">
-        <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب برچسب</h3>
+        <h3 className="text-xl font-bold mb-4 text-gray-800">برچسب پروژه</h3>
         
-        {originalLabelId && (
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
-            <p>توجه: اگر برچسب اصلی شما رایگان است، فقط می‌توانید برچسب‌های رایگان را انتخاب کنید. اگر برچسب اصلی پولی است، می‌توانید برچسب‌های جدید اضافه کنید اما نمی‌توانید برچسب‌هایی که قبلاً خریداری کرده‌اید را دوباره انتخاب کنید.</p>
+        {projectLabel ? (
+          <div className="bg-white p-4 rounded-lg border-2 border-blue-500">
+            <div className="flex justify-between items-center">
+              <h4 className="font-bold text-lg">{projectLabel.name}</h4>
+            </div>
+            <p className="text-gray-600 mt-2">{projectLabel.description}</p>
+            <p className="text-blue-600 font-bold mt-2">
+              {projectLabel.price === 0 ? 'رایگان' : `${projectLabel.price.toLocaleString()} تومان`}
+            </p>
+            <div className="mt-3 text-xs text-gray-400">این برچسب قابل تغییر نیست</div>
+          </div>
+        ) : (
+          <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-300">
+            <p className="text-yellow-700">برچسب پروژه در حال بارگذاری...</p>
           </div>
         )}
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {labels.map(label => {
-            const isSelectable = isLabelSelectable(label.id);
-            const isSelected = selectedLabel === label.id;
-            const isOriginal = label.id === originalLabelId;
-            
-            return (
-              <div 
-                key={label.id}
-                onClick={() => isSelectable && handleLabelSelect(label.id)}
-                className={`p-4 rounded-lg transition-all duration-300 border-2 relative ${
-                  isSelected 
-                    ? 'bg-green-100 border-green-500' 
-                    : isSelectable
-                      ? 'bg-white border-gray-200 hover:bg-gray-50 cursor-pointer'
-                      : 'bg-gray-100 border-gray-300 opacity-60 cursor-not-allowed'
-                } ${isOriginal ? 'ring-2 ring-blue-400' : ''}`}
-              >
-                {isOriginal && (
-                  <div className="absolute top-0 right-0 transform -translate-y-1/2 translate-x-1/2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
-                    برچسب اصلی
-                  </div>
-                )}
-                
-                <div className="flex justify-between items-center">
-                  <h4 className="font-bold text-lg">{label.name}</h4>
-                  {isSelected && <FaCheck className="text-green-600" />}
-                  {!isSelectable && !isSelected && <FaLock className="text-gray-400" />}
-                </div>
-                <p className="text-gray-600 mt-2">{label.description}</p>
-                <p className="text-blue-600 font-bold mt-2">
-                  {label.price === 0 ? 'رایگان' : `${label.price.toLocaleString()} تومان`}
-                </p>
-              </div>
-            );
-          })}
-        </div>
       </div>
 
       {error && (

@@ -7,7 +7,7 @@ import {
   resetProject, 
   updateProject 
 } from '@/store/slices/projectSlice';
-import { getTags, getLabels } from '../../API';
+import { getTags } from '../../API';
 import { 
   FaClipboardList, 
   FaTags, 
@@ -44,9 +44,8 @@ const EditProject: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const [currentStep, setCurrentStep] = useState(1);
   const [tags, setTags] = useState<Tag[]>([]);
-  const [labels, setLabels] = useState<Label[]>([]);
+  const [projectLabel, setProjectLabel] = useState<Label | null>(null);
   const [loading, setLoading] = useState(true);
-  const [originalLabelId, setOriginalLabelId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   
   const dispatch = useDispatch();
@@ -54,55 +53,63 @@ const EditProject: React.FC = () => {
   const project = useSelector((state: RootState) => state.project);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
  
-useEffect(() => {
-  const fetchProjectData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const token = localStorage.getItem('authToken');
-      const response = await axios.get(`http://103.75.196.227:8080/project/${projectId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+  useEffect(() => {
+    const fetchProjectData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const token = localStorage.getItem('authToken');
+        const response = await axios.get(`http://103.75.196.227:8080/project/${projectId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        
+        const projectData = response.data;
+  
+        const tagsArray = Array.isArray(projectData.tags) 
+          ? projectData.tags.map(tag => typeof tag === 'object' ? tag.id : tag) 
+          : [projectData.tags];
+  
+        if (projectData.label) {
+          if (typeof projectData.label === 'object') {
+            setProjectLabel(projectData.label);
+          } else {
+            setProjectLabel({
+              id: projectData.label,
+              name: projectData.labelName || 'برچسب پروژه',
+              description: projectData.labelDescription || '',
+              price: projectData.labelPrice || 0
+            });
+          }
         }
-      });
-      
-      const projectData = response.data;
-
-      setOriginalLabelId(projectData.label);
-
-
-      const tagsArray = Array.isArray(projectData.tags) 
-        ? projectData.tags.map(tag => typeof tag === 'object' ? tag.id : tag) 
-        : [projectData.tags];
-
-      dispatch(setProjectData({
-        name: projectData.title,
-        description: projectData.description,
-        tags: tagsArray,
-        label: [projectData.label]
-      }));
-      
-      // Fetch tags and labels
-      const fetchedTags = await getTags();
-      const fetchedLabels = await getLabels();
-      
-      setTags(fetchedTags);
-      setLabels(fetchedLabels);
-      
-      setLoading(false);
-    } catch (error) {
-      setError('خطا در بارگذاری اطلاعات پروژه. لطفاً دوباره تلاش کنید.');
-      setLoading(false);
-    }
-  };
   
-  fetchProjectData();
-  
-  return () => {
-    dispatch(resetProject());
-  };
-}, [projectId, dispatch]);
+        // Make sure we set the label as an ID
+        dispatch(setProjectData({
+          name: projectData.title,
+          description: projectData.description,
+          tags: tagsArray,
+          label: [projectData.label] 
+        }));
+        
+        // Fetch only tags, we don't need getLabels
+        const fetchedTags = await getTags();
+        setTags(fetchedTags);
+        
+        setLoading(false);
+      } catch (error) {
+        setError('خطا در بارگذاری اطلاعات پروژه. لطفاً دوباره تلاش کنید.');
+        setLoading(false);
+      }
+    };
+    
+    fetchProjectData();
+    
+    return () => {
+      dispatch(resetProject());
+    };
+  }, [projectId, dispatch]);
 
   const nextStep = () => setCurrentStep(current => current + 1);
   const prevStep = () => setCurrentStep(current => current - 1);
@@ -112,7 +119,7 @@ useEffect(() => {
       title: project.name,
       description: project.description,
       tags: project.tags, 
-      label: project.label[0]
+      label: project.label[0] 
     };
   
     try {
@@ -205,8 +212,7 @@ useEffect(() => {
           <EditStep2 
             formData={project} 
             tags={tags}
-            labels={labels}
-            originalLabelId={originalLabelId}
+            projectLabel={projectLabel}
             onNext={nextStep} 
             onPrev={prevStep} 
           />
@@ -216,8 +222,7 @@ useEffect(() => {
           <EditStep3 
             formData={project} 
             tags={tags}
-            labels={labels}
-            originalLabelId={originalLabelId}
+            projectLabel={projectLabel}
             onSubmit={handleSubmit} 
             onPrev={prevStep} 
           />
