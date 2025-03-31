@@ -1,9 +1,8 @@
-// router.tsx
+import React from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import AuthPage from "../pages/Auth";
 import Profile from "../pages/Profile";
-import Footer from "../Components/Footer/Footer";
 import AboutUs from "../pages/AboutUs";
 import Error from "../pages/Error/Error";
 import MobileVerify from "../pages/MobileVerify";
@@ -16,18 +15,34 @@ import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
 import Wallet from "../Components/DashboardComp/Wallet";
 import Chat from "../pages/Chat";
 import DashboardMain from "../pages/Dashboard";
-import React from "react";
-
 import ProjectCreationConfirmation from '../pages/CreateProject/ProjectCreationConfirmation';
 import CreateProject from "../pages/CreateProject/CreateProject";
-import EditProject  from "../pages/EditProject/EditProject";
+import EditProject from "../pages/EditProject/EditProject";
 import MyProjects from "../pages/MyProjects";
 import Biders from "../pages/Biders/Biders";
 import HomePage from "../pages/HomePage";
 
+// Utility function to check if user is authenticated
+const isAuthenticated = () => {
+  const token = localStorage.getItem("authToken");
+  return !!token; // Return true if token exists, false otherwise
+};
+
+// Wrapper component to redirect authenticated users away from public routes
+const PublicRoute = ({ children }) => {
+  return isAuthenticated() ? <Navigate to="/dashboard" replace /> : children;
+};
+
 // Public routes (no authentication required)
 export const publicRoutes = [
-  { path: "/auth", element: <AuthPage /> },
+  {
+    path: "/auth",
+    element: (
+      <PublicRoute>
+        <AuthPage />
+      </PublicRoute>
+    ),
+  },
   { path: "/aboutUs", element: <AboutUs /> },
   { path: "/Main", element: <HomePage /> }, // Assuming homepage is public
   { path: "/forgetpassword", element: <ForgetPassword /> },
@@ -39,9 +54,6 @@ export const publicRoutes = [
       </MobileVerifyWrapper>
     ),
   },
-
-  
-
   {
     path: "/ForgetPassVerify",
     element: (

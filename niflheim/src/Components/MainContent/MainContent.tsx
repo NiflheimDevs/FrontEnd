@@ -1,57 +1,96 @@
+import React, { useState } from "react";
+import { BsArrowRight } from "react-icons/bs";
+import { Search } from "lucide-react";
 import bg from "./bg.png";
 import Frame from "./Frame.png";
 import Skill from "./Skill.png";
 import Fee from "./Fee.png";
 import Best from "./best.png";
-import Free1 from "./Free1.png";
-import Free2 from "./Free2.png";
-import Free3 from "./Free3.png";
-import { BsArrowRight } from "react-icons/bs";
-import { Search } from "lucide-react";
-import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const MainContent = () => {
   const categories = [
-    { title: "WEB DEVELOPMENT", icon: "web_dev_icon.svg" },
-    { title: "DESIGN", icon: "design_icon.svg" },
-    { title: "SEO", icon: "seo_icon.svg" },
-    { title: "VIDEO EDITING", icon: "video_editing_icon.svg" },
+    {
+      title: "WEB DEVELOPMENT",
+      icon: "https://img.icons8.com/ios-filled/50/ffffff/source-code.png",
+      bg: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=400&q=80",
+      overlay: "from-purple-700 to-blue-600",
+    },
+    {
+      title: "LOGO DESIGN",
+      icon: "https://img.icons8.com/ios-filled/50/ffffff/design.png",
+      bg: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80",
+      overlay: "from-blue-400 to-blue-600",
+    },
+    {
+      title: "SEO",
+      icon: "https://img.icons8.com/ios-filled/50/ffffff/graph-report.png",
+      bg: "https://images.unsplash.com/photo-1533750516457-a7f992034fec?auto=format&fit=crop&w=400&q=80",
+      overlay: "from-green-400 to-teal-600",
+    },
+
+    {
+      title: "VIDEO EDITING",
+      icon: "https://img.icons8.com/ios-filled/50/ffffff/video-editing.png",
+      bg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCuqO8ywpvhcuxTyXhDjQzV7M1r7pOFSRCggXAmw5_hBsNMVzY-KTFOAK597LoN3GjkmU&usqp=CAU",
+      overlay: "from-purple-700 to-pink-600",
+    },
   ];
 
   const freelancerCards = [
     {
       username: "ghasemianm70",
-      description: "I will do mobile app design UI/UX for android and ios",
+      description: "Mobile app design UI/UX for Android and iOS",
       price: "£50.00",
-      image: "freelancer1.jpg",
+      image: "https://unsplash.com/photos/1SAnrIxw5OY/download?force=true",
     },
     {
       username: "hamid_shari",
-      description: "I will do UI UX and ad design in figma",
+      description: "UI UX and ad design in Figma",
       price: "£45.00",
-      image: "freelancer2.jpg",
+      image: "https://unsplash.com/photos/m_HRfLhgABo/download?force=true",
     },
     {
       username: "freelanceDigital",
-      description: "I will do mobile app UI/UX design in figma",
+      description: "Mobile app UI/UX design in Figma",
       price: "£70.00",
-      image: "freelancer3.jpg",
+      image: "https://unsplash.com/photos/1K9T5YiZ2WU/download?force=true",
     },
     {
       username: "shahrokhian",
-      description: "I will design awesome play store screenshots for your app",
+      description: "Awesome Play Store screenshots for your app",
       price: "£34.00",
-      image: "freelancer4.jpg",
+      image: "https://unsplash.com/photos/4hbJ-eymZ1o/download?force=true",
     },
   ];
 
   const trendingFreelancers = [
-    { name: "Abinesh Jino", role: "UI/UX Designer", image: Free3 },
-    { name: "Hrithik Tiwari", role: "Blockchain Dev", image: Free2 },
-    { name: "Helen", role: "Data Scientist", image: Free1 },
-    { name: "Helen", role: "Data Scientist", image: Free1 },
-    { name: "Helen", role: "Data Scientist", image: Free1 },
-    { name: "Helen", role: "Data Scientist", image: Free1 },
+    {
+      name: "Abinesh Jino",
+      role: "UI/UX Designer",
+      image: "https://unsplash.com/photos/m_HRfLhgABo/download?force=true",
+    },
+    {
+      name: "Hrithik Tiwari",
+      role: "Blockchain Developer",
+      image: "https://unsplash.com/photos/5fNmWej4tAA/download?force=true",
+    },
+    {
+      name: "Helen",
+      role: "Data Scientist",
+      image: "https://unsplash.com/photos/Mf23RF8xArY/download?force=true",
+    },
+    {
+      name: "Max",
+      role: "Frontend Developer",
+      image: "https://unsplash.com/photos/1K9T5YiZ2WU/download?force=true",
+    },
+    {
+      name: "Sara",
+      role: "Backend Developer",
+      image: "https://unsplash.com/photos/Im7lZjxeLhg/download?force=true",
+    },
   ];
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -69,72 +108,97 @@ const MainContent = () => {
   };
 
   return (
-    <main className="flex flex-col items-center w-full mt-[72px]">
+    <main className="flex flex-col items-center w-full mt-18">
       {/* Hero Section */}
       <section
-        className="w-full flex flex-col gap-20 items-center justify-center text-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${bg})`, height: "1040px" }}
+        className="w-full h-[620px] flex flex-col justify-center items-center text-white text-center bg-cover bg-center"
+        style={{ backgroundImage: `url(${bg})` }}
       >
-        <h1 className="text-[48px] md:text-[64px] w-[538px] h-[200px] text-black font-bold leading-tight">
+        <h1 className="text-[40px] md:text-[56px] font-extrabold drop-shadow-lg">
           <span className="flex justify-center">کارفرما و فریلنسر</span>
           <span className="block">یک کلیک تا همکاری!</span>
         </h1>
-        <div className="relative mt-6 w-3/4 md:w-[612px] bg-white rounded-full shadow-md">
+        <div className="relative w-full max-w-xl mt-6 mx-auto">
           <input
             type="text"
-            placeholder="جستجو"
-            className="w-full py-4 pr-14 pl-4 rounded-full border-none focus:outline-none"
+            placeholder="Search..."
+            className="w-full py-4 pr-14 pl-6 rounded-full bg-gray-300 hover:bg-gray-100 text-black shadow-md focus:outline-none"
           />
-          <button className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600">
+          <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600">
             <Search size={24} />
           </button>
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="w-full py-12 flex justify-center">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-11/12 max-w-6xl">
-          {categories.map((category, index) => (
+      {/* Categories */}
+      <section className="w-full py-12 rounded-3xl mt-8 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-6 max-w-6xl mx-auto">
+          {categories.map((cat, idx) => (
             <div
-              key={index}
-              className="flex flex-col items-center p-6 rounded-xl shadow-lg bg-white hover:bg-gray-50 transition-all duration-300"
+              key={idx}
+              className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group hover:scale-105 transition"
             >
               <img
-                src={`/path/to/${category.icon}`}
-                alt={category.title}
-                className="w-16 h-16 mb-4"
+                src={cat.bg}
+                alt={cat.title}
+                className="absolute w-full h-full object-cover"
               />
-              <h3 className="text-lg font-semibold text-gray-800">
-                {category.title}
-              </h3>
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${cat.overlay} opacity-70`}
+              ></div>
+              <div className="z-10 flex flex-col items-center justify-center text-white px-2">
+                <img
+                  src={cat.icon}
+                  alt={cat.title}
+                  className="w-10 h-10 mb-2"
+                />
+                <h3 className="text-sm font-bold tracking-wide uppercase">
+                  {cat.title}
+                </h3>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Freelancer Cards Section */}
-      <section className="w-full py-12 flex justify-center">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 w-11/12 max-w-6xl">
-          {freelancerCards.map((freelancer, index) => (
+      {/* Freelancer Cards */}
+      <section className="w-full py-16 rounded-3xl mb-10">
+        <div className="flex justify-between items-center px-6 max-w-7xl mx-auto mb-6">
+          {/* wait for parsa to implement the page for the project taking */}
+          <Link
+            to="/"
+            className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition text-sm font-medium"
+          >
+            مشاهده همه
+          </Link>
+          <h2 className="text-2xl font-bold text-[#333]">Featured Projects</h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-6 max-w-7xl mx-auto">
+          {freelancerCards.map((card, idx) => (
             <div
-              key={index}
-              className="bg-white gap- rounded-xl shadow-lg p-4 hover:shadow-xl transition-all duration-300"
+              key={idx}
+              className="bg-white rounded-xl shadow-md hover:shadow-xl transition flex flex-col relative"
+              style={{ minHeight: "350px" }}
             >
               <img
-                src={`/path/to/${freelancer.image}`}
-                alt={freelancer.username}
+                src={
+                  card.image ||
+                  `https://source.unsplash.com/400x300/?freelancer,design,${idx}`
+                }
+                alt={card.username}
                 className="w-full h-48 object-cover rounded-t-xl"
               />
-              <div className="p-4">
-                <h4 className="text-sm text-gray-600">
-                  @{freelancer.username}
+              <div className="p-4 pb-14">
+                <h4 className="text-sm text-left text-gray-600">
+                  @{card.username}
                 </h4>
-                <p className="text-md text-gray-800 mt-2 line-clamp-2">
-                  {freelancer.description}
+                <p className="text-md text-left font-medium mt-2">
+                  {card.description}
                 </p>
-                <p className="text-lg font-bold text-blue-600 mt-2">
-                  {freelancer.price}
-                </p>
+              </div>
+              <div className="absolute bottom-4 left-4">
+                <p className="text-lg font-bold text-blue-600">{card.price}</p>
               </div>
             </div>
           ))}
@@ -143,125 +207,116 @@ const MainContent = () => {
 
       {/* Newsletter Section */}
       <section
-        className="w-full py-16 flex justify-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${Frame})`, height: "428px" }}
+        className="w-full py-25 text-white text-center mt-8 mb-8"
+        style={{
+          backgroundImage: `url(${Frame})`,
+        }}
       >
-        <div className="flex flex-col items-center w-11/12 max-w-3xl text-center">
-          <p className="text-[32px] md:text-[40px] font-bold text-white">
-            <span className="flex justify-center">همیشه در جریان جدیدترین</span>
-            <span className="block">فرصت‌ها و اخبار ما باشید 🚀</span>
-          </p>
-          <div className="relative mt-8 w-full border md:w-[640px] bg-white">
-            <input
-              type="email"
-              placeholder="Enter Your Email"
-              className="w-full py-4 pr-14 pl-4 rounded-full border-none focus:outline-none text-gray-600 placeholder-gray-400 text-left"
-            />
-            <button className="absolute right-0 top-1/2 w-[216px] transform -translate-y-1/2 border bg-white text-[#62646A] px-6 py-4 font-semibold hover:bg-gray-100 transition">
-              ارسال
-            </button>
-          </div>
+        <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <span className="flex justify-center">همیشه در جریان جدیدترین</span>
+          <span className="block">فرصت‌ها و اخبار ما باشید 🚀</span>
+        </h2>
+        <div className="relative max-w-xl mx-auto">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="w-full border border-black py-4 text-left px-6 rounded-full text-black focus:outline-none"
+          />
+          <button className="absolute right-[1px] bottom-[1px] top-[1px] bg-blue-500 text-white font-bold px-6 rounded-full hover:bg-blue-700 transition">
+            Subscribe
+          </button>
         </div>
       </section>
 
-      {/* Trending Freelancers Section */}
-      <section className="w-full py-12 flex flex-col bg-[#EEEEEE]">
-        <h2 className="text-[36px] font-extrabold text-left px-4 text-[#252525] mb-10">
-          Trending FREELANCER
+      {/* Trending Freelancers */}
+      <section className="w-full mb-20 mt-8 py-20">
+        <h2 className="text-[36px] font-bold text-center mb-12 text-[#222]">
+          🔥 Trending Freelancers
         </h2>
-        <div className="flex justify-center w-full px-2">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-[1440px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentPage} // This ensures re-rendering triggers animation
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto"
+          >
             {currentFreelancers.map((freelancer, index) => (
               <div
                 key={index}
-                className="w-full h-[450px] bg-white shadow-md rounded-lg overflow-hidden"
+                className="bg-[#f0f0f0] rounded-lg overflow-hidden shadow"
               >
                 <img
                   src={freelancer.image}
                   alt={freelancer.name}
-                  className="w-full h-[360px] object-cover rounded-t-lg"
+                  className="w-full h-72 object-cover"
                 />
-                <div className="flex items-center justify-between p-4">
-                  <button className="cursor-pointer">
-                    <BsArrowRight
-                      size={30}
-                      className="text-blue-600 hover:text-blue-900 transition"
-                    />
-                  </button>
-                  <div className="text-left">
-                    <h3 className="text-[24px] font-medium text-[#252525] mb-1">
+                <div className="flex items-center justify-between px-4 py-3">
+                  <BsArrowRight className="text-blue-500" size={26} />
+                  <div>
+                    <h3 className="text-xl text-left font-semibold text-[#333]">
                       {freelancer.name}
                     </h3>
-                    <p className="text-[18px] text-[#9D9D9D]">
+                    <p className="text-sm text-left text-[#888]">
                       {freelancer.role}
                     </p>
                   </div>
                 </div>
               </div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </AnimatePresence>
+
         <div className="flex justify-center mt-10">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
-              className={`w-8 h-[6px] rounded-2xl mx-1 ${
-                currentPage === index + 1 ? "bg-blue-600" : "bg-gray-300"
-              } hover:bg-blue-500 cursor-pointer transition-all duration-300`}
+              className={`w-8 h-2 cursor-pointer rounded-full mx-1 ${
+                currentPage === index + 1 ? "bg-blue-600" : "bg-gray-400"
+              }`}
             />
           ))}
         </div>
 
-        {/* Benefits Section */}
-        <div className="flex justify-center w-full px-2 mt-25 mb-20">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-[1440px]">
-            <div className="text-left pl-5 pr-20">
-              <img
-                src={Skill}
-                alt="Practical Skills"
-                className="w-[32px] h-[32px]"
-              />
-              <div className="flex flex-col mt-4">
+        {/* Benifits */}
+        <div className="flex justify-center w-full px-4 mt-20 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-[1440px]">
+            {[
+              {
+                icon: Skill,
+                title: "مهارت‌های کاربردی",
+                description:
+                  "یادگیری روش‌ها، فرایندها و بهترین شیوه‌ها برای بهبود فوری عملکرد شما",
+              },
+              {
+                icon: Best,
+                title: "یادگیری از بهترین‌ها",
+                description:
+                  "دوره‌هایی با نیازهای حرفه‌ای شما طراحی شده و توسط متخصصان منتخب صنعت ارائه می‌شوند",
+              },
+              {
+                icon: Fee,
+                title: "بدون هزینه اشتراک",
+                description:
+                  "فقط برای دوره‌هایی که می‌خواهید پرداخت کنید، بدون هزینه‌های ماهانه. هزینه را از قبل بدانید",
+              },
+            ].map((benefit, idx) => (
+              <div key={idx} className="flex flex-col items-center text-center">
+                <img
+                  src={benefit.icon}
+                  alt={benefit.title}
+                  className="w-12 h-12 mb-4"
+                />
                 <h3 className="text-[20px] font-semibold text-[#252525] leading-tight">
-                  Practical skills
+                  {benefit.title}
                 </h3>
-                <p className="text-[16px] font-normal text-[#9D9D9D] mt-2">
-                  Learn proven methods, processes, and best practices to improve
-                  your work immediately
+                <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
+                  {benefit.description}
                 </p>
               </div>
-            </div>
-            <div className="text-left pl-5 pr-20">
-              <img
-                src={Best}
-                alt="Learn from the Best"
-                className="w-[32px] h-[32px]"
-              />
-              <div className="flex flex-col mt-4">
-                <h3 className="text-[20px] font-semibold text-[#252525] leading-tight">
-                  Learn from the best
-                </h3>
-                <p className="text-[16px] font-normal text-[#9D9D9D] mt-2">
-                  Courses tailored for your professional needs, led by hand-picked industry experts
-                </p>
-              </div>
-            </div>
-            <div className="text-left pl-5 pr-18">
-              <img
-                src={Fee}
-                alt="No Subscription Fees"
-                className="w-[32px] h-[32px]"
-              />
-              <div className="flex flex-col mt-4">
-                <h3 className="text-[20px] font-semibold text-[#252525] leading-tight">
-                  No subscription fees
-                </h3>
-                <p className="text-[16px] font-normal text-[#9D9D9D] mt-2">
-                  Pay only for courses you want to take, no monthly fees. Know the exact cost upfront
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>

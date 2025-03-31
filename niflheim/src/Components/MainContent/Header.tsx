@@ -5,6 +5,8 @@ import Mail from "@/assets/Dashboard/Mail.svg";
 import FAQ from "@/assets/Dashboard/FAQ.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
+import { IoMdPerson } from "react-icons/io";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   // Check if the user is logged in by retrieving the token from localStorage
@@ -14,9 +16,9 @@ const Header = () => {
     <header className="shadow fixed top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
       {/* Left Section: Logo and Title (common for both states) */}
       <div className="flex items-center gap-3">
-        <div className="flex w-fit h-fit items-center">
-          <label className="text-lg font-semibold">بیدلنسر</label>
-          <img src={LOGO} alt="Logo" className="h-11 w-14" />
+        <div className="flex w-fit h-fit items-center gap-8">
+          <img src={LOGO} alt="Logo" className="h-13 w-18" />
+          <label className="text-xl font-semibold">بیدلنسر</label>
         </div>
       </div>
 
@@ -71,10 +73,24 @@ const Header = () => {
         </div>
       ) : (
         // Logged-out state: Show a simplified header (like in the image)
-        <div className="flex w-fit h-fit items-center gap-3">
-          <button className="text-sm font-medium text-gray-700 hover:text-gray-900">
-            العربية
-          </button>
+        <div className="flex w-fit pl-20 h-fit items-center gap-3">
+          <Link to="/auth">
+            <button
+              className="border cursor-pointer rounded-full h-[28px] w-[100px] bg-[#D9D9D9]"
+              aria-label="Sign Up"
+            >
+              ثبت نام
+            </button>
+          </Link>
+          <Link to="/auth">
+            <button
+              className="border cursor-pointer rounded-full h-[28px] w-[100px] bg-[#D9D9D9] flex items-center justify-center gap-2"
+              aria-label="Login"
+            >
+              <IoMdPerson aria-hidden="true" />
+              ورود
+            </button>
+          </Link>
         </div>
       )}
     </header>
