@@ -27,9 +27,9 @@ interface Step2Props {
 }
 
 const Step2: React.FC<Step2Props> = ({ 
-  formData, 
-  tags, 
-  labels, 
+  formData = { tags: [], label: [] }, 
+  tags = [], 
+  labels = [], 
   onNext, 
   onPrev 
 }) => {
