@@ -85,7 +85,6 @@ const EditProject: React.FC = () => {
           }
         }
   
-        // Make sure we set the label as an ID
         dispatch(setProjectData({
           name: projectData.title,
           description: projectData.description,
@@ -93,7 +92,6 @@ const EditProject: React.FC = () => {
           label: [projectData.label] 
         }));
         
-        // Fetch only tags, we don't need getLabels
         const fetchedTags = await getTags();
         setTags(fetchedTags);
         
@@ -105,7 +103,7 @@ const EditProject: React.FC = () => {
     };
     
     fetchProjectData();
-    
+
     return () => {
       dispatch(resetProject());
     };
@@ -119,9 +117,9 @@ const EditProject: React.FC = () => {
       title: project.name,
       description: project.description,
       tags: project.tags, 
-      label: project.label[0] 
+      label: typeof project.label[0] === 'object' ? project.label[0].id : project.label[0]
     };
-  
+    console.log(projectData);
     try {
       await dispatch(updateProject({ projectId, projectData }) as any).unwrap();
       navigate('/myprojects');
