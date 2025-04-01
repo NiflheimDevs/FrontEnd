@@ -5,18 +5,19 @@ import Footer from "../Components/Footer/Footer"; // Adjust the path based on yo
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col bg-[#EEEEEE] min-h-screen">
-      {/* Header */}
-      <Header />
+    <>
+      <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
+      <div className="flex flex-col bg-[#F7F7F7] min-h-screen">
+        {/* Header */}
+        <Header />
 
+        {/* Main Content */}
+        <MainContent />
 
-
-      {/* Main Content */}
-      <MainContent />
-
-      {/* Footer */}
-      <Footer />
-    </div>
+        {/* Footer */}
+        <Footer />
+      </div>
+    </>
   );
 };
 

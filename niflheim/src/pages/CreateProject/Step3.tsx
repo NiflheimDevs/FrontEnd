@@ -56,6 +56,18 @@ const Step3: React.FC<Step3Props> = ({
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
 
+  // Limit tags to 5 and show the rest as "+X more"
+  const getLimitedTags = () => {
+    const tagNames = getTagNames();
+    if (tagNames.length > 5) {
+      return [
+        ...tagNames.slice(0, 5),
+        `+${tagNames.length - 5} more`
+      ];
+    }
+    return tagNames;
+  };
+
   return (
     <div className="space-y-6">
       <div className="bg-white rounded-lg shadow-md p-6">
@@ -67,12 +79,12 @@ const Step3: React.FC<Step3Props> = ({
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <strong className="text-gray-600 block mb-2">عنوان پروژه:</strong>
-            <p className="bg-gray-50 p-2 rounded">{formData.name}</p>
+            <p className="bg-gray-50 px-2 py-1.5 rounded">{formData.name}</p>
           </div>
           
           <div>
             <strong className="text-gray-600 block mb-2">توضیحات:</strong>
-            <p className="bg-gray-50 p-2 rounded line-clamp-3">
+            <p className="bg-gray-50 px-2 py-1.5 rounded line-clamp-3">
               {truncateText(formData.description, 200)}
             </p>
           </div>
@@ -89,7 +101,7 @@ const Step3: React.FC<Step3Props> = ({
           <div>
             <strong className="text-gray-600 block mb-2">تگ‌های انتخاب شده:</strong>
             <div className="flex flex-wrap gap-2">
-              {getTagNames().map((tagName, index) => (
+              {getLimitedTags().map((tagName, index) => (
                 <span 
                   key={index} 
                   className="bg-blue-100 text-blue-800 text-xs px-2.5 py-0.5 rounded-full"
@@ -120,7 +132,7 @@ const Step3: React.FC<Step3Props> = ({
         <div>
           <strong className="text-gray-600 block mb-2">هزینه پروژه:</strong>
           <p className="text-green-600 font-bold">
-            {getSelectedLabel()?.price === 0 
+            {!getSelectedLabel()?.price || getSelectedLabel()?.price === 0 
               ? 'رایگان' 
               : `${getSelectedLabel()?.price.toLocaleString()} تومان`}
           </p>

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setProjectData } from '@/store/slices/projectSlice';
-import { FaCheck } from 'react-icons/fa';
+import { FaCheck, FaChevronDown } from 'react-icons/fa';
 
 interface Tag {
   id: number;
@@ -21,28 +21,41 @@ interface EditStep2Props {
     label: number[];
   };
   tags: Tag[];
-  projectLabel: Label | null;
+  labels: Label[];
   onNext: () => void;
   onPrev: () => void;
 }
 
 const EditStep2: React.FC<EditStep2Props> = ({ 
-  formData, 
-  tags, 
-  projectLabel,
+  formData = { tags: [], label: [] }, 
+  tags = [], 
+  labels = [], 
   onNext, 
   onPrev 
 }) => {
   const dispatch = useDispatch();
-  const [selectedTags, setSelectedTags] = useState<number[]>([]);
+  const [selectedTags, setSelectedTags] = useState<number[]>(formData.tags);
+  const [selectedLabel, setSelectedLabel] = useState<number>(formData.label[0] || 1);
   const [error, setError] = useState('');
-  
+  const [searchTerm, setSearchTerm] = useState('');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close the dropdown when clicking outside
   useEffect(() => {
-    // Set selected tags from formData
-    if (formData.tags && formData.tags.length > 0) {
-      setSelectedTags([...formData.tags]);
-    }
-  }, [formData]);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const toggleTag = (tagId: number) => {
     const newSelectedTags = selectedTags.includes(tagId)
@@ -50,7 +63,6 @@ const EditStep2: React.FC<EditStep2Props> = ({
       : [...selectedTags, tagId];
     
     setSelectedTags(newSelectedTags);
-    dispatch(setProjectData({ tags: newSelectedTags }));
   };
 
   const handleNext = () => {
@@ -59,66 +71,119 @@ const EditStep2: React.FC<EditStep2Props> = ({
       return;
     }
 
-    if (!formData.label || formData.label.length === 0) {
-      setError('خطا در بارگذاری برچسب. لطفاً صفحه را بارگذاری مجدد کنید.');
+    if (!selectedLabel) {
+      setError('یک برچسب را انتخاب کنید');
       return;
     }
 
-    dispatch(setProjectData({ tags: selectedTags }));
+    dispatch(setProjectData({ 
+      tags: selectedTags, 
+      label: [selectedLabel] 
+    }));
+    
     onNext();
   };
 
+  const filteredTags = tags.filter(tag => 
+    !selectedTags.includes(tag.id) && tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="space-y-6">
-      {/* Tags selection section */}
+      {/* Tag Selection */}
       <div className="bg-gray-50 p-6 rounded-lg">
         <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب تگ‌ها</h3>
-        <div className="flex flex-wrap gap-3">
-          {tags.map(tag => (
-            <button
-              key={tag.id}
-              onClick={() => toggleTag(tag.id)}
-              className={`px-4 py-2 rounded-full flex items-center transition-all duration-200 ${
-                selectedTags.includes(tag.id) 
-                  ? 'bg-blue-500 text-white scale-105 shadow-md' 
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="w-full p-3 border rounded-lg bg-white flex justify-between items-center cursor-pointer"
+          >
+            انتخاب تگ‌ها
+            <FaChevronDown className="text-gray-500" />
+          </button>
+          {dropdownOpen && (
+            <div className="absolute w-full bg-white border rounded-lg mt-2 shadow-lg p-2 max-h-60 overflow-y-auto z-10">
+              <input
+                type="text"
+                className="w-full p-2 border-b outline-none"
+                placeholder="جستجو..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <div className="mt-2 space-y-1">
+                {filteredTags.length > 0 ? (
+                  filteredTags.map(tag => (
+                    <div
+                      key={tag.id}
+                      onClick={() => {
+                        toggleTag(tag.id);
+                        setDropdownOpen(false); // Close the dropdown after selecting a tag
+                      }}
+                      className="p-2 rounded-md flex items-center justify-between cursor-pointer transition-all hover:bg-gray-100"
+                    >
+                      {tag.name}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-center">موردی یافت نشد</p>
+                )}
+              </div>
+            </div>
+          )}
+          <div className="mt-3 flex flex-wrap gap-2">
+            {selectedTags.map(tagId => {
+              const tag = tags.find(t => t.id === tagId);
+              return tag ? (
+                <span
+                  key={tag.id}
+                  className="px-3 py-1 bg-blue-500 text-white rounded-full flex items-center gap-2"
+                >
+                  {tag.name}
+                  <button 
+                    onClick={() => toggleTag(tag.id)} 
+                    className="text-white">×</button>
+                </span>
+              ) : null;
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Label Selection */}
+      <div className="bg-gray-50 p-6 rounded-lg">
+        <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب برچسب</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {labels.map(label => (
+            <div 
+              key={label.id}
+              onClick={() => setSelectedLabel(label.id)}
+              className={`p-4 rounded-lg cursor-pointer transition-all duration-300 border-2 ${
+                selectedLabel === label.id 
+                  ? 'bg-green-100 border-green-500' 
+                  : 'bg-white border-gray-200 hover:bg-gray-50'
               }`}
             >
-              {selectedTags.includes(tag.id) && <FaCheck className="ml-2" />}
-              {tag.name}
-            </button>
+              <div className="flex justify-between items-center">
+                <h4 className="font-bold text-lg">{label.name}</h4>
+                {selectedLabel === label.id && <FaCheck className="text-green-600" />}
+              </div>
+              <p className="text-gray-600 mt-2">{label.description}</p>
+              <p className="text-blue-600 font-bold mt-2">
+                {label.price === 0 ? 'رایگان' : `${label.price.toLocaleString()} تومان`}
+              </p>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Label display section - read-only */}
-      <div className="bg-gray-50 p-6 rounded-lg">
-        <h3 className="text-xl font-bold mb-4 text-gray-800">برچسب پروژه</h3>
-        
-        {projectLabel ? (
-          <div className="bg-white p-4 rounded-lg border-2 border-blue-500">
-            <div className="flex justify-between items-center">
-              <h4 className="font-bold text-lg">{projectLabel.name}</h4>
-            </div>
-            <p className="text-gray-600 mt-2">{projectLabel.description}</p>
-            <p className="text-blue-600 font-bold mt-2">
-              {projectLabel.price === 0 ? 'رایگان' : `${projectLabel.price.toLocaleString()} تومان`}
-            </p>
-            <div className="mt-3 text-xs text-gray-400">این برچسب قابل تغییر نیست</div>
-          </div>
-        ) : (
-          <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-300">
-            <p className="text-yellow-700">برچسب پروژه در حال بارگذاری...</p>
-          </div>
-        )}
-      </div>
-
+      {/* Error Message */}
       {error && (
         <div className="bg-red-50 border border-red-300 text-red-800 p-3 rounded-md">
           {error}
         </div>
       )}
 
+      {/* Navigation Buttons */}
       <div className="flex justify-between mt-6">
         <button 
           onClick={onPrev}

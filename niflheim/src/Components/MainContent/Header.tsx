@@ -73,22 +73,14 @@ const Header = () => {
         </div>
       ) : (
         // Logged-out state: Show a simplified header (like in the image)
-        <div className="flex w-fit pl-20 h-fit items-center gap-3">
+        <div className="flex w-fit h-fit items-center gap-3">
           <Link to="/auth">
             <button
-              className="border cursor-pointer rounded-full h-[28px] w-[100px] bg-[#D9D9D9]"
-              aria-label="Sign Up"
-            >
-              ثبت نام
-            </button>
-          </Link>
-          <Link to="/auth">
-            <button
-              className="border cursor-pointer rounded-full h-[28px] w-[100px] bg-[#D9D9D9] flex items-center justify-center gap-2"
+              className="border cursor-pointer p-4 rounded-full h-[28px] w-fit bg-[#EDEDED] flex items-center justify-center gap-2 transition-all duration-400 hover:bg-[#D6D6D6] hover:shadow-lg hover:scale-105"
               aria-label="Login"
             >
-              <IoMdPerson aria-hidden="true" />
-              ورود
+              <IoMdPerson aria-hidden="true"/>
+              ورود / ثبت نام
             </button>
           </Link>
         </div>

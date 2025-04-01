@@ -94,65 +94,67 @@ const CreateProject: React.FC = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-15 lg:max-w-4xl">
-      {/* Progress Indicator */}
-      <div className="flex justify-center mb-12 space-x-4 lg:space-x-8">
-        {StepIcons.map((step, index) => (
-          <div 
-            key={index} 
-            className={`flex flex-col items-center transition-all duration-300 
-              ${currentStep === index + 1 ? 'scale-110' : 'opacity-60'}
-            `}
-          >
-            <step.icon 
-              className={`text-3xl mb-2 
-                ${currentStep === index + 1 ? 'text-blue-600' : 'text-gray-400'}
-              `} 
-            />
-            <span 
-              className={`text-sm font-medium 
-                ${currentStep === index + 1 ? 'text-blue-600' : 'text-gray-500'}
+    <>
+      <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
+      <div className="container mx-auto md:pr-8 sm:pr-8 pr-0 py-8 mt-15 lg:max-w-4xl">
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <Header toggleSidebar={toggleSidebar} />
+        {/* Progress Indicator */}
+        <div className="flex justify-center md:mb-12 mb-0 space-x-5 lg:space-x-8 transition-all duration-400 md:scale-100 sm:scale-[90%] scale-[85%]">
+          {StepIcons.map((step, index) => (
+            <div 
+              key={index} 
+              className={`flex flex-col items-center transition-all duration-400 
+                ${currentStep === index + 1 ? 'scale-110' : 'opacity-60'}
               `}
             >
-              {step.text}
-            </span>
-          </div>
-        ))}
-      </div>
+              <step.icon 
+                className={`text-3xl mb-2 
+                  ${currentStep === index + 1 ? 'text-blue-600' : 'text-gray-400'}
+                `} 
+              />
+              <span 
+                className={`text-sm font-medium 
+                  ${currentStep === index + 1 ? 'text-blue-600' : 'text-gray-500'}
+                `}
+              >
+                {step.text}
+              </span>
+            </div>
+          ))}
+        </div>
 
-      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <Header toggleSidebar={toggleSidebar} />
-
-      {/* Step Components */}
-      <div className="bg-white rounded-xl shadow-lg p-6 lg:p-8">
-        {currentStep === 1 && (
-          <Step1 
-            formData={project} 
-            onNext={nextStep} 
-          />
-        )}
-        
-        {currentStep === 2 && (
-          <Step2 
-            formData={project} 
-            tags={tags}
-            labels={labels}
-            onNext={nextStep} 
-            onPrev={prevStep} 
-          />
-        )}
-        
-        {currentStep === 3 && (
-          <Step3 
-            formData={project} 
-            tags={tags}
-            labels={labels}
-            onSubmit={handleSubmit} 
-            onPrev={prevStep} 
-          />
-        )}
+        {/* Step Components */}
+        <div className="bg-white rounded-xl shadow-lg p-8 transition-all duration-400 md:scale-100 sm:scale-[90%] scale-[85%]">
+          {currentStep === 1 && (
+            <Step1 
+              formData={project} 
+              onNext={nextStep} 
+            />
+          )}
+          
+          {currentStep === 2 && (
+            <Step2 
+              formData={project} 
+              tags={tags}
+              labels={labels}
+              onNext={nextStep} 
+              onPrev={prevStep} 
+            />
+          )}
+          
+          {currentStep === 3 && (
+            <Step3 
+              formData={project} 
+              tags={tags}
+              labels={labels}
+              onSubmit={handleSubmit} 
+              onPrev={prevStep} 
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
