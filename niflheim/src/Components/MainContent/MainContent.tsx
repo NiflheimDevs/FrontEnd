@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { Search } from "lucide-react";
-import bg from "./bg.png";
-import Frame from "./Frame.png";
-import Skill from "./Skill.png";
-import Fee from "./Fee.png";
-import Best from "./best.png";
+import bg from "../../assets/Main/bg.png";
+import Frame from "../../assets/Main/Frame.png";
+import Skill from "../../assets/Main/Skill.png";
+import Fee from "../../assets/Main/Fee.png";
+import Best from "../../assets/Main/best.png";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
