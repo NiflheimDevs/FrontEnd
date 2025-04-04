@@ -328,6 +328,13 @@ const transactions = [
     description: "پروژه‌ی سایت",
     amount: 5000,
   },
+  {
+    id: 2,
+    date: "2023-10-02",
+    activity: "برداشت",
+    description: "پروژه‌ی سایت",
+    amount: 10000,
+  },
 ];
 
 const profileData = {
@@ -335,6 +342,16 @@ const profileData = {
   lastName: "نام خانوادگی",
   email: "example@gmail.com",
   skills: ["React", "Python"],
+  workExperiences: [
+    {
+      companyName: "گوگل",
+      jobTitle: "برنامه‌نویس",
+      startDate: "1400/01/01",
+      endDate: "1402/01/01",
+      isOngoing: false,
+      skills: ["React", "JavaScript", "Node.js", "CSS"],
+    },
+  ],
 };
 
 // Animation variants
@@ -368,11 +385,13 @@ const Dashboard = () => {
   };
 
   return (
+    <>
+    <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
     <div className="flex h-screen w-full bg-[#F7F7F7]" dir="rtl">
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <main className="flex-1 flex flex-col pt-16 pr-4 md:pr-24">
+      <main className="flex-1 flex flex-col pt-16 w-full md:pr-24 sm:pr-24 pr-0">
         <Header toggleSidebar={toggleSidebar} />
-        <div className="mt-8 px-4">
+        <div className="mt-8 pb-3 px-4">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -382,27 +401,26 @@ const Dashboard = () => {
             داشبورد
           </motion.h2>
           {/* Grid of Previews */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="flex flex-wrap justify-center sm:gap-6 md:gap-16">
             {/* Messages Preview */}
             <motion.div
               custom={0}
               variants={cardVariants}
               initial="hidden"
               animate="visible"
-              whileHover="hover"
-              className="relative z-10"
+              className="relative z-10 w-[490px] md:scale-100 scale-90 transition-transform duration-400 ease-out md:hover:scale-105 hover:scale-95 cursor-pointer overflow-hidden"
             >
               <Link to="/chat" className="block">
-                <div className="bg-white rounded-lg shadow-lg">
+                <div className="bg-[#F7F7F7] rounded-lg">
                   {/* Monitor Screen */}
-                  <div className="bg-gray-800 rounded-t-lg p-3 border-b-4 border-gray-900">
+                  <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900">
                     <div className="bg-gradient-to-br from-[#71C2F4] to-[#3444c2] rounded-md p-4 overflow-hidden">
                       <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center">
                         <span className="mr-2">📩</span> پیام‌ها
                       </h3>
                       <div className="flex flex-col">
                         <div className="w-full p-2 rounded-sm">
-                          <div className="relative mb-2">
+                          <div className="relative mb-2 md:flex sm:flex hidden">
                             <input
                               type="text"
                               placeholder="جستجو"
@@ -423,14 +441,12 @@ const Dashboard = () => {
                                 <p className="text-sm font-medium text-gray-800">
                                   {chat.name}
                                 </p>
-                                <p className="text-xs text-gray-600">
-                                  {chat.lastMessage}
-                                </p>
+                                <p className="text-xs text-gray-600">{chat.lastMessage}</p>
                               </div>
                             </div>
                           ))}
                         </div>
-                        <div className="flex flex-col mt-2 bg-transparent p-2 rounded-sm">
+                        <div className="flex flex-col bg-transparent p-2 rounded-sm">
                           <div className="flex w-full h-8 border-none items-center bg-white/50 rounded-t-sm p-2">
                             <img
                               src={ProfileDefault}
@@ -453,11 +469,10 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  {/* Monitor Stand */}
-                  <div className="flex justify-center">
-                    <div className="w-12 h-2 bg-gray-700 rounded-b-md"></div>
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 bg-gray-700"></div>
+                    <div className="w-32 h-4 bg-gray-800 rounded-md shadow-md"></div>
                   </div>
-                  <div className="w-4 h-4 bg-gray-700 mx-auto rounded-b-md"></div>
                 </div>
               </Link>
             </motion.div>
@@ -468,30 +483,29 @@ const Dashboard = () => {
               variants={cardVariants}
               initial="hidden"
               animate="visible"
-              whileHover="hover"
-              className="relative z-10"
+              className="relative z-10 w-[490px] md:scale-100 scale-90 transition-transform duration-400 ease-out md:hover:scale-105 hover:scale-95 cursor-pointer overflow-hidden"
             >
               <Link to="/profile" className="block">
-                <div className="bg-white rounded-lg shadow-lg">
+                <div className="bg-[#F7F7F7] rounded-lg">
                   {/* Monitor Screen */}
-                  <div className="bg-gray-800 rounded-t-lg p-3 border-b-4 border-gray-900">
+                  <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900">
                     <div className="bg-white rounded-md p-4 overflow-hidden">
                       <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center">
                         <span className="mr-2">👤</span> پروفایل
                       </h3>
-                      <div className="flex flex-col items-center">
+                      <div className="flex flex-col items-center space-y-2">
+                        {/* Profile Picture and Basic Info */}
                         <div className="w-12 h-12 border-2 border-blue-500 rounded-full flex items-center justify-center bg-gray-200">
                           <span className="text-gray-500 text-xs">پروفایل</span>
                         </div>
-                        <div className="mt-2 text-center">
+                        <div className="text-center">
                           <p className="text-sm font-semibold text-gray-800">
                             {profileData.firstName} {profileData.lastName}
                           </p>
-                          <p className="text-xs text-gray-600">
-                            {profileData.email}
-                          </p>
+                          <p className="text-xs text-gray-600">{profileData.email}</p>
                         </div>
-                        <div className="mt-2 w-full">
+                        {/* Skills */}
+                        <div className="w-full px-1">
                           <h4 className="text-sm font-semibold text-gray-600 text-right">
                             مهارت‌ها
                           </h4>
@@ -506,14 +520,45 @@ const Dashboard = () => {
                             ))}
                           </div>
                         </div>
+                        {/* Work History (Compact Version) */}
+                        <div className="w-full md:flex sm:flex flex-col hidden">
+                          <h4 className="text-sm px-1 font-semibold text-gray-600 text-right mb-2">
+                            سابقه کاری
+                          </h4>
+                          {profileData.workExperiences.length > 0 ? (
+                            profileData.workExperiences.slice(0, 1).map((exp, index) => (
+                              <div
+                                key={index}
+                                className="bg-gray-100 p-3 rounded-lg shadow-sm border border-gray-200 text-right"
+                              >
+                                <p className="text-sm font-medium text-gray-800">{exp.companyName}</p>
+                                <div className="flex items-center justify-between mt-1 gap-2">
+                                  <p className="text-xs text-gray-600 flex-shrink-0">{exp.jobTitle}</p>
+                                  <div className="flex flex-wrap gap-2 justify-end">
+                                    {exp.skills.slice(0, 3).map((skill) => (
+                                      <span
+                                        key={skill}
+                                        className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full"
+                                      >
+                                        {skill}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-xs text-gray-400 text-right">سابقه کاری ثبت نشده</p>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                   {/* Monitor Stand */}
-                  <div className="flex justify-center">
-                    <div className="w-12 h-2 bg-gray-700 rounded-b-md"></div>
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 bg-gray-700"></div>
+                    <div className="w-32 h-4 bg-gray-800 rounded-md shadow-md"></div>
                   </div>
-                  <div className="w-4 h-4 bg-gray-700 mx-auto rounded-b-md"></div>
                 </div>
               </Link>
             </motion.div>
@@ -524,13 +569,12 @@ const Dashboard = () => {
               variants={cardVariants}
               initial="hidden"
               animate="visible"
-              whileHover="hover"
-              className="relative z-10"
+              className="relative z-10 w-[490px] md:scale-100 scale-90 transition-transform duration-400 ease-out md:hover:scale-105 hover:scale-95 cursor-pointer overflow-hidden"
             >
               <Link to="/wallet" className="block">
-                <div className="bg-white rounded-lg shadow-lg">
+                <div className="bg-[#F7F7F7] rounded-lg">
                   {/* Monitor Screen */}
-                  <div className="bg-gray-800 rounded-t-lg p-3 border-b-4 border-gray-900">
+                  <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900">
                     <div className="bg-white rounded-md p-4 overflow-hidden">
                       <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center">
                         <span className="mr-2">💰</span> کیف پول
@@ -554,7 +598,7 @@ const Dashboard = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {transactions.slice(0, 1).map((transaction) => (
+                          {transactions.slice(0, 2).map((transaction) => (
                             <tr key={transaction.id} className="border-b">
                               <td className="py-1">{transaction.date}</td>
                               <td className="py-1">{transaction.activity}</td>
@@ -572,11 +616,10 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  {/* Monitor Stand */}
-                  <div className="flex justify-center">
-                    <div className="w-12 h-2 bg-gray-700 rounded-b-md"></div>
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 bg-gray-700"></div>
+                    <div className="w-32 h-4 bg-gray-800 rounded-md shadow-md"></div>
                   </div>
-                  <div className="w-4 h-4 bg-gray-700 mx-auto rounded-b-md"></div>
                 </div>
               </Link>
             </motion.div>
@@ -587,13 +630,12 @@ const Dashboard = () => {
               variants={cardVariants}
               initial="hidden"
               animate="visible"
-              whileHover="hover"
-              className="relative z-10"
+              className="relative z-10 w-[490px] md:scale-100 scale-90 transition-transform duration-400 ease-out md:hover:scale-105 hover:scale-95 cursor-pointer overflow-hidden"
             >
               <Link to="/changepass" className="block">
-                <div className="bg-white rounded-lg shadow-lg">
+                <div className="bg-[#F7F7F7] rounded-lg">
                   {/* Monitor Screen */}
-                  <div className="bg-gray-800 rounded-t-lg p-3 border-b-4 border-gray-900">
+                  <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900">
                     <div className="bg-gradient-to-br from-[#71C2F4] to-[#3444c2] rounded-md p-4 overflow-hidden">
                       <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center">
                         <span className="mr-2">🔒</span> تغییر رمز
@@ -635,11 +677,10 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  {/* Monitor Stand */}
-                  <div className="flex justify-center">
-                    <div className="w-12 h-2 bg-gray-700 rounded-b-md"></div>
+                  <div className="flex flex-col items-center">
+                    <div className="w-6 h-6 bg-gray-700"></div>
+                    <div className="w-32 h-4 bg-gray-800 rounded-md shadow-md"></div>
                   </div>
-                  <div className="w-4 h-4 bg-gray-700 mx-auto rounded-b-md"></div>
                 </div>
               </Link>
             </motion.div>
@@ -647,6 +688,7 @@ const Dashboard = () => {
         </div>
       </main>
     </div>
+    </>
   );
 };
 

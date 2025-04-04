@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 import bg from "@/assets/message/bg.png";
-import { Search } from "lucide-react";
+import { Search, ArrowRight } from "lucide-react";
 
 const Messages = () => {
   const chatList = [
@@ -26,40 +26,59 @@ const Messages = () => {
   };
 
   const [selectedChat, setSelectedChat] = useState(chatList[0]);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const messages = allMessages[selectedChat.id] || [];
+
+  const handleBackToChatList = () => {
+    setIsChatOpen(false);
+  };
+
+  const handleChatSelect = (chat) => {
+    setSelectedChat(chat);
+    setIsChatOpen(true);
+  };
 
   return (
     <div
-      className="flex flex-col md:flex-row mt-6 p-3 md:p-5 w-full max-w-[1080px] h-[88vh] mx-auto"
+      className="flex flex-col md:flex-row mt-6 p-3 md:p-5 w-full max-w-[1080px] h-[88vh] gap-4 mx-auto rounded-2xl"
       dir="rtl"
     >
       {/* Chat List */}
-      <div className="w-full md:w-[340px] h-[300px] md:h-full bg-white/40 md:rounded-tr-2xl md:rounded-br-2xl p-5 flex flex-col">
+      <div
+        className={`w-full md:w-[40%] h-[300px] md:h-full bg-white/40 rounded-2xl p-5 flex flex-col transition-all duration-400 ease-in-out ${
+          isChatOpen ? "hidden md:flex" : "flex"
+        }`}
+      >
         {/* Search */}
         <div className="relative mb-4">
           <input
             type="text"
             placeholder="جستجو"
-            className="border border-gray-500 py-[6px] pr-10 pl-4 rounded-sm w-full text-right bg-[#D9D9D9]/20 placeholder-black"
+            className="w-full py-[6px] pr-10 pl-4 text-right bg-gray-300 border hover:bg-blue-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-black transition-all duration-400 ease-in-out"
           />
-          <button className="absolute right-3 top-0 bottom-0 flex items-center cursor-pointer">
-            <Search size={18} className="text-gray-500" />
+          <button className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center cursor-pointer">
+            <Search size={18} className="text-gray-500 hover:text-blue-600 transition-colors duration-400 ease-in-out" />
           </button>
         </div>
 
         {/* Chat Items */}
-        <div className="space-y-3 overflow-auto flex-1">
+        <div className="space-y-3 overflow-y-auto flex-1">
           {chatList.map((chat) => (
             <div
               key={chat.id}
-              onClick={() => setSelectedChat(chat)}
-              className={`flex items-center border-b border-[#D9D9D9] p-2 justify-end cursor-pointer transition-all duration-300 rounded-md ${
-                selectedChat.id === chat.id ? "bg-gray-200" : "hover:bg-gray-100"
+              onClick={() => handleChatSelect(chat)}
+              className={`flex items-center py-2 cursor-pointer rounded-xl hover:bg-blue-100 hover:shadow-md transition-all duration-400 ease-in-out ${
+                selectedChat.id === chat.id ? "bg-gray-50" : "bg-gray-300"
               }`}
             >
+              <img
+                src={ProfileDefault}
+                alt="Profile"
+                className="w-10 h-10 rounded-full mx-3"
+              />
               <div className="flex-1 text-right">
                 <p className="text-md font-medium text-gray-800">{chat.name}</p>
-                <p className="text-[10px]">{chat.lastMessage}</p>
+                <p className="text-[10px] text-gray-500 truncate">{chat.lastMessage}</p>
               </div>
             </div>
           ))}
@@ -67,35 +86,43 @@ const Messages = () => {
       </div>
 
       {/* Chat Window */}
-      <div className="flex flex-col flex-1 min-h-0 mt-4 md:mt-0 md:ml-3">
+      <div
+        className={`flex flex-col flex-1 min-h-0 mt-4 md:mt-0 md:ml-3 ${
+          isChatOpen ? "flex" : "hidden md:flex"
+        }`}
+      >
         {/* Header */}
-        <div className="flex w-full h-[60px] md:h-[75px] border border-black items-center bg-white/50 md:rounded-tl-2xl p-3">
+        <div className="flex w-full h-[60px] md:h-[75px] bg-white/50 items-center rounded-t-2xl shadow-md">
+          <button
+            onClick={handleBackToChatList}
+            className="md:hidden text-gray-800 hover:text-blue-600 transition-colors duration-400 ease-in-out mr-2"
+          >
+            <ArrowRight size={24} />
+          </button>
           <img
             src={ProfileDefault}
             alt="Profile"
-            className="w-10 h-10 rounded-full ml-3"
+            className="w-10 h-10 rounded-full mx-3"
           />
           <h2 className="text-lg font-semibold text-gray-800">{selectedChat.name}</h2>
         </div>
 
         {/* Messages */}
         <div
-          className="flex flex-col w-full flex-1 p-3 md:p-5 overflow-y-auto relative"
+          className="flex flex-col w-full flex-1 p-3 md:p-5 overflow-y-auto relative rounded-b-2xl"
           style={{
             backgroundColor: "#1a2a44",
             backgroundImage: `url(${bg})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            borderBottomRightRadius: "0px",
-            borderBottomLeftRadius: "16px",
           }}
         >
-          <div className="flex-1">
+          <div className="flex-1 space-y-4">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`max-w-[70%] mb-4 p-3 rounded-2xl text-sm leading-relaxed ${
+                className={`max-w-[70%] mb-4 p-3 rounded-2xl text-sm leading-relaxed shadow-md transition-all duration-400 ease-in-out ${
                   message.type === "received"
                     ? "bg-gray-200 text-gray-800 ml-auto rounded-tr-none"
                     : "bg-blue-600 text-white mr-auto rounded-tl-none"
@@ -108,12 +135,14 @@ const Messages = () => {
 
           {/* Input */}
           <div className="sticky bottom-0 mt-3">
-            <div className="flex items-center bg-white rounded-full p-[4px] w-full">
-              <button className="text-blue-600 pt-1 text-lg cursor-pointer">➤</button>
+            <div className="flex items-center bg-white rounded-full p-[4px] shadow-lg">
+              <button className="text-blue-600 pt-1 text-lg cursor-pointer px-3 hover:text-blue-800 transition-colors duration-400 ease-in-out">
+                ➤
+              </button>
               <input
                 type="text"
                 placeholder="پیامی بنویسید..."
-                className="flex-1 border-none outline-none text-sm px-3 bg-transparent placeholder-gray-500 text-black"
+                className="flex-1 border-none outline-none text-sm px-3 bg-transparent placeholder-gray-500 text-black transition-all duration-400 ease-in-out"
               />
             </div>
           </div>
