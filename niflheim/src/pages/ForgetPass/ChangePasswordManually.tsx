@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import LadyPic from "/src/assets/Changepass.svg";
 import React from "react";
-import { ChangePass } from "../../API";
+import { ChangePass, logout } from "../../API";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { errorMapper } from "../Error/Error";
 import { RootState } from "../../store/store";
@@ -69,6 +69,7 @@ const ChangePasswordManually = () => {
               old_password: passwordold
             });            
             notifySuccess(`رمز عبور شما با موفقیت تغییر کرد`);
+            logout();
             navigate('/auth');
           } 
           catch (error) {

@@ -15,7 +15,7 @@ interface Label {
   price: number;
 }
 
-interface Step2Props {
+interface EditStep2Props {
   formData: {
     tags: number[];
     label: number[];
@@ -26,7 +26,7 @@ interface Step2Props {
   onPrev: () => void;
 }
 
-const Step2: React.FC<Step2Props> = ({ 
+const EditStep2: React.FC<EditStep2Props> = ({ 
   formData = { tags: [], label: [] }, 
   tags = [], 
   labels = [], 
@@ -35,23 +35,18 @@ const Step2: React.FC<Step2Props> = ({
 }) => {
   const dispatch = useDispatch();
   const [selectedTags, setSelectedTags] = useState<number[]>(formData.tags);
-  const [selectedLabel, setSelectedLabel] = useState<number>(formData.label[0] || (labels[0] ? labels[0].id : 1));
+  const [selectedLabel, setSelectedLabel] = useState<number>(formData.label[0] || 1);
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [dropdownOpenTags, setDropdownOpenTags] = useState(false);
-  const [dropdownOpenLabels, setDropdownOpenLabels] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const dropdownRefTags = useRef<HTMLDivElement>(null);
-  const dropdownRefLabels = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close the dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRefTags.current && !dropdownRefTags.current.contains(event.target as Node)) {
-        setDropdownOpenTags(false);
-      }
-      if (dropdownRefLabels.current && !dropdownRefLabels.current.contains(event.target as Node)) {
-        setDropdownOpenLabels(false);
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
       }
     };
 
@@ -68,12 +63,6 @@ const Step2: React.FC<Step2Props> = ({
       : [...selectedTags, tagId];
     
     setSelectedTags(newSelectedTags);
-    setDropdownOpenTags(false);
-  };
-
-  const toggleLabel = (labelId: number) => {
-    setSelectedLabel(labelId);
-    setDropdownOpenLabels(false);
   };
 
   const handleNext = () => {
@@ -95,22 +84,24 @@ const Step2: React.FC<Step2Props> = ({
     onNext();
   };
 
-  const filteredTags = tags.filter(tag => tag.name.toLowerCase().includes(searchTerm.toLowerCase()));
-  const filteredLabels = labels.filter(label => label.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredTags = tags.filter(tag => 
+    !selectedTags.includes(tag.id) && tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
+      {/* Tag Selection */}
       <div className="bg-gray-50 p-6 rounded-lg">
         <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب تگ‌ها</h3>
-        <div className="relative" ref={dropdownRefTags}>
+        <div className="relative" ref={dropdownRef}>
           <button
-            onClick={() => setDropdownOpenTags(!dropdownOpenTags)}
+            onClick={() => setDropdownOpen(!dropdownOpen)}
             className="w-full p-3 border rounded-lg bg-white flex justify-between items-center cursor-pointer"
           >
             انتخاب تگ‌ها
             <FaChevronDown className="text-gray-500" />
           </button>
-          {dropdownOpenTags && (
+          {dropdownOpen && (
             <div className="absolute w-full bg-white border rounded-lg mt-2 shadow-lg p-2 max-h-60 overflow-y-auto z-10">
               <input
                 type="text"
@@ -124,13 +115,13 @@ const Step2: React.FC<Step2Props> = ({
                   filteredTags.map(tag => (
                     <div
                       key={tag.id}
-                      onClick={() => toggleTag(tag.id)}
-                      className={`p-2 rounded-md flex items-center justify-between cursor-pointer transition-all ${
-                        selectedTags.includes(tag.id) ? 'hidden' : 'hover:bg-gray-100'
-                      }`}
+                      onClick={() => {
+                        toggleTag(tag.id);
+                        setDropdownOpen(false); // Close the dropdown after selecting a tag
+                      }}
+                      className="p-2 rounded-md flex items-center justify-between cursor-pointer transition-all hover:bg-gray-100"
                     >
                       {tag.name}
-                      {selectedTags.includes(tag.id) && <FaCheck />}
                     </div>
                   ))
                 ) : (
@@ -148,7 +139,9 @@ const Step2: React.FC<Step2Props> = ({
                   className="px-3 py-1 bg-blue-500 text-white rounded-full flex items-center gap-2"
                 >
                   {tag.name}
-                  <button onClick={() => toggleTag(tag.id)} className="text-white">×</button>
+                  <button 
+                    onClick={() => toggleTag(tag.id)} 
+                    className="text-white">×</button>
                 </span>
               ) : null;
             })}
@@ -156,21 +149,22 @@ const Step2: React.FC<Step2Props> = ({
         </div>
       </div>
 
-      <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
+      {/* Label Selection */}
+      <div className="bg-gray-50 p-6 rounded-lg">
         <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب برچسب</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {labels.map(label => (
             <div 
               key={label.id}
               onClick={() => setSelectedLabel(label.id)}
-              className={`p-6 rounded-lg cursor-pointer transition-all duration-300 border-2 ${
+              className={`p-4 rounded-lg cursor-pointer transition-all duration-300 border-2 ${
                 selectedLabel === label.id 
-                  ? 'bg-green-100 border-green-500 shadow-md' 
-                  : 'bg-white border-gray-200 hover:bg-gray-50 hover:shadow-lg'
+                  ? 'bg-green-100 border-green-500' 
+                  : 'bg-white border-gray-200 hover:bg-gray-50'
               }`}
             >
               <div className="flex justify-between items-center">
-                <h4 className="font-bold text-lg text-gray-800">{label.name}</h4>
+                <h4 className="font-bold text-lg">{label.name}</h4>
                 {selectedLabel === label.id && <FaCheck className="text-green-600" />}
               </div>
               <p className="text-gray-600 mt-2">{label.description}</p>
@@ -182,13 +176,14 @@ const Step2: React.FC<Step2Props> = ({
         </div>
       </div>
 
-
+      {/* Error Message */}
       {error && (
         <div className="bg-red-50 border border-red-300 text-red-800 p-3 rounded-md">
           {error}
         </div>
       )}
 
+      {/* Navigation Buttons */}
       <div className="flex justify-between mt-6">
         <button 
           onClick={onPrev}
@@ -207,4 +202,4 @@ const Step2: React.FC<Step2Props> = ({
   );
 };
 
-export default Step2;
+export default EditStep2;
