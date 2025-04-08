@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "@/Components/DashboardComp/Header";
+import Header from "@/Components/MainContent/Header";
 import { FaStar } from "react-icons/fa";
 
 const ProjectDetail = () => {
@@ -77,20 +77,20 @@ const ProjectDetail = () => {
           {/* Right Half: Bidders List and Buttons (Bottom on small screens) */}
           <div className="w-full sm:w-1/2 flex flex-col space-y-6">
             {/* Image Above Bidders */}
-            <div>
+            {/* <div>
               <img
                 src="https://www.sgstechnologies.net/sites/default/files/2021-08/future-webdesign.jpg"
                 alt="طراحی وب‌سایت"
                 className="w-full h-48 sm:h-56 object-cover rounded-lg shadow-sm"
               />
-            </div>
+            </div> */}
 
             {/* Bidders List */}
             <div className="flex-1">
               <h3 className="text-base sm:text-lg font-semibold text-purple-700 mb-3 text-right">
                 پیشنهاد دهندگان:
               </h3>
-              <div className="space-y-3 max-h-48 overflow-y-auto pl-3 custom-scrollbar">
+              <div className="space-y-3 max-h-96 overflow-y-auto pl-3 custom-scrollbar">
                 {[
                   {
                     name: "احمد۹۵",
