@@ -39,9 +39,9 @@ const Header = ({ showSearch = true }) => {  // Added showSearch prop with defau
       <header className="shadow fixed top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
         {/* Left Section: Logo and Title */}
         <div className="flex items-center gap-3">
-          <div className="flex w-fit h-fit items-center gap-8">
-            <img src={LOGO} alt="Logo" className="h-13 w-18" />
+          <div className="flex w-fit h-fit items-center gap-3">
             <label className="text-xl font-semibold">بیدلنسر</label>
+            <img src={LOGO} alt="Logo" className="h-13 w-18" />
           </div>
         </div>
 

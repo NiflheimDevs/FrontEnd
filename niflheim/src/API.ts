@@ -55,7 +55,7 @@ apiClient.interceptors.response.use(
         // If refresh fails, log out the user
         localStorage.removeItem("authToken");
         localStorage.removeItem("refreshToken");
-        window.location.href = "/login"; // Adjust based on your routing
+        window.location.href = "/auth"; // Adjust based on your routing
         return Promise.reject(refreshError);
       }
     }
@@ -152,6 +152,78 @@ export const Login = async (userData) => {
 export const ChangePass = async (userData) => {
   try {
     const response = await apiClient.post("/change-password", userData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const GetUser = async () => {
+  try {
+    const response = await apiClient.get("/user/0?include=career&include=info&include=tag");
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const PutCareer = async (userData) => {
+  try {
+    const response = await apiClient.put("/user/career", userData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const PutTag = async (userData) => {
+  try {
+    const response = await apiClient.put("/user/tag", userData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const PutUser = async (userData) => {
+  try {
+    const response = await apiClient.put("/user/update-info", userData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const PutEmail = async (userData) => {
+  try {
+    const response = await apiClient.put("/user/update-email", userData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const PutUserName = async (userData) => {
+  try {
+    const response = await apiClient.put("/user/update-username", userData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const PutPhoneSendOtp = async (userData) => {
+  try {
+    const response = await apiClient.put("/user/update-phone/send-otp", userData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const PutPhoneVerifyOtp = async (userData) => {
+  try {
+    const response = await apiClient.put("/user/update-phone/verify", userData);
     return response.data;
   } catch (error) {
     throw error.response?.data || "خطا در ارسال درخواست!";

@@ -1,5 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface Skill {
+  id?: number;
+  name: string;
+}
+
+interface WorkExperience {
+  id?: number;
+  companyName: string;
+  jobTitle: string;
+  website?: string;
+  startDate?: string;
+  endDate?: string;
+  isOngoing?: boolean;
+  skills: Skill[];
+  skillProficiency: { [key: string]: string };
+}
+
 export interface ProfileState {
   firstName: string;
   lastName: string;
@@ -7,9 +24,12 @@ export interface ProfileState {
   username: string;
   email: string;
   bio: string;
-  skills: string[];
+  skills: Skill[];
   skillProficiency: { [key: string]: string };
-  workExperiences: { companyName: string; website: string; duration: string }[]; 
+  workExperiences: WorkExperience[];
+  resume?: File | null;
+  profile?: string;
+  SessionID?: string;
 }
 
 const initialState: ProfileState = {
@@ -22,6 +42,9 @@ const initialState: ProfileState = {
   skills: [],
   skillProficiency: {},
   workExperiences: [],
+  resume: null,
+  profile: "",
+  SessionID: "",
 };
 
 const profileSlice = createSlice({
@@ -41,5 +64,6 @@ const profileSlice = createSlice({
   },
 });
 
-export const { updateProfileField, setProfile, resetProfile } = profileSlice.actions;
+export const { updateProfileField, setProfile, resetProfile } =
+  profileSlice.actions;
 export default profileSlice.reducer;
