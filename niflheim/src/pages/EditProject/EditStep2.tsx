@@ -21,7 +21,7 @@ interface EditStep2Props {
     label: number[];
   };
   tags: Tag[];
-  labels: Label[];
+  projectLabel: Label | null;
   onNext: () => void;
   onPrev: () => void;
 }
@@ -29,13 +29,12 @@ interface EditStep2Props {
 const EditStep2: React.FC<EditStep2Props> = ({ 
   formData = { tags: [], label: [] }, 
   tags = [], 
-  labels = [], 
+  projectLabel, 
   onNext, 
   onPrev 
 }) => {
   const dispatch = useDispatch();
   const [selectedTags, setSelectedTags] = useState<number[]>(formData.tags);
-  const [selectedLabel, setSelectedLabel] = useState<number>(formData.label[0] || 1);
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -71,15 +70,12 @@ const EditStep2: React.FC<EditStep2Props> = ({
       return;
     }
 
-    if (!selectedLabel) {
-      setError('یک برچسب را انتخاب کنید');
+    if (!formData.label || formData.label.length === 0) {
+      setError('خطا در بارگذاری برچسب. لطفاً صفحه را بارگذاری مجدد کنید.');
       return;
     }
 
-    dispatch(setProjectData({ 
-      tags: selectedTags, 
-      label: [selectedLabel] 
-    }));
+    dispatch(setProjectData({ tags: selectedTags }));
     
     onNext();
   };
@@ -153,26 +149,26 @@ const EditStep2: React.FC<EditStep2Props> = ({
       <div className="bg-gray-50 p-6 rounded-lg">
         <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب برچسب</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {labels.map(label => (
+          {projectLabel ? (
             <div 
-              key={label.id}
-              onClick={() => setSelectedLabel(label.id)}
-              className={`p-4 rounded-lg cursor-pointer transition-all duration-300 border-2 ${
-                selectedLabel === label.id 
-                  ? 'bg-green-100 border-green-500' 
-                  : 'bg-white border-gray-200 hover:bg-gray-50'
-              }`}
+              key={projectLabel.id}
+              className={`p-4 rounded-lg transition-all duration-300 border-2 bg-green-100 border-green-500`}
             >
               <div className="flex justify-between items-center">
-                <h4 className="font-bold text-lg">{label.name}</h4>
-                {selectedLabel === label.id && <FaCheck className="text-green-600" />}
+                <h4 className="font-bold text-lg">{projectLabel.name}</h4>
+                <FaCheck className="text-green-600" />
               </div>
-              <p className="text-gray-600 mt-2">{label.description}</p>
+              <p className="text-gray-600 mt-2">{projectLabel.description}</p>
               <p className="text-blue-600 font-bold mt-2">
-                {label.price === 0 ? 'رایگان' : `${label.price.toLocaleString()} تومان`}
+                {projectLabel.price === 0 ? 'رایگان' : `${projectLabel.price.toLocaleString()} تومان`}
               </p>
+              <div className="mt-3 text-xs text-gray-400">این برچسب قابل تغییر نیست</div>
             </div>
-          ))}
+          ) :
+          <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-300">
+            <p className="text-yellow-700">برچسب پروژه در حال بارگذاری...</p>
+          </div>
+          }
         </div>
       </div>
 
