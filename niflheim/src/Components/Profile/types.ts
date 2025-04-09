@@ -155,14 +155,6 @@ export const validateForm = (
           if (!exp.jobTitle) missingFields.push("jobTitle");
           if (!exp.startDate) missingFields.push("startDate");
           if (!exp.isOngoing && !exp.endDate) missingFields.push("endDate");
-          if (exp.skills.length > 0) {
-            const missingProficiencies = exp.skills
-              .filter((skill) => !exp.skillProficiency[skill.name])
-              .map((skill) => skill.name);
-            if (missingProficiencies.length > 0) {
-              missingFields.push("skillProficiency");
-            }
-          }
         }
         return missingFields.length > 0
           ? { index, fields: missingFields }

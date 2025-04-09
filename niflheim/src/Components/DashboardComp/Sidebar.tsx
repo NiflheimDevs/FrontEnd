@@ -17,7 +17,10 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
-export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
+export default function Sidebar({
+  isSidebarOpen,
+  toggleSidebar,
+}: SidebarProps) {
   const navigate = useNavigate();
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -72,10 +75,14 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/dashboard") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
           >
             <img src={dashboard} alt="Dashboard" className="w-6 h-6" />
-            <span className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/dashboard") ? "text-black" : "text-gray-800"}`}>
+            <span
+              className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/dashboard") ? "text-black" : "text-gray-800"}`}
+            >
               داشبورد
             </span>
-            {isActive("/dashboard") && <div className="absolute left-0 w-1 h-full bg-blue-400"></div>}
+            {isActive("/dashboard") && (
+              <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
+            )}
           </Link>
 
           <div className="relative">
@@ -84,7 +91,9 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
               className={`cursor-pointer relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/myprojects") || isActive("/myprojects/active") || isActive("/myprojects/completed") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
             >
               <img src={projects} alt="Projects" className="w-6 h-6" />
-              <span className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/myprojects") || isActive("/myprojects/active") || isActive("/myprojects/completed") ? "text-black" : "text-gray-800"}`}>
+              <span
+                className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/myprojects") || isActive("/myprojects/active") || isActive("/myprojects/completed") ? "text-black" : "text-gray-800"}`}
+              >
                 پروژه ها
               </span>
               <MdArrowDropDown className="absolute right-10 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800" />
@@ -93,17 +102,16 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
               <div className="absolute right-0 mt-2 w-48 bg-gray-200 rounded-lg shadow-lg z-50">
                 <Link
                   to="/myprojects"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
                 >
                   پروژه های من
                 </Link>
                 <Link
                   to="/"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
                 >
                   پیشنهادات
                 </Link>
-                
               </div>
             )}
           </div>
@@ -113,10 +121,14 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/wallet") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
           >
             <img src={Wallet} alt="Wallet" className="w-6 h-6" />
-            <span className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/wallet") ? "text-black" : "text-gray-800"}`}>
+            <span
+              className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/wallet") ? "text-black" : "text-gray-800"}`}
+            >
               کیف پول
             </span>
-            {isActive("/wallet") && <div className="absolute left-0 w-1 h-full bg-blue-400"></div>}
+            {isActive("/wallet") && (
+              <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
+            )}
           </Link>
 
           <div className="relative">
@@ -125,10 +137,14 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
               className={`cursor-pointer relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/profile") || isActive("/profile/edit") || isActive("/changepass") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
             >
               <img src={profile} alt="Profile" className="w-6 h-6" />
-              <span className={` absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/profile") || isActive("/profile/edit") || isActive("/changepass") ? "text-black" : "text-gray-800"}`}>
+              <span
+                className={` absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/profile") || isActive("/profile/edit") || isActive("/changepass") ? "text-black" : "text-gray-800"}`}
+              >
                 پروفایل
               </span>
-              {isActive("/profile") && <div className="absolute left-0 w-1 h-full bg-blue-400"></div>}
+              {isActive("/profile") && (
+                <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
+              )}
 
               <MdArrowDropDown className="absolute right-10 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800" />
             </button>
@@ -136,16 +152,18 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
               <div className="absolute right-0 mt-2 w-48 bg-gray-200 rounded-lg shadow-lg z-50">
                 <Link
                   to="/profile"
-                  className={`block px-4 py-2 hover:bg-gray-300 ${isActive("profile") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
+                  className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg ${isActive("profile") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
                 >
                   ویرایش پروفایل
                 </Link>
                 <Link
                   to="/changepass"
-                  className={`block px-4 py-2 hover:bg-gray-300 ${isActive("/changepass") ? "font-bold text-black bg-blue-500" : "text-gray-800"}`}
+                  className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg ${isActive("/changepass") ? "font-bold text-black bg-blue-500" : "text-gray-800"}`}
                 >
                   تغییر رمز
-                  {isActive("/changepass") && <div className="absolute left-0 w-1 h-full bg-blue-400"></div>}
+                  {isActive("/changepass") && (
+                    <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
+                  )}
                 </Link>
               </div>
             )}
@@ -153,14 +171,17 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
 
           <Link
             to="/chat"
-
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/chat") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
           >
             <img src={messages} alt="chat" className="w-6 h-6" />
-            <span className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/chat") ? "text-black" : "text-gray-800"}`}>
+            <span
+              className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/chat") ? "text-black" : "text-gray-800"}`}
+            >
               پیام ها
             </span>
-            {isActive("/chat") && <div className="absolute left-0 w-1 h-full bg-blue-400"></div>}
+            {isActive("/chat") && (
+              <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
+            )}
           </Link>
         </div>
 
@@ -170,10 +191,14 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/settings") ? "font-bold text-black bg-blue-500" : "text-gray-800"}`}
           >
             <img src={settings} alt="Setting" className="w-6 h-6" />
-            <span className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/settings") ? "text-white" : "text-gray-800"}`}>
+            <span
+              className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/settings") ? "text-white" : "text-gray-800"}`}
+            >
               تنظیمات
             </span>
-            {isActive("/settings") && <div className="absolute left-0 w-1 h-full bg-blue-700"></div>}
+            {isActive("/settings") && (
+              <div className="absolute left-0 w-1 h-full bg-blue-700"></div>
+            )}
           </Link>
           <button
             onClick={handleLogout}
