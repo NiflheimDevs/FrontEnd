@@ -21,6 +21,7 @@ import EditProject from "../pages/EditProject/EditProject";
 import MyProjects from "../pages/MyProjects";
 import Biders from "../pages/Biders/Biders";
 import HomePage from "../pages/HomePage";
+import ProjectDetail from "../pages/ProjectDetail";
 
 // Utility function to check if user is authenticated
 const isAuthenticated = () => {
@@ -77,6 +78,7 @@ export const privateRoutes = [
   { path: "/ChangePass", element: <ChangePasswordManually /> },
   { path: "/project-created", element: <ProjectCreationConfirmation /> },
   { path: "/edit-project/:projectId", element: <EditProject /> },
+  { path: "/detail" , element : <ProjectDetail/>},
 ];
 
 // Router configuration

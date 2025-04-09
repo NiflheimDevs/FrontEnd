@@ -1,15 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { Search } from "lucide-react";
-import bg from "./bg.png";
-import Frame from "./Frame.png";
-import Skill from "./Skill.png";
-import Fee from "./Fee.png";
-import Best from "./best.png";
+import bg from "../../assets/Main/bg.png";
+import Frame from "../../assets/Main/Frame.png";
+import Skill from "../../assets/Main/Skill.png";
+import Fee from "../../assets/Main/Fee.png";
+import Best from "../../assets/Main/best.png";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 const MainContent = () => {
+  const categoriesRef = useRef(null);
+  const heroRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = (e) => {
+      e.preventDefault();
+      if (categoriesRef.current) {
+        const targetPosition = categoriesRef.current.getBoundingClientRect().top + window.scrollY;
+        const offset = 45; // Adjust this value (e.g., 30-40 pixels less)
+        window.scrollTo({
+          top: targetPosition - offset,
+          behavior: "smooth",
+        });
+      }
+    };
+  
+    const heroElement = heroRef.current;
+    if (heroElement) {
+      heroElement.addEventListener("wheel", handleScroll);
+    }
+  
+    return () => {
+      if (heroElement) {
+        heroElement.removeEventListener("wheel", handleScroll);
+      }
+    };
+  }, []);
+
   const categories = [
     {
       title: "WEB DEVELOPMENT",
@@ -29,7 +64,6 @@ const MainContent = () => {
       bg: "https://images.unsplash.com/photo-1533750516457-a7f992034fec?auto=format&fit=crop&w=400&q=80",
       overlay: "from-green-400 to-teal-600",
     },
-
     {
       title: "VIDEO EDITING",
       icon: "https://img.icons8.com/ios-filled/50/ffffff/video-editing.png",
@@ -111,7 +145,8 @@ const MainContent = () => {
     <main className="flex flex-col items-center w-full mt-18">
       {/* Hero Section */}
       <section
-        className="w-full h-[620px] flex flex-col justify-center items-center text-white text-center bg-cover bg-center"
+        ref={heroRef}
+        className="w-full h-[660px] flex flex-col justify-center items-center text-white text-center bg-cover bg-center"
         style={{ backgroundImage: `url(${bg})` }}
       >
         <h1 className="text-[40px] md:text-[56px] font-extrabold drop-shadow-lg">
@@ -131,8 +166,11 @@ const MainContent = () => {
       </section>
 
       {/* Categories */}
-      <section className="w-full py-12 rounded-3xl mt-8 mb-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-6 max-w-6xl mx-auto">
+      <section
+        ref={categoriesRef}
+        className="w-full py-12 rounded-3xl mt-8 mb-8"
+      >
+        <div className="hidden md:grid grid-cols-2 md:grid-cols-4 gap-8 px-6 max-w-6xl mx-auto">
           {categories.map((cat, idx) => (
             <div
               key={idx}
@@ -159,12 +197,45 @@ const MainContent = () => {
             </div>
           ))}
         </div>
+        <div className="md:hidden px-6">
+          <Swiper
+            slidesPerView={1}
+            spaceBetween={20}
+            pagination={{ clickable: true }}
+            modules={[Pagination]}
+            className="mySwiper"
+          >
+            {categories.map((cat, idx) => (
+              <SwiperSlide key={idx}>
+                <div className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group">
+                  <img
+                    src={cat.bg}
+                    alt={cat.title}
+                    className="absolute w-full h-full object-cover"
+                  />
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${cat.overlay} opacity-70`}
+                  ></div>
+                  <div className="z-10 flex flex-col items-center justify-center text-white px-2">
+                    <img
+                      src={cat.icon}
+                      alt={cat.title}
+                      className="w-10 h-10 mb-2"
+                    />
+                    <h3 className="text-sm font-bold tracking-wide uppercase">
+                      {cat.title}
+                    </h3>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </section>
 
       {/* Freelancer Cards */}
       <section className="w-full py-16 rounded-3xl mb-10">
         <div className="flex justify-between items-center px-6 max-w-7xl mx-auto mb-6">
-          {/* wait for parsa to implement the page for the project taking */}
           <Link
             to="/"
             className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition text-sm font-medium"
@@ -174,7 +245,7 @@ const MainContent = () => {
           <h2 className="text-2xl font-bold text-[#333]">Featured Projects</h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-6 max-w-7xl mx-auto">
+        <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-6 max-w-7xl mx-auto">
           {freelancerCards.map((card, idx) => (
             <div
               key={idx}
@@ -202,6 +273,46 @@ const MainContent = () => {
               </div>
             </div>
           ))}
+        </div>
+        <div className="md:hidden px-6">
+          <Swiper
+            slidesPerView={1}
+            spaceBetween={20}
+            pagination={{ clickable: true }}
+            modules={[Pagination]}
+            className="mySwiper"
+          >
+            {freelancerCards.map((card, idx) => (
+              <SwiperSlide key={idx}>
+                <div
+                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition flex flex-col relative"
+                  style={{ minHeight: "350px" }}
+                >
+                  <img
+                    src={
+                      card.image ||
+                      `https://source.unsplash.com/400x300/?freelancer,design,${idx}`
+                    }
+                    alt={card.username}
+                    className="w-full h-48 object-cover rounded-t-xl"
+                  />
+                  <div className="p-4 pb-14">
+                    <h4 className="text-sm text-left text-gray-600">
+                      @{card.username}
+                    </h4>
+                    <p className="text-md text-left font-medium mt-2">
+                      {card.description}
+                    </p>
+                  </div>
+                  <div className="absolute bottom-4 left-4">
+                    <p className="text-lg font-bold text-blue-600">
+                      {card.price}
+                    </p>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </section>
 
@@ -233,42 +344,78 @@ const MainContent = () => {
         <h2 className="text-[36px] font-bold text-center mb-12 text-[#222]">
           🔥 Trending Freelancers
         </h2>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentPage} // This ensures re-rendering triggers animation
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto"
-          >
-            {currentFreelancers.map((freelancer, index) => (
-              <div
-                key={index}
-                className="bg-[#f0f0f0] rounded-lg overflow-hidden shadow"
-              >
-                <img
-                  src={freelancer.image}
-                  alt={freelancer.name}
-                  className="w-full h-72 object-cover"
-                />
-                <div className="flex items-center justify-between px-4 py-3">
-                  <BsArrowRight className="text-blue-500" size={26} />
-                  <div>
-                    <h3 className="text-xl text-left font-semibold text-[#333]">
-                      {freelancer.name}
-                    </h3>
-                    <p className="text-sm text-left text-[#888]">
-                      {freelancer.role}
-                    </p>
+        
+        <div className="hidden md:block px-6 max-w-7xl mx-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentPage}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            >
+              {currentFreelancers.map((freelancer, index) => (
+                <div
+                  key={index}
+                  className="bg-[#f0f0f0] rounded-lg overflow-hidden shadow"
+                >
+                  <img
+                    src={freelancer.image}
+                    alt={freelancer.name}
+                    className="w-full h-72 object-cover"
+                  />
+                  <div className="flex items-center justify-between px-4 py-3">
+                    <BsArrowRight className="text-blue-500" size={26} />
+                    <div>
+                      <h3 className="text-xl text-left font-semibold text-[#333]">
+                        {freelancer.name}
+                      </h3>
+                      <p className="text-sm text-left text-[#888]">
+                        {freelancer.role}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-        <div className="flex justify-center mt-10">
+        <div className="md:hidden px-6">
+          <Swiper
+            slidesPerView={1}
+            spaceBetween={20}
+            pagination={{ clickable: true }}
+            modules={[Pagination]}
+            className="mySwiper"
+          >
+            {trendingFreelancers.map((freelancer, index) => (
+              <SwiperSlide key={index}>
+                <div className="bg-[#f0f0f0] rounded-lg overflow-hidden shadow">
+                  <img
+                    src={freelancer.image}
+                    alt={freelancer.name}
+                    className="w-full h-72 object-cover"
+                  />
+                  <div className="flex items-center justify-between px-4 py-3">
+                    <BsArrowRight className="text-blue-500" size={26} />
+                    <div>
+                      <h3 className="text-xl text-left font-semibold text-[#333]">
+                        {freelancer.name}
+                      </h3>
+                      <p className="text-sm text-left text-[#888]">
+                        {freelancer.role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        <div className="hidden md:flex justify-center mt-10">
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index}
@@ -280,7 +427,7 @@ const MainContent = () => {
           ))}
         </div>
 
-        {/* Benifits */}
+        {/* Benefits */}
         <div className="flex justify-center w-full px-4 mt-20 mb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-[1440px]">
             {[
