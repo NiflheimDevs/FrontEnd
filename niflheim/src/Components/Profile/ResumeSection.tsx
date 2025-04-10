@@ -12,7 +12,7 @@ interface ResumeSectionProps {
 }
 
 export default function ResumeSection({
-  localProfile,
+  // localProfile,
   setLocalProfile,
   resumeName,
   setResumeName,

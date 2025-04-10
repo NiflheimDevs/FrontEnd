@@ -71,10 +71,10 @@ const Step2: React.FC<Step2Props> = ({
     setDropdownOpenTags(false);
   };
 
-  const toggleLabel = (labelId: number) => {
-    setSelectedLabel(labelId);
-    setDropdownOpenLabels(false);
-  };
+  // const toggleLabel = (labelId: number) => {
+  //   setSelectedLabel(labelId);
+  //   setDropdownOpenLabels(false);
+  // };
 
   const handleNext = () => {
     if (selectedTags.length === 0) {
@@ -96,7 +96,7 @@ const Step2: React.FC<Step2Props> = ({
   };
 
   const filteredTags = tags.filter(tag => tag.name.toLowerCase().includes(searchTerm.toLowerCase()));
-  const filteredLabels = labels.filter(label => label.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  // const filteredLabels = labels.filter(label => label.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="space-y-6">

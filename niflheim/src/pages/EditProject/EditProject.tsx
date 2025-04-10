@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { RootState } from '../../store/store';
 import { 
   setProjectData, 
   resetProject, 
   updateProject 
-} from '@/store/slices/projectSlice';
+} from '../../store/slices/projectSlice';
 import { getTags } from '../../API';
 import { 
   FaClipboardList, 
@@ -14,8 +14,8 @@ import {
   FaCheckCircle, 
   FaSpinner
 } from 'react-icons/fa';
-import Header from "@/components/DashboardComp/Header";
-import Sidebar from "@/components/DashboardComp/Sidebar";
+import Header from "../../Components/DashboardComp/Header";
+import Sidebar from "../../Components/DashboardComp/Sidebar";
 import EditStep1 from './EditStep1';
 import EditStep2 from './EditStep2';
 import EditStep3 from './EditStep3';
@@ -33,12 +33,12 @@ interface Label {
   price: number;
 }
 
-interface ProjectData {
-  title: string;
-  description: string;
-  tags: number[];
-  label: number;
-}
+// interface ProjectData {
+//   title: string;
+//   description: string;
+//   tags: number[];
+//   label: number;
+// }
 
 const EditProject: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
