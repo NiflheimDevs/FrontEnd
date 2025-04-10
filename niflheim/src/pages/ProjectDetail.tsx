@@ -1,5 +1,4 @@
-import React from "react";
-import Header from "@/Components/MainContent/Header";
+import Header from "../Components/MainContent/Header";
 import { FaStar } from "react-icons/fa";
 
 const ProjectDetail = () => {

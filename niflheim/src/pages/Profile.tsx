@@ -4,7 +4,6 @@ import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
 import ProfileForm from "../Components/Profile/ProfileForm";
 
-import React from "react";
 import { Skeleton } from "primereact/skeleton";
 
 export default function Profile() {

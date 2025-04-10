@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from 'react-router-dom';
-import React from "react";
 import OtpInput from 'react-otp-input';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
@@ -13,7 +11,6 @@ import {errorMapper} from "../pages/Error/Error";
 
 const MobileVerify = () => {
     const dispatcher = useDispatch();
-    const navigate = useNavigate();
     const { error: notifyError, success: notifySuccess } = useNotification();
     const [token, setTokens] = useState<string>("");
     const [timeLeft, setTimeLeft] = useState(120); 
@@ -55,12 +52,12 @@ const MobileVerify = () => {
 
             notifySuccess(`ورود شما با موفقیت انجام شد`);
         } 
-        catch (error) {
+        catch (error:any) {
             const errorData = error;
             if (errorData.tag && errorData.errors?.length > 0) {
                 const allErrors = errorData.errors; 
         
-                const errorMessages = allErrors.map((err) => errorMapper(err));
+                const errorMessages = allErrors.map((err:any) => errorMapper(err));
         
                 notifyError(`${errorMessages.join(" ")}`);
             } 
@@ -88,12 +85,12 @@ const MobileVerify = () => {
             notifySuccess(`کد تایید به شماره ${Phone} ارسال شد`);
             setTimeLeft(120);
         } 
-        catch (error) {
+        catch (error:any) {
             const errorData = error;
             if (errorData.tag && errorData.errors?.length > 0) {
                 const allErrors = errorData.errors; 
         
-                const errorMessages = allErrors.map((err) => errorMapper(err));
+                const errorMessages = allErrors.map((err:any) => errorMapper(err));
         
                 notifyError(`${errorMessages.join(" ")}`);
             } 

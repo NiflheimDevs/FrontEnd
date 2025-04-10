@@ -11,7 +11,9 @@
     },
     "strict": false,
     "noImplicitAny": false,
+    "noUnusedLocals": false,
     "skipLibCheck": true,
+    "noUnusedParameters": false,
     "forceConsistentCasingInFileNames": false,
     "typeRoots": ["./node_modules/@types", "./node_modules/swiper"]
   }

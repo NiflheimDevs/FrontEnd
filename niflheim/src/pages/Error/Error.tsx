@@ -1,6 +1,9 @@
-import React from "react";
 import { useLocation } from "react-router-dom";
 
+// Define the possible error codes as a union type
+type ErrorCode = keyof typeof errorMessages;
+
+// Define the errorMessages object with an explicit type
 const errorMessages = {
   EMAIL_TAKEN: "این ایمیل قبلاً استفاده شده است.",
   EMAIL_INVALID: "ایمیل وارد شده معتبر نیست.",
@@ -38,16 +41,24 @@ const errorMessages = {
   BAD_REQUEST: "درخواست نامعتبر است.",
   LIMIT_EXCEED: "محدودیت درخواست‌ها بیش از حد مجاز است.",
   error_404: "صفحه مورد نظر پیدا نشد.",
-};
+} as const;
 
-const errorMapper = (errorCode) => {
+// Type the errorMapper function
+const errorMapper = (errorCode: ErrorCode): string => {
   return errorMessages[errorCode] || "مشکلی پیش آمده است.";
 };
 
 const Error = () => {
   const location = useLocation();
-  const { errorCode, title = "خطا" } = location.state || { errorCode: "error_404", title: "404 خطا" };
-  const description = errorMapper(errorCode);
+  // Type the location.state and handle undefined errorCode
+  const { errorCode, title = "خطا" } = (location.state as { errorCode?: ErrorCode; title?: string } | undefined) || {
+    errorCode: "error_404" as const, // Explicitly type as ErrorCode
+    title: "404 خطا",
+  };
+  
+  // Ensure errorCode is always ErrorCode by providing a fallback
+  const safeErrorCode: ErrorCode = errorCode ?? "error_404";
+  const description = errorMapper(safeErrorCode);
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-r from-[#DA1E30] to-[#74101A] px-10 text-center">
@@ -64,5 +75,5 @@ const Error = () => {
   );
 };
 
-export default Error; 
-export { errorMapper, errorMessages }; 
+export default Error;
+export { errorMapper, errorMessages };

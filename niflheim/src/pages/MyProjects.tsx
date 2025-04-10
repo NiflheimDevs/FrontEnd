@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import avatar from "@/assets/myproject/avatars.png";
 import pencil from "@/assets/myproject/PencilSquare.png";
 import { FaTrash } from "react-icons/fa";
-import { FolderOpen } from "lucide-react";
 import { getUserProject, deleteProject } from "../API";
 import { useNotification } from "../Notification/NotificationProvider";
 
@@ -67,11 +66,11 @@ const MyProjects = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   // Truncate text if it's too long
-  const truncateText = (text: string, maxLength: number) => {
-    return text.length > maxLength
-      ? text.substring(0, maxLength) + "..."
-      : text;
-  };
+  // const truncateText = (text: string, maxLength: number) => {
+  //   return text.length > maxLength
+  //     ? text.substring(0, maxLength) + "..."
+  //     : text;
+  // };
 
   // Function to fetch projects
   const fetchProjects = async (page = currentPage) => {
@@ -96,7 +95,7 @@ const MyProjects = () => {
         console.log(`Page ${page} is empty, navigating to page ${page - 1}`);
         setCurrentPage(page - 1);
       }
-    } catch (err) {
+    } catch (err:any) {
       console.error("Error fetching projects:", err);
       error(
         "خطا در بارگذاری پروژه‌ها: " +
@@ -119,7 +118,7 @@ const MyProjects = () => {
   }, [currentPage]);
 
   // Function to handle project deletion
-  const handleDeleteProject = (projectId) => {
+  const handleDeleteProject = (projectId:any) => {
     setProjectToDelete(projectId);
     setShowModal(true);
   };
@@ -132,7 +131,7 @@ const MyProjects = () => {
         success("پروژه با موفقیت حذف شد!");
         // Refresh the project list by re-fetching from the API
         await fetchProjects(currentPage);
-      } catch (err) {
+      } catch (err:any) {
         console.error("Error deleting project:", err);
         error(
           "خطا در حذف پروژه: " + (err.message || "لطفاً دوباره تلاش کنید.")
@@ -164,7 +163,7 @@ const MyProjects = () => {
     }
   };
 
-  const goToPage = (pageNumber) => {
+  const goToPage = (pageNumber:any) => {
     setCurrentPage(pageNumber);
   };
 
@@ -262,7 +261,7 @@ const MyProjects = () => {
                         </p>
                       </div>
                       <div className="flex flex-wrap w-3/4 gap-2 mt-3">
-                        {project.tags.slice(0, 2).map((tag) => (
+                        {project.tags.slice(0, 2).map((tag:any) => (
                           <span
                             key={tag.id}
                             className="bg-white/30 text-white text-xs px-3 py-1 rounded-full glowing-shadow"

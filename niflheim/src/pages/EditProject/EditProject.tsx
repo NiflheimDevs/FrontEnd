@@ -69,7 +69,7 @@ const EditProject: React.FC = () => {
         const projectData = response.data;
   
         const tagsArray = Array.isArray(projectData.tags) 
-          ? projectData.tags.map(tag => typeof tag === 'object' ? tag.id : tag) 
+          ? projectData.tags.map((tag:any) => typeof tag === 'object' ? tag.id : tag) 
           : [projectData.tags];
   
         if (projectData.label) {
@@ -121,8 +121,12 @@ const EditProject: React.FC = () => {
     };
     console.log(projectData);
     try {
-      await dispatch(updateProject({ projectId, projectData }) as any).unwrap();
-      navigate('/myprojects');
+      if (projectId) {
+        await dispatch(updateProject({ projectId, projectData }) as any).unwrap();
+        navigate('/myprojects');
+      }
+      // await dispatch(updateProject({ projectId, projectData }) as any).unwrap();
+      // navigate('/myprojects');
     } catch (error) {
       // console.error('Project update failed:', error);
       setError('خطا در بروزرسانی پروژه. لطفاً دوباره تلاش کنید.');
