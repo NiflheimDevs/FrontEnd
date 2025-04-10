@@ -1,5 +1,3 @@
-import React from "react";
-import "@fontsource/inter";
 
 const Footer = () => {
   return (
@@ -42,7 +40,7 @@ const Footer = () => {
           </div>
           <div className="flex gap-[2vw] h-fit bg-[#1B1B1B] px-[40px] w-full inset-0 md:mt-[70px] sm:mt-[70px] mt-[40px] z-1 flex-row flex-wrap-reverse md:justify-center sm:justify-end justify-center items-center ">  
             <div className="flex bg-[#1B1B1B] flex-col md:w-[160px] sm:w-[210px] w-[500px] items-center">
-              <p class="font-inter text-[20px] sm:text-[26px] md:text-[24px] md:flex sm:flex hidden font-bold leading-[29.05px] tracking-[0%] text-white">
+              <p className="font-inter text-[20px] sm:text-[26px] md:text-[24px] md:flex sm:flex hidden font-bold leading-[29.05px] tracking-[0%] text-white">
                 شبکه های اجتماعی        
               </p>
               <div className="flex bg-[#1B1B1B] flex-row mt-[7px] md:gap-[10px] sm:gap-[20px] gap-[40px]">
@@ -85,7 +83,7 @@ const Footer = () => {
   );
 };
 
-const ReviewCard = ({ className = "", title, description, starCount }) => {
+const ReviewCard = ({ className = "", title, description, starCount }:any) => {
   return (
     <div className={`flex flex-col md:max-w-[160px] sm:max-w-[200px] items-end ${className}`}>
       <h3 className="font-inter font-bold sm:text-[13px] md:text-[16px] leading-[18.15px] tracking-[0%] text-right text-white">
@@ -118,7 +116,7 @@ const ReviewCard = ({ className = "", title, description, starCount }) => {
   );
 };
 
-const SvgBox = ({ svgName }) => {
+const SvgBox = ({ svgName }:any) => {
   return (
     <div className="md:w-[148px] md:h-[150px] sm:w-[105px] sm:h-[104px] w-[78px] h-[74px] flex bg-[#1B1B1B] items-center justify-center">
       <object data={`/src/assets/${svgName}.svg`} type="image/svg+xml" className="md:w-[121px] md:h-[132px] sm:w-[86px] sm:h-[94px] w-[71px] h-[70px] border-none border-[#1B1B1B]"/>
@@ -126,7 +124,7 @@ const SvgBox = ({ svgName }) => {
   );
 };
 
-const TextComponent = ({ children }) => {
+const TextComponent = ({ children }:any) => {
   return (
     <p className="font-vazirmatn text-[25px] opacity-[0.85] font-normal leading-[25px] tracking-[0%] text-center text-white">
       {children}

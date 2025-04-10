@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { setProjectData } from '@/store/slices/projectSlice';
+import { setProjectData } from '../../store/slices/projectSlice';
 import { FaCheck, FaChevronDown } from 'react-icons/fa';
 
 interface Tag {
@@ -39,7 +39,7 @@ const Step2: React.FC<Step2Props> = ({
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [dropdownOpenTags, setDropdownOpenTags] = useState(false);
-  const [dropdownOpenLabels, setDropdownOpenLabels] = useState(false);
+  const [_dropdownOpenLabels, setDropdownOpenLabels] = useState(false);
 
   const dropdownRefTags = useRef<HTMLDivElement>(null);
   const dropdownRefLabels = useRef<HTMLDivElement>(null);

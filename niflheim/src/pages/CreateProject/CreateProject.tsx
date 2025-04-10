@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { RootState } from '../../store/store';
 import { 
-  setProjectData, 
-  resetProject, 
+  // setProjectData, 
+  // resetProject, 
   createProject 
-} from '@/store/slices/projectSlice';
+} from '../../store/slices/projectSlice';
 import { getTags, getLabels } from '../../API';
 import { 
   FaClipboardList, 
   FaTags, 
   FaCheckCircle, 
-  FaArrowLeft, 
-  FaArrowRight 
+  // FaArrowLeft, 
+  // FaArrowRight 
 } from 'react-icons/fa';
-import Header from "@/components/DashboardComp/Header";
-import Sidebar from "@/components/DashboardComp/Sidebar";
+import Header from "../../Components/DashboardComp/Header";
+import Sidebar from "../../Components/DashboardComp/Sidebar";
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';

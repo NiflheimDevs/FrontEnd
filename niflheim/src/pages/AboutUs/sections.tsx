@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import aboutus from "../../assets/aboutus/AboutUs-1.webp";
 import porpuses from "../../assets/aboutus/AboutUs-porpuse.webp";
 

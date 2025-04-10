@@ -2,8 +2,6 @@ import { getTags } from "../../API";
 import { useEffect, useState } from "react";
 import {
   gregorianToPersian,
-  persianToGregorian,
-  persianToEnglishNumber,
   englishToPersianNumber,
 } from "../../pages/Profile";
 

@@ -9,7 +9,10 @@
     "paths": {
       "@/*": ["./src/*"],
     },
+    "strict": false,
+    "noImplicitAny": false,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": false,
     "typeRoots": ["./node_modules/@types", "./node_modules/swiper"]
   }
 }

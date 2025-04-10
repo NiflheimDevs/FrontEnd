@@ -5,7 +5,7 @@ import Mail from "@/assets/Dashboard/Mail.svg";
 import FAQ from "@/assets/Dashboard/FAQ.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function Header({ toggleSidebar }: any) {

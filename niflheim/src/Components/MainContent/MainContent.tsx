@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { Search } from "lucide-react";
 import bg from "../../assets/Main/bg.png";
@@ -9,7 +9,7 @@ import Best from "../../assets/Main/best.png";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/css";
@@ -17,14 +17,15 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 const MainContent = () => {
-  const categoriesRef = useRef(null);
-  const heroRef = useRef(null);
+  const heroRef = useRef<HTMLDivElement | null>(null);
+  const categoriesRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const handleScroll = (e) => {
+    const handleScroll = (e: any) => {
       e.preventDefault();
       if (categoriesRef.current) {
-        const targetPosition = categoriesRef.current.getBoundingClientRect().top + window.scrollY;
+        const targetPosition =
+          categoriesRef.current.getBoundingClientRect().top + window.scrollY;
         const offset = 45; // Adjust this value (e.g., 30-40 pixels less)
         window.scrollTo({
           top: targetPosition - offset,
@@ -32,12 +33,12 @@ const MainContent = () => {
         });
       }
     };
-  
+
     const heroElement = heroRef.current;
     if (heroElement) {
       heroElement.addEventListener("wheel", handleScroll);
     }
-  
+
     return () => {
       if (heroElement) {
         heroElement.removeEventListener("wheel", handleScroll);
@@ -137,7 +138,7 @@ const MainContent = () => {
   );
   const totalPages = Math.ceil(trendingFreelancers.length / freelancersPerPage);
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (pageNumber: any) => {
     setCurrentPage(pageNumber);
   };
 
@@ -344,7 +345,7 @@ const MainContent = () => {
         <h2 className="text-[36px] font-bold text-center mb-12 text-[#222]">
           🔥 Trending Freelancers
         </h2>
-        
+
         <div className="hidden md:block px-6 max-w-7xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div

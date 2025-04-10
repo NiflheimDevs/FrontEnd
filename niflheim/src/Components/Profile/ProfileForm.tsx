@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { setProfile } from "../../store/slices/profileSlice";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   GetUser,
   PutUser,
   PutTag,
   PutCareer,
-  PutPhoneSendOtp,
 } from "../../API";
 import {
   initialProfile,
@@ -27,7 +25,6 @@ import {
   persianToEnglishNumber,
   persianToGregorian,
 } from "../../pages/Profile";
-import React from "react";
 
 export default function ProfileForm() {
   const dispatch = useDispatch();
@@ -38,9 +35,9 @@ export default function ProfileForm() {
   const [changedPhone, setChangedPhone] = useState(false);
   const [changedEmail, setChangedEmail] = useState(false);
   const [changedUsername, setChangedUsername] = useState(false);
-  const [fetchLoading, setFetchLoading] = useState(true);
+  const [_fetchLoading, setFetchLoading] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
   const [resumeName, setResumeName] = useState<string | null>(null);
   const [profilePictureFile, setProfilePictureFile] = useState<File | null>(
     null
@@ -62,7 +59,7 @@ export default function ProfileForm() {
         dispatch(setProfile(mappedProfile));
         notifySuccess("اطلاعات کاربر با موفقیت بارگذاری شد");
         setFetchLoading(false);
-      } catch (err) {
+      } catch (err:any) {
         setError(err.message || "خطا در بارگذاری اطلاعات کاربر");
         notifyError(err.message || "خطا در بارگذاری اطلاعات کاربر");
       }

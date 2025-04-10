@@ -4,7 +4,7 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { Profile, Skill, WorkExperience } from "./types";
-import { proficiencyLevels, skills } from "./types";
+import { skills } from "./types";
 import React, { useState } from "react";
 
 interface WorkExperienceSectionProps {
@@ -85,24 +85,24 @@ export default function WorkExperienceSection({
     });
   };
 
-  const handleWorkSkillProficiencyChange = (
-    index: number,
-    skill: string,
-    level: string
-  ) => {
-    setLocalProfile((prev) => {
-      const updatedExperiences = prev.workExperiences.map((exp, i) => {
-        if (i === index) {
-          return {
-            ...exp,
-            skillProficiency: { ...exp.skillProficiency, [skill]: level },
-          };
-        }
-        return exp;
-      });
-      return { ...prev, workExperiences: updatedExperiences };
-    });
-  };
+  // const handleWorkSkillProficiencyChange = (
+  //   index: number,
+  //   skill: string,
+  //   level: string
+  // ) => {
+  //   setLocalProfile((prev) => {
+  //     const updatedExperiences = prev.workExperiences.map((exp, i) => {
+  //       if (i === index) {
+  //         return {
+  //           ...exp,
+  //           skillProficiency: { ...exp.skillProficiency, [skill]: level },
+  //         };
+  //       }
+  //       return exp;
+  //     });
+  //     return { ...prev, workExperiences: updatedExperiences };
+  //   });
+  // };
 
   const chipVariants = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -255,7 +255,7 @@ export default function WorkExperienceSection({
                         locale={persian_fa}
                         calendarPosition="bottom-right"
                         containerStyle={{ width: "100%" }}
-                        render={(value, openCalendar) => (
+                        render={(_value, openCalendar) => (
                           <input
                             value={exp.startDate || ""}
                             onFocus={openCalendar}

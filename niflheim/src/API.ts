@@ -82,57 +82,57 @@ export const refreshAccessToken = async () => {
       }
     }
     return newAccessToken;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در تمدید توکن!";
   }
 };
 
-export const signupSendOTP = async (userData) => {
+export const signupSendOTP = async (userData:any) => {
   try {
     const response = await apiClient.post("/signup/send-otp", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const signupVerifyOTP = async (userData) => {
+export const signupVerifyOTP = async (userData:any) => {
   try {
     const response = await apiClient.post("/signup/verify", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const forgetPasswordSendOTP = async (userData) => {
+export const forgetPasswordSendOTP = async (userData:any) => {
   try {
     const response = await apiClient.post("/forget-password/send-otp", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const forgetPasswordVerifyOTP = async (userData) => {
+export const forgetPasswordVerifyOTP = async (userData:any) => {
   try {
     const response = await apiClient.post("/forget-password/verify", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const forgetPasswordReset = async (userData) => {
+export const forgetPasswordReset = async (userData:any) => {
   try {
     const response = await apiClient.post("/forget-password/reset", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const Login = async (userData) => {
+export const Login = async (userData:any) => {
   try {
     const response = await apiClient.post("/login", userData);
     const accessToken = response.data.access_token;
@@ -144,16 +144,16 @@ export const Login = async (userData) => {
       localStorage.setItem("refreshToken", refreshToken);
     }
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const ChangePass = async (userData) => {
+export const ChangePass = async (userData:any) => {
   try {
     const response = await apiClient.post("/change-password", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
@@ -162,75 +162,75 @@ export const GetUser = async () => {
   try {
     const response = await apiClient.get("/user/0?include=career&include=info&include=tag");
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const PutCareer = async (userData) => {
+export const PutCareer = async (userData:any) => {
   try {
     const response = await apiClient.put("/user/career", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const PutTag = async (userData) => {
+export const PutTag = async (userData:any) => {
   try {
     const response = await apiClient.put("/user/tag", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const PutUser = async (userData) => {
+export const PutUser = async (userData:any) => {
   try {
     const response = await apiClient.put("/user/update-info", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const PutEmail = async (userData) => {
+export const PutEmail = async (userData:any) => {
   try {
     const response = await apiClient.put("/user/update-email", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const PutUserName = async (userData) => {
+export const PutUserName = async (userData:any) => {
   try {
     const response = await apiClient.put("/user/update-username", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const PutPhoneSendOtp = async (userData) => {
+export const PutPhoneSendOtp = async (userData:any) => {
   try {
     const response = await apiClient.put("/user/update-phone/send-otp", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const PutPhoneVerifyOtp = async (userData) => {
+export const PutPhoneVerifyOtp = async (userData:any) => {
   try {
     const response = await apiClient.put("/user/update-phone/verify", userData);
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const getUserProject = async (offset, limit) => {
+export const getUserProject = async (offset:any, limit:any) => {
   try {
     const response = await apiClient.get("/project", {
       params: { 
@@ -248,7 +248,7 @@ export const getUserProject = async (offset, limit) => {
     const paginatedProjects = projects.slice(offset, offset + limit);
 
     return { projects: paginatedProjects, total };
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
@@ -263,7 +263,7 @@ export const getLabels = async () => {
   try {
     const response = await apiClient.get("/labels");
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در دریافت برچسب‌ها";
   }
 };
@@ -272,12 +272,12 @@ export const getTags = async () => {
   try {
     const response = await apiClient.get("/tags");
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در دریافت تگ‌ها";
   }
 };
 
-export const createProject = async (projectData) => {
+export const createProject = async (projectData:any) => {
   try {
     const token = localStorage.getItem("authToken");
 
@@ -292,12 +292,12 @@ export const createProject = async (projectData) => {
       },
     });
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در ایجاد پروژه";
   }
 };
 
-export const updateProject = async (projectId, projectData) => {
+export const updateProject = async (projectId:any, projectData:any) => {
   try {
     const token = localStorage.getItem("authToken");
 
@@ -312,12 +312,12 @@ export const updateProject = async (projectId, projectData) => {
       },
     });
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در بروزرسانی پروژه";
   }
 };
 
-export const deleteProject = async (projectId) => {
+export const deleteProject = async (projectId:any) => {
   try {
     const token = localStorage.getItem("authToken");
 
@@ -331,7 +331,7 @@ export const deleteProject = async (projectId) => {
       },
     });
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     throw error.response?.data || "خطا در حذف پروژه";
   }
 };
