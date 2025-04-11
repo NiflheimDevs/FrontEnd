@@ -1,7 +1,10 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import "../../../node_modules/swiper/swiper.css";
+import "../../../node_modules/swiper/modules/pagination.css";
+import "../../../node_modules/swiper/modules/navigation.css";
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import kia from "../../assets/aboutus/kia2.jpg";

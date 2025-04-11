@@ -11,10 +11,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 
+import "../../../node_modules/swiper/swiper.css";
+import "../../../node_modules/swiper/modules/pagination.css";
+import "../../../node_modules/swiper/modules/navigation.css";
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
+// import "swiper/css";
+// import "swiper/css/pagination";
+// import "swiper/css/navigation";
 
 const MainContent = () => {
   const heroRef = useRef<HTMLDivElement | null>(null);

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ChangePass } from "../../API";
 
 interface AuthState {
   isAuthenticated: boolean;

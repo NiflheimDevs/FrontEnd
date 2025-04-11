@@ -1,4 +1,3 @@
-import React from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import AuthPage from "../pages/Auth";
@@ -30,7 +29,7 @@ const isAuthenticated = () => {
 };
 
 // Wrapper component to redirect authenticated users away from public routes
-const PublicRoute = ({ children }) => {
+const PublicRoute = ({ children }:any) => {
   return isAuthenticated() ? <Navigate to="/dashboard" replace /> : children;
 };
 

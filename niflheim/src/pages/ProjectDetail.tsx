@@ -168,7 +168,7 @@ const ProjectDetail = () => {
       </main>
 
       {/* Custom Scrollbar Styles */}
-      <style jsx>{`
+      <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 8px;
         }
