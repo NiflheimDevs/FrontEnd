@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
-import LadyPic from "../../assets/Changepass.svg";
+import LadyPic from "../../assets/ChangePass.svg";
 import React from "react";
 import { ChangePass, logout } from "../../API";
 import { useNotification } from "../../Notification/NotificationProvider";
