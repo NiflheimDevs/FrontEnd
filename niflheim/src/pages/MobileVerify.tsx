@@ -8,6 +8,9 @@ import { useNotification } from "../Notification/NotificationProvider";
 import { authenticate } from "../store/slices/authSlice";
 import { errorMapper } from "../pages/Error/Error";
 import { useNavigate } from "react-router-dom";
+import OTP_G from "../assets/Otp_G.svg";
+import Clock from "../assets/Clock.svg";
+import Clock_G from "../assets/Clock_G.svg";
 
 const MobileVerify = () => {
   const navigate = useNavigate();
@@ -108,9 +111,8 @@ const MobileVerify = () => {
             exit={{ opacity: 0, x: 50 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
-            <object
-              data="/src/assets/Otp_G.svg"
-              type="image/svg+xml"
+            <img
+              src={OTP_G}
               className={`md:w-[540px] sm:w-[400px] pointer-events-none w-[330px] h-fit`}
             />
           </motion.div>
@@ -204,9 +206,8 @@ const MobileVerify = () => {
               className={`flex w-fit h-fit transition-all ${isScaled ? "scale-103" : "scale-100"}`}
             >
               {timeLeft != 0 ? (
-                <object
-                  data="/src/assets/Clock.svg"
-                  type="image/svg+xml"
+                <img
+                  src={Clock}
                   className="w-6.5 h-6.5 pointer-events-none flex"
                 />
               ) : (
@@ -214,9 +215,8 @@ const MobileVerify = () => {
                   className={`cursor-pointer w-fit h-fit hover:scale-115 transition-all duration-200 ease-in-out ${isScaled ? "scale-110" : "scale-100"}`}
                   onClick={handleTimeOut}
                 >
-                  <object
-                    data="/src/assets/Clock_G.svg"
-                    type="image/svg+xml"
+                  <img
+                    src={Clock_G}
                     className="w-6.5 h-6.5 pointer-events-none flex transform origin-center"
                   />
                 </button>

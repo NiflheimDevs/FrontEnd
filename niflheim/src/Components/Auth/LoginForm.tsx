@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { Login } from "../../API";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { errorMapper } from "../../pages/Error/Error";
+import Eye from "../../assets/Eye.svg";
+import Eye_Off from "../../assets/Eye_off.svg";
+import User from "../../assets/User.svg";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -25,13 +28,13 @@ const LoginForm = () => {
       });
       notifySuccess(`ورود شما با موفقیت انجام شد`);
       navigate("/dashboard");
-    } catch (error:any) {
+    } catch (error: any) {
       const errorData = error;
       // console.log();
       if (errorData.tag && errorData.errors?.length > 0) {
         const allErrors = errorData.errors;
 
-        const errorMessages = allErrors.map((err:any) => errorMapper(err));
+        const errorMessages = allErrors.map((err: any) => errorMapper(err));
         notifyError(`${errorMessages.join(" ")}`);
       } else {
         notifyError(`${errorMapper(errorData)}`);
@@ -51,7 +54,7 @@ const LoginForm = () => {
     setIsValidPass(validatePassword(value));
   };
 
-  const validatePassword = (value:any) => {
+  const validatePassword = (value: any) => {
     if (!value) {
       return null;
     } else if (value.length < 8) {
@@ -67,7 +70,7 @@ const LoginForm = () => {
     }
   };
 
-  const validateIdentifier = (value:any) => {
+  const validateIdentifier = (value: any) => {
     if (!value) {
       return null;
     } else if (value.length < 2) {
@@ -96,13 +99,12 @@ const LoginForm = () => {
             isValidIdentifier === false
               ? "focus:ring-3 ring-red-500"
               : isValidIdentifier === true
-              ? "focus:ring-3 ring-green-500"
-              : "focus:ring-3 ring-gray-300"
+                ? "focus:ring-3 ring-green-500"
+                : "focus:ring-3 ring-gray-300"
           }`}
         />
-        <object
-          data="/src/assets/User.svg"
-          type="image/svg+xml"
+        <img
+          src={User}
           className="w-6.5 h-6.5 pointer-events-none absolute left-3 top-1/2 transform -translate-y-1/2 "
           tabIndex={-1}
         />
@@ -118,16 +120,17 @@ const LoginForm = () => {
             isValidPass === false
               ? "focus:ring-3 ring-red-500"
               : isValidPass === true
-              ? "focus:ring-3 ring-green-500"
-              : "focus:ring-3 ring-gray-300"
+                ? "focus:ring-3 ring-green-500"
+                : "focus:ring-3 ring-gray-300"
           }`}
         />
-        <button onClick={() => setShowPassword1(!showPassword1)} className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"tabIndex={-1}>
-          <object
-            data={
-              showPassword1 ? "/src/assets/Eye_off.svg" : "/src/assets/Eye.svg"
-            }
-            type="image/svg+xml"
+        <button
+          onClick={() => setShowPassword1(!showPassword1)}
+          className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"
+          tabIndex={-1}
+        >
+          <img
+            src={showPassword1 ? `${Eye_Off}` : `${Eye}`}
             className="w-6.5 h-6.5 pointer-events-none"
             tabIndex={-1}
           />
@@ -154,8 +157,11 @@ const LoginForm = () => {
             : "hover:bg-blue-600  cursor-pointer "
         }`}
         onClick={handleLogin}
-        disabled={!(isValidIdentifier === true && isValidPass === true) ? true : false}>
-        <p className="text-white font-[vazirmatn] font-extralight"tabIndex={0}>
+        disabled={
+          !(isValidIdentifier === true && isValidPass === true) ? true : false
+        }
+      >
+        <p className="text-white font-[vazirmatn] font-extralight" tabIndex={0}>
           تایید و ادامه
         </p>
       </button>

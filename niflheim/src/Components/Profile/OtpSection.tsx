@@ -5,6 +5,8 @@ import { PutPhoneVerifyOtp, PutPhoneSendOtp } from "../../API";
 import { Profile, useOtpTimer } from "./types";
 import { useState } from "react";
 import React from "react";
+import Clock from "../../assets/Clock.svg";
+import Clock_B from "../../assets/Clock_B.svg";
 
 interface OtpSectionProps {
   showOtpSection: boolean;
@@ -39,7 +41,7 @@ export default function OtpSection({
       setShowOtpSection(false);
       setTimeLeft(120);
       setTokens("");
-    } catch (err:any) {
+    } catch (err: any) {
       notifyError(err.message || "خطا در تغییر شماره تلفن");
     }
   };
@@ -55,7 +57,7 @@ export default function OtpSection({
       setTimeLeft(120);
       setIsScaled(false);
       notifySuccess("کد تایید ارسال شد");
-    } catch (err:any) {
+    } catch (err: any) {
       notifyError(err.message || "خطا در ارسال کد تایید");
     }
   };
@@ -106,9 +108,8 @@ export default function OtpSection({
               className={`flex w-fit h-fit justify-center items-center transition-all mt-2`}
             >
               {timeLeft !== 0 ? (
-                <object
-                  data="/src/assets/Clock.svg"
-                  type="image/svg+xml"
+                <img
+                  src={Clock}
                   className="w-6.5 h-6.5 pointer-events-none flex"
                 />
               ) : (
@@ -118,9 +119,8 @@ export default function OtpSection({
                   onClick={handleTimeOut}
                   tabIndex={9}
                 >
-                  <object
-                    data="/src/assets/Clock_B.svg"
-                    type="image/svg+xml"
+                  <img
+                    src={Clock_B}
                     className={`pointer-events-none flex transform duration-200 ease-in-out origin-center ${isScaled ? "scale-[85%]" : "scale-75"}`}
                   />
                 </button>

@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import ErrorSVG from "../../assets/Error.svg";
 
 // Define the possible error codes as a union type
 type ErrorCode = keyof typeof errorMessages;
@@ -51,11 +52,13 @@ const errorMapper = (errorCode: ErrorCode): string => {
 const Error = () => {
   const location = useLocation();
   // Type the location.state and handle undefined errorCode
-  const { errorCode, title = "خطا" } = (location.state as { errorCode?: ErrorCode; title?: string } | undefined) || {
+  const { errorCode, title = "خطا" } = (location.state as
+    | { errorCode?: ErrorCode; title?: string }
+    | undefined) || {
     errorCode: "error_404" as const, // Explicitly type as ErrorCode
     title: "404 خطا",
   };
-  
+
   // Ensure errorCode is always ErrorCode by providing a fallback
   const safeErrorCode: ErrorCode = errorCode ?? "error_404";
   const description = errorMapper(safeErrorCode);
@@ -66,9 +69,8 @@ const Error = () => {
         <h1>{title}</h1>
         <h2 className="text-2xl">{description}</h2>
       </div>
-      <object
-        data="/src/assets/Error.svg"
-        type="image/svg+xml"
+      <img
+        src={ErrorSVG}
         className="w-[300px] h-[300px] sm:w-[300px] sm:h-[450px] md:w-[480px] md:h-[590px]"
       />
     </div>

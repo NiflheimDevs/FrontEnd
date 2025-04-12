@@ -2,7 +2,7 @@ import { Search, Menu } from "lucide-react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
 import Mail from "@/assets/Dashboard/Mail.svg";
-import FAQ from "@/assets/Dashboard/FAQ.svg";
+import FAQ from "@/assets/Dashboard/Faq.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 import { useState, useRef, useEffect } from "react";
@@ -46,7 +46,9 @@ export default function Header({ toggleSidebar }: any) {
 
           {/* Logo and Title */}
           <div className="flex w-fit h-fit items-center">
-            <label className="text-lg font-semibold md:flex sm:flex hidden">بیدلنسر</label>
+            <label className="text-lg font-semibold md:flex sm:flex hidden">
+              بیدلنسر
+            </label>
             <img src={LOGO} alt="Logo" className="h-11 w-14" />
           </div>
         </div>
@@ -69,39 +71,23 @@ export default function Header({ toggleSidebar }: any) {
             className="w-fit h-fit md:hidden sm:hidden flex cursor-pointer hover:scale-115 hover:animate-shake transition-all duration-400 ease-out"
             onClick={openModal}
           >
-            <object
-              data={SearchIcon}
-              type="image/svg+xml"
+            <img
+              src={SearchIcon}
               className="h-6 scale-95 pointer-events-none"
               tabIndex={-1}
             />
           </button>
 
           <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
-            <object
-              data={BELL}
-              type="image/svg+xml"
-              className="h-6 pointer-events-none"
-              tabIndex={-1}
-            />
+            <img src={BELL} className="h-6 pointer-events-none" tabIndex={-1} />
           </button>
 
           <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
-            <object
-              data={Mail}
-              type="image/svg+xml"
-              className="h-6 pointer-events-none"
-              tabIndex={-1}
-            />
+            <img src={Mail} className="h-6 pointer-events-none" tabIndex={-1} />
           </button>
 
           <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
-            <object
-              data={FAQ}
-              type="image/svg+xml"
-              className="h-6 pointer-events-none"
-              tabIndex={-1}
-            />
+            <img src={FAQ} className="h-6 pointer-events-none" tabIndex={-1} />
           </button>
 
           <button className="w-fit h-fit cursor-pointer">

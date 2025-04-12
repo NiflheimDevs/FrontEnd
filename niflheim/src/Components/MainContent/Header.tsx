@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
 import Mail from "@/assets/Dashboard/Mail.svg";
-import FAQ from "@/assets/Dashboard/FAQ.svg";
+import FAQ from "@/assets/Dashboard/Faq.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 import { IoMdPerson } from "react-icons/io";
@@ -10,7 +10,8 @@ import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
-const Header = ({ showSearch = true }) => {  // Added showSearch prop with default true
+const Header = ({ showSearch = true }) => {
+  // Added showSearch prop with default true
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const token = localStorage.getItem("authToken");
@@ -67,9 +68,8 @@ const Header = ({ showSearch = true }) => {  // Added showSearch prop with defau
                 className="w-fit h-fit md:hidden sm:hidden flex cursor-pointer hover:scale-115 hover:animate-shake"
                 onClick={openModal}
               >
-                <object
-                  data={SearchIcon}
-                  type="image/svg+xml"
+                <img
+                  src={SearchIcon}
                   className="h-6 scale-95 pointer-events-none"
                   tabIndex={-1}
                 />
@@ -77,27 +77,24 @@ const Header = ({ showSearch = true }) => {  // Added showSearch prop with defau
             )}
 
             <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
-              <object
-                data={BELL}
-                type="image/svg+xml"
+              <img
+                src={BELL}
                 className="h-6 pointer-events-none"
                 tabIndex={-1}
               />
             </button>
 
             <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
-              <object
-                data={Mail}
-                type="image/svg+xml"
+              <img
+                src={Mail}
                 className="h-6 pointer-events-none"
                 tabIndex={-1}
               />
             </button>
 
             <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
-              <object
-                data={FAQ}
-                type="image/svg+xml"
+              <img
+                src={FAQ}
                 className="h-6 pointer-events-none"
                 tabIndex={-1}
               />
@@ -119,9 +116,8 @@ const Header = ({ showSearch = true }) => {  // Added showSearch prop with defau
                 className="w-fit h-fit md:hidden sm:hidden flex cursor-pointer hover:scale-115 hover:animate-shake"
                 onClick={openModal}
               >
-                <object
-                  data={SearchIcon}
-                  type="image/svg+xml"
+                <img
+                  src={SearchIcon}
                   className="h-6 scale-95 pointer-events-none"
                   tabIndex={-1}
                 />

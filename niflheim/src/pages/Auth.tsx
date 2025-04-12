@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 // import { authenticate } from "../store/slices/authSlice";
 import LoginForm from "../Components/Auth/LoginForm";
 import SignupForm from "../Components/Auth/SignupForm";
+import Login from "../assets/login.svg";
+import SignUp from "../assets/signup.svg";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -51,9 +53,8 @@ const AuthPage = () => {
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.6, ease: "easeInOut" }}
             >
-              <object
-                data="/src/assets/login.svg"
-                type="image/svg+xml"
+              <img
+                src={Login}
                 className={`md:w-[425px] md:h-[590px] sm:w-[300px] sm:h-[450px] pointer-events-none w-0 h-0  ${loginImg}`}
               />
             </motion.div>
@@ -94,9 +95,8 @@ const AuthPage = () => {
               exit={{ opacity: 0, x: 50 }}
               transition={{ duration: 0.6, ease: "easeInOut" }}
             >
-              <object
-                data="/src/assets/signup.svg"
-                type="image/svg+xml"
+              <img
+                src={SignUp}
                 className={`md:w-[480px] md:h-[590px] sm:w-[300px] sm:h-[450px] pointer-events-none w-0 h-0  ${SignImg}`}
               />
             </motion.div>

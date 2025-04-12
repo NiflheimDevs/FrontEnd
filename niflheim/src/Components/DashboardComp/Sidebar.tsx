@@ -6,7 +6,7 @@ import projects from "@/assets/Dashboard/PencilSquare.svg";
 import profile from "@/assets/Dashboard/PersonCheckFill.svg";
 import Wallet from "@/assets/Dashboard/Credit.svg";
 import messages from "@/assets/Dashboard/Message.svg";
-import settings from "@/assets/Dashboard/Settings.svg";
+import settings from "@/assets/Dashboard/settings.svg";
 import exit from "@/assets/Dashboard/DoorOpen.svg";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { logout } from "../../API"; // Adjust the path
@@ -16,9 +16,7 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
-export default function Sidebar({
-  isSidebarOpen,
-}: SidebarProps) {
+export default function Sidebar({ isSidebarOpen }: SidebarProps) {
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);

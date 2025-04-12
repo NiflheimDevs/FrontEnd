@@ -8,6 +8,8 @@ import { forgetPasswordReset } from "../../API";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { errorMapper } from "../Error/Error";
 import { RootState } from "../../store/store";
+import Eye from "../../assets/Eye.svg";
+import Eye_Off from "../../assets/Eye_off.svg";
 
 const ChangePasswordonForget = () => {
   const { error: notifyError, success: notifySuccess } = useNotification();
@@ -126,13 +128,8 @@ const ChangePasswordonForget = () => {
                 onClick={() => setShowPassword1(!showPassword1)}
                 className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"
               >
-                <object
-                  data={
-                    showPassword1
-                      ? "/src/assets/Eye_off.svg"
-                      : "/src/assets/Eye.svg"
-                  }
-                  type="image/svg+xml"
+                <img
+                  src={showPassword1 ? `${Eye_Off}` : `${Eye}`}
                   className="w-6.5 h-6.5 pointer-events-none"
                 />
               </button>
@@ -157,13 +154,8 @@ const ChangePasswordonForget = () => {
                 onClick={() => setShowPassword2(!showPassword2)}
                 className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"
               >
-                <object
-                  data={
-                    showPassword2
-                      ? "/src/assets/Eye_off.svg"
-                      : "/src/assets/Eye.svg"
-                  }
-                  type="image/svg+xml"
+                <img
+                  src={showPassword2 ? `${Eye_Off}` : `${Eye}`}
                   className="w-6.5 h-6.5 pointer-events-none"
                 />
               </button>
@@ -191,9 +183,8 @@ const ChangePasswordonForget = () => {
           transition={{ duration: 0.4 }}
           className="flex justify-center w-1/2 items-center mt-8 md:mt-0 md:ml-15"
         >
-          <object
-            data={LadyPic}
-            type="image/svg+xml"
+          <img
+            src={LadyPic}
             className="pointer-events-none items-center md:h-auto w-[350px] sm:h-[200px] md:flex sm:flex hidden"
           />
         </motion.div>
