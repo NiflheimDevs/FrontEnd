@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
-import LadyPic from "../../assets/Changepass.svg";
+import LadyPic from "../../assets/ChangePass.svg";
 import React from "react";
 import { ChangePass, logout } from "../../API";
 import { useNotification } from "../../Notification/NotificationProvider";
@@ -11,7 +11,7 @@ import { RootState } from "../../store/store";
 
 const ChangePasswordManually = () => {
   const { error: notifyError, success: notifySuccess } = useNotification();
-  const [ispic, _setIspic] = useState(true);
+  const [ispic] = useState(true);
   const navigate = useNavigate();
   const [showPassword0, setShowPassword0] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);

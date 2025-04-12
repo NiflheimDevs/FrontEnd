@@ -6,7 +6,7 @@
 // import { Search } from "lucide-react";
 // import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 // import walletPic from "@/assets/dashboard/wallet.svg";
-// import LadyPic from "/src/assets/Changepass.svg";
+// import LadyPic from "/src/assets/ChangePass.svg";
 
 // // Sample data for previews (simplified for display)
 // const chatList = [
@@ -312,8 +312,8 @@ import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
 import { Search } from "lucide-react";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
-import walletPic from "@/assets/dashboard/wallet.svg";
-import LadyPic from "@/assets/Changepass.svg";
+import walletPic from "@/assets/Dashboard/Wallet.svg";
+import LadyPic from "@/assets/ChangePass.svg";
 
 // Sample data for previews (simplified for display)
 const chatList = [
