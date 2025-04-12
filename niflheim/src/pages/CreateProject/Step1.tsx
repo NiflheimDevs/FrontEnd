@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { FaCloudUploadAlt, FaTimesCircle } from 'react-icons/fa';
-import { setProjectData } from '@/store/slices/projectSlice';
+import { setProjectData } from '../../store/slices/projectSlice';
 
 interface Step1Props {
   formData: {
@@ -93,12 +93,12 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
       onNext();
     }
 
-    if (descriptionWords.length > MAX_DESCRIPTION_WORDS) {
-      newErrors.description = `توضیحات نباید بیشتر از ${MAX_DESCRIPTION_WORDS} کلمه باشد`;
-    }
+    // if (descriptionWords.length > MAX_DESCRIPTION_WORDS) {
+    //   newErrors.description = `توضیحات نباید بیشتر از ${MAX_DESCRIPTION_WORDS} کلمه باشد`;
+    // }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    // setErrors(newErrors);
+    // return Object.keys(newErrors).length === 0;
   };
 
   const wordCount = formData.description ? formData.description.trim().split(/\s+/).length : 0;

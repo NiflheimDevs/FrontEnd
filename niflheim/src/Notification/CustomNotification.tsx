@@ -1,5 +1,3 @@
-import React from 'react'
-
-export default function CustomNotification({Message}) {
+export default function CustomNotification({Message}: {Message: string}) {
   return <div className='font-[vazirmatn]'>{Message}</div>
 }

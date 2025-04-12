@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from "framer-motion";
 import LadyPic from '/src/assets/Changepass.svg';
 import React from "react";
@@ -11,9 +11,9 @@ import { RootState } from "../../store/store";
 
 const ChangePasswordonForget = () => {
     const { error: notifyError, success: notifySuccess } = useNotification();
-    const [ispic, setIspic] = useState(true);
+    const [ispic, _setIspic] = useState(true);
     const navigate = useNavigate();
-    const dispatcher = useDispatch();
+
     const [showPassword1, setShowPassword1] = useState(false); 
     const [showPassword2, setShowPassword2] = useState(false);
     const [isValidPass, setIsValidPass] = useState<boolean | null>(null); 
@@ -23,7 +23,7 @@ const ChangePasswordonForget = () => {
     const SessionID = useSelector((state: RootState) => state.auth.SessionID);
     
 
-    const validatePassword = (value) => {
+    const validatePassword = (value:any) => {
         if (!value) {
           return false;
         } else if (value.length < 8) {
@@ -38,7 +38,7 @@ const ChangePasswordonForget = () => {
           return true;
         }
       };
-    const validatePasswordRepeat = (value) => {
+    const validatePasswordRepeat = (value:any) => {
         if (value != password) {
           return false;
         } else {
@@ -67,11 +67,11 @@ const ChangePasswordonForget = () => {
             notifySuccess(`رمز عبور شما با موفقیت تغییر کرد`);
             navigate('/auth');
           } 
-          catch (error) {
+          catch (error:any) {
             const errorData = error;
           if (errorData.tag && errorData.errors?.length > 0) {
             const allErrors = errorData.errors; 
-            const errorMessages = allErrors.map((err) => errorMapper(err));
+            const errorMessages = allErrors.map((err:any) => errorMapper(err));
             notifyError(`${errorMessages.join(" ")}`);
           } 
           else {

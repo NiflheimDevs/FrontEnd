@@ -66,7 +66,7 @@ export default function UserInfoSection({
         console.log(codeSession);
         setShowOtpSection(true);
         notifySuccess("کد تایید ارسال شد");
-      } catch (err) {
+      } catch (err:any) {
         notifyError(err.message || "خطا در ارسال کد تایید");
       }
     }
@@ -77,7 +77,7 @@ export default function UserInfoSection({
       const usernameData = { username: localProfile.username };
       await PutUserName(usernameData);
       notifySuccess("نام کاربری با موفقیت تغییر کرد");
-    } catch (err) {
+    } catch (err:any) {
       notifyError(err.message || "خطا در تغییر نام کاربری");
     }
   };
@@ -87,14 +87,14 @@ export default function UserInfoSection({
       const emailData = { email: localProfile.email };
       await PutEmail(emailData);
       notifySuccess("ایمیل با موفقیت تغییر کرد");
-    } catch (err) {
+    } catch (err:any) {
       notifyError(err.message || "خطا در تغییر ایمیل");
     }
   };
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: "profilePicture"
+    _field: "profilePicture"
   ) => {
     const file = e.target.files?.[0];
     if (file) {

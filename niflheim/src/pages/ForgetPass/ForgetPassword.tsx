@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from "framer-motion";
 import { ChangePassSessions } from "../../store/slices/authSlice";
 import PhoneIcon from '/src/assets/Phone.svg';
 import LadyPic from '/src/assets/ForgetPass.svg';
 import React from "react";
-import { RootState } from "../../store/store";
 import {forgetPasswordSendOTP} from "../../API";
 import {errorMapper} from "../../pages/Error/Error";
 import {useNotification} from "../../Notification/NotificationProvider";
@@ -15,7 +14,7 @@ const ForgetPassword = () => {
   const [phone, setPhone] = useState("");
   const [isValidPhone, setIsValidPhone] = useState<boolean | null>(null); 
   const { error: notifyError, success: notifySuccess } = useNotification();
-  const [ispic, setIspic] = useState(true);
+  const [ispic, _setIspic] = useState(true);
   const navigate = useNavigate();
   const dispatcher = useDispatch();
 
@@ -45,11 +44,11 @@ const ForgetPassword = () => {
         dispatcher(ChangePassSessions(sessionData));
         navigate('/ForgetPassVerify');
       } 
-      catch (error) {
+      catch (error:any) {
         const errorData = error;
         if (errorData.tag && errorData.errors?.length > 0) {
           const allErrors = errorData.errors; 
-          const errorMessages = allErrors.map((err) => errorMapper(err));
+          const errorMessages = allErrors.map((err:any) => errorMapper(err));
           notifyError(`${errorMessages.join(" ")}`);
         } 
         else {

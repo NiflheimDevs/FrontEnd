@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { createProject as createProjectAPI, deleteProject as deleteProjectAPI, updateProject as updateProjectAPI } from '../../API';
-import axios from 'axios';
 
 // Define the project state interface
 interface ProjectState {

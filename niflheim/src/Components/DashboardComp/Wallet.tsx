@@ -15,7 +15,7 @@ type Transaction = {
 
 const Wallet = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [balance, setBalance] = useState(0);
+  const [balance, _setBalance] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [activityFilter, setActivityFilter] = useState('all');
   const [isActivityFilterOpen, setIsActivityFilterOpen] = useState(false);

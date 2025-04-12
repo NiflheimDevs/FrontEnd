@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
@@ -8,9 +8,21 @@ import { Link } from "react-router-dom";
 import avatar from "@/assets/myproject/avatars.png";
 import pencil from "@/assets/myproject/PencilSquare.png";
 import { FaTrash } from "react-icons/fa";
-import { FolderOpen } from "lucide-react";
 import { getUserProject, deleteProject } from "../API";
 import { useNotification } from "../Notification/NotificationProvider";
+
+// Define interfaces
+interface Tag {
+  id: number | string;
+  name: string;
+}
+
+interface Project {
+  project_id: number | string;
+  title: string;
+  description: string;
+  tags: Tag[];
+}
 
 // Card animation variants
 const cardVariants = {
@@ -55,30 +67,28 @@ const backdropVariants = {
 const MyProjects = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [totalProjects, setTotalProjects] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [projectToDelete, setProjectToDelete] = useState(null);
+  const [projectToDelete, setProjectToDelete] = useState<
+    number | string | null
+  >(null);
   const projectsPerPage = 4;
 
   const { success, error } = useNotification();
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  // Truncate text if it's too long
-  const truncateText = (text: string, maxLength: number) => {
-    return text.length > maxLength
-      ? text.substring(0, maxLength) + "..."
-      : text;
-  };
-
   // Function to fetch projects
   const fetchProjects = async (page = currentPage) => {
     setIsLoading(true);
     try {
       const offset = (page - 1) * projectsPerPage;
-      const data = await getUserProject(offset, projectsPerPage);
+      const data: { projects: Project[]; total: number } = await getUserProject(
+        offset,
+        projectsPerPage
+      );
 
       console.log(
         `Fetching projects for page ${page}, offset ${offset}:`,
@@ -91,12 +101,11 @@ const MyProjects = () => {
       setProjects(projectData);
       setTotalProjects(totalCount);
 
-      // If the current page is empty and not the first page, go to the previous page
       if (projectData.length === 0 && page > 1) {
         console.log(`Page ${page} is empty, navigating to page ${page - 1}`);
         setCurrentPage(page - 1);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error fetching projects:", err);
       error(
         "خطا در بارگذاری پروژه‌ها: " +
@@ -104,7 +113,6 @@ const MyProjects = () => {
       );
       setProjects([]);
       setTotalProjects(0);
-      // Fallback: If fetching fails, try fetching the first page
       if (page !== 1) {
         console.log("Fetching failed, falling back to page 1");
         setCurrentPage(1);
@@ -119,7 +127,7 @@ const MyProjects = () => {
   }, [currentPage]);
 
   // Function to handle project deletion
-  const handleDeleteProject = (projectId) => {
+  const handleDeleteProject = (projectId: number | string) => {
     setProjectToDelete(projectId);
     setShowModal(true);
   };
@@ -130,9 +138,8 @@ const MyProjects = () => {
       try {
         await deleteProject(projectToDelete);
         success("پروژه با موفقیت حذف شد!");
-        // Refresh the project list by re-fetching from the API
         await fetchProjects(currentPage);
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error deleting project:", err);
         error(
           "خطا در حذف پروژه: " + (err.message || "لطفاً دوباره تلاش کنید.")
@@ -164,7 +171,7 @@ const MyProjects = () => {
     }
   };
 
-  const goToPage = (pageNumber) => {
+  const goToPage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
@@ -262,7 +269,7 @@ const MyProjects = () => {
                         </p>
                       </div>
                       <div className="flex flex-wrap w-3/4 gap-2 mt-3">
-                        {project.tags.slice(0, 2).map((tag) => (
+                        {project.tags.slice(0, 2).map((tag: Tag) => (
                           <span
                             key={tag.id}
                             className="bg-white/30 text-white text-xs px-3 py-1 rounded-full glowing-shadow"
@@ -270,7 +277,6 @@ const MyProjects = () => {
                             {tag.name}
                           </span>
                         ))}
-
                         {project.tags.length > 2 ? (
                           <span className="bg-white/30 text-white text-xs px-3 py-1 rounded-full glowing-shadow">
                             {project.tags.length - 2}+
@@ -325,13 +331,8 @@ const MyProjects = () => {
                       x2="100%"
                       y2="0%"
                     >
-                      <stop offset="0%" style={{ stopColor: "#2563EB" }} />{" "}
-                      {/* blue-600 */}
-                      <stop
-                        offset="100%"
-                        style={{ stopColor: "#9333EA" }}
-                      />{" "}
-                      {/* purple-600 */}
+                      <stop offset="0%" style={{ stopColor: "#2563EB" }} />
+                      <stop offset="100%" style={{ stopColor: "#9333EA" }} />
                     </linearGradient>
                   </defs>
                   <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" />
@@ -354,12 +355,10 @@ const MyProjects = () => {
               animate="visible"
               exit="exit"
             >
-              {/* Backdrop with blur */}
               <motion.div
                 className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                 onClick={cancelDelete}
               />
-              {/* Modal content */}
               <motion.div
                 className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg z-10"
                 variants={modalVariants}
@@ -393,7 +392,9 @@ const MyProjects = () => {
         </AnimatePresence>
 
         <footer
-          className={`bg-[#F7F7F7] ltr place-items-center ${currentProjects.length === 0 ? "" : "border-t border-gray-200 "}  self-center p-4 w-full relative z-10 transition-all duration-400 sm:pr-24 pr-4 pl-4 ${
+          className={`bg-[#F7F7F7] ltr place-items-center ${
+            currentProjects.length === 0 ? "" : "border-t border-gray-200 "
+          } self-center p-4 w-full relative z-10 transition-all duration-400 sm:pr-24 pr-4 pl-4 ${
             isSidebarOpen ? "md:pr-52" : "md:pr-28"
           }`}
         >
@@ -416,7 +417,6 @@ const MyProjects = () => {
 
             {currentProjects.length > 0 ? (
               <div className="flex items-center gap-2">
-                {/* دکمه صفحه اول */}
                 {currentPage > 2 && (
                   <motion.button
                     key={1}
@@ -429,11 +429,7 @@ const MyProjects = () => {
                     1
                   </motion.button>
                 )}
-
-                {/* علامت ... اگه فاصله بیشتر از 1 باشه */}
                 {currentPage > 3 && <span className="text-gray-700">...</span>}
-
-                {/* صفحه قبلی (اگه وجود داشته باشه) */}
                 {currentPage > 1 && (
                   <motion.button
                     key={currentPage - 1}
@@ -446,8 +442,6 @@ const MyProjects = () => {
                     {currentPage - 1}
                   </motion.button>
                 )}
-
-                {/* صفحه فعلی */}
                 <motion.button
                   key={currentPage}
                   variants={buttonVariants}
@@ -458,8 +452,6 @@ const MyProjects = () => {
                 >
                   {currentPage}
                 </motion.button>
-
-                {/* صفحه بعدی (اگه وجود داشته باشه) */}
                 {currentPage < totalPages && (
                   <motion.button
                     key={currentPage + 1}
@@ -472,13 +464,9 @@ const MyProjects = () => {
                     {currentPage + 1}
                   </motion.button>
                 )}
-
-                {/* علامت ... اگه فاصله تا آخر بیشتر از 1 باشه */}
                 {currentPage < totalPages - 2 && (
                   <span className="text-gray-700">...</span>
                 )}
-
-                {/* دکمه صفحه آخر */}
                 {currentPage < totalPages - 1 && (
                   <motion.button
                     key={totalPages}
@@ -504,7 +492,7 @@ const MyProjects = () => {
               disabled={
                 currentPage === totalPages || currentProjects.length === 0
               }
-              className={`flex items-center justify-center gap-2 w-24 h-10 rounded-full text-white text-sm font-medium glowing-shadow bg-gradient-to-r from-blue-500 to-purple-600  ${
+              className={`flex items-center justify-center gap-2 w-24 h-10 rounded-full text-white text-sm font-medium glowing-shadow bg-gradient-to-r from-blue-500 to-purple-600 ${
                 currentPage === totalPages || currentProjects.length === 0
                   ? "cursor-not-allowed"
                   : "hover:bg-gray-100 transition-colors cursor-pointer"

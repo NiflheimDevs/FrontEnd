@@ -1,14 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Login } from "../../API";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { errorMapper } from "../../pages/Error/Error";
 
 const LoginForm = () => {
-  const dispatcher = useDispatch();
   const navigate = useNavigate();
   const { error: notifyError, success: notifySuccess } = useNotification();
   const [showPassword1, setShowPassword1] = useState(false);
@@ -27,13 +25,13 @@ const LoginForm = () => {
       });
       notifySuccess(`ورود شما با موفقیت انجام شد`);
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error:any) {
       const errorData = error;
       // console.log();
       if (errorData.tag && errorData.errors?.length > 0) {
         const allErrors = errorData.errors;
 
-        const errorMessages = allErrors.map((err) => errorMapper(err));
+        const errorMessages = allErrors.map((err:any) => errorMapper(err));
         notifyError(`${errorMessages.join(" ")}`);
       } else {
         notifyError(`${errorMapper(errorData)}`);
@@ -53,7 +51,7 @@ const LoginForm = () => {
     setIsValidPass(validatePassword(value));
   };
 
-  const validatePassword = (value) => {
+  const validatePassword = (value:any) => {
     if (!value) {
       return null;
     } else if (value.length < 8) {
@@ -69,7 +67,7 @@ const LoginForm = () => {
     }
   };
 
-  const validateIdentifier = (value) => {
+  const validateIdentifier = (value:any) => {
     if (!value) {
       return null;
     } else if (value.length < 2) {

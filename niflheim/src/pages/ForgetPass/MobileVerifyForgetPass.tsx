@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from 'react-router-dom';
 import OtpInput from 'react-otp-input';
-import React from "react";
 import {forgetPasswordSendOTP , forgetPasswordVerifyOTP} from "../../API";
 import {errorMapper} from "../../pages/Error/Error";
 import {useNotification} from "../../Notification/NotificationProvider";
@@ -58,12 +57,12 @@ const MobileVerifyforgetpass = () => {
             notifySuccess(`کد تایید به شماره ${Phone} ارسال شد`);
             setTimeLeft(120);
         } 
-        catch (error) {
+        catch (error:any) {
             const errorData = error;
             if (errorData.tag && errorData.errors?.length > 0) {
                 const allErrors = errorData.errors; 
             
-                const errorMessages = allErrors.map((err) => errorMapper(err));
+                const errorMessages = allErrors.map((err:any) => errorMapper(err));
             
                 notifyError(`${errorMessages.join(" ")}`);
             } 
@@ -86,12 +85,12 @@ const MobileVerifyforgetpass = () => {
             dispatcher(ChangePassPermission(sessionData));
             navigate('/ResetPass');
         } 
-        catch (error) {
+        catch (error:any) {
             const errorData = error;
             if (errorData.tag && errorData.errors?.length > 0) {
                 const allErrors = errorData.errors; 
         
-                const errorMessages = allErrors.map((err) => errorMapper(err));
+                const errorMessages = allErrors.map((err:any) => errorMapper(err));
         
                 notifyError(`${errorMessages.join(" ")}`);
             } 
@@ -240,7 +239,5 @@ const MobileVerifyforgetpass = () => {
 };
 
 export default MobileVerifyforgetpass;
-function dispatcher(arg0: any) {
-    throw new Error("Function not implemented.");
-}
+
 

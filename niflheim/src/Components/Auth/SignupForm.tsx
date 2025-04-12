@@ -41,12 +41,12 @@ const SignupForm = () => {
       dispatcher(authenticate(sessionData));
       notifySuccess(`کد تایید به شماره ${phone} ارسال شد`);
       navigate('/verify');
-    } catch (error) {
+    } catch (error:any) {
       const errorData = error;
       if (errorData.tag && errorData.errors?.length > 0) {
         const allErrors = errorData.errors; 
   
-        const errorMessages = allErrors.map((err) => errorMapper(err));
+        const errorMessages = allErrors.map((err:any) => errorMapper(err));
   
         notifyError(`${errorMessages.join(" ")}`);
       } else {
@@ -55,7 +55,7 @@ const SignupForm = () => {
     }
   };
 
-  const validateUsername = (value) => {
+  const validateUsername = (value:any) => {
     if (!value) {
       return null;
     } else if (value.length < 2) {
@@ -67,7 +67,7 @@ const SignupForm = () => {
     }
   };
   
-  const validatePassword = (value) => {
+  const validatePassword = (value:any) => {
     if (value === passwordRepeat) {
       setIsValidPassRepeat(true);
     } else if (value != passwordRepeat) {
@@ -89,7 +89,7 @@ const SignupForm = () => {
     }
   };
 
-  const validatePasswordRepeat = (value) => {
+  const validatePasswordRepeat = (value:any) => {
     if (!value) {
       return null;
     } else if (value != password) {
@@ -99,7 +99,7 @@ const SignupForm = () => {
     }
   };
 
-  const validatePhone = (value) => {
+  const validatePhone = (value:any) => {
     if (!value) {
       return null;
     } else if (!/^09[0-9]{9}$/.test(value)) {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setProjectData } from '@/store/slices/projectSlice';
+import { setProjectData } from '../../store/slices/projectSlice';
 
 interface EditStep1Props {
   formData: {

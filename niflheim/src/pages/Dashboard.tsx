@@ -305,7 +305,7 @@
 
 // export default Dashboard;
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Sidebar from "../Components/DashboardComp/Sidebar";
@@ -357,7 +357,7 @@ const profileData = {
 // Animation variants
 const cardVariants = {
   hidden: { opacity: 0, y: 50 },
-  visible: (i) => ({
+  visible: (i:any) => ({
     opacity: 1,
     y: 0,
     transition: {

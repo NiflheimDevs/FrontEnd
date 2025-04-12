@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 import bg from "@/assets/message/bg.png";
 import { Search, ArrowRight } from "lucide-react";
 
+// Define the shape of a chat
+interface Chat {
+  id: number;
+  name: string;
+  lastMessage: string;
+}
+
+// Define the shape of a message
+interface Message {
+  id: number;
+  text: string;
+  type: "sent" | "received"; // Use a union type for specific values
+}
+
+// Define the type for allMessages with an index signature or specific keys
+interface Messages {
+  [key: number]: Message[]; // Allows any number as a key
+  // Alternatively, use specific keys: 1: Message[]; 2: Message[]; 3: Message[];
+}
+
 const Messages = () => {
-  const chatList = [
+  const chatList: Chat[] = [
     { id: 1, name: "ادمین", lastMessage: "سلام، چطور می‌توانم به شما کمک کنم؟" },
     { id: 2, name: "سبحان رنجبر", lastMessage: "پروژه جدید رو دیدی؟" },
     { id: 3, name: "کیارش سهرابی", lastMessage: "فردا ساعت چند جلسه داریم؟" },
   ];
 
-  const allMessages = {
+  const allMessages: Messages = {
     1: [
       { id: 1, text: "سلام! چطور می‌توانم به شما کمک کنم؟", type: "received" },
       { id: 2, text: "نیاز به کمک در پروژه‌ام دارم", type: "sent" },
@@ -25,15 +45,15 @@ const Messages = () => {
     ],
   };
 
-  const [selectedChat, setSelectedChat] = useState(chatList[0]);
+  const [selectedChat, setSelectedChat] = useState<Chat>(chatList[0]);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const messages = allMessages[selectedChat.id] || [];
+  const messages: Message[] = allMessages[selectedChat.id] || [];
 
   const handleBackToChatList = () => {
     setIsChatOpen(false);
   };
 
-  const handleChatSelect = (chat) => {
+  const handleChatSelect = (chat: Chat) => {
     setSelectedChat(chat);
     setIsChatOpen(true);
   };
@@ -57,7 +77,10 @@ const Messages = () => {
             className="w-full py-[6px] pr-10 pl-4 text-right bg-gray-300 border hover:bg-blue-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-black transition-all duration-400 ease-in-out"
           />
           <button className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center cursor-pointer">
-            <Search size={18} className="text-gray-500 hover:text-blue-600 transition-colors duration-400 ease-in-out" />
+            <Search
+              size={18}
+              className="text-gray-500 hover:text-blue-600 transition-colors duration-400 ease-in-out"
+            />
           </button>
         </div>
 

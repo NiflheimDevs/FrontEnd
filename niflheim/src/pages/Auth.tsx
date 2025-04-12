@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { authenticate } from "../store/slices/authSlice";
+// import { useDispatch } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+// import { authenticate } from "../store/slices/authSlice";
 import LoginForm from "../Components/Auth/LoginForm";
 import SignupForm from "../Components/Auth/SignupForm";
-import React from "react";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);

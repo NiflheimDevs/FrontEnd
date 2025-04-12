@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { MdArrowDropDown } from "react-icons/md";
 import dashboard from "@/assets/Dashboard/Exclude.svg";
 import projects from "@/assets/Dashboard/PencilSquare.svg";
@@ -9,7 +9,6 @@ import messages from "@/assets/Dashboard/Message.svg";
 import settings from "@/assets/Dashboard/Settings.svg";
 import exit from "@/assets/Dashboard/DoorOpen.svg";
 import { useNotification } from "../../Notification/NotificationProvider";
-import React from "react";
 import { logout } from "../../API"; // Adjust the path
 
 interface SidebarProps {
@@ -19,9 +18,7 @@ interface SidebarProps {
 
 export default function Sidebar({
   isSidebarOpen,
-  toggleSidebar,
 }: SidebarProps) {
-  const navigate = useNavigate();
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);

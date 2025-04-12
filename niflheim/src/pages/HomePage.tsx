@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Header from "../Components/MainContent/Header"; // Adjust the path based on your file structure
 import MainContent from "../Components/MainContent/MainContent"; // Adjust the path based on your file structure
 import Footer from "../Components/Footer/Footer"; // Adjust the path based on your file structure

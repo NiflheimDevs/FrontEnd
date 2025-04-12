@@ -12,7 +12,7 @@ interface ResumeSectionProps {
 }
 
 export default function ResumeSection({
-  localProfile,
+  // localProfile,
   setLocalProfile,
   resumeName,
   setResumeName,
@@ -22,7 +22,7 @@ export default function ResumeSection({
 
   const handleFileChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: "resume"
+    _field: "resume"
   ) => {
     const file = e.target.files?.[0];
     if (file) {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import UserProfileCard from '@/components/Biders/UserProfileCard';
-import Header from "@/components/DashboardComp/Header";
-import Sidebar from "@/components/DashboardComp/Sidebar";
+import UserProfileCard from '../../Components/Biders/UserProfileCard';
+import Header from "../../Components/DashboardComp/Header";
+import Sidebar from "../../Components/DashboardComp/Sidebar";
 // Import images
 import goodgirl1 from "@/assets/biders/goodgirl1.jpg";
 import goodgirl3 from "@/assets/biders/goodgirl3.jpg";

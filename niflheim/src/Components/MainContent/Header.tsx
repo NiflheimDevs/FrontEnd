@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
 import Mail from "@/assets/Dashboard/Mail.svg";

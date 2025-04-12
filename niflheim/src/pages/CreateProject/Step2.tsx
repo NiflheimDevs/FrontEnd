@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { setProjectData } from '@/store/slices/projectSlice';
+import { setProjectData } from '../../store/slices/projectSlice';
 import { FaCheck, FaChevronDown } from 'react-icons/fa';
 
 interface Tag {
@@ -39,7 +39,7 @@ const Step2: React.FC<Step2Props> = ({
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [dropdownOpenTags, setDropdownOpenTags] = useState(false);
-  const [dropdownOpenLabels, setDropdownOpenLabels] = useState(false);
+  const [_dropdownOpenLabels, setDropdownOpenLabels] = useState(false);
 
   const dropdownRefTags = useRef<HTMLDivElement>(null);
   const dropdownRefLabels = useRef<HTMLDivElement>(null);
@@ -71,10 +71,10 @@ const Step2: React.FC<Step2Props> = ({
     setDropdownOpenTags(false);
   };
 
-  const toggleLabel = (labelId: number) => {
-    setSelectedLabel(labelId);
-    setDropdownOpenLabels(false);
-  };
+  // const toggleLabel = (labelId: number) => {
+  //   setSelectedLabel(labelId);
+  //   setDropdownOpenLabels(false);
+  // };
 
   const handleNext = () => {
     if (selectedTags.length === 0) {
@@ -96,7 +96,7 @@ const Step2: React.FC<Step2Props> = ({
   };
 
   const filteredTags = tags.filter(tag => tag.name.toLowerCase().includes(searchTerm.toLowerCase()));
-  const filteredLabels = labels.filter(label => label.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  // const filteredLabels = labels.filter(label => label.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="space-y-6">

@@ -39,7 +39,7 @@ export default function OtpSection({
       setShowOtpSection(false);
       setTimeLeft(120);
       setTokens("");
-    } catch (err) {
+    } catch (err:any) {
       notifyError(err.message || "خطا در تغییر شماره تلفن");
     }
   };
@@ -55,7 +55,7 @@ export default function OtpSection({
       setTimeLeft(120);
       setIsScaled(false);
       notifySuccess("کد تایید ارسال شد");
-    } catch (err) {
+    } catch (err:any) {
       notifyError(err.message || "خطا در ارسال کد تایید");
     }
   };

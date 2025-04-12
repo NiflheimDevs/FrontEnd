@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { setProjectData } from '@/store/slices/projectSlice';
+import { setProjectData } from '../../store/slices/projectSlice';
 import { FaCheck, FaChevronDown } from 'react-icons/fa';
 
 interface Tag {
