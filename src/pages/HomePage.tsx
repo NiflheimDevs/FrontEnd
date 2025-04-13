@@ -6,7 +6,7 @@ const HomePage = () => {
   return (
     <>
       <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
-      <div className="flex flex-col bg-[#F7F7F7] min-h-screen">
+      <div className="flex flex-col bg-[#F7F7F7] min-h-screen w-screen">
         {/* Header - Hide search */}
         <Header showSearch={false} />
 

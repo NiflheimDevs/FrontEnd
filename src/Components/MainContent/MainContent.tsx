@@ -146,7 +146,7 @@ const MainContent = () => {
   };
 
   return (
-    <main className="flex flex-col items-center w-full mt-18">
+    <main className="flex flex-col items-center w-full">
       {/* Hero Section */}
       <section
         ref={heroRef}
