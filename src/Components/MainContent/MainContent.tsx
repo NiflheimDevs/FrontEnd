@@ -19,7 +19,14 @@ import "../../../node_modules/swiper/modules/navigation.css";
 // import "swiper/css/pagination";
 // import "swiper/css/navigation";
 
-const MainContent = () => {
+interface Props {
+  headerHeight: number;
+}
+
+const MainContent = ({ headerHeight }: Props) => {
+  const heroStyle = {
+    height: `calc(100vh - ${headerHeight}px)`,
+  };
   const heroRef = useRef<HTMLDivElement | null>(null);
   const categoriesRef = useRef<HTMLDivElement | null>(null);
 
@@ -150,8 +157,8 @@ const MainContent = () => {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="w-full h-[660px] flex flex-col justify-center items-center text-white text-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${bg})` }}
+        className="w-full min-h-fit flex flex-col justify-center items-center text-white text-center bg-cover bg-center"
+        style={{ ...heroStyle, backgroundImage: `url(${bg})` }}
       >
         <h1 className="text-[40px] md:text-[56px] font-extrabold drop-shadow-lg">
           <span className="flex justify-center">کارفرما و فریلنسر</span>
