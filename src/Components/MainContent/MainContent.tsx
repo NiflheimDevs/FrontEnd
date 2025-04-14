@@ -7,13 +7,26 @@ import bg1 from "../../assets/Main/bg1.jpg";
 import bg2 from "../../assets/Main/bg2.jpg";
 import bg3 from "../../assets/Main/bg3.jpg";
 import bg4 from "../../assets/Main/bg4.jpg";
+import sourcecode from "../../assets/Main/source-code.png";
+import design from "../../assets/Main/design.png";
+import graphreport from "../../assets/Main/graph-report.png";
+import videoedit from "../../assets/Main/video-editing.png";
+import VideoEditing from "../../assets/Main/VIDEOEDITING.jpg";
+import Seo from "../../assets/Main/SEO.jpg";
+import LogoDesign from "../../assets/Main/LOGODESIGN.jpg";
+import WebDevelopment from "../../assets/Main/WEBDEVELOPMENT.jpg";
+import image1 from "../../assets/Main/image1.jpg";
+import image2 from "../../assets/Main/image2.jpg";
+import image3 from "../../assets/Main/image3.jpg";
+import image4 from "../../assets/Main/image4.jpg";
+import image5 from "../../assets/Main/image5.jpg";
 import Skill from "../../assets/Main/Skill.png";
 import Fee from "../../assets/Main/Fee.png";
 import Best from "../../assets/Main/best.png";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 
 import "../../../node_modules/swiper/swiper.css";
 import "../../../node_modules/swiper/modules/pagination.css";
@@ -31,27 +44,27 @@ const MainContent = () => {
 
   const categories = [
     {
-      title: "WEB DEVELOPMENT",
-      icon: "https://img.icons8.com/ios-filled/50/ffffff/source-code.png",
-      bg: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=400&q=80",
+      title: "توسعه وب",
+      icon: sourcecode,
+      bg: WebDevelopment,
       overlay: "from-purple-700 to-blue-600",
     },
     {
-      title: "LOGO DESIGN",
-      icon: "https://img.icons8.com/ios-filled/50/ffffff/design.png",
-      bg: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80",
+      title: "طراحی لوگو",
+      icon: design,
+      bg: LogoDesign,
       overlay: "from-blue-400 to-blue-600",
     },
     {
-      title: "SEO",
-      icon: "https://img.icons8.com/ios-filled/50/ffffff/graph-report.png",
-      bg: "https://images.unsplash.com/photo-1533750516457-a7f992034fec?auto=format&fit=crop&w=400&q=80",
+      title: "سئو",
+      icon: graphreport,
+      bg: Seo,
       overlay: "from-green-400 to-teal-600",
     },
     {
-      title: "VIDEO EDITING",
-      icon: "https://img.icons8.com/ios-filled/50/ffffff/video-editing.png",
-      bg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCuqO8ywpvhcuxTyXhDjQzV7M1r7pOFSRCggXAmw5_hBsNMVzY-KTFOAK597LoN3GjkmU&usqp=CAU",
+      title: "تدوین",
+      icon: videoedit,
+      bg: VideoEditing,
       overlay: "from-purple-700 to-pink-600",
     },
   ];
@@ -85,29 +98,29 @@ const MainContent = () => {
 
   const trendingFreelancers = [
     {
-      name: "Abinesh Jino",
-      role: "UI/UX Designer",
-      image: "https://unsplash.com/photos/m_HRfLhgABo/download?force=true",
+      name: "پارسا",
+      role: "طراح UI/UX",
+      image: image1,
     },
     {
-      name: "Hrithik Tiwari",
-      role: "Blockchain Developer",
-      image: "https://unsplash.com/photos/5fNmWej4tAA/download?force=true",
+      name: "سامان",
+      role: "توسعه دهنده بلاک چین",
+      image: image2,
     },
     {
-      name: "Helen",
-      role: "Data Scientist",
-      image: "https://unsplash.com/photos/Mf23RF8xArY/download?force=true",
+      name: "علی",
+      role: "محقق دیتا",
+      image: image3,
     },
     {
-      name: "Max",
-      role: "Frontend Developer",
-      image: "https://unsplash.com/photos/1K9T5YiZ2WU/download?force=true",
+      name: "امیرمحمد",
+      role: "توسعه دهنده فرانت اند",
+      image: image4,
     },
     {
-      name: "Sara",
-      role: "Backend Developer",
-      image: "https://unsplash.com/photos/Im7lZjxeLhg/download?force=true",
+      name: "کیا",
+      role: "توسعه دهنده بک اند",
+      image: image5,
     },
   ];
 
@@ -182,7 +195,8 @@ const MainContent = () => {
             slidesPerView={1}
             spaceBetween={20}
             pagination={{ clickable: true }}
-            modules={[Pagination]}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            modules={[Pagination, Autoplay]}
             className="mySwiper rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
           >
             {categories.map((cat, idx) => (
@@ -245,10 +259,10 @@ const MainContent = () => {
                 className="w-full h-48 object-cover rounded-t-xl"
               />
               <div className="p-4 pb-14">
-                <h4 className="text-sm text-right text-gray-600">
+                <h4 className="text-md text-right font-medium">
                   {card.projectname}
                 </h4>
-                <p className="text-md text-right font-medium mt-2">
+                <p className="text-sm text-right mt-2 text-gray-600">
                   {card.description}
                 </p>
               </div>
@@ -265,7 +279,8 @@ const MainContent = () => {
             slidesPerView={1}
             spaceBetween={20}
             pagination={{ clickable: true }}
-            modules={[Pagination]}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            modules={[Pagination, Autoplay]}
             className="mySwiper rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
           >
             {freelancerCards.map((card, idx) => (
@@ -280,16 +295,16 @@ const MainContent = () => {
                     className="w-full h-48 object-cover rounded-t-xl"
                   />
                   <div className="p-4 pb-2">
-                    <h4 className="text-md text-right text-gray-600">
+                    <h4 className="text-md text-right font-medium">
                       {card.projectname}
                     </h4>
-                    <p className="text-sm text-right font-medium mt-2">
+                    <p className="text-sm text-right text-gray-600 mt-2">
                       {card.description}
                     </p>
                   </div>
                   <div className="text-right mb-4  p-4">
                     <p className="text-lg font-bold text-blue-600">
-                      {card.price}
+                      {card.price} تومان
                     </p>
                   </div>
                 </div>
@@ -369,7 +384,8 @@ const MainContent = () => {
             slidesPerView={1}
             spaceBetween={20}
             pagination={{ clickable: true }}
-            modules={[Pagination]}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            modules={[Pagination, Autoplay]}
             className="mySwiper rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
           >
             {trendingFreelancers.map((freelancer, index) => (
@@ -380,7 +396,7 @@ const MainContent = () => {
                     alt={freelancer.name}
                     className="w-full h-72 object-cover"
                   />
-                  <div className="flex items-center justify-between px-4 py-3">
+                  <div className="flex items-center justify-between px-4 py-3 mb-2">
                     <BsArrowRight className="text-blue-500" size={26} />
                     <div>
                       <h3 className="text-xl text-left font-semibold text-[#333]">
