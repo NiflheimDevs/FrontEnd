@@ -63,7 +63,7 @@ const EditProject: React.FC = () => {
 
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          `http://103.75.196.227:8080/project/${projectId}`,
+          `https://103.75.196.227:8080/project/${projectId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
