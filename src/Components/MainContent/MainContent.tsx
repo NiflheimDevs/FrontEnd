@@ -26,6 +26,7 @@ interface Props {
 const MainContent = ({ headerHeight }: Props) => {
   const heroStyle = {
     height: `calc(100vh - ${headerHeight}px)`,
+    minHeight: "400px",
   };
   const heroRef = useRef<HTMLDivElement | null>(null);
   const categoriesRef = useRef<HTMLDivElement | null>(null);
