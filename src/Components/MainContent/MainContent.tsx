@@ -167,7 +167,7 @@ const MainContent = () => {
           {categories.map((cat, idx) => (
             <div
               key={idx}
-              className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group hover:scale-105 transition min-w-[260px]"
+              className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group hover:scale-105 transition-all ease-in-out duration-300 min-w-[260px]"
             >
               <img
                 src={cat.bg}
