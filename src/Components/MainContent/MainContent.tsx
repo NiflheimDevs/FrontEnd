@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { Search } from "lucide-react";
 import bg from "../../assets/Main/bg.png";
@@ -19,43 +19,11 @@ import "../../../node_modules/swiper/modules/navigation.css";
 // import "swiper/css/pagination";
 // import "swiper/css/navigation";
 
-interface Props {
-  headerHeight: number;
-}
-
-const MainContent = ({ headerHeight }: Props) => {
+const MainContent = () => {
   const heroStyle = {
-    height: `calc(100vh - ${headerHeight}px)`,
-    minHeight: "400px",
+    height: `calc(100vh - 82px)`,
   };
-  const heroRef = useRef<HTMLDivElement | null>(null);
   const categoriesRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const handleScroll = (e: any) => {
-      e.preventDefault();
-      if (categoriesRef.current) {
-        const targetPosition =
-          categoriesRef.current.getBoundingClientRect().top + window.scrollY;
-        const offset = 45; // Adjust this value (e.g., 30-40 pixels less)
-        window.scrollTo({
-          top: targetPosition - offset,
-          behavior: "smooth",
-        });
-      }
-    };
-
-    const heroElement = heroRef.current;
-    if (heroElement) {
-      heroElement.addEventListener("wheel", handleScroll);
-    }
-
-    return () => {
-      if (heroElement) {
-        heroElement.removeEventListener("wheel", handleScroll);
-      }
-    };
-  }, []);
 
   const categories = [
     {
@@ -157,8 +125,7 @@ const MainContent = ({ headerHeight }: Props) => {
     <main className="flex flex-col items-center w-full">
       {/* Hero Section */}
       <section
-        ref={heroRef}
-        className="w-full min-h-fit flex flex-col justify-center items-center text-white text-center bg-cover bg-center"
+        className="w-full flex flex-col justify-center items-center text-white text-center bg-cover bg-center"
         style={{ ...heroStyle, backgroundImage: `url(${bg})` }}
       >
         <h1 className="text-[40px] md:text-[56px] font-extrabold drop-shadow-lg">
