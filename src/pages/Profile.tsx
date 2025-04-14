@@ -22,7 +22,7 @@ export default function Profile() {
   }, []);
   const renderSkeleton = () => (
     <div className="animate-pulse justify-center items-center">
-      <div className="flex flex-col w-2/3 space-y-4 p-6 bg-white rounded-lg shadow-md justify-center items-center mx-auto mt-10">
+      <div className="flex flex-col md:w-2/3 sm:w-full w-9/10 space-y-4 p-6 bg-white rounded-lg shadow-md justify-center items-center mx-auto mt-10">
         <div className="flex flex-col items-center">
           <Skeleton
             width="160px"

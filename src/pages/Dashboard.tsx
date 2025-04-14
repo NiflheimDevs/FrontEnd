@@ -387,11 +387,11 @@ const Dashboard = () => {
   return (
     <>
       <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
-      <div className="flex h-screen w-full bg-[#F7F7F7]" dir="rtl">
+      <div className="flex w-full bg-[#F7F7F7]" dir="rtl">
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <main className="flex-1 flex flex-col pt-16 w-full md:pr-24 sm:pr-24 pr-0">
           <Header toggleSidebar={toggleSidebar} />
-          <div className="mt-8 pb-3 px-4">
+          <div className="mt-8 pb-4 px-4">
             <motion.h2
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
