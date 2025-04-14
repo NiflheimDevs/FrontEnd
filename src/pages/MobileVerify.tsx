@@ -101,7 +101,13 @@ const MobileVerify = () => {
   };
 
   return (
-    <div className="flex h-screen w-full text-white flex-col bg-gradient-to-r from-[#3A7D44] to-[#172533] justify-center items-center overflow-hidden">
+    <form
+      className="flex h-screen w-full text-white flex-col bg-gradient-to-r from-[#3A7D44] to-[#172533] justify-center items-center overflow-hidden"
+      onSubmit={(e) => {
+        e.preventDefault();
+        HandleVerify();
+      }}
+    >
       <AnimatePresence mode="sync">
         <div className="flex w-fit h-fit">
           <motion.div
@@ -164,6 +170,7 @@ const MobileVerify = () => {
                 </p>
               ) : (
                 <button
+                  type="button"
                   className={`cursor-pointer w-fit h-fit`}
                   onClick={handleTimeOut}
                 >
@@ -212,6 +219,7 @@ const MobileVerify = () => {
                 />
               ) : (
                 <button
+                  type="button"
                   className={`cursor-pointer w-fit h-fit hover:scale-115 transition-all duration-200 ease-in-out ${isScaled ? "scale-110" : "scale-100"}`}
                   onClick={handleTimeOut}
                 >
@@ -234,6 +242,7 @@ const MobileVerify = () => {
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
             <button
+              type="submit"
               className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(token.length === 5) ? "opacity-60" : "hover:bg-green-600  cursor-pointer "}`}
               disabled={!(token.length === 5) ? true : false}
               onClick={HandleVerify}
@@ -245,7 +254,7 @@ const MobileVerify = () => {
           </motion.div>
         </div>
       </AnimatePresence>
-    </div>
+    </form>
   );
 };
 

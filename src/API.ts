@@ -98,6 +98,15 @@ export const signupSendOTP = async (userData: any) => {
 export const signupVerifyOTP = async (userData: any) => {
   try {
     const response = await apiClient.post("/signup/verify", userData);
+    console.log(response);
+    const accessToken = response.data.access_token;
+    const refreshToken = response.data.refresh_token;
+    if (accessToken) {
+      localStorage.setItem("authToken", accessToken);
+    }
+    if (refreshToken) {
+      localStorage.setItem("refreshToken", refreshToken);
+    }
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
