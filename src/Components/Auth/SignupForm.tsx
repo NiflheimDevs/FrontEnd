@@ -140,7 +140,13 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="md:w-full sm:w-8/10">
+    <form
+      className="md:w-full sm:w-8/10"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSignupClick();
+      }}
+    >
       <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4">
         ثبت نام
       </div>
@@ -206,6 +212,7 @@ const SignupForm = () => {
           }`}
         />
         <button
+          type="button"
           onClick={() => setShowPassword1(!showPassword1)}
           className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"
           tabIndex={-1}
@@ -234,6 +241,7 @@ const SignupForm = () => {
           }`}
         />
         <button
+          type="button"
           onClick={() => setShowPassword2(!showPassword2)}
           className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"
           tabIndex={-1}
@@ -248,6 +256,7 @@ const SignupForm = () => {
 
       {/* دکمه تایید و ادامه */}
       <button
+        type="submit"
         className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3A7D44] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(isValidPassRepeat === true && isValidPass === true && isValidPhone === true && isValidUser === true) ? "opacity-60" : "hover:bg-green-600 cursor-pointer "}`}
         onClick={handleSignupClick}
         disabled={
@@ -265,7 +274,7 @@ const SignupForm = () => {
           تایید و ادامه
         </p>
       </button>
-    </div>
+    </form>
   );
 };
 

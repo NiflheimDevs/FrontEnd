@@ -83,7 +83,13 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="md:w-full sm:w-8/10">
+    <form
+      className="md:w-full sm:w-8/10"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleLogin();
+      }}
+    >
       <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4">
         ورود
       </div>
@@ -125,6 +131,7 @@ const LoginForm = () => {
           }`}
         />
         <button
+          type="button"
           onClick={() => setShowPassword1(!showPassword1)}
           className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"
           tabIndex={-1}
@@ -156,6 +163,7 @@ const LoginForm = () => {
             ? "opacity-60"
             : "hover:bg-blue-600  cursor-pointer "
         }`}
+        type="submit"
         onClick={handleLogin}
         disabled={
           !(isValidIdentifier === true && isValidPass === true) ? true : false
@@ -165,7 +173,7 @@ const LoginForm = () => {
           تایید و ادامه
         </p>
       </button>
-    </div>
+    </form>
   );
 };
 

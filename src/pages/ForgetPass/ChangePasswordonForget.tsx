@@ -82,114 +82,118 @@ const ChangePasswordonForget = () => {
   };
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -50 }}
-        transition={{ duration: 0.3 }}
-        className="w-screen h-screen p-8 gap-[10vw] flex flex-col sm:py-100 md:py-0 py-0 md:flex-row justify-center items-center bg-gradient-to-r from-[#3674B5] to-[#18334F]"
+    <div className="w-screen h-screen p-8 gap-[10vw] flex flex-col sm:py-100 md:py-0 py-0 md:flex-row justify-center items-center bg-gradient-to-r from-[#3674B5] to-[#18334F]">
+      {/* Form Container */}
+      <form
+        className={`${!ispic ? "w-0" : "w-full"} flex justify-center items-center relative`}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleCompleteClick();
+        }}
       >
-        {/* Form Container */}
-        <motion.div
-          initial={{ scale: 0.95 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.2 }}
-          className={`${!ispic ? "w-0" : "w-full"} flex justify-center items-center relative`}
-        >
-          <div className="flex flex-col justify-center items-center text-center w-full max-w-[400px] md:w-[80%] relative">
+        <AnimatePresence mode="wait">
+          {ispic && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
+              key="form"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -50 }}
+              transition={{ duration: 0.3 }}
+              className="flex flex-col justify-center items-center text-center w-full max-w-[400px] md:w-[80%] relative"
             >
-              <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4 text-[#D9D9D9]">
-                رمز جدیدت رو وارد کن
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <div className="text-2xl font-semibold font-[vazirmatn] text-center mb-4 text-[#D9D9D9]">
+                  رمز جدیدت رو وارد کن
+                </div>
+                <div className="w-full rounded-2xl h-0.75 bg-blue-500 mx-auto mt-2 mb-6"></div>
+              </motion.div>
+
+              {/* فیلد رمز عبور */}
+              <div className="relative w-full">
+                <input
+                  type={showPassword1 ? "text" : "password"}
+                  placeholder="رمز عبور"
+                  value={password}
+                  onChange={handleChangePass}
+                  className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]${
+                    isValidPass === false
+                      ? "focus:ring-3 ring-red-500"
+                      : isValidPass === true
+                        ? "focus:ring-3 ring-green-500"
+                        : "focus:ring-3 ring-gray-300"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword1(!showPassword1)}
+                  className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"
+                >
+                  <img
+                    src={showPassword1 ? `${Eye_Off}` : `${Eye}`}
+                    className="w-6.5 h-6.5 pointer-events-none"
+                  />
+                </button>
               </div>
-              <div className="w-full rounded-2xl h-0.75 bg-blue-500 mx-auto mt-2 mb-6"></div>
+
+              {/* فیلد تکرار رمز عبور */}
+              <div className="relative w-full">
+                <input
+                  type={showPassword2 ? "text" : "password"}
+                  placeholder="تکرار رمز عبور"
+                  value={passwordRepeat}
+                  onChange={handleChangePassRepeat}
+                  className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]${
+                    isValidPassRepeat === false
+                      ? "focus:ring-3 ring-red-500"
+                      : isValidPassRepeat === true
+                        ? "focus:ring-3 ring-green-500"
+                        : "focus:ring-3 ring-gray-300"
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword2(!showPassword2)}
+                  className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"
+                >
+                  <img
+                    src={showPassword2 ? `${Eye_Off}` : `${Eye}`}
+                    className="w-6.5 h-6.5 pointer-events-none"
+                  />
+                </button>
+              </div>
+
+              <button
+                type="submit"
+                className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3  ${!(isValidPassRepeat === true && isValidPass === true) ? "opacity-60" : "hover:bg-blue-600"}`}
+                disabled={!(isValidPassRepeat === true && isValidPass === true)}
+                onClick={handleCompleteClick}
+              >
+                <p className="text-white font-[vazirmatn] font-extralight">
+                  تایید و ادامه
+                </p>
+              </button>
             </motion.div>
+          )}
+        </AnimatePresence>
+      </form>
 
-            {/* فیلد رمز عبور */}
-            <div className="relative w-full">
-              <input
-                type={showPassword1 ? "text" : "password"}
-                placeholder="رمز عبور"
-                value={password}
-                onChange={handleChangePass}
-                className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]${
-                  isValidPass === false
-                    ? "focus:ring-3 ring-red-500"
-                    : isValidPass === true
-                      ? "focus:ring-3 ring-green-500"
-                      : "focus:ring-3 ring-gray-300"
-                }`}
-              />
-              <button
-                onClick={() => setShowPassword1(!showPassword1)}
-                className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"
-              >
-                <img
-                  src={showPassword1 ? `${Eye_Off}` : `${Eye}`}
-                  className="w-6.5 h-6.5 pointer-events-none"
-                />
-              </button>
-            </div>
-
-            {/* فیلد تکرار رمز عبور */}
-            <div className="relative w-full">
-              <input
-                type={showPassword2 ? "text" : "password"}
-                placeholder="تکرار رمز عبور"
-                value={passwordRepeat}
-                onChange={handleChangePassRepeat}
-                className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]${
-                  isValidPassRepeat === false
-                    ? "focus:ring-3 ring-red-500"
-                    : isValidPassRepeat === true
-                      ? "focus:ring-3 ring-green-500"
-                      : "focus:ring-3 ring-gray-300"
-                }`}
-              />
-              <button
-                onClick={() => setShowPassword2(!showPassword2)}
-                className="cursor-pointer transition duration-200 ease-in-out hover:scale-110 absolute left-3 top-1/2 transform -translate-y-1/2"
-              >
-                <img
-                  src={showPassword2 ? `${Eye_Off}` : `${Eye}`}
-                  className="w-6.5 h-6.5 pointer-events-none"
-                />
-              </button>
-            </div>
-            <button
-              className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3  ${!(isValidPassRepeat === true && isValidPass === true) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
-              disabled={
-                !(isValidPassRepeat === true && isValidPass === true)
-                  ? true
-                  : false
-              }
-              onClick={handleCompleteClick}
-            >
-              <p className="text-white font-[vazirmatn] font-extralight">
-                تایید و ادامه
-              </p>
-            </button>
-          </div>
-        </motion.div>
-
-        {/* Image Container */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4 }}
-          className="flex justify-center w-1/2 items-center mt-8 md:mt-0 md:ml-15"
-        >
-          <img
-            src={LadyPic}
-            className="pointer-events-none items-center md:h-auto w-[350px] sm:h-[200px] md:flex sm:flex hidden"
-          />
-        </motion.div>
+      {/* Image Container */}
+      <motion.div
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex justify-center w-1/2 items-center mt-8 md:mt-0 md:ml-15"
+      >
+        <img
+          src={LadyPic}
+          className="pointer-events-none items-center md:h-auto w-[350px] sm:h-[200px] md:flex sm:flex hidden"
+        />
       </motion.div>
-    </AnimatePresence>
+    </div>
   );
 };
 export default ChangePasswordonForget;

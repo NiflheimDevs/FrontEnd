@@ -169,6 +169,7 @@ const MobileVerifyforgetpass = () => {
                 </p>
               ) : (
                 <button
+                  type="button"
                   className={`cursor-pointer w-fit h-fit`}
                   onClick={handleTimeOut}
                 >
@@ -217,6 +218,7 @@ const MobileVerifyforgetpass = () => {
                 />
               ) : (
                 <button
+                  type="button"
                   className={`cursor-pointer w-fit h-fit hover:scale-115 transition-all duration-200 ease-in-out ${isScaled ? "scale-110" : "scale-100"}`}
                   onClick={handleTimeOut}
                 >
@@ -240,6 +242,7 @@ const MobileVerifyforgetpass = () => {
             transition={{ duration: 0.6, ease: "easeInOut" }}
           >
             <button
+              type="submit"
               className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-5 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${!(token.length === 5) ? "opacity-60" : "hover:bg-blue-600  cursor-pointer "}`}
               disabled={!(token.length === 5) ? true : false}
               onClick={handleCompleteClick}
@@ -251,7 +254,7 @@ const MobileVerifyforgetpass = () => {
           </motion.div>
         </div>
       </AnimatePresence>
-    </div>
+    </form>
   );
 };
 
