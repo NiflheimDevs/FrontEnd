@@ -2,7 +2,11 @@ import { useState, useRef } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { Search } from "lucide-react";
 import bg from "../../assets/Main/bg.png";
-import Frame from "../../assets/Main/Frame.png";
+// import Frame from "../../assets/Main/Frame.png";
+import bg1 from "../../assets/Main/bg1.jpg";
+import bg2 from "../../assets/Main/bg2.jpg";
+import bg3 from "../../assets/Main/bg3.jpg";
+import bg4 from "../../assets/Main/bg4.jpg";
 import Skill from "../../assets/Main/Skill.png";
 import Fee from "../../assets/Main/Fee.png";
 import Best from "../../assets/Main/best.png";
@@ -54,28 +58,28 @@ const MainContent = () => {
 
   const freelancerCards = [
     {
-      username: "ghasemianm70",
-      description: "Mobile app design UI/UX for Android and iOS",
-      price: "£50.00",
-      image: "https://unsplash.com/photos/1SAnrIxw5OY/download?force=true",
+      projectname: "طراحی UI/UX",
+      description: "طراح UI/UX برای اندروید و IOS",
+      price: "5,000,000",
+      image: bg1,
     },
     {
-      username: "hamid_shari",
-      description: "UI UX and ad design in Figma",
-      price: "£45.00",
-      image: "https://unsplash.com/photos/m_HRfLhgABo/download?force=true",
+      projectname: "سایت فروش آنلاین",
+      description: "فروشگاه آنلاین برای فروش لوازم خانگی",
+      price: "45,000,000",
+      image: bg2,
     },
     {
-      username: "freelanceDigital",
-      description: "Mobile app UI/UX design in Figma",
-      price: "£70.00",
-      image: "https://unsplash.com/photos/1K9T5YiZ2WU/download?force=true",
+      projectname: "سایت تولید محتوا",
+      description: "سایتی برای تولد محتوای خبری",
+      price: "7,000,000",
+      image: bg3,
     },
     {
-      username: "shahrokhian",
-      description: "Awesome Play Store screenshots for your app",
-      price: "£34.00",
-      image: "https://unsplash.com/photos/4hbJ-eymZ1o/download?force=true",
+      projectname: "نرم افزار وضعیت آب و هوا",
+      description: "ساخت اپ موبایل برای نمایش آب و هوا",
+      price: "340,000",
+      image: bg4,
     },
   ];
 
@@ -125,35 +129,32 @@ const MainContent = () => {
     <main className="flex flex-col items-center w-full">
       {/* Hero Section */}
       <section
-        className="w-full flex flex-col justify-center items-center text-white text-center bg-cover bg-center"
+        className="w-full flex flex-col justify-center items-center px-2 text-white text-center bg-cover bg-center"
         style={{ ...heroStyle, backgroundImage: `url(${bg})` }}
       >
-        <h1 className="text-[40px] md:text-[56px] font-extrabold drop-shadow-lg">
+        <h1 className="sm:text-[46px] md:text-[56px] text-[36px] duration-300 transition-all ease-in-out font-extrabold drop-shadow-lg">
           <span className="flex justify-center">کارفرما و فریلنسر</span>
           <span className="block">یک کلیک تا همکاری!</span>
         </h1>
-        <div className="relative w-full max-w-xl mt-6 mx-auto">
+        <div className="relative w-full max-w-[39rem] mt-6 md:mx-auto px-6 duration-300 transition-all ease-in-out">
           <input
             type="text"
-            placeholder="Search..."
-            className="w-full py-4 pr-14 pl-6 rounded-full bg-gray-300 hover:bg-gray-100 text-black shadow-md focus:outline-none"
+            placeholder="جستجو"
+            className="w-full py-4 pr-14 pl-6 rounded-full bg-gray-300 hover:bg-gray-200 text-black shadow-md focus:outline-none duration-300 transition-all ease-in-out"
           />
-          <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600">
+          <button className="absolute right-13 top-1/2 -translate-y-1/2 text-gray-600">
             <Search size={24} />
           </button>
         </div>
       </section>
 
       {/* Categories */}
-      <section
-        ref={categoriesRef}
-        className="w-full py-12 rounded-3xl mt-8 mb-8"
-      >
-        <div className="hidden md:grid grid-cols-2 md:grid-cols-4 gap-8 px-6 max-w-6xl mx-auto">
+      <section ref={categoriesRef} className="w-full py-12 rounded-3xl mt-12">
+        <div className="hidden md:flex sm:flex flex-row flex-wrap justify-center gap-8 px-6 mx-auto">
           {categories.map((cat, idx) => (
             <div
               key={idx}
-              className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group hover:scale-105 transition"
+              className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group hover:scale-105 transition min-w-[260px]"
             >
               <img
                 src={cat.bg}
@@ -176,17 +177,20 @@ const MainContent = () => {
             </div>
           ))}
         </div>
-        <div className="md:hidden px-6">
+        <div className="md:hidden sm:hidden px-6">
           <Swiper
             slidesPerView={1}
             spaceBetween={20}
             pagination={{ clickable: true }}
             modules={[Pagination]}
-            className="mySwiper"
+            className="mySwiper rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
           >
             {categories.map((cat, idx) => (
-              <SwiperSlide key={idx}>
-                <div className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group">
+              <SwiperSlide
+                key={idx}
+                className="bg-white rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
+              >
+                <div className="relative cursor-pointer mb-7 mt-1.5 mx-1.5 rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group">
                   <img
                     src={cat.bg}
                     alt={cat.title}
@@ -213,77 +217,77 @@ const MainContent = () => {
       </section>
 
       {/* Freelancer Cards */}
-      <section className="w-full py-16 rounded-3xl mb-10">
+      <section className="w-full py-12 rounded-3xl">
         <div className="flex justify-between items-center px-6 max-w-7xl mx-auto mb-6">
+          <h2 className="md:text-2xl sm:text-2xl text-[18px] font-bold text-[#333] duration-300 ease-in-out transition-all">
+            جدیدترین پروژه ها
+          </h2>
           <Link
             to="/"
-            className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition text-sm font-medium"
+            className="bg-blue-600 text-white md:px-6 sm:px-6 px-4 py-2 rounded-full hover:bg-blue-700 duration-300 ease-in-out transition-all text-sm font-medium"
           >
             مشاهده همه
           </Link>
-          <h2 className="text-2xl font-bold text-[#333]">Featured Projects</h2>
         </div>
 
-        <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 px-6 max-w-7xl mx-auto">
+        <div className="md:flex sm:flex hidden flex-wrap justify-center gap-8 px-6 max-w-7xl mx-auto">
           {freelancerCards.map((card, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-xl shadow-md hover:shadow-xl transition flex flex-col relative"
-              style={{ minHeight: "350px" }}
+              className="bg-white rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px]"
             >
               <img
                 src={
                   card.image ||
                   `https://source.unsplash.com/400x300/?freelancer,design,${idx}`
                 }
-                alt={card.username}
+                alt={card.projectname}
                 className="w-full h-48 object-cover rounded-t-xl"
               />
               <div className="p-4 pb-14">
-                <h4 className="text-sm text-left text-gray-600">
-                  @{card.username}
+                <h4 className="text-sm text-right text-gray-600">
+                  {card.projectname}
                 </h4>
-                <p className="text-md text-left font-medium mt-2">
+                <p className="text-md text-right font-medium mt-2">
                   {card.description}
                 </p>
               </div>
-              <div className="absolute bottom-4 left-4">
-                <p className="text-lg font-bold text-blue-600">{card.price}</p>
+              <div className="text-right pb-3 px-4">
+                <p className="text-lg font-bold text-blue-600">
+                  {card.price} تومان
+                </p>
               </div>
             </div>
           ))}
         </div>
-        <div className="md:hidden px-6">
+        <div className="md:hidden sm:hidden px-6">
           <Swiper
             slidesPerView={1}
             spaceBetween={20}
             pagination={{ clickable: true }}
             modules={[Pagination]}
-            className="mySwiper"
+            className="mySwiper rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
           >
             {freelancerCards.map((card, idx) => (
               <SwiperSlide key={idx}>
-                <div
-                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition flex flex-col relative"
-                  style={{ minHeight: "350px" }}
-                >
+                <div className="bg-white flex flex-col relative min-w-[350px]">
                   <img
                     src={
                       card.image ||
                       `https://source.unsplash.com/400x300/?freelancer,design,${idx}`
                     }
-                    alt={card.username}
+                    alt={card.projectname}
                     className="w-full h-48 object-cover rounded-t-xl"
                   />
-                  <div className="p-4 pb-14">
-                    <h4 className="text-sm text-left text-gray-600">
-                      @{card.username}
+                  <div className="p-4 pb-2">
+                    <h4 className="text-md text-right text-gray-600">
+                      {card.projectname}
                     </h4>
-                    <p className="text-md text-left font-medium mt-2">
+                    <p className="text-sm text-right font-medium mt-2">
                       {card.description}
                     </p>
                   </div>
-                  <div className="absolute bottom-4 left-4">
+                  <div className="text-right mb-4  p-4">
                     <p className="text-lg font-bold text-blue-600">
                       {card.price}
                     </p>
@@ -296,7 +300,7 @@ const MainContent = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section
+      {/* <section
         className="w-full py-25 text-white text-center mt-8 mb-8"
         style={{
           backgroundImage: `url(${Frame})`,
@@ -316,15 +320,14 @@ const MainContent = () => {
             Subscribe
           </button>
         </div>
-      </section>
+      </section> */}
 
       {/* Trending Freelancers */}
-      <section className="w-full mb-20 mt-8 py-20">
-        <h2 className="text-[36px] font-bold text-center mb-12 text-[#222]">
-          🔥 Trending Freelancers
-        </h2>
-
+      <section className="w-full md:mb-24 mb-12 py-10">
         <div className="hidden md:block px-6 max-w-7xl mx-auto">
+          <h2 className="text-2xl font-bold text-right mb-12 text-[#333]">
+            فریلنسرهای محبوب 🔥
+          </h2>
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPage}
@@ -367,11 +370,11 @@ const MainContent = () => {
             spaceBetween={20}
             pagination={{ clickable: true }}
             modules={[Pagination]}
-            className="mySwiper"
+            className="mySwiper rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
           >
             {trendingFreelancers.map((freelancer, index) => (
               <SwiperSlide key={index}>
-                <div className="bg-[#f0f0f0] rounded-lg overflow-hidden shadow">
+                <div className="rounded-lg overflow-hidden shadow">
                   <img
                     src={freelancer.image}
                     alt={freelancer.name}
@@ -407,7 +410,7 @@ const MainContent = () => {
         </div>
 
         {/* Benefits */}
-        <div className="flex justify-center w-full px-4 mt-20 mb-20">
+        <div className="flex justify-center w-full px-4 mt-25 mb-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-[1440px]">
             {[
               {
