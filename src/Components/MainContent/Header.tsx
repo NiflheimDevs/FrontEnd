@@ -40,12 +40,18 @@ const Header = ({ showSearch = true }) => {
       <header className="shadow w-full top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
         {/* Left Section: Logo and Title */}
         <div className="flex items-center gap-3">
-          <div className="flex w-fit h-fit items-center gap-3">
-            <label className="text-xl font-semibold md:block sm:block hidden">
-              بیدلنسر
-            </label>
-            <img src={LOGO} alt="Logo" className="h-13 w-18" />
-          </div>
+          <Link to="/main">
+            <button className="flex w-fit h-fit items-center cursor-pointer">
+              <label className="text-lg font-semibold md:flex sm:flex hidden pointer-events-none">
+                بیدلنسر
+              </label>
+              <img
+                src={LOGO}
+                alt="Logo"
+                className="h-11 w-14 pointer-events-none"
+              />
+            </button>
+          </Link>
         </div>
 
         {/* Center Section: Search Bar (Hidden on Mobile) - Conditional rendering */}
@@ -102,14 +108,16 @@ const Header = ({ showSearch = true }) => {
               />
             </button>
 
-            <button className="w-fit h-fit cursor-pointer">
-              <img
-                src={ProfileDefault}
-                className="rounded-full object-cover min-w-8 pointer-events-none"
-                alt="Profile"
-                tabIndex={-1}
-              />
-            </button>
+            <Link to="/profile" className="flex justify-center items-center">
+              <button className="w-fit h-fit cursor-pointer">
+                <img
+                  src={ProfileDefault}
+                  className="rounded-full object-cover min-w-8 pointer-events-none"
+                  alt="Profile"
+                  tabIndex={-1}
+                />
+              </button>
+            </Link>
           </div>
         ) : (
           <div className="flex w-fit h-fit items-center md:gap-5 sm:gap-5 gap-[3vw]">

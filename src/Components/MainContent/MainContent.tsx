@@ -21,7 +21,7 @@ import "../../../node_modules/swiper/modules/navigation.css";
 
 const MainContent = () => {
   const heroStyle = {
-    height: `calc(100vh - 82px)`,
+    height: `calc(100vh - 76px)`,
   };
   const categoriesRef = useRef<HTMLDivElement | null>(null);
 
