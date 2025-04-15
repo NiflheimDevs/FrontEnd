@@ -351,3 +351,77 @@ export const deleteProject = async (projectId: any) => {
     throw error.response?.data || "خطا در حذف پروژه";
   }
 };
+// Add this function to your API.ts file
+
+export const getWalletBalance = async (): Promise<number> => {
+  try {
+    const response = await apiClient.get("/user/balance");
+    //console.log("Wallet Balance Response:", response.data); // Log the response for debugging
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching wallet balance:", error);
+    return 0;
+  }
+};
+
+export const getBalance = async () => {
+  try {
+    const response = await apiClient.get("/user/balance");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت موجودی کیف پول";
+  }
+};
+
+export const getTransactions = async (
+  offset: number,
+  limit: number,
+  sortBy: string = "date",
+  sortDirection: string = "asc",
+  activityFilter: string = "all"
+) => {
+  try {
+    const params: Record<string, any> = {
+      offset,
+      limit,
+      sort_by: sortBy,
+      sort_direction: sortDirection,
+    };
+
+    if (activityFilter !== "all") {
+      params.activity = activityFilter;
+    }
+
+    const response = await apiClient.get("/transaction", { params });
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت تراکنش‌ها";
+  }
+};
+
+export const depositToWallet = async (depositData: {
+  amount: number;
+  description?: string;
+}) => {
+  try {
+    const response = await apiClient.post("/transaction/deposit", depositData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در واریز به کیف پول";
+  }
+};
+
+export const withdrawFromWallet = async (withdrawData: {
+  amount: number;
+  description?: string;
+}) => {
+  try {
+    const response = await apiClient.post(
+      "/transaction/withdraw",
+      withdrawData
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در برداشت از کیف پول";
+  }
+};

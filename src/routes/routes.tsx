@@ -11,11 +11,13 @@ import ForgetPassword from "../pages/ForgetPass/ForgetPassword";
 import ChangePasswordonForget from "../pages/ForgetPass/ChangePasswordonForget";
 import MobileVerifyforgetpass from "../pages/ForgetPass/MobileVerifyForgetPass";
 import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
-import Wallet from "../Components/DashboardComp/Wallet";
+//import Wallet from "../Components/DashboardComp/Wallet";
+import Wallet from "../pages/Wallet/Wallet";
 import Chat from "../pages/Chat";
 import DashboardMain from "../pages/Dashboard";
 import ProjectCreationConfirmation from '../pages/CreateProject/ProjectCreationConfirmation';
 import CreateProject from "../pages/CreateProject/CreateProject";
+import InsufficientBalance from "../Components/DashboardComp/InsufficientBalance";
 import EditProject from "../pages/EditProject/EditProject";
 import MyProjects from "../pages/MyProjects";
 import Biders from "../pages/Biders/Biders";
@@ -72,6 +74,7 @@ export const privateRoutes = [
   { path: "/wallet", element: <Wallet /> },
   { path: "/Chat", element: <Chat /> },
   { path: "/createproject", element: <CreateProject /> },
+  { path: "/insufficient-balance", element: <InsufficientBalance /> },
   { path: "/myprojects", element: <MyProjects /> },
   { path: "/biders", element: <Biders /> },
   { path: "/ChangePass", element: <ChangePasswordManually /> },
