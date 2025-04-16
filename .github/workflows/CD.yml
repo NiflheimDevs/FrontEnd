@@ -77,7 +77,7 @@ jobs:
           cd /home/${{ secrets.SSH_USER }}/FrontEnd
           docker logout ghcr.io
           docker login ghcr.io -u ${{ secrets.USERNAME }} -p ${{ secrets.PAT }}
-          docker-compose pull
-          docker-compose down --remove-orphans
-          docker-compose up -d
+          docker compose pull
+          docker compose down --remove-orphans
+          docker compose up -d
           docker image prune -f
