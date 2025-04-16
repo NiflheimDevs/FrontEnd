@@ -37,13 +37,13 @@ jobs:
       id: docker_build
       continue-on-error: true
       run: |
-        docker-compose build | tee /tmp/output.txt
+        docker compose build | tee /tmp/output.txt
         export OUTPUT="$(cat /tmp/output.txt)"
 
     - name: Push Docker image
       if: success() && steps.docker_build.outcome == 'success'
       continue-on-error: true
-      run: docker-compose push
+      run: docker compose push
 
     - name: Handle Build Failure
       if: ${{ steps.docker_build.outcome == 'failure' && github.event_name == 'pull_request' }}
