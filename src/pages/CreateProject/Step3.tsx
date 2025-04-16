@@ -3,7 +3,9 @@ import {
   FaProjectDiagram, 
   FaTags, 
   FaMoneyBillWave, 
-  FaFileArchive 
+  FaFileArchive,
+  FaExclamationTriangle,
+  FaWallet
 } from 'react-icons/fa';
 
 interface Tag {
@@ -28,6 +30,7 @@ interface Step3Props {
   };
   tags: Tag[];
   labels: Label[];
+  walletBalance: number;
   onSubmit: () => void;
   onPrev: () => void;
 }
@@ -36,6 +39,7 @@ const Step3: React.FC<Step3Props> = ({
   formData, 
   tags, 
   labels, 
+  walletBalance,
   onSubmit, 
   onPrev 
 }) => {
@@ -66,6 +70,12 @@ const Step3: React.FC<Step3Props> = ({
       ];
     }
     return tagNames;
+  };
+
+  // Check if user has enough balance
+  const hasEnoughBalance = () => {
+    const projectPrice = getSelectedLabel()?.price || 0;
+    return walletBalance >= projectPrice;
   };
 
   return (
@@ -129,14 +139,35 @@ const Step3: React.FC<Step3Props> = ({
           <h2 className="text-xl font-bold text-gray-800">جزئیات مالی</h2>
         </div>
         
-        <div>
-          <strong className="text-gray-600 block mb-2">هزینه پروژه:</strong>
-          <p className="text-green-600 font-bold">
-            {!getSelectedLabel()?.price || getSelectedLabel()?.price === 0 
-              ? 'رایگان' 
-              : `${getSelectedLabel()?.price.toLocaleString()} تومان`}
-          </p>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <strong className="text-gray-600 block mb-2">هزینه پروژه:</strong>
+            <p className="text-green-600 font-bold">
+              {!getSelectedLabel()?.price || getSelectedLabel()?.price === 0 
+                ? 'رایگان' 
+                : `${getSelectedLabel()?.price.toLocaleString()} تومان`}
+            </p>
+          </div>
+          
+          <div>
+            <strong className="text-gray-600 block mb-2">موجودی کیف پول:</strong>
+            <p className={`font-bold ${hasEnoughBalance() ? 'text-green-600' : 'text-red-600'}`}>
+              {walletBalance.toLocaleString()} تومان
+            </p>
+          </div>
         </div>
+        
+        {!hasEnoughBalance() && (
+          <div className="mt-4 bg-red-50 border border-red-200 rounded-md p-4 flex items-start">
+            <FaExclamationTriangle className="text-red-500 mt-1 ml-2" />
+            <div>
+              <p className="text-red-700 font-medium">موجودی کیف پول شما کافی نیست!</p>
+              <p className="text-red-600 text-sm mt-1">
+                برای ثبت این پروژه، ابتدا کیف پول خود را شارژ کنید.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {formData.files && (
@@ -160,12 +191,23 @@ const Step3: React.FC<Step3Props> = ({
         >
           مرحله قبل
         </button>
-        <button 
-          onClick={onSubmit}
-          className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors flex items-center"
-        >
-          ثبت نهایی پروژه
-        </button>
+        
+        {hasEnoughBalance() ? (
+          <button 
+            onClick={onSubmit}
+            className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors flex items-center"
+          >
+            ثبت نهایی پروژه
+          </button>
+        ) : (
+          <button 
+            onClick={onSubmit} 
+            className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors flex items-center"
+          >
+            <FaWallet className="ml-2" />
+            شارژ کیف پول و ادامه
+          </button>
+        )}
       </div>
     </div>
   );

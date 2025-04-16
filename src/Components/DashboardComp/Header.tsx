@@ -5,6 +5,7 @@ import Mail from "@/assets/Dashboard/Mail.svg";
 import FAQ from "@/assets/Dashboard/Faq.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
+import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -45,12 +46,19 @@ export default function Header({ toggleSidebar }: any) {
           </button>
 
           {/* Logo and Title */}
-          <div className="flex w-fit h-fit items-center">
-            <label className="text-lg font-semibold md:flex sm:flex hidden">
-              بیدلنسر
-            </label>
-            <img src={LOGO} alt="Logo" className="h-11 w-14" />
-          </div>
+
+          <Link to="/main">
+            <button className="flex w-fit h-fit items-center cursor-pointer">
+              <label className="text-lg font-semibold md:flex sm:flex hidden pointer-events-none">
+                بیدلنسر
+              </label>
+              <img
+                src={LOGO}
+                alt="Logo"
+                className="h-11 w-14 pointer-events-none"
+              />
+            </button>
+          </Link>
         </div>
 
         {/* Center Section: Search Bar (Hidden on Mobile) */}
@@ -89,15 +97,16 @@ export default function Header({ toggleSidebar }: any) {
           <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
             <img src={FAQ} className="h-6 pointer-events-none" tabIndex={-1} />
           </button>
-
-          <button className="w-fit h-fit cursor-pointer">
-            <img
-              src={ProfileDefault}
-              className="rounded-full object-cover min-w-8 pointer-events-none"
-              alt="Profile"
-              tabIndex={-1}
-            />
-          </button>
+          <Link to="/profile" className="flex justify-center items-center">
+            <button className="w-fit h-fit cursor-pointer">
+              <img
+                src={ProfileDefault}
+                className="rounded-full object-cover min-w-8 pointer-events-none"
+                alt="Profile"
+                tabIndex={-1}
+              />
+            </button>
+          </Link>
         </div>
       </header>
 

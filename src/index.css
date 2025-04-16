@@ -192,11 +192,32 @@ body {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+.no-spinner[type="number"]::-webkit-inner-spin-button,
+.no-spinner[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner[type="number"] {
+  -moz-appearance: textfield;
+}
+
 @layer base {
   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     @apply border-border outline-ring/50;
   }
-  body {
+  
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
     @apply bg-background text-foreground;
+  }
+  
+  body {
+    position: relative;
   }
 }

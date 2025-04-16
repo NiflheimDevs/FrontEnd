@@ -133,7 +133,7 @@ const SvgBox = ({ svgName }: any) => {
     <div className="md:w-[148px] md:h-[150px] sm:w-[105px] sm:h-[104px] w-[78px] h-[74px] flex bg-[#1B1B1B] items-center justify-center">
       <img
         src={svgName}
-        className="md:w-[121px] md:h-[132px] sm:w-[86px] sm:h-[94px] w-[71px] h-[70px] border-none border-[#1B1B1B]"
+        className="md:w-[121px] md:h-[132px] sm:w-[86px] sm:h-[94px] w-[71px] h-[70px] border-none cursor-pointer border-[#1B1B1B]"
       />
     </div>
   );
