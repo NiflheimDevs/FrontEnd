@@ -1,19 +1,24 @@
-name: Deploy React App to Server
+name: Deploy Vite React App to Server
 
 on:
   push:
     branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
       - develop
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -21,10 +26,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build the app
+      - name: Build the Vite app
         run: npm run build
 
-      - name: Deploy via SCP
+      - name: Deploy to server via SCP
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
