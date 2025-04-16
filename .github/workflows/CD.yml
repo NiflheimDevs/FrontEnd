@@ -64,7 +64,7 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "docker-compose.yml"
-        target: "/root/front"
+        target: "/home/${{ secrets.SSH_USER }}/front"
 
     - name: Deploy via SSH
       if: steps.docker_build.outcome == 'success'
@@ -74,7 +74,7 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /root/front
+          cd /home/${{ secrets.SSH_USER }}/front
           docker logout ghcr.io
           docker login ghcr.io -u ${{ secrets.USERNAME }} -p ${{ secrets.PAT }}
           docker compose pull
