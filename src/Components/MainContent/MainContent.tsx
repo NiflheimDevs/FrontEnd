@@ -15,11 +15,11 @@ import VideoEditing from "../../assets/Main/VIDEOEDITING.jpg";
 import Seo from "../../assets/Main/SEO.jpg";
 import LogoDesign from "../../assets/Main/LOGODESIGN.jpg";
 import WebDevelopment from "../../assets/Main/WEBDEVELOPMENT.jpg";
-import image1 from "../../assets/Main/image1.jpg";
-import image2 from "../../assets/Main/image2.jpg";
-import image3 from "../../assets/Main/image3.jpg";
-import image4 from "../../assets/Main/image4.jpg";
-import image5 from "../../assets/Main/image5.jpg";
+import image1 from "../../assets/Main/image1.webp";
+import image2 from "../../assets/Main/image2.webp";
+import image3 from "../../assets/Main/image3.webp";
+import image4 from "../../assets/Main/image4.webp";
+import image5 from "../../assets/Main/image5.webp";
 import Skill from "../../assets/Main/Skill.png";
 import Fee from "../../assets/Main/Fee.png";
 import Best from "../../assets/Main/best.png";
@@ -31,6 +31,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 import "../../../node_modules/swiper/swiper.css";
 import "../../../node_modules/swiper/modules/pagination.css";
 import "../../../node_modules/swiper/modules/navigation.css";
+import "../../../node_modules/swiper/modules/autoplay.css";
 // Import Swiper styles
 // import "swiper/css";
 // import "swiper/css/pagination";
@@ -197,7 +198,7 @@ const MainContent = () => {
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[Pagination, Autoplay]}
-            className="mySwiper rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
+            className="mySwiper rounded-xl shadow-md hover:shadow-xl"
           >
             {categories.map((cat, idx) => (
               <SwiperSlide
@@ -208,6 +209,7 @@ const MainContent = () => {
                   <img
                     src={cat.bg}
                     alt={cat.title}
+                    loading="lazy"
                     className="absolute w-full h-full object-cover"
                   />
                   <div
@@ -281,7 +283,7 @@ const MainContent = () => {
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[Pagination, Autoplay]}
-            className="mySwiper rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
+            className="mySwiper rounded-xl shadow-md hover:shadow-xl"
           >
             {freelancerCards.map((card, idx) => (
               <SwiperSlide key={idx}>
@@ -302,7 +304,7 @@ const MainContent = () => {
                       {card.description}
                     </p>
                   </div>
-                  <div className="text-right mb-4  p-4">
+                  <div className="text-right mb-4 p-4">
                     <p className="text-lg font-bold text-blue-600">
                       {card.price} تومان
                     </p>
@@ -363,15 +365,18 @@ const MainContent = () => {
                     className="w-full h-72 object-cover"
                   />
                   <div className="flex items-center justify-between px-4 py-3">
-                    <BsArrowRight className="text-blue-500" size={26} />
                     <div>
-                      <h3 className="text-xl text-left font-semibold text-[#333]">
+                      <h3 className="text-xl text-right font-semibold text-[#333]">
                         {freelancer.name}
                       </h3>
-                      <p className="text-sm text-left text-[#888]">
+                      <p className="text-sm text-right text-[#888]">
                         {freelancer.role}
                       </p>
                     </div>
+                    <BsArrowRight
+                      className="text-blue-500 cursor-pointer"
+                      size={26}
+                    />
                   </div>
                 </div>
               ))}
@@ -386,26 +391,30 @@ const MainContent = () => {
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[Pagination, Autoplay]}
-            className="mySwiper rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
+            className="mySwiper rounded-xl shadow-md hover:shadow-xl"
           >
             {trendingFreelancers.map((freelancer, index) => (
               <SwiperSlide key={index}>
-                <div className="rounded-lg overflow-hidden shadow">
+                <div className="rounded-lg relative overflow-hidden shadow pointer-events-none">
                   <img
                     src={freelancer.image}
                     alt={freelancer.name}
+                    loading="lazy"
                     className="w-full h-72 object-cover"
                   />
-                  <div className="flex items-center justify-between px-4 py-3 mb-2">
-                    <BsArrowRight className="text-blue-500" size={26} />
+                  <div className="flex items-center justify-between px-4 py-3 mb-8">
                     <div>
-                      <h3 className="text-xl text-left font-semibold text-[#333]">
+                      <h3 className="text-xl text-right font-semibold text-[#333]">
                         {freelancer.name}
                       </h3>
-                      <p className="text-sm text-left text-[#888]">
+                      <p className="text-sm text-right text-[#888]">
                         {freelancer.role}
                       </p>
                     </div>
+                    <BsArrowRight
+                      className="text-blue-500 cursor-pointer"
+                      size={26}
+                    />
                   </div>
                 </div>
               </SwiperSlide>
