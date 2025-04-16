@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { setProfile } from "../../store/slices/profileSlice";
-import { GetUser, PutUser, PutTag, PutCareer, UpdateProfile } from "../../API";
+import {
+  GetUser,
+  PutUser,
+  PutTag,
+  PutCareer,
+  UpdateProfile,
+  DeleteProfile,
+} from "../../API";
 import { Skeleton } from "primereact/skeleton";
 import {
   initialProfile,
@@ -189,14 +196,39 @@ export default function ProfileForm() {
       const LocalProfile = new FormData();
       if (profilePictureFile) {
         LocalProfile.append("file", profilePictureFile);
+        if (localProfile.profile) {
+          await Promise.all([
+            PutUser(userData),
+            PutTag(tagData),
+            PutCareer(careerData),
+            UpdateProfile(LocalProfile),
+          ]);
+        } else {
+          await Promise.all([
+            PutUser(userData),
+            PutTag(tagData),
+            PutCareer(careerData),
+            UpdateProfile(LocalProfile),
+            DeleteProfile(),
+          ]);
+        }
+      } else {
+        if (localProfile.profile) {
+          await Promise.all([
+            PutUser(userData),
+            PutTag(tagData),
+            PutCareer(careerData),
+          ]);
+        } else {
+          await Promise.all([
+            PutUser(userData),
+            PutTag(tagData),
+            PutCareer(careerData),
+            DeleteProfile(),
+          ]);
+        }
       }
 
-      await Promise.all([
-        PutUser(userData),
-        PutTag(tagData),
-        PutCareer(careerData),
-        UpdateProfile(LocalProfile),
-      ]);
       dispatch(setProfile(localProfile));
       notifySuccess("پروفایل با موفقیت بروزرسانی شد");
     } catch (error: any) {

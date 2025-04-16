@@ -35,6 +35,7 @@ export default function UserInfoSection({
 }: UserInfoSectionProps) {
   const { error: notifyError, success: notifySuccess } = useNotification();
   const [showOtpSection, setShowOtpSection] = useState(false);
+  const [showX, setshowX] = useState(false);
   const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.value = e.target.value.replace(/[^0-9]/g, "");
     const value = e.target.value;
@@ -159,10 +160,16 @@ export default function UserInfoSection({
                   src={URL.createObjectURL(profilePictureFile)}
                   alt="Profile Preview"
                   className="w-full h-full object-cover transition-all duration-400 ease-in-out hover:scale-105"
+                  onMouseEnter={() => {
+                    setshowX(true);
+                  }}
+                  onMouseLeave={() => {
+                    setshowX(false);
+                  }}
                 />
                 <button
                   onClick={handleRemoveProfile}
-                  className="absolute bg-black opacity-0 bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-400 ease-in-out cursor-pointer hover:opacity-70"
+                  className={`absolute bg-black bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-400 ease-in-out cursor-pointer ${showX ? "md:hover:opacity-70" : "md:opacity-0 opacity-50"}`}
                   tabIndex={2}
                 >
                   <X size={20} color="white" />
@@ -174,10 +181,16 @@ export default function UserInfoSection({
                   src={localProfile.profile}
                   alt=""
                   className="w-full h-full object-cover transition-all duration-400 ease-in-out hover:scale-105"
+                  onMouseEnter={() => {
+                    setshowX(true);
+                  }}
+                  onMouseLeave={() => {
+                    setshowX(false);
+                  }}
                 />
                 <button
                   onClick={handleRemoveProfile}
-                  className="absolute bg-black opacity-0 bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-400 ease-in-out cursor-pointer hover:opacity-70"
+                  className={`absolute bg-black bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-400 ease-in-out cursor-pointer ${showX ? "md:hover:opacity-70 opacity-50" : "md:opacity-0 opacity-50"}`}
                   tabIndex={2}
                 >
                   <X size={20} color="white" />

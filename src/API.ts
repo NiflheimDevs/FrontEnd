@@ -202,6 +202,15 @@ export const UpdateProfile = async (userData: any) => {
   }
 };
 
+export const DeleteProfile = async () => {
+  try {
+    const response = await apiClient.delete("/user/profile");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const PutTag = async (userData: any) => {
   try {
     const response = await apiClient.put("/user/tag", userData);
