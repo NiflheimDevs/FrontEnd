@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
 import Header from "../../Components/DashboardComp/Header";
-//import WalletComponent from "../components/Dashboard/WalletComponent";
 import WalletComponent from "../../Components/DashboardComp/WalletComponent";
 
 const Wallet = () => {
@@ -22,10 +21,7 @@ const Wallet = () => {
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <main className="flex-1 w-full flex flex-col pt-16 md:pl-4 sm:pl-4 md:pr-24 sm:pr-24">
           <Header toggleSidebar={toggleSidebar} />
-          <WalletComponent 
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
+          <WalletComponent isLoading={isLoading} setIsLoading={setIsLoading} />
         </main>
       </div>
     </>
