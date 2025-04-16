@@ -189,14 +189,20 @@ export default function ProfileForm() {
       const LocalProfile = new FormData();
       if (profilePictureFile) {
         LocalProfile.append("file", profilePictureFile);
+        await Promise.all([
+          PutUser(userData),
+          PutTag(tagData),
+          PutCareer(careerData),
+          UpdateProfile(LocalProfile),
+        ]);
+      } else {
+        await Promise.all([
+          PutUser(userData),
+          PutTag(tagData),
+          PutCareer(careerData),
+        ]);
       }
 
-      await Promise.all([
-        PutUser(userData),
-        PutTag(tagData),
-        PutCareer(careerData),
-        UpdateProfile(LocalProfile),
-      ]);
       dispatch(setProfile(localProfile));
       notifySuccess("پروفایل با موفقیت بروزرسانی شد");
     } catch (error: any) {
