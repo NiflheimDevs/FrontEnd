@@ -3,7 +3,7 @@ import { BsArrowRight } from "react-icons/bs";
 import { Search } from "lucide-react";
 import bg from "../../assets/Main/bg.png";
 // import Frame from "../../assets/Main/Frame.png";
-import bg1 from "../../assets/Main/bg1.jpg";
+import bg1 from "../../assets/Main/bg1.png";
 import bg2 from "../../assets/Main/bg2.jpg";
 import bg3 from "../../assets/Main/bg3.jpg";
 import bg4 from "../../assets/Main/bg4.jpg";
