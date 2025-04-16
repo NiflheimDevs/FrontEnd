@@ -4,6 +4,7 @@ import { useNotification } from "../../Notification/NotificationProvider";
 import { PutUserName, PutEmail, PutPhoneSendOtp } from "../../API";
 import React, { useState } from "react";
 import OtpSection from "./OtpSection";
+import { errorMapper } from "../../pages/Error/Error";
 
 interface UserInfoSectionProps {
   localProfile: Profile;
@@ -66,8 +67,15 @@ export default function UserInfoSection({
         console.log(codeSession);
         setShowOtpSection(true);
         notifySuccess("کد تایید ارسال شد");
-      } catch (err:any) {
-        notifyError(err.message || "خطا در ارسال کد تایید");
+      } catch (error: any) {
+        const errorData = error;
+        if (errorData.tag && errorData.errors?.length > 0) {
+          const allErrors = errorData.errors;
+          const errorMessages = allErrors.map((err: any) => errorMapper(err));
+          notifyError(`${errorMessages.join(" ")}`);
+        } else {
+          notifyError(`${errorMapper(errorData)}`);
+        }
       }
     }
   };
@@ -77,8 +85,15 @@ export default function UserInfoSection({
       const usernameData = { username: localProfile.username };
       await PutUserName(usernameData);
       notifySuccess("نام کاربری با موفقیت تغییر کرد");
-    } catch (err:any) {
-      notifyError(err.message || "خطا در تغییر نام کاربری");
+    } catch (error: any) {
+      const errorData = error;
+      if (errorData.tag && errorData.errors?.length > 0) {
+        const allErrors = errorData.errors;
+        const errorMessages = allErrors.map((err: any) => errorMapper(err));
+        notifyError(`${errorMessages.join(" ")}`);
+      } else {
+        notifyError(`${errorMapper(errorData)}`);
+      }
     }
   };
 
@@ -87,8 +102,15 @@ export default function UserInfoSection({
       const emailData = { email: localProfile.email };
       await PutEmail(emailData);
       notifySuccess("ایمیل با موفقیت تغییر کرد");
-    } catch (err:any) {
-      notifyError(err.message || "خطا در تغییر ایمیل");
+    } catch (error: any) {
+      const errorData = error;
+      if (errorData.tag && errorData.errors?.length > 0) {
+        const allErrors = errorData.errors;
+        const errorMessages = allErrors.map((err: any) => errorMapper(err));
+        notifyError(`${errorMessages.join(" ")}`);
+      } else {
+        notifyError(`${errorMapper(errorData)}`);
+      }
     }
   };
 
@@ -218,13 +240,13 @@ export default function UserInfoSection({
               value={localProfile.email}
               onChange={handleChangeEmail}
               placeholder="example@gmail.com"
-              className="w-full p-2 border-2 rounded-lg text-right [direction:rtl]"
+              className="w-full py-2 pr-2 pl-20 border-2 rounded-lg text-right [direction:rtl]"
               tabIndex={5}
             />
             <span
-              className={`absolute h-full justify-center items-center px-2 rounded-lg shadow-lg bg-green-500 flex left-0 top-1/2 transform -translate-y-1/2 text-sm ${"text-white"}`}
+              className={`absolute h-full justify-center items-center px-2 rounded-lg shadow-lg ${localProfile.is_verified ? `bg-green-500` : `bg-gray-500`} flex left-0 top-1/2 transform -translate-y-1/2 text-sm ${"text-white"}`}
             >
-              تایید شده
+              {localProfile.is_verified ? `تایید شده` : `تایید نشده`}
             </span>
           </div>
           <button
@@ -331,7 +353,7 @@ export default function UserInfoSection({
           <input
             type="text"
             value={localProfile.firstName}
-            placeholder="امیر"
+            placeholder="نام خود را وارد کنید"
             onChange={(e) => handleInputChange("firstName", e.target.value)}
             className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
             tabIndex={9}
@@ -344,7 +366,7 @@ export default function UserInfoSection({
           <input
             type="text"
             value={localProfile.lastName}
-            placeholder="امیری"
+            placeholder="نام خانوادگی خود را وارد کنید"
             onChange={(e) => handleInputChange("lastName", e.target.value)}
             className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
             tabIndex={10}
@@ -356,7 +378,7 @@ export default function UserInfoSection({
           </label>
           <textarea
             value={localProfile.bio}
-            placeholder="فریلنسر خلاق، آماده برای پروژه بعدی..."
+            placeholder="درباره خودت بنویس..."
             onChange={(e) => handleInputChange("bio", e.target.value)}
             className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
             tabIndex={11}

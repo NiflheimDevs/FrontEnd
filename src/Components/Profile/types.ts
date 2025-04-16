@@ -27,6 +27,7 @@ export interface Profile {
   username: string;
   firstName: string;
   lastName: string;
+  is_verified: boolean;
   email: string;
   bio: string;
   skills: Skill[];
@@ -42,6 +43,7 @@ export const initialProfile: Profile = {
   username: "",
   firstName: "",
   lastName: "",
+  is_verified: false,
   email: "",
   bio: "",
   skills: [],
@@ -64,6 +66,7 @@ export const mapApiDataToProfile = async (apiData: any): Promise<Profile> => {
     firstName: apiData.info?.firstname || initialProfile.firstName,
     lastName: apiData.info?.lastname || initialProfile.lastName,
     email: apiData.info?.email || initialProfile.email,
+    is_verified: apiData.info?.is_verified || initialProfile.is_verified,
     bio: apiData.info?.bio || initialProfile.bio,
     skills: apiData.tag
       ? apiData.tag.map((tag: any) => ({

@@ -2,12 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { setProfile } from "../../store/slices/profileSlice";
-import {
-  GetUser,
-  PutUser,
-  PutTag,
-  PutCareer,
-} from "../../API";
+import { GetUser, PutUser, PutTag, PutCareer, UpdateProfile } from "../../API";
+import { Skeleton } from "primereact/skeleton";
 import {
   initialProfile,
   Profile,
@@ -25,6 +21,66 @@ import {
   persianToEnglishNumber,
   persianToGregorian,
 } from "../../pages/Profile";
+import { errorMapper } from "../../pages/Error/Error";
+
+const renderSkeleton = () => (
+  <div className="animate-pulse justify-center items-center">
+    <div className="flex flex-col md:w-2/3 sm:w-full w-9/10 space-y-4 p-6 bg-white rounded-lg shadow-md justify-center items-center mx-auto mt-10">
+      <div className="flex flex-col items-center">
+        <Skeleton
+          width="160px"
+          height="160px"
+          className="shiny-skeleton full border rounded-full border-gray-300"
+        />
+        <Skeleton
+          width="200px"
+          height="30px"
+          className="shiny-skeleton mt-4 bg-gray-200 rounded-2xl"
+        />
+      </div>
+      <Skeleton
+        width="100%"
+        height="45px"
+        className="shiny-skeleton my-4 rounded-2xl"
+      />
+      <Skeleton
+        width="100%"
+        height="45px"
+        className="shiny-skeleton my-4 rounded-2xl"
+      />
+      <Skeleton
+        width="100%"
+        height="45px"
+        className="shiny-skeleton my-4 rounded-2xl"
+      />
+      <Skeleton
+        width="100%"
+        height="45px"
+        className="shiny-skeleton my-4 rounded-2xl"
+      />
+      <Skeleton
+        width="100%"
+        height="45px"
+        className="shiny-skeleton my-4 rounded-2xl"
+      />
+      <Skeleton
+        width="100%"
+        height="45px"
+        className="shiny-skeleton my-4 rounded-2xl"
+      />
+      <Skeleton
+        width="100%"
+        height="45px"
+        className="shiny-skeleton my-4 rounded-2xl"
+      />
+      <Skeleton
+        width="100%"
+        height="45px"
+        className="shiny-skeleton my-4 rounded-2xl"
+      />
+    </div>
+  </div>
+);
 
 export default function ProfileForm() {
   const dispatch = useDispatch();
@@ -35,9 +91,9 @@ export default function ProfileForm() {
   const [changedPhone, setChangedPhone] = useState(false);
   const [changedEmail, setChangedEmail] = useState(false);
   const [changedUsername, setChangedUsername] = useState(false);
-  const [_fetchLoading, setFetchLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [_error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [resumeName, setResumeName] = useState<string | null>(null);
   const [profilePictureFile, setProfilePictureFile] = useState<File | null>(
     null
@@ -52,16 +108,17 @@ export default function ProfileForm() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        setFetchLoading(true);
         const apiData = await GetUser();
         const mappedProfile = await mapApiDataToProfile(apiData);
         setLocalProfile(mappedProfile);
         dispatch(setProfile(mappedProfile));
-        notifySuccess("اطلاعات کاربر با موفقیت بارگذاری شد");
-        setFetchLoading(false);
-      } catch (err:any) {
+        setIsLoading(false);
+      } catch (err: any) {
         setError(err.message || "خطا در بارگذاری اطلاعات کاربر");
         notifyError(err.message || "خطا در بارگذاری اطلاعات کاربر");
+      } finally {
+        setIsLoading(false);
+        console.log("fetchUserData finished, isLoading set to false");
       }
     };
 
@@ -129,15 +186,28 @@ export default function ProfileForm() {
         })),
       };
 
+      const LocalProfile = new FormData();
+      if (profilePictureFile) {
+        LocalProfile.append("file", profilePictureFile);
+      }
+
       await Promise.all([
         PutUser(userData),
         PutTag(tagData),
         PutCareer(careerData),
+        UpdateProfile(LocalProfile),
       ]);
       dispatch(setProfile(localProfile));
       notifySuccess("پروفایل با موفقیت بروزرسانی شد");
-    } catch (err) {
-      notifyError(`خطا در بروزرسانی پروفایل: ${(err as Error).message}`);
+    } catch (error: any) {
+      const errorData = error;
+      if (errorData.tag && errorData.errors?.length > 0) {
+        const allErrors = errorData.errors;
+        const errorMessages = allErrors.map((err: any) => errorMapper(err));
+        notifyError(`${errorMessages.join(" ")}`);
+      } else {
+        notifyError(`${errorMapper(errorData)}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -153,80 +223,86 @@ export default function ProfileForm() {
 
   return (
     <>
-      <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
-      <section className="p-4 md:p-6 lg:p-8 bg-[#F7F7F7]">
-        <h2 className="text-2xl font-bold mb-4 text-center">حساب کاربری</h2>
-        <div className="bg-white p-4 md:p-6 lg:p-8 rounded-lg shadow-md max-w-4xl mx-auto relative">
-          <div className="border-t border-gray-300 w-full mb-6"></div>
+      {isLoading ? (
+        renderSkeleton()
+      ) : (
+        <>
+          <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
+          <section className="p-4 md:p-6 lg:p-8 bg-[#F7F7F7]">
+            <h2 className="text-2xl font-bold mb-4 text-center">حساب کاربری</h2>
+            <div className="bg-white p-4 md:p-6 lg:p-8 rounded-lg shadow-md max-w-4xl mx-auto relative">
+              <div className="border-t border-gray-300 w-full mb-6"></div>
 
-          <UserInfoSection
-            localProfile={localProfile}
-            setLocalProfile={setLocalProfile}
-            profileFromRedux={profileFromRedux}
-            profilePictureFile={profilePictureFile}
-            setProfilePictureFile={setProfilePictureFile}
-            changedPhone={changedPhone}
-            setChangedPhone={setChangedPhone}
-            changedEmail={changedEmail}
-            setChangedEmail={setChangedEmail}
-            changedUsername={changedUsername}
-            setChangedUsername={setChangedUsername}
-          />
+              <UserInfoSection
+                localProfile={localProfile}
+                setLocalProfile={setLocalProfile}
+                profileFromRedux={profileFromRedux}
+                profilePictureFile={profilePictureFile}
+                setProfilePictureFile={setProfilePictureFile}
+                changedPhone={changedPhone}
+                setChangedPhone={setChangedPhone}
+                changedEmail={changedEmail}
+                setChangedEmail={setChangedEmail}
+                changedUsername={changedUsername}
+                setChangedUsername={setChangedUsername}
+              />
 
-          <div className="mt-4 space-y-6">
-            <SkillsSection
-              localProfile={localProfile}
-              setLocalProfile={setLocalProfile}
-              validationErrors={validationErrors}
-              tabIndexStart={skillsTabIndex}
-            />
+              <div className="mt-4 space-y-6">
+                <SkillsSection
+                  localProfile={localProfile}
+                  setLocalProfile={setLocalProfile}
+                  validationErrors={validationErrors}
+                  tabIndexStart={skillsTabIndex}
+                />
 
-            <WorkExperienceSection
-              localProfile={localProfile}
-              setLocalProfile={setLocalProfile}
-              validationErrors={validationErrors}
-              tabIndexStart={workExperienceTabIndex}
-            />
+                <WorkExperienceSection
+                  localProfile={localProfile}
+                  setLocalProfile={setLocalProfile}
+                  validationErrors={validationErrors}
+                  tabIndexStart={workExperienceTabIndex}
+                />
 
-            <ResumeSection
-              localProfile={localProfile}
-              setLocalProfile={setLocalProfile}
-              resumeName={resumeName}
-              setResumeName={setResumeName}
-              tabIndexStart={resumeTabIndex}
-            />
+                <ResumeSection
+                  localProfile={localProfile}
+                  setLocalProfile={setLocalProfile}
+                  resumeName={resumeName}
+                  setResumeName={setResumeName}
+                  tabIndexStart={resumeTabIndex}
+                />
 
-            <div className="flex flex-col items-end">
-              <button
-                className="w-46 flex justify-center items-center gap-2 transition-all duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 focus:shadow-lg"
-                onClick={handleSubmit}
-                disabled={loading}
-                tabIndex={submitTabIndex}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  className="lucide lucide-file-check-icon lucide-file-check"
-                >
-                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-                  <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                  <path d="m9 15 2 2 4-4" />
-                </svg>
-                <p className="text-white font-[vazirmatn] font-extralight">
-                  {loading ? "در حال ارسال..." : "بروزرسانی پروفایل"}
-                </p>
-              </button>
+                <div className="flex flex-col items-end">
+                  <button
+                    className="w-46 flex justify-center items-center gap-2 transition-all duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 focus:shadow-lg"
+                    onClick={handleSubmit}
+                    disabled={loading}
+                    tabIndex={submitTabIndex}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      className="lucide lucide-file-check-icon lucide-file-check"
+                    >
+                      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                      <path d="m9 15 2 2 4-4" />
+                    </svg>
+                    <p className="text-white font-[vazirmatn] font-extralight">
+                      {loading ? "در حال ارسال..." : "بروزرسانی پروفایل"}
+                    </p>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        </>
+      )}
     </>
   );
 }

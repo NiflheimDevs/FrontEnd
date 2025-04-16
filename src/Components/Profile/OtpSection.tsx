@@ -7,6 +7,7 @@ import { useState } from "react";
 import React from "react";
 import Clock from "../../assets/Clock.svg";
 import Clock_B from "../../assets/Clock_B.svg";
+import { errorMapper } from "../../pages/Error/Error";
 
 interface OtpSectionProps {
   showOtpSection: boolean;
@@ -41,8 +42,15 @@ export default function OtpSection({
       setShowOtpSection(false);
       setTimeLeft(120);
       setTokens("");
-    } catch (err: any) {
-      notifyError(err.message || "خطا در تغییر شماره تلفن");
+    } catch (error: any) {
+      const errorData = error;
+      if (errorData.tag && errorData.errors?.length > 0) {
+        const allErrors = errorData.errors;
+        const errorMessages = allErrors.map((err: any) => errorMapper(err));
+        notifyError(`${errorMessages.join(" ")}`);
+      } else {
+        notifyError(`${errorMapper(errorData)}`);
+      }
     }
   };
 
@@ -57,8 +65,15 @@ export default function OtpSection({
       setTimeLeft(120);
       setIsScaled(false);
       notifySuccess("کد تایید ارسال شد");
-    } catch (err: any) {
-      notifyError(err.message || "خطا در ارسال کد تایید");
+    } catch (error: any) {
+      const errorData = error;
+      if (errorData.tag && errorData.errors?.length > 0) {
+        const allErrors = errorData.errors;
+        const errorMessages = allErrors.map((err: any) => errorMapper(err));
+        notifyError(`${errorMessages.join(" ")}`);
+      } else {
+        notifyError(`${errorMapper(errorData)}`);
+      }
     }
   };
 

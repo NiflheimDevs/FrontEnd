@@ -189,6 +189,19 @@ export const PutCareer = async (userData: any) => {
   }
 };
 
+export const UpdateProfile = async (userData: any) => {
+  try {
+    const response = await apiClient.post("/user/profile", userData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const PutTag = async (userData: any) => {
   try {
     const response = await apiClient.put("/user/tag", userData);

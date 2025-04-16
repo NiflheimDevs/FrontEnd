@@ -192,6 +192,16 @@ body {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+.no-spinner[type="number"]::-webkit-inner-spin-button,
+.no-spinner[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner[type="number"] {
+  -moz-appearance: textfield;
+}
+
 @layer base {
   * {
     margin: 0;

@@ -12,23 +12,29 @@ import { useNotification } from "../../Notification/NotificationProvider";
 
 const ForgetPassword = () => {
   const [phone, setPhone] = useState("");
-  const [isValidPhone, setIsValidPhone] = useState<boolean | null>(null);
+  const [phoneErrors, setPhoneErrors] = useState<string[]>([]);
   const { error: notifyError, success: notifySuccess } = useNotification();
   const [ispic, _setIspic] = useState(true);
   const navigate = useNavigate();
   const dispatcher = useDispatch();
 
-  const validatePhone = (value: string) => {
+  const validatePhone = (value: string): string[] => {
+    const errors: string[] = [];
     if (!value) {
-      return false;
+      return errors;
     }
-    return /^09[0-9]{9}$/.test(value);
+    if (!/^09[0-9]{9}$/.test(value)) {
+      errors.push("شماره موبایل باید با 09 شروع شده و 11 رقم باشد");
+    }
+    return errors;
   };
 
   const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setPhone(value);
-    setIsValidPhone(validatePhone(value));
+    if (value === "" || (/^[0-9]*$/.test(value) && value.length <= 11)) {
+      setPhone(value);
+      setPhoneErrors(validatePhone(value));
+    }
   };
 
   const handleCompleteClick = async () => {
@@ -89,16 +95,38 @@ const ForgetPassword = () => {
                   <div className="w-full rounded-2xl h-0.75 bg-blue-500 mx-auto mt-2 mb-6"></div>
                 </motion.div>
 
+                <div className="mb-2 relative z-[999999]">
+                  <AnimatePresence>
+                    {phoneErrors.length > 0 && (
+                      <motion.ul
+                        key="phone-errors"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="text-red-500 text-sm text-right mt-1 font-[vazirmatn] list-disc pr-4"
+                      >
+                        {phoneErrors.map((error, index) => (
+                          <li key={index}>{error}</li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </div>
+
                 <div className="relative w-full max-w-[400px]">
                   <input
                     type="tel"
-                    placeholder=" تلفن‌همراه"
+                    placeholder="تلفن‌همراه"
                     value={phone}
                     onChange={handleChangePhone}
+                    autoComplete="new-password"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-3 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn] ${
-                      isValidPhone === false
+                      phoneErrors.length > 0
                         ? "ring-red-500"
-                        : isValidPhone === true
+                        : phone
                           ? "ring-green-500"
                           : "ring-gray-300"
                     }`}
@@ -111,10 +139,12 @@ const ForgetPassword = () => {
                 </div>
 
                 <button
-                  className={`w-full max-w-[400px] transition duration-200 ease-in-out cursor-pointer rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${
-                    !isValidPhone ? "opacity-60" : "hover:bg-blue-600"
+                  className={`w-full max-w-[400px] transition duration-200 ease-in-out rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${
+                    phoneErrors.length > 0 || !phone
+                      ? "opacity-60"
+                      : "hover:bg-blue-600 cursor-pointer"
                   }`}
-                  disabled={!isValidPhone}
+                  disabled={phoneErrors.length > 0 || !phone}
                   onClick={handleCompleteClick}
                 >
                   <p className="text-white font-[vazirmatn] font-extralight">
