@@ -1,25 +1,15 @@
-# Use official Node.js image
-FROM node:23-alpine
-
-# Install required dependencies for TailwindCSS
-RUN apk update && apk add --no-cache build-base python3
-
-# Set working directory
+# Build stage
+FROM node:18-alpine AS builder
 WORKDIR /app
-
-# Copy package files first to leverage Docker caching
-COPY package.json package-lock.json ./ 
-
-# Install dependencies
-RUN npm uninstall tailwindcss --legacy-peer-deps && \
-    rm -rf node_modules package-lock.json && \
-    npm install --legacy-peer-deps
-
-# Copy the rest of the project files
 COPY . .
-
-# Build the Next.js application
+RUN npm install
 RUN npm run build
 
-# Start the Next.js app
-CMD ["npm", "run", "start"]
+# Serve stage
+FROM node:18-alpine
+WORKDIR /app
+RUN npm install -g serve
+COPY --from=builder /app/dist .
+EXPOSE 3000
+CMD ["serve", "-s", ".", "-l", "3000"]
+
