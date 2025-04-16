@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "primereact/skeleton";
 import walletPic from "../../assets/Dashboard/Wallet.svg";
-import { getBalance, getTransactions, depositToWallet, withdrawFromWallet } from "../../API";
+import {
+  getBalance,
+  getTransactions,
+  depositToWallet,
+  withdrawFromWallet,
+} from "../../API";
 
 type Transaction = {
   id: number;
@@ -18,7 +23,7 @@ type WalletComponentProps = {
 
 const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
   const [balance, setBalance] = useState<number>(0);
-  const [transactions, setTransactions] = useState<Transaction[]>([]); 
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
@@ -40,7 +45,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       ) {
         setIsDepositModalOpen(false);
       }
-      
+
       if (
         withdrawModalRef.current &&
         isWithdrawModalOpen &&
@@ -51,7 +56,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -72,7 +77,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
     try {
       const offset = (currentPage - 1) * transactionsPerPage;
       //console.log(`Fetching page ${currentPage} with offset ${offset}`);
-      
+
       const response = await getTransactions(
         offset,
         transactionsPerPage,
@@ -80,19 +85,19 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         "desc",
         "all"
       );
-      
+
       //console.log(`Got ${response.length} transactions for page ${currentPage}`);
-      
+
       const formattedTransactions = response.map((tx: any, index: number) => ({
         id: tx.id || index,
         date: tx.date,
         activity: tx.type === 2 ? "واریز" : "برداشت",
         description: tx.description || "-",
-        amount: tx.amount
+        amount: tx.amount,
       }));
-      
+
       setTransactions(formattedTransactions);
-      
+
       if (currentPage === 1) {
         if (response.length < transactionsPerPage) {
           setTotalTransactions(response.length);
@@ -100,20 +105,21 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
           setTotalTransactions(transactionsPerPage * 2);
         }
       } else if (response.length < transactionsPerPage) {
-        setTotalTransactions((currentPage - 1) * transactionsPerPage + response.length);
+        setTotalTransactions(
+          (currentPage - 1) * transactionsPerPage + response.length
+        );
       } else {
         setTotalTransactions(currentPage * transactionsPerPage + 1);
       }
     } catch (error) {
-//      console.error("Error fetching transactions:", error);
-//      console.error("Full error details:", error);
+      //      console.error("Error fetching transactions:", error);
+      //      console.error("Full error details:", error);
       setTransactions([]);
       setTotalTransactions(0);
     } finally {
       setIsLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchBalance();
@@ -134,7 +140,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
     try {
       await depositToWallet({
         amount: parseFloat(amount),
-        description: description || undefined
+        description: description || undefined,
       });
       setIsDepositModalOpen(false);
       setAmount("");
@@ -142,7 +148,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       await fetchBalance();
       await fetchTransactions();
     } catch (error: any) {
-      setError(typeof error === 'string' ? error : "خطا در واریز به کیف پول");
+      setError(typeof error === "string" ? error : "خطا در واریز به کیف پول");
     } finally {
       setIsLoading(false);
     }
@@ -164,7 +170,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
     try {
       await withdrawFromWallet({
         amount: parseFloat(amount),
-        description: description || undefined
+        description: description || undefined,
       });
       setIsWithdrawModalOpen(false);
       setAmount("");
@@ -172,28 +178,28 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       await fetchBalance();
       await fetchTransactions();
     } catch (error: any) {
-      setError(typeof error === 'string' ? error : "خطا در برداشت از کیف پول");
+      setError(typeof error === "string" ? error : "خطا در برداشت از کیف پول");
     } finally {
       setIsLoading(false);
     }
   };
 
   const totalPages = Math.ceil(totalTransactions / transactionsPerPage) || 1;
-  
+
   const goToNextPage = () => {
     if (currentPage < totalPages) {
       console.log(`Moving from page ${currentPage} to ${currentPage + 1}`);
       setCurrentPage(currentPage + 1);
     }
   };
-  
+
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       console.log(`Moving from page ${currentPage} to ${currentPage - 1}`);
       setCurrentPage(currentPage - 1);
     }
   };
-  
+
   const goToPage = (pageNumber: number) => {
     console.log(`Moving from page ${currentPage} to ${pageNumber}`);
     setCurrentPage(pageNumber);
@@ -400,17 +406,19 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
           <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-4">کیف پول</h2>
             <div className="text-center mb-4">
-              <p className="text-2xl font-bold">{(balance || 0).toLocaleString()}</p>
+              <p className="text-2xl font-bold">
+                {(balance || 0).toLocaleString()}
+              </p>
               <p>ریال</p>
             </div>
             <div className="flex justify-between">
-              <button 
+              <button
                 onClick={() => setIsDepositModalOpen(true)}
                 className="cursor-pointer bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition-all duration-300"
               >
                 <span>واریز</span>
               </button>
-              <button 
+              <button
                 onClick={() => setIsWithdrawModalOpen(true)}
                 className="cursor-pointer bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition-all duration-300"
               >
@@ -422,16 +430,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
             <table className="w-full text-center">
               <thead>
                 <tr className="border-b">
-                  <th className="text-lg font-semibold py-2">
-                    تاریخ
-                  </th>
-                  <th className="text-lg font-semibold py-2">
-                    فعالیت
-                  </th>
+                  <th className="text-lg font-semibold py-2">تاریخ</th>
+                  <th className="text-lg font-semibold py-2">فعالیت</th>
                   <th className="text-lg font-semibold py-2">توضیحات</th>
-                  <th className="text-lg font-semibold py-2">
-                    مبلغ
-                  </th>
+                  <th className="text-lg font-semibold py-2">مبلغ</th>
                 </tr>
               </thead>
               <tbody>
@@ -441,8 +443,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                       <td className="py-2">{transaction.date}</td>
                       <td className="py-2">{transaction.activity}</td>
                       <td className="py-2">{transaction.description || "-"}</td>
-                      <td className={`py-2 ${transaction.amount > 0 ? "text-green-600" : "text-red-600"}`}>
-                        {transaction.amount?.toLocaleString() || '0'}
+                      <td
+                        className={`py-2 ${transaction.amount > 0 ? "text-green-600" : "text-red-600"}`}
+                      >
+                        {transaction.amount?.toLocaleString() || "0"}
                       </td>
                     </tr>
                   ))
@@ -483,7 +487,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
           </div>
         </div>
       )}
-      
+
       <div className="flex flex-col items-center justify-center h-64 mt-2">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-60 mt-4">
@@ -507,24 +511,35 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
           </>
         )}
       </div>
-      
+
       {isDepositModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
-          <div ref={depositModalRef} className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <div
+            ref={depositModalRef}
+            className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
+          >
             <h2 className="text-xl font-bold mb-4">واریز به کیف پول</h2>
-            {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {error}
+              </div>
+            )}
             <div className="mb-4">
-              <label htmlFor="amount" className="block text-gray-700 mb-2">مبلغ (ریال)</label>
+              <label htmlFor="amount" className="block text-gray-700 mb-2">
+                مبلغ (ریال)
+              </label>
               <input
                 type="number"
                 id="amount"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 no-spinner"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="description" className="block text-gray-700 mb-2">توضیحات (اختیاری)</label>
+              <label htmlFor="description" className="block text-gray-700 mb-2">
+                توضیحات (اختیاری)
+              </label>
               <textarea
                 id="description"
                 value={description}
@@ -550,28 +565,47 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
           </div>
         </div>
       )}
-      
+
       {isWithdrawModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
-          <div ref={withdrawModalRef} className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+          <div
+            ref={withdrawModalRef}
+            className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
+          >
             <h2 className="text-xl font-bold mb-4">برداشت از کیف پول</h2>
-            {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {error}
+              </div>
+            )}
             <div className="mb-2">
               <label className="block text-gray-700 mb-1">موجودی فعلی</label>
-              <p className="font-semibold text-lg">{balance?.toLocaleString() || '0'} ریال</p>
+              <p className="font-semibold text-lg">
+                {balance?.toLocaleString() || "0"} ریال
+              </p>
             </div>
             <div className="mb-4">
-              <label htmlFor="withdraw-amount" className="block text-gray-700 mb-2">مبلغ برداشت (ریال)</label>
+              <label
+                htmlFor="withdraw-amount"
+                className="block text-gray-700 mb-2"
+              >
+                مبلغ برداشت (ریال)
+              </label>
               <input
                 type="number"
                 id="withdraw-amount"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 no-spinner"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="withdraw-description" className="block text-gray-700 mb-2">توضیحات (اختیاری)</label>
+              <label
+                htmlFor="withdraw-description"
+                className="block text-gray-700 mb-2"
+              >
+                توضیحات (اختیاری)
+              </label>
               <textarea
                 id="withdraw-description"
                 value={description}
