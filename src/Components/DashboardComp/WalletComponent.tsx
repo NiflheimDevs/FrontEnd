@@ -409,7 +409,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
               <p className="text-2xl font-bold">
                 {(balance || 0).toLocaleString()}
               </p>
-              <p>ریال</p>
+              <p>تومان</p>
             </div>
             <div className="flex justify-between">
               <button
@@ -526,7 +526,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
             )}
             <div className="mb-4">
               <label htmlFor="amount" className="block text-gray-700 mb-2">
-                مبلغ (ریال)
+                مبلغ (تومان)
               </label>
               <input
                 type="number"
@@ -581,7 +581,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
             <div className="mb-2">
               <label className="block text-gray-700 mb-1">موجودی فعلی</label>
               <p className="font-semibold text-lg">
-                {balance?.toLocaleString() || "0"} ریال
+                {balance?.toLocaleString() || "0"} تومان
               </p>
             </div>
             <div className="mb-4">
@@ -589,7 +589,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 htmlFor="withdraw-amount"
                 className="block text-gray-700 mb-2"
               >
-                مبلغ برداشت (ریال)
+                مبلغ برداشت (تومان)
               </label>
               <input
                 type="number"

@@ -210,7 +210,7 @@
 //                   </h3>
 //                   <div className="text-center mb-3">
 //                     <p className="text-2xl font-bold text-white">0</p>
-//                     <p className="text-xs text-white/80">ریال</p>
+//                     <p className="text-xs text-white/80">تومان</p>
 //                   </div>
 //                   <table className="w-full text-center text-xs text-white">
 //                     <thead>
@@ -595,7 +595,7 @@ const Dashboard = () => {
                         </h3>
                         <div className="text-center mb-3">
                           <p className="text-xl font-bold text-gray-800">0</p>
-                          <p className="text-xs text-gray-600">ریال</p>
+                          <p className="text-xs text-gray-600">تومان</p>
                         </div>
                         <table className="w-full text-center text-xs text-gray-800">
                           <thead>
