@@ -77,14 +77,18 @@ jobs:
           cd /home/${{ secrets.SSH_USER }}/FrontEnd
           docker logout ghcr.io
           docker login ghcr.io -u ${{ secrets.USERNAME }} -p ${{ secrets.PAT }}
-          echo "🧼 Removing old frontend container (if it exists)..."
-          docker rm -f frontend || true
+          
           echo "📦 Pulling latest image..."
           docker compose pull
-          echo "💥 Bringing down old containers..."
-          docker compose down --remove-orphans
-          echo "🚀 Spinning up fresh containers..."
-          docker compose up -d
-          echo "🧹 Cleaning up dangling images..."
+
+          echo "🧼 Stopping and removing old frontend container..."
+          docker compose down --remove-orphans || true
+
+          echo "🚀 Starting new container..."
+          docker compose up -d --remove-orphans
+
+          echo "🧹 Cleaning up unused images..."
           docker image prune -f
+
+          echo "✅ Deployment complete!"
 
