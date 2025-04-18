@@ -217,7 +217,7 @@ export default function UserInfoSection({
             tabIndex={3}
           />
           <button
-            className={`flex items-center gap-2 md:w-[170px] sm:w-[150px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
+            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
               changedUsername
                 ? "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
                 : "opacity-60"
@@ -263,7 +263,7 @@ export default function UserInfoSection({
             </span>
           </div>
           <button
-            className={`flex items-center gap-2 md:w-[170px] sm:w-[150px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
+            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
               changedEmail
                 ? "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
                 : "opacity-60"
@@ -303,7 +303,7 @@ export default function UserInfoSection({
             tabIndex={7}
           />
           <button
-            className={`flex items-center gap-2 md:w-[170px] sm:w-[150px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
+            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
               changedPhone
                 ? "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
                 : "opacity-60"
