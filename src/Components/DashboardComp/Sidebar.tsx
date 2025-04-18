@@ -6,7 +6,7 @@ import projects from "@/assets/Dashboard/PencilSquare.svg";
 import profile from "@/assets/Dashboard/PersonCheckFill.svg";
 import Wallet from "@/assets/Dashboard/Credit.svg";
 import messages from "@/assets/Dashboard/Message.svg";
-import settings from "@/assets/Dashboard/settings.svg";
+// import settings from "@/assets/Dashboard/settings.svg";
 import exit from "@/assets/Dashboard/DoorOpen.svg";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { logout } from "../../API"; // Adjust the path
@@ -57,14 +57,14 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed top-19 right-0 md:rounded-tl-3xl md:rounded-bl-3xl sm:rounded-tl-3xl sm:rounded-bl-3xl h-[calc(100vh-4rem)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-300 z-50
+      className={`fixed top-19 right-0 md:rounded-tl-3xl md:rounded-bl-3xl sm:rounded-tl-3xl sm:rounded-bl-3xl h-[calc(100vh-4rem)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 z-50
         ${isSidebarOpen ? "w-48" : "w-20"} sm:w-20 sm:hover:w-48 w-full group flex flex-col
         ${isSidebarOpen ? "block" : "hidden"} sm:block`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <nav className="flex flex-col justify-between h-full">
-        <div className="mt-5 space-y-5 w-full items-center">
+        <div className="mt-5 space-y-[3.5vh] w-full items-center">
           <Link
             to="/dashboard"
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/dashboard") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
@@ -176,23 +176,6 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             </span>
             {isActive("/chat") && (
               <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
-            )}
-          </Link>
-        </div>
-
-        <div className="space-y-5 w-full items-center">
-          <Link
-            to="/settings"
-            className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/settings") ? "font-bold text-black bg-blue-500" : "text-gray-800"}`}
-          >
-            <img src={settings} alt="Setting" className="w-6 h-6" />
-            <span
-              className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/settings") ? "text-white" : "text-gray-800"}`}
-            >
-              تنظیمات
-            </span>
-            {isActive("/settings") && (
-              <div className="absolute left-0 w-1 h-full bg-blue-700"></div>
             )}
           </Link>
           <button

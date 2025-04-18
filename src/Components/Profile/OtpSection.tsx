@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import OtpInput from "react-otp-input";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { PutPhoneVerifyOtp, PutPhoneSendOtp } from "../../API";
-import { Profile, useOtpTimer } from "./types";
+import { Profile } from "./types";
 import { useState } from "react";
 import React from "react";
 import Clock from "../../assets/Clock.svg";
@@ -10,6 +10,10 @@ import Clock_B from "../../assets/Clock_B.svg";
 import { errorMapper } from "../../pages/Error/Error";
 
 interface OtpSectionProps {
+  isScaled: boolean;
+  setIsScaled: React.Dispatch<React.SetStateAction<boolean>>;
+  timeLeft: number;
+  setTimeLeft: React.Dispatch<React.SetStateAction<number>>;
   showOtpSection: boolean;
   setShowOtpSection: React.Dispatch<React.SetStateAction<boolean>>;
   phoneNumber: string;
@@ -23,13 +27,13 @@ export default function OtpSection({
   phoneNumber,
   localProfile,
   setLocalProfile,
+  timeLeft,
+  setTimeLeft,
+  isScaled,
+  setIsScaled,
 }: OtpSectionProps) {
   const { error: notifyError, success: notifySuccess } = useNotification();
   const [token, setTokens] = useState<string>("");
-  const { timeLeft, setTimeLeft, isScaled, setIsScaled } = useOtpTimer(
-    120,
-    showOtpSection
-  );
 
   const HandleVerify = async () => {
     try {
@@ -61,7 +65,6 @@ export default function OtpSection({
       };
       const codeSession = await PutPhoneSendOtp(phoneData);
       setLocalProfile((prev) => ({ ...prev, SessionID: codeSession }));
-      console.log(codeSession, localProfile.SessionID, phoneData);
       setTimeLeft(120);
       setIsScaled(false);
       notifySuccess("کد تایید ارسال شد");

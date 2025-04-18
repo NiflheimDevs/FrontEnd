@@ -430,10 +430,18 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
             <table className="w-full text-center">
               <thead>
                 <tr className="border-b">
-                  <th className="text-lg font-semibold py-2">تاریخ</th>
-                  <th className="text-lg font-semibold py-2">فعالیت</th>
-                  <th className="text-lg font-semibold py-2">توضیحات</th>
-                  <th className="text-lg font-semibold py-2">مبلغ</th>
+                  <th className="md:text-lg sm:text-lg text-[15px] font-semibold py-2">
+                    تاریخ
+                  </th>
+                  <th className="md:text-lg sm:text-lg text-[15px] font-semibold py-2">
+                    فعالیت
+                  </th>
+                  <th className="md:text-lg sm:text-lg text-[15px] font-semibold py-2">
+                    توضیحات
+                  </th>
+                  <th className="md:text-lg sm:text-lg text-[15px] font-semibold py-2">
+                    مبلغ
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -488,7 +496,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         </div>
       )}
 
-      <div className="flex flex-col items-center justify-center h-64 mt-2">
+      <div className="flex flex-col items-center justify-center h-64 mt-4">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center h-60 mt-4">
             <div className="flex flex-col items-center">
@@ -506,14 +514,20 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
           </div>
         ) : (
           <>
-            <img src={walletPic} alt="Illustration" />
-            <p className="mt md:mt-0">شروع همیشه انگیزه دهنده است</p>
+            <img
+              src={walletPic}
+              className="md:scale-120 sm:scale-110 duration-500 ease-in-out transition-all"
+              alt="Illustration"
+            />
+            <p className="md:mt-4 pb-4 md:scale-120 sm:scale-110 duration-500 ease-in-out transition-all">
+              شروع همیشه انگیزه دهنده است
+            </p>
           </>
         )}
       </div>
 
       {isDepositModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
+        <div className="fixed inset-0 backdrop-blur-xs flex justify-center items-center z-50">
           <div
             ref={depositModalRef}
             className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
@@ -544,7 +558,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 id="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border min-h-[100px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 rows={3}
               ></textarea>
             </div>
@@ -567,7 +581,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       )}
 
       {isWithdrawModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
+        <div className="fixed inset-0 backdrop-blur-xs flex justify-center items-center z-50">
           <div
             ref={withdrawModalRef}
             className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
@@ -610,7 +624,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 id="withdraw-description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border min-h-[100px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 rows={3}
               ></textarea>
             </div>
