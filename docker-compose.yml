@@ -2,8 +2,8 @@ services:
   frontend:
     build:
       context: .
-      tags:
-        - ghcr.io/niflheimdevs/frontend
+      # tags:
+      #   - ghcr.io/niflheimdevs/frontend
     image: ghcr.io/niflheimdevs/frontend
     container_name: frontend
     ports:
