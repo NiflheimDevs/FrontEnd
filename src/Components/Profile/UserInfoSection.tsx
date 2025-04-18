@@ -393,7 +393,7 @@ export default function UserInfoSection({
             value={localProfile.bio}
             placeholder="درباره خودت بنویس..."
             onChange={(e) => handleInputChange("bio", e.target.value)}
-            className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
+            className="w-full sm:flex-1 p-2 min-h-[100px] border-2 rounded-lg text-right [direction:rtl]"
             tabIndex={11}
           />
         </div>

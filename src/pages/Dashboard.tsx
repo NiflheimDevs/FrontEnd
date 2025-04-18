@@ -408,7 +408,7 @@ const Dashboard = () => {
                 variants={cardVariants}
                 initial="hidden"
                 animate="visible"
-                className="relative z-10 w-[490px] md:scale-100 scale-90 transition-transform duration-400 ease-out md:hover:scale-103 hover:scale-95 cursor-pointer overflow-hidden"
+                className="relative z-10 w-[490px] md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
               >
                 <Link to="/chat" className="block">
                   <div className="bg-[#F7F7F7] rounded-lg">
@@ -420,7 +420,7 @@ const Dashboard = () => {
                         </h3>
                         <div className="flex flex-col">
                           <div className="w-full p-2 rounded-sm">
-                            <div className="relative mb-2 md:flex sm:flex hidden">
+                            <div className="relative md:mb-2 sm:mb-2 mb-0 flex">
                               <input
                                 type="text"
                                 placeholder="جستجو"
@@ -435,7 +435,7 @@ const Dashboard = () => {
                             {chatList.slice(0, 1).map((chat) => (
                               <div
                                 key={chat.id}
-                                className="flex items-center border-none bg-white/30 p-2 justify-end rounded-sm"
+                                className="md:flex sm:flex hidden items-center border-none bg-white/30 p-2 justify-end rounded-sm"
                               >
                                 <div className="flex-1 text-right">
                                   <p className="text-sm font-medium text-gray-800">
@@ -485,7 +485,7 @@ const Dashboard = () => {
                 variants={cardVariants}
                 initial="hidden"
                 animate="visible"
-                className="relative z-10 w-[490px] md:scale-100 scale-90 transition-transform duration-400 ease-out md:hover:scale-103 hover:scale-95 cursor-pointer overflow-hidden"
+                className="relative z-10 w-[490px] md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
               >
                 <Link to="/profile" className="block">
                   <div className="bg-[#F7F7F7] rounded-lg">
@@ -495,7 +495,7 @@ const Dashboard = () => {
                         <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center">
                           <span className="mr-2">👤</span> پروفایل
                         </h3>
-                        <div className="flex flex-col items-center space-y-2">
+                        <div className="flex flex-col items-center space-y-1">
                           {/* Profile Picture and Basic Info */}
                           <div className="w-12 h-12 border-2 border-blue-500 rounded-full flex items-center justify-center bg-gray-200">
                             <span className="text-gray-500 text-xs">
@@ -583,7 +583,7 @@ const Dashboard = () => {
                 variants={cardVariants}
                 initial="hidden"
                 animate="visible"
-                className="relative z-10 w-[490px] md:scale-100 scale-90 transition-transform duration-400 ease-out md:hover:scale-103 hover:scale-95 cursor-pointer overflow-hidden"
+                className="relative z-10 w-[490px] md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
               >
                 <Link to="/wallet" className="block">
                   <div className="bg-[#F7F7F7] rounded-lg">
@@ -621,7 +621,7 @@ const Dashboard = () => {
                             ))}
                           </tbody>
                         </table>
-                        <div className="flex justify-center mt-4">
+                        <div className="md:flex sm:flex hidden justify-center mt-4">
                           <img
                             src={walletPic}
                             alt="Illustration"
@@ -644,7 +644,7 @@ const Dashboard = () => {
                 variants={cardVariants}
                 initial="hidden"
                 animate="visible"
-                className="relative z-10 w-[490px] md:scale-100 scale-90 transition-transform duration-400 ease-out md:hover:scale-103 hover:scale-95 cursor-pointer overflow-hidden"
+                className="relative z-10 w-[490px] md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
               >
                 <Link to="/changepass" className="block">
                   <div className="bg-[#F7F7F7] rounded-lg">
@@ -681,7 +681,7 @@ const Dashboard = () => {
                               disabled
                             />
                           </div>
-                          <div className="flex justify-center mt-4">
+                          <div className="md:flex sm:flex hidden justify-center mt-4">
                             <img
                               src={LadyPic}
                               alt="Illustration"
