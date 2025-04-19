@@ -230,6 +230,9 @@ export default function ProfileForm() {
 
       dispatch(setProfile(localProfile));
       notifySuccess("پروفایل با موفقیت بروزرسانی شد");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error: any) {
       const errorData = error;
       if (errorData.tag && errorData.errors?.length > 0) {
