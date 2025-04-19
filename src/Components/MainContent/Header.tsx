@@ -37,7 +37,7 @@ const Header = ({ showSearch = true }) => {
 
   return (
     <>
-      <header className="shadow w-full top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
+      <header className="shadow w-full fixed md:relative sm:relative top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
         {/* Left Section: Logo and Title */}
         <div className="flex items-center gap-3">
           <Link to="/main">
