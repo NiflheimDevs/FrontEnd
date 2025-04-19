@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
-import { BsArrowRight } from "react-icons/bs";
+import { BsArrowLeft, BsCashCoin } from "react-icons/bs";
+import { FaChartColumn, FaPeopleGroup } from "react-icons/fa6";
 import { Search } from "lucide-react";
 import bg from "../../assets/Main/bg.png";
 // import Frame from "../../assets/Main/Frame.png";
@@ -20,9 +21,7 @@ import image2 from "../../assets/Main/image2.webp";
 import image3 from "../../assets/Main/image3.webp";
 import image4 from "../../assets/Main/image4.webp";
 import image5 from "../../assets/Main/image5.webp";
-import Skill from "../../assets/Main/Skill.png";
-import Fee from "../../assets/Main/Fee.png";
-import Best from "../../assets/Main/best.png";
+import { FaMedal } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -70,30 +69,34 @@ const MainContent = () => {
     },
   ];
 
+  // #FFD700 طلایی
+  // #A6A6A6 نقره ای
+  // #CD7F32 برنزی
+
   const freelancerCards = [
     {
       projectname: "طراحی UI/UX",
       description: "طراح UI/UX برای اندروید و IOS",
       price: "5,000,000",
-      image: bg1,
+      image: <FaMedal size={22} color="#FFD700" />,
     },
     {
       projectname: "سایت فروش آنلاین",
       description: "فروشگاه آنلاین برای فروش لوازم خانگی",
       price: "45,000,000",
-      image: bg2,
+      image: <FaMedal size={22} color="#A6A6A6" />,
     },
     {
       projectname: "سایت تولید محتوا",
       description: "سایتی برای تولد محتوای خبری",
       price: "7,000,000",
-      image: bg3,
+      image: <FaMedal size={22} color="#A6A6A6" />,
     },
     {
       projectname: "نرم افزار وضعیت آب و هوا",
       description: "ساخت اپ موبایل برای نمایش آب و هوا",
       price: "340,000",
-      image: bg4,
+      image: <FaMedal size={22} color="#CD7F32" />,
     },
   ];
 
@@ -205,7 +208,7 @@ const MainContent = () => {
                 key={idx}
                 className="bg-white rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
               >
-                <div className="relative cursor-pointer mb-7 mt-1.5 mx-1.5 rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group">
+                <div className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group">
                   <img
                     src={cat.bg}
                     alt={cat.title}
@@ -252,23 +255,16 @@ const MainContent = () => {
               key={idx}
               className="bg-white rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px]"
             >
-              <img
-                src={
-                  card.image ||
-                  `https://source.unsplash.com/400x300/?freelancer,design,${idx}`
-                }
-                alt={card.projectname}
-                className="w-full h-48 object-cover rounded-t-xl"
-              />
-              <div className="p-4 pb-14">
-                <h4 className="text-md text-right font-medium">
+              <div className="w-full px-2 pt-2">{card.image}</div>
+              <div className="p-4 pb-9">
+                <h4 className="text-[18px] text-right font-medium">
                   {card.projectname}
                 </h4>
                 <p className="text-sm text-right mt-2 text-gray-600">
                   {card.description}
                 </p>
               </div>
-              <div className="text-right pb-3 px-4">
+              <div className="text-right pb-4 px-4">
                 <p className="text-lg font-bold text-blue-600">
                   {card.price} تومان
                 </p>
@@ -288,16 +284,9 @@ const MainContent = () => {
             {freelancerCards.map((card, idx) => (
               <SwiperSlide key={idx}>
                 <div className="bg-white flex flex-col relative min-w-[350px]">
-                  <img
-                    src={
-                      card.image ||
-                      `https://source.unsplash.com/400x300/?freelancer,design,${idx}`
-                    }
-                    alt={card.projectname}
-                    className="w-full h-48 object-cover rounded-t-xl"
-                  />
+                  <div className="w-full px-2 pt-2">{card.image}</div>
                   <div className="p-4 pb-2">
-                    <h4 className="text-md text-right font-medium">
+                    <h4 className="text-[18px] text-right font-medium">
                       {card.projectname}
                     </h4>
                     <p className="text-sm text-right text-gray-600 mt-2">
@@ -373,7 +362,7 @@ const MainContent = () => {
                         {freelancer.role}
                       </p>
                     </div>
-                    <BsArrowRight
+                    <BsArrowLeft
                       className="text-blue-500 cursor-pointer"
                       size={26}
                     />
@@ -411,7 +400,7 @@ const MainContent = () => {
                         {freelancer.role}
                       </p>
                     </div>
-                    <BsArrowRight
+                    <BsArrowLeft
                       className="text-blue-500 cursor-pointer"
                       size={26}
                     />
@@ -435,42 +424,35 @@ const MainContent = () => {
         </div>
 
         {/* Benefits */}
-        <div className="flex justify-center w-full px-4 mt-25 mb-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-[1440px]">
-            {[
-              {
-                icon: Skill,
-                title: "مهارت‌های کاربردی",
-                description:
-                  "یادگیری روش‌ها، فرایندها و بهترین شیوه‌ها برای بهبود فوری عملکرد شما",
-              },
-              {
-                icon: Best,
-                title: "یادگیری از بهترین‌ها",
-                description:
-                  "دوره‌هایی با نیازهای حرفه‌ای شما طراحی شده و توسط متخصصان منتخب صنعت ارائه می‌شوند",
-              },
-              {
-                icon: Fee,
-                title: "بدون هزینه اشتراک",
-                description:
-                  "فقط برای دوره‌هایی که می‌خواهید پرداخت کنید، بدون هزینه‌های ماهانه. هزینه را از قبل بدانید",
-              },
-            ].map((benefit, idx) => (
-              <div key={idx} className="flex flex-col items-center text-center">
-                <img
-                  src={benefit.icon}
-                  alt={benefit.title}
-                  className="w-12 h-12 mb-4"
-                />
-                <h3 className="text-[20px] font-semibold text-[#252525] leading-tight">
-                  {benefit.title}
-                </h3>
-                <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
-                  {benefit.description}
-                </p>
-              </div>
-            ))}
+        <div className="flex justify-center w-full px-4 mt-25">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full md:scale-97 sm:scale-95 scale-93 ease-in-out duration-300 transition-all max-w-[1440px]">
+            <div className="flex flex-col items-center text-center">
+              <BsCashCoin size={120} color="#808080" />
+              <h3 className="text-[20px] mt-2 font-semibold text-[#252525] leading-tight">
+                قیمت گذاری مناسب
+              </h3>
+              <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
+                با سیستم مناقصه، مناسب ترین قیمت رو پیدا کن!
+              </p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <FaPeopleGroup size={120} color="#808080" />
+              <h3 className="text-[20px] mt-2 font-semibold text-[#252525] leading-tight">
+                جمعی برای بهترین ها
+              </h3>
+              <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
+                با بهترین افراد در هر حوزه آشنا شو!
+              </p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <FaChartColumn size={120} color="#808080" />
+              <h3 className="text-[20px] mt-2 font-semibold text-[#252525] leading-tight">
+                سنجش مهارت ها
+              </h3>
+              <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
+                مناسب ترین مهارت رو براساس نیازمندی انتخاب کن
+              </p>
+            </div>
           </div>
         </div>
       </section>
