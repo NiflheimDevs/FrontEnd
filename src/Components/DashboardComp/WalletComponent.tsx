@@ -302,7 +302,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
 
   const renderSkeleton = () => (
     <div className="animate-pulse">
-      <div className="flex flex-col md:flex-row justify-between items-start mt-8 space-y-4 md:space-y-0 md:space-x-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:mt-8 sm:mt-8 mt-14 px-4 space-y-4 md:space-y-0 md:space-x-4">
         <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
           <Skeleton
             width="100%"
@@ -325,61 +325,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         <div className="w-full md:w-2/3 bg-white p-6 rounded-lg shadow-md">
           <Skeleton
             width="100%"
-            height="32px"
+            height="160px"
             className="shiny-skeleton mb-4"
           />
-          <table className="w-full text-center shiny-skeleton">
-            <thead>
-              <tr className="border-b">
-                <th>
-                  <Skeleton
-                    className="shiny-skeleton"
-                    width="100%"
-                    height="24px"
-                  />
-                </th>
-                <th>
-                  <Skeleton
-                    className="shiny-skeleton"
-                    width="100%"
-                    height="24px"
-                  />
-                </th>
-                <th>
-                  <Skeleton
-                    className="shiny-skeleton"
-                    width="100%"
-                    height="24px"
-                  />
-                </th>
-                <th>
-                  <Skeleton
-                    className="shiny-skeleton"
-                    width="100%"
-                    height="24px"
-                  />
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {Array.from({ length: transactionsPerPage }).map((_, index) => (
-                <tr key={index} className="border-b">
-                  <td>
-                    <Skeleton width="100%" height="24px" />
-                  </td>
-                  <td>
-                    <Skeleton width="100%" height="24px" />
-                  </td>
-                  <td>
-                    <Skeleton width="100%" height="24px" />
-                  </td>
-                  <td>
-                    <Skeleton width="100%" height="24px" />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <table className="w-full text-center shiny-skeleton"></table>
           <div className="flex justify-center items-center mt-6 gap-2">
             <Skeleton className="shiny-skeleton" width="64px" height="32px" />
             {Array.from({ length: 3 }).map((_, index) => (
