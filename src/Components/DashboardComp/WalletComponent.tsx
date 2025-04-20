@@ -402,8 +402,9 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                       <td className="py-2">{transaction.activity}</td>
                       <td className="py-2">{transaction.description || "-"}</td>
                       <td
-                        className={`py-2 ${transaction.amount > 0 ? "text-green-600" : "text-red-600"}`}
-                      >
+                        className={`py-2 ${transaction.activity ==  "واریز" ? "text-green-600" : "text-red-600"}`}
+                        //className={`py-2 ${transaction.amount > 0 ? "text-green-600" : "text-red-600"}`}
+                        >
                         {transaction.amount?.toLocaleString() || "0"}
                       </td>
                     </tr>
