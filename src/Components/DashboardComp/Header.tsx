@@ -4,14 +4,19 @@ import SearchIcon from "@/assets/Dashboard/Search.svg";
 import Mail from "@/assets/Dashboard/Mail.svg";
 import FAQ from "@/assets/Dashboard/Faq.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
-import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { CgProfile } from "react-icons/cg";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 export default function Header({ toggleSidebar }: any) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const profilePicture = useSelector(
+    (state: RootState) => state.profile.profile
+  );
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -99,12 +104,20 @@ export default function Header({ toggleSidebar }: any) {
           </button>
           <Link to="/profile" className="flex justify-center items-center">
             <button className="w-fit h-fit cursor-pointer">
-              <img
-                src={ProfileDefault}
-                className="rounded-full object-cover min-w-8 pointer-events-none"
-                alt="Profile"
-                tabIndex={-1}
-              />
+              {profilePicture ? (
+                <img
+                  src={profilePicture}
+                  className="rounded-full h-[36px] w-[36px] object-cover min-w-8 pointer-events-none border-2 border-blue-500"
+                  alt="Profile"
+                  tabIndex={-1}
+                />
+              ) : (
+                <CgProfile
+                  color="#707070"
+                  className="rounded-full object-cover min-w-8 h-[32px] w-[32px] pointer-events-none"
+                  tabIndex={-1}
+                />
+              )}
             </button>
           </Link>
         </div>
