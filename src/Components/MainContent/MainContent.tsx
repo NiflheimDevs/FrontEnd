@@ -279,7 +279,8 @@ const MainContent = () => {
           <>
             <div className="md:flex sm:flex hidden flex-wrap justify-center gap-8 px-6 max-w-7xl mx-auto">
               {projectCards.map((card) => (
-                <div
+                <Link
+                  to={`/detail/${card.project_id}`}
                   key={card.project_id}
                   className="bg-white rounded-xl box-shadow-custom flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px]"
                 >
@@ -297,7 +298,7 @@ const MainContent = () => {
                       {card.price}
                     </p>
                   </div> */}
-                </div>
+                </Link>
               ))}
             </div>
             <div className="md:hidden sm:hidden px-6">
@@ -311,7 +312,10 @@ const MainContent = () => {
               >
                 {projectCards.map((card) => (
                   <SwiperSlide key={card.project_id}>
-                    <div className="bg-white flex flex-col relative min-w-[350px]">
+                    <Link
+                      to={`/detail/${card.project_id}`}
+                      className="bg-white flex flex-col relative min-w-[350px]"
+                    >
                       <div className="w-full px-2 pt-2">{card.image}</div>
                       <div className="p-4 pb-2">
                         <h4 className="text-[18px] text-right font-medium">
@@ -326,7 +330,7 @@ const MainContent = () => {
                           {card.price}
                         </p>
                       </div> */}
-                    </div>
+                    </Link>
                   </SwiperSlide>
                 ))}
               </Swiper>
