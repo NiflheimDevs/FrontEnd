@@ -1,13 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BsArrowLeft, BsCashCoin } from "react-icons/bs";
-import { FaChartColumn, FaPeopleGroup } from "react-icons/fa6";
+import { FaChartColumn, FaPeopleGroup, FaMedal } from "react-icons/fa6";
 import { Search } from "lucide-react";
 import bg from "../../assets/Main/bg.png";
-// import Frame from "../../assets/Main/Frame.png";
-// import bg1 from "../../assets/Main/bg1.png";
-// import bg2 from "../../assets/Main/bg2.jpg";
-// import bg3 from "../../assets/Main/bg3.jpg";
-// import bg4 from "../../assets/Main/bg4.jpg";
 import sourcecode from "../../assets/Main/source-code.png";
 import design from "../../assets/Main/design.png";
 import graphreport from "../../assets/Main/graph-report.png";
@@ -21,26 +16,37 @@ import image2 from "../../assets/Main/image2.webp";
 import image3 from "../../assets/Main/image3.webp";
 import image4 from "../../assets/Main/image4.webp";
 import image5 from "../../assets/Main/image5.webp";
-import { FaMedal } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
-
+import { GetLandingProjects } from "../../API";
 import "../../../node_modules/swiper/swiper.css";
 import "../../../node_modules/swiper/modules/pagination.css";
 import "../../../node_modules/swiper/modules/navigation.css";
 import "../../../node_modules/swiper/modules/autoplay.css";
-// Import Swiper styles
-// import "swiper/css";
-// import "swiper/css/pagination";
-// import "swiper/css/navigation";
+import { ReactElement } from "react";
+
+// تعریف اینترفیس برای ProjectCard
+interface ProjectCard {
+  project_id: number;
+  projectname: string;
+  description: string;
+  price: string;
+  image: ReactElement;
+}
 
 const MainContent = () => {
   const heroStyle = {
     height: `calc(100vh - 76px)`,
   };
   const categoriesRef = useRef<HTMLDivElement | null>(null);
+
+  const truncateText = (text: string, maxLength: number) => {
+    return text.length > maxLength
+      ? text.substring(0, maxLength) + "..."
+      : text;
+  };
 
   const categories = [
     {
@@ -69,36 +75,50 @@ const MainContent = () => {
     },
   ];
 
-  // #FFD700 طلایی
-  // #A6A6A6 نقره ای
-  // #CD7F32 برنزی
+  const [projectCards, setProjectCards] = useState<ProjectCard[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const freelancerCards = [
-    {
-      projectname: "طراحی UI/UX",
-      description: "طراح UI/UX برای اندروید و IOS",
-      price: "5,000,000",
-      image: <FaMedal size={22} color="#FFD700" />,
-    },
-    {
-      projectname: "سایت فروش آنلاین",
-      description: "فروشگاه آنلاین برای فروش لوازم خانگی",
-      price: "45,000,000",
-      image: <FaMedal size={22} color="#A6A6A6" />,
-    },
-    {
-      projectname: "سایت تولید محتوا",
-      description: "سایتی برای تولد محتوای خبری",
-      price: "7,000,000",
-      image: <FaMedal size={22} color="#A6A6A6" />,
-    },
-    {
-      projectname: "نرم افزار وضعیت آب و هوا",
-      description: "ساخت اپ موبایل برای نمایش آب و هوا",
-      price: "340,000",
-      image: <FaMedal size={22} color="#CD7F32" />,
-    },
-  ];
+  // تابع برای تعیین مدال بر اساس label
+  const getMedalIcon = (label: string): ReactElement => {
+    switch (label) {
+      case "Urgent":
+        return <FaMedal size={22} color="#FFD700" />;
+      case "Bold":
+        return <FaMedal size={22} color="#A6A6A6" />;
+      case "Free":
+        return <FaMedal size={22} color="#CD7F32" />;
+      default:
+        return <FaMedal size={22} color="#A6A6A6" />;
+    }
+  };
+
+  // فراخوانی API
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setLoading(true);
+        const response = await GetLandingProjects();
+        const formattedProjects: ProjectCard[] = response.map(
+          (project: any) => ({
+            project_id: project.project_id,
+            projectname: project.title || "بدون عنوان",
+            description: project.descriptoin || "بدون توضیحات",
+            price: project.price || "نامشخص",
+            image: getMedalIcon(project.label),
+          })
+        );
+        setProjectCards(formattedProjects);
+      } catch (err) {
+        setError("خطا در دریافت پروژه‌ها");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const trendingFreelancers = [
     {
@@ -138,7 +158,7 @@ const MainContent = () => {
   );
   const totalPages = Math.ceil(trendingFreelancers.length / freelancersPerPage);
 
-  const handlePageChange = (pageNumber: any) => {
+  const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
@@ -157,7 +177,7 @@ const MainContent = () => {
           <input
             type="text"
             placeholder="جستجو"
-            className="w-full py-4 pr-14 pl-6 rounded-full bg-gray-300 hover:bg-gray-200 text-black shadow-md focus:outline-none duration-300 transition-all ease-in-out"
+            className="w-full py-4 pr-14 pl-6 rounded-full bg-gray-300 hover:bg-gray-200 text-black box-shadow-custom focus:outline-none duration-300 transition-all ease-in-out"
           />
           <button className="absolute right-13 top-1/2 -translate-y-1/2 text-gray-600">
             <Search size={24} />
@@ -201,14 +221,14 @@ const MainContent = () => {
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[Pagination, Autoplay]}
-            className="mySwiper rounded-xl shadow-md hover:shadow-xl"
+            className="mySwiper rounded-xl box-shadow-custom"
           >
             {categories.map((cat, idx) => (
               <SwiperSlide
                 key={idx}
-                className="bg-white rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all"
+                className="bg-white rounded-xl box-shadow-custom duration-300 ease-in-out transition-all"
               >
-                <div className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group">
+                <div className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center group">
                   <img
                     src={cat.bg}
                     alt={cat.title}
@@ -239,7 +259,7 @@ const MainContent = () => {
       <section className="w-full py-12 rounded-3xl">
         <div className="flex justify-between items-center px-6 max-w-7xl mx-auto mb-6">
           <h2 className="md:text-2xl sm:text-2xl text-[18px] font-bold text-[#333] duration-300 ease-in-out transition-all">
-            جدیدترین پروژه ها
+            جدیدترین پروژه‌ها
           </h2>
           <Link
             to="/"
@@ -249,84 +269,71 @@ const MainContent = () => {
           </Link>
         </div>
 
-        <div className="md:flex sm:flex hidden flex-wrap justify-center gap-8 px-6 max-w-7xl mx-auto">
-          {freelancerCards.map((card, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-xl shadow-md hover:shadow-xl duration-300 ease-in-out transition-all flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px]"
-            >
-              <div className="w-full px-2 pt-2">{card.image}</div>
-              <div className="p-4 pb-9">
-                <h4 className="text-[18px] text-right font-medium">
-                  {card.projectname}
-                </h4>
-                <p className="text-sm text-right mt-2 text-gray-600">
-                  {card.description}
-                </p>
-              </div>
-              <div className="text-right pb-4 px-4">
-                <p className="text-lg font-bold text-blue-600">
-                  {card.price} تومان
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="md:hidden sm:hidden px-6">
-          <Swiper
-            slidesPerView={1}
-            spaceBetween={20}
-            pagination={{ clickable: true }}
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
-            modules={[Pagination, Autoplay]}
-            className="mySwiper rounded-xl shadow-md hover:shadow-xl"
-          >
-            {freelancerCards.map((card, idx) => (
-              <SwiperSlide key={idx}>
-                <div className="bg-white flex flex-col relative min-w-[350px]">
+        {loading ? (
+          <p className="text-center">در حال بارگذاری...</p>
+        ) : error ? (
+          <p className="text-center text-red-500">{error}</p>
+        ) : projectCards.length === 0 ? (
+          <p className="text-center">هیچ پروژه‌ای یافت نشد</p>
+        ) : (
+          <>
+            <div className="md:flex sm:flex hidden flex-wrap justify-center gap-8 px-6 max-w-7xl mx-auto">
+              {projectCards.map((card) => (
+                <div
+                  key={card.project_id}
+                  className="bg-white rounded-xl box-shadow-custom flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px]"
+                >
                   <div className="w-full px-2 pt-2">{card.image}</div>
-                  <div className="p-4 pb-2">
+                  <div className="p-4 pb-9">
                     <h4 className="text-[18px] text-right font-medium">
                       {card.projectname}
                     </h4>
-                    <p className="text-sm text-right text-gray-600 mt-2">
-                      {card.description}
+                    <p className="text-sm text-right mt-2 text-gray-600">
+                      {truncateText(card.description, 200)}
                     </p>
                   </div>
-                  <div className="text-right mb-4 p-4">
+                  {/* <div className="text-right pb-4 px-4">
                     <p className="text-lg font-bold text-blue-600">
-                      {card.price} تومان
+                      {card.price}
                     </p>
-                  </div>
+                  </div> */}
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+              ))}
+            </div>
+            <div className="md:hidden sm:hidden px-6">
+              <Swiper
+                slidesPerView={1}
+                spaceBetween={20}
+                pagination={{ clickable: true }}
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                modules={[Pagination, Autoplay]}
+                className="mySwiper rounded-xl box-shadow-custom"
+              >
+                {projectCards.map((card) => (
+                  <SwiperSlide key={card.project_id}>
+                    <div className="bg-white flex flex-col relative min-w-[350px]">
+                      <div className="w-full px-2 pt-2">{card.image}</div>
+                      <div className="p-4 pb-2">
+                        <h4 className="text-[18px] text-right font-medium">
+                          {card.projectname}
+                        </h4>
+                        <p className="text-sm text-right text-gray-600 mt-2">
+                          {truncateText(card.description, 200)}
+                        </p>
+                      </div>
+                      {/* <div className="text-right mb-4 p-4">
+                        <p className="text-lg font-bold text-blue-600">
+                          {card.price}
+                        </p>
+                      </div> */}
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </>
+        )}
       </section>
-
-      {/* Newsletter Section */}
-      {/* <section
-        className="w-full py-25 text-white text-center mt-8 mb-8"
-        style={{
-          backgroundImage: `url(${Frame})`,
-        }}
-      >
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">
-          <span className="flex justify-center">همیشه در جریان جدیدترین</span>
-          <span className="block">فرصت‌ها و اخبار ما باشید 🚀</span>
-        </h2>
-        <div className="relative max-w-xl mx-auto">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="w-full border border-black py-4 text-left px-6 rounded-full text-black focus:outline-none"
-          />
-          <button className="absolute right-[1px] bottom-[1px] top-[1px] bg-blue-500 text-white font-bold px-6 rounded-full hover:bg-blue-700 transition">
-            Subscribe
-          </button>
-        </div>
-      </section> */}
 
       {/* Trending Freelancers */}
       <section className="w-full md:mb-24 mb-12 py-10">
@@ -380,7 +387,7 @@ const MainContent = () => {
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[Pagination, Autoplay]}
-            className="mySwiper rounded-xl shadow-md hover:shadow-xl"
+            className="mySwiper rounded-xl box-shadow-custom"
           >
             {trendingFreelancers.map((freelancer, index) => (
               <SwiperSlide key={index}>
@@ -427,30 +434,30 @@ const MainContent = () => {
         <div className="flex justify-center w-full px-4 mt-25">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full md:scale-97 sm:scale-95 scale-93 ease-in-out duration-300 transition-all max-w-[1440px]">
             <div className="flex flex-col items-center text-center">
-              <BsCashCoin size={120} color="#808080" />
+              <BsCashCoin size={117} color="#808080" />
               <h3 className="text-[20px] mt-2 font-semibold text-[#252525] leading-tight">
-                قیمت گذاری مناسب
+                قیمت‌گذاری مناسب
               </h3>
               <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
-                با سیستم مناقصه، مناسب ترین قیمت رو پیدا کن!
+                با سیستم مناقصه، مناسب‌ترین قیمت رو برای انجام هر پروژه پیدا کن!
               </p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <FaPeopleGroup size={120} color="#808080" />
+              <FaPeopleGroup size={117} color="#808080" />
               <h3 className="text-[20px] mt-2 font-semibold text-[#252525] leading-tight">
-                جمعی برای بهترین ها
+                جمعی برای بهترین‌ها
               </h3>
               <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
-                با بهترین افراد در هر حوزه آشنا شو!
+                با بهترین افراد در هر حوزه آشنا شو و باهاشون ارتباط بگیر!
               </p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <FaChartColumn size={120} color="#808080" />
+              <FaChartColumn size={117} color="#808080" />
               <h3 className="text-[20px] mt-2 font-semibold text-[#252525] leading-tight">
-                سنجش مهارت ها
+                سنجش مهارت‌ها
               </h3>
               <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
-                مناسب ترین مهارت رو براساس نیازمندی انتخاب کن
+                مناسب‌ترین توانایی و مهارت رو بر اساس نیازمندی انتخاب کن!
               </p>
             </div>
           </div>

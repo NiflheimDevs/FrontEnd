@@ -180,6 +180,15 @@ export const GetUser = async () => {
   }
 };
 
+export const GetLandingProjects = async () => {
+  try {
+    const response = await apiClient.get("/landing/projects");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const PutCareer = async (userData: any) => {
   try {
     const response = await apiClient.put("/user/career", userData);
