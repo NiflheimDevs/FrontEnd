@@ -117,6 +117,7 @@ export default function ProfileForm() {
       try {
         const apiData = await GetUser();
         const mappedProfile = await mapApiDataToProfile(apiData);
+        console.log(apiData);
         setLocalProfile(mappedProfile);
         dispatch(setProfile(mappedProfile));
         setIsLoading(false);
@@ -195,7 +196,7 @@ export default function ProfileForm() {
       const LocalProfile = new FormData();
       if (profilePictureFile) {
         LocalProfile.append("file", profilePictureFile);
-        if (localProfile.profile) {
+        if (localProfile.high_profile) {
           await Promise.all([
             PutUser(userData),
             PutTag(tagData),
@@ -212,7 +213,7 @@ export default function ProfileForm() {
           ]);
         }
       } else {
-        if (localProfile.profile) {
+        if (localProfile.high_profile) {
           await Promise.all([
             PutUser(userData),
             PutTag(tagData),

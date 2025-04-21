@@ -15,7 +15,7 @@ export default function Header({ toggleSidebar }: any) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const profilePicture = useSelector(
-    (state: RootState) => state.profile.profile
+    (state: RootState) => state.profile.low_profile
   );
 
   const openModal = () => setIsModalOpen(true);

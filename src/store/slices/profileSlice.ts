@@ -28,7 +28,8 @@ export interface ProfileState {
   skillProficiency: { [key: string]: string };
   workExperiences: WorkExperience[];
   resume?: File | null;
-  profile?: string;
+  high_profile?: string;
+  low_profile?: string;
   SessionID?: string;
 }
 
@@ -43,7 +44,8 @@ const initialState: ProfileState = {
   skillProficiency: {},
   workExperiences: [],
   resume: null,
-  profile: "",
+  high_profile: "",
+  low_profile: "",
   SessionID: "",
 };
 

@@ -34,7 +34,8 @@ export interface Profile {
   skillProficiency: { [key: string]: string };
   workExperiences: WorkExperience[];
   resume: File | null;
-  profile?: string;
+  high_profile?: string;
+  low_profile?: string;
   SessionID?: string;
 }
 
@@ -50,7 +51,8 @@ export const initialProfile: Profile = {
   skillProficiency: {},
   workExperiences: [],
   resume: null,
-  profile: "",
+  high_profile: "",
+  low_profile: "",
   SessionID: "",
 };
 
@@ -113,7 +115,8 @@ export const mapApiDataToProfile = async (apiData: any): Promise<Profile> => {
         }))
       : [],
     resume: initialProfile.resume,
-    profile: apiData.info?.profile || initialProfile.profile,
+    low_profile: apiData.info?.low_profile || initialProfile.low_profile,
+    high_profile: apiData.info?.high_profile || initialProfile.high_profile,
   };
 };
 
