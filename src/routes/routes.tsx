@@ -15,7 +15,7 @@ import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
 import Wallet from "../pages/Wallet/Wallet";
 import Chat from "../pages/Chat";
 import DashboardMain from "../pages/Dashboard";
-import ProjectCreationConfirmation from '../pages/CreateProject/ProjectCreationConfirmation';
+import ProjectCreationConfirmation from "../pages/CreateProject/ProjectCreationConfirmation";
 import CreateProject from "../pages/CreateProject/CreateProject";
 import InsufficientBalance from "../Components/DashboardComp/InsufficientBalance";
 import EditProject from "../pages/EditProject/EditProject";
@@ -31,7 +31,7 @@ const isAuthenticated = () => {
 };
 
 // Wrapper component to redirect authenticated users away from public routes
-const PublicRoute = ({ children }:any) => {
+const PublicRoute = ({ children }: any) => {
   return isAuthenticated() ? <Navigate to="/dashboard" replace /> : children;
 };
 
@@ -46,7 +46,7 @@ export const publicRoutes = [
     ),
   },
   { path: "/aboutUs", element: <AboutUs /> },
-  { path: "/Main", element: <HomePage /> }, // Assuming homepage is public
+  { path: "/", element: <HomePage /> }, // Assuming homepage is public
   { path: "/forgetpassword", element: <ForgetPassword /> },
   {
     path: "/verify",
@@ -80,14 +80,14 @@ export const privateRoutes = [
   { path: "/ChangePass", element: <ChangePasswordManually /> },
   { path: "/project-created", element: <ProjectCreationConfirmation /> },
   { path: "/edit-project/:projectId", element: <EditProject /> },
-  { path: "/detail" , element : <ProjectDetail/>},
+  { path: "/detail", element: <ProjectDetail /> },
 ];
 
 // Router configuration
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/Main" replace />, // Default redirect
+    element: <HomePage />, // Default redirect
   },
   ...publicRoutes, // Spread public routes
   {

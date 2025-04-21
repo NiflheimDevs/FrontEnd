@@ -45,7 +45,7 @@ const Header = ({ showSearch = true }) => {
       <header className="shadow w-full fixed md:relative sm:relative top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
         {/* Left Section: Logo and Title */}
         <div className="flex items-center gap-3">
-          <Link to="/main">
+          <Link to="/">
             <button className="flex w-fit h-fit items-center cursor-pointer">
               <label className="text-lg font-semibold md:flex sm:flex hidden pointer-events-none">
                 بیدلنسر

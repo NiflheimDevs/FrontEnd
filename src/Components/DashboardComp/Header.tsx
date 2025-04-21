@@ -52,7 +52,7 @@ export default function Header({ toggleSidebar }: any) {
 
           {/* Logo and Title */}
 
-          <Link to="/main">
+          <Link to="/">
             <button className="flex w-fit h-fit items-center cursor-pointer">
               <label className="text-lg font-semibold md:flex sm:flex hidden pointer-events-none">
                 بیدلنسر
