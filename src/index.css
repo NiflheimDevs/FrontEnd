@@ -44,6 +44,15 @@ html {
   animation: shake 0.8s ease-in-out;
 }
 
+.box-shadow-custom {
+  box-shadow: 1px 1px 10px 2px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.box-shadow-custom:hover {
+  box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.18);
+}
+
 .shiny-skeleton {
   position: relative;
   overflow: hidden;
