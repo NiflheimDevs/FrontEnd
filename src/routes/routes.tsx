@@ -80,7 +80,7 @@ export const privateRoutes = [
   { path: "/ChangePass", element: <ChangePasswordManually /> },
   { path: "/project-created", element: <ProjectCreationConfirmation /> },
   { path: "/edit-project/:projectId", element: <EditProject /> },
-  { path: "/detail" , element : <ProjectDetail/>},
+  { path: "/detail/:project_id", element: <ProjectDetail /> },
 ];
 
 // Router configuration
