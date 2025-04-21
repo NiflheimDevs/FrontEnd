@@ -29,9 +29,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
   const [isWithdrawModalOpen, setIsWithdrawModalOpen] = useState(false);
-  const [amount, setAmount] = useState("");
+  const [depositAmount, setDepositAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
   const [description, setDescription] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<string[]>([]);
   const transactionsPerPage = 5;
 
   const depositModalRef = useRef<HTMLDivElement>(null);
@@ -45,6 +46,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         !depositModalRef.current.contains(event.target as Node)
       ) {
         setIsDepositModalOpen(false);
+        setErrors([]);
       }
 
       if (
@@ -53,6 +55,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         !withdrawModalRef.current.contains(event.target as Node)
       ) {
         setIsWithdrawModalOpen(false);
+        setErrors([]);
       }
     };
 
@@ -77,8 +80,6 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
     setIsLoading(true);
     try {
       const offset = (currentPage - 1) * transactionsPerPage;
-      //console.log(`Fetching page ${currentPage} with offset ${offset}`);
-
       const response = await getTransactions(
         offset,
         transactionsPerPage,
@@ -86,9 +87,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         "desc",
         "all"
       );
-
-      //console.log(`Got ${response.length} transactions for page ${currentPage}`);
-
+      console.log(response);
       const formattedTransactions = response.map((tx: any, index: number) => ({
         id: tx.id || index,
         date: tx.date,
@@ -98,7 +97,6 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       }));
 
       setTransactions(formattedTransactions);
-
       if (currentPage === 1) {
         if (response.length < transactionsPerPage) {
           setTotalTransactions(response.length);
@@ -130,56 +128,75 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
     fetchTransactions();
   }, [currentPage]);
 
-  const handleDeposit = async () => {
-    setError("");
+  const validateAmount = (amount: string, isWithdraw: boolean = false) => {
+    const newErrors: string[] = [];
+
+    // بررسی مقدار بیشتر از 10,000,000
+    if (!isWithdraw && amount && parseFloat(amount) > 10_000_000) {
+      newErrors.push("مبلغ نمی‌تواند بیشتر از ۱۰,۰۰۰,۰۰۰ تومان باشد.");
+    }
+
+    // بررسی مقدار معتبر
     if (!amount || parseFloat(amount) <= 0) {
-      setError("لطفا مبلغ معتبر وارد کنید");
+      newErrors.push("لطفاً مبلغ معتبر وارد کنید.");
+    }
+
+    // بررسی موجودی برای برداشت
+    if (isWithdraw && parseFloat(amount) > balance) {
+      newErrors.push("موجودی کافی نیست.");
+    }
+
+    setErrors(newErrors);
+    return newErrors.length === 0;
+  };
+
+  const handleDeposit = async () => {
+    if (!validateAmount(depositAmount)) {
       return;
     }
 
     setIsLoading(true);
     try {
       await depositToWallet({
-        amount: parseFloat(amount),
+        amount: parseFloat(depositAmount),
         description: description || undefined,
       });
       setIsDepositModalOpen(false);
-      setAmount("");
+      setDepositAmount("");
       setDescription("");
+      setErrors([]);
       await fetchBalance();
       await fetchTransactions();
     } catch (error: any) {
-      setError(typeof error === "string" ? error : "خطا در واریز به کیف پول");
+      setErrors([
+        typeof error === "string" ? error : "خطا در واریز به کیف پول",
+      ]);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleWithdraw = async () => {
-    setError("");
-    if (!amount || parseFloat(amount) <= 0) {
-      setError("لطفا مبلغ معتبر وارد کنید");
-      return;
-    }
-
-    if (parseFloat(amount) > balance) {
-      setError("موجودی کافی نیست");
+    if (!validateAmount(withdrawAmount, true)) {
       return;
     }
 
     setIsLoading(true);
     try {
       await withdrawFromWallet({
-        amount: parseFloat(amount),
+        amount: parseFloat(withdrawAmount),
         description: description || undefined,
       });
       setIsWithdrawModalOpen(false);
-      setAmount("");
+      setWithdrawAmount("");
       setDescription("");
+      setErrors([]);
       await fetchBalance();
       await fetchTransactions();
     } catch (error: any) {
-      setError(typeof error === "string" ? error : "خطا در برداشت از کیف پول");
+      setErrors([
+        typeof error === "string" ? error : "خطا در برداشت از کیف پول",
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -189,20 +206,17 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
 
   const goToNextPage = () => {
     if (currentPage < totalPages) {
-      console.log(`Moving from page ${currentPage} to ${currentPage + 1}`);
       setCurrentPage(currentPage + 1);
     }
   };
 
   const goToPreviousPage = () => {
     if (currentPage > 1) {
-      console.log(`Moving from page ${currentPage} to ${currentPage - 1}`);
       setCurrentPage(currentPage - 1);
     }
   };
 
   const goToPage = (pageNumber: number) => {
-    console.log(`Moving from page ${currentPage} to ${pageNumber}`);
     setCurrentPage(pageNumber);
   };
 
@@ -236,7 +250,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
           currentPage === 1
             ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
             : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50"
-        } rounded-md transition-all duration-300 font-medium ${currentPage > 2 ? "hidden" : "block"} md:block sm:block`}
+        } rounded-md transition-all duration-300 font-medium`}
       >
         1
       </button>
@@ -402,9 +416,8 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                       <td className="py-2">{transaction.activity}</td>
                       <td className="py-2">{transaction.description || "-"}</td>
                       <td
-                        className={`py-2 ${transaction.activity ==  "واریز" ? "text-green-600" : "text-red-600"}`}
-                        //className={`py-2 ${transaction.amount > 0 ? "text-green-600" : "text-red-600"}`}
-                        >
+                        className={`py-2 ${transaction.activity === "واریز" ? "text-green-600" : "text-red-600"}`}
+                      >
                         {transaction.amount?.toLocaleString() || "0"}
                       </td>
                     </tr>
@@ -477,7 +490,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         )}
       </div>
 
-      {/* Deposit */}
+      {/* Deposit Modal */}
       {isDepositModalOpen && (
         <AnimatePresence>
           {isDepositModalOpen && (
@@ -485,16 +498,36 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
               <motion.div
                 ref={depositModalRef}
                 className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
-                initial={{ scale: 0.8, y: 50, opacity: 0 }}
+                initial={{ scale: 1, y: 50, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
-                exit={{ scale: 0.8, y: 50, opacity: 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+                exit={{ scale: 1, y: 50, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "circOut" }}
               >
                 <h2 className="text-xl font-bold mb-4">واریز به کیف پول</h2>
-                {error && (
-                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                    {error}
-                  </div>
+                {errors.length > 0 && (
+                  <motion.ul
+                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3, ease: "circOut" }}
+                  >
+                    {errors.map((error, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          delay: index * 0.1,
+                          duration: 0.2,
+                          ease: "circOut",
+                        }}
+                        className="list-disc list-inside"
+                      >
+                        {error}
+                      </motion.li>
+                    ))}
+                  </motion.ul>
                 )}
                 <div className="mb-4">
                   <label htmlFor="amount" className="block text-gray-700 mb-2">
@@ -503,9 +536,16 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   <input
                     type="number"
                     id="amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 no-spinner"
+                    value={depositAmount}
+                    onChange={(e) => {
+                      setDepositAmount(e.target.value);
+                      validateAmount(e.target.value);
+                    }}
+                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ${
+                      depositAmount && parseFloat(depositAmount) > 10_000_000
+                        ? "focus:ring-red-500 border-red-500"
+                        : "focus:ring-blue-500"
+                    } no-spinner`}
                   />
                 </div>
                 <div className="mb-4">
@@ -525,14 +565,28 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 </div>
                 <div className="flex justify-end space-x-2">
                   <button
-                    onClick={() => setIsDepositModalOpen(false)}
-                    className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-all ml-2"
+                    onClick={() => {
+                      setIsDepositModalOpen(false);
+                      setErrors([]);
+                    }}
+                    className="px-4 py-2 bg-gray-300 cursor-pointer text-gray-800 rounded-md hover:bg-gray-400 transition-all ml-2"
                   >
                     انصراف
                   </button>
                   <button
                     onClick={handleDeposit}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all"
+                    disabled={
+                      !!depositAmount && // Convert depositAmount to boolean (true if non-empty)
+                      (parseFloat(depositAmount) > 10_000_000 ||
+                        errors.length > 0)
+                    }
+                    className={`px-4 py-2 bg-blue-500 text-white rounded-md transition-all ${
+                      depositAmount &&
+                      (parseFloat(depositAmount) > 10_000_000 ||
+                        errors.length > 0)
+                        ? "opacity-70 cursor-not-allowed"
+                        : "hover:bg-blue-600 cursor-pointer"
+                    }`}
                   >
                     واریز
                   </button>
@@ -543,7 +597,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         </AnimatePresence>
       )}
 
-      {/* WithDraw */}
+      {/* Withdraw Modal */}
       {isWithdrawModalOpen && (
         <AnimatePresence>
           {isWithdrawModalOpen && (
@@ -551,16 +605,36 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
               <motion.div
                 ref={withdrawModalRef}
                 className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
-                initial={{ scale: 0.8, y: 50, opacity: 0 }}
+                initial={{ scale: 1, y: 50, opacity: 0 }}
                 animate={{ scale: 1, y: 0, opacity: 1 }}
-                exit={{ scale: 0.8, y: 50, opacity: 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+                exit={{ scale: 1, y: 50, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "circOut" }}
               >
                 <h2 className="text-xl font-bold mb-4">برداشت از کیف پول</h2>
-                {error && (
-                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                    {error}
-                  </div>
+                {errors.length > 0 && (
+                  <motion.ul
+                    className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3, ease: "circOut" }}
+                  >
+                    {errors.map((error, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          delay: index * 0.1,
+                          duration: 0.2,
+                          ease: "circOut",
+                        }}
+                        className="list-disc list-inside"
+                      >
+                        {error}
+                      </motion.li>
+                    ))}
+                  </motion.ul>
                 )}
                 <div className="mb-2">
                   <label className="block text-gray-700 mb-1">
@@ -580,9 +654,12 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   <input
                     type="number"
                     id="withdraw-amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 no-spinner"
+                    value={withdrawAmount}
+                    onChange={(e) => {
+                      setWithdrawAmount(e.target.value);
+                      validateAmount(e.target.value, true);
+                    }}
+                    className={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 no-spinner`}
                   />
                 </div>
                 <div className="mb-4">
@@ -602,14 +679,22 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 </div>
                 <div className="flex justify-end space-x-2">
                   <button
-                    onClick={() => setIsWithdrawModalOpen(false)}
+                    onClick={() => {
+                      setIsWithdrawModalOpen(false);
+                      setErrors([]);
+                    }}
                     className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-all ml-2"
                   >
                     انصراف
                   </button>
                   <button
                     onClick={handleWithdraw}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all"
+                    disabled={errors.length > 0}
+                    className={`px-4 py-2 bg-blue-500 text-white rounded-md transition-all ${
+                      errors.length > 0
+                        ? "opacity-70 cursor-not-allowed"
+                        : "hover:bg-blue-600 cursor-pointer"
+                    }`}
                   >
                     برداشت
                   </button>
