@@ -125,7 +125,6 @@ export default function ProfileForm() {
         notifyError(err.message || "خطا در بارگذاری اطلاعات کاربر");
       } finally {
         setIsLoading(false);
-        console.log("fetchUserData finished, isLoading set to false");
       }
     };
 
@@ -231,6 +230,9 @@ export default function ProfileForm() {
 
       dispatch(setProfile(localProfile));
       notifySuccess("پروفایل با موفقیت بروزرسانی شد");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error: any) {
       const errorData = error;
       if (errorData.tag && errorData.errors?.length > 0) {
@@ -316,9 +318,9 @@ export default function ProfileForm() {
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       className="lucide lucide-file-check-icon lucide-file-check"
                     >
                       <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />

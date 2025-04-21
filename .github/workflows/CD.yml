@@ -1,9 +1,6 @@
 name: CD
 
 on:
-  push:
-    branches:
-      - Feature-DeployRefactor
   pull_request:
     branches:
       - develop
@@ -77,7 +74,17 @@ jobs:
             cd /home/${{ secrets.SSH_USER }}/FrontEnd
             docker logout ghcr.io
             docker login ghcr.io -u ${{ secrets.USERNAME }} -p ${{ secrets.PAT }}
+
+            echo "📦 Pulling latest image..."
             docker compose pull
-            docker compose down --remove-orphans
-            docker compose up -d
+
+            echo "🧼 Stopping and removing old frontend container..."
+            docker compose down --remove-orphans || true
+
+            echo "🚀 Starting new container..."
+            docker compose up -d --remove-orphans
+
+            echo "🧹 Cleaning up unused images..."
             docker image prune -f
+
+            echo "✅ Deployment complete!"

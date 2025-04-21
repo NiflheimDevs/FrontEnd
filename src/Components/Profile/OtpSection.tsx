@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import OtpInput from "react-otp-input";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { PutPhoneVerifyOtp, PutPhoneSendOtp } from "../../API";
-import { Profile, useOtpTimer } from "./types";
+import { Profile } from "./types";
 import { useState } from "react";
 import React from "react";
 import Clock from "../../assets/Clock.svg";
@@ -10,6 +10,10 @@ import Clock_B from "../../assets/Clock_B.svg";
 import { errorMapper } from "../../pages/Error/Error";
 
 interface OtpSectionProps {
+  isScaled: boolean;
+  setIsScaled: React.Dispatch<React.SetStateAction<boolean>>;
+  timeLeft: number;
+  setTimeLeft: React.Dispatch<React.SetStateAction<number>>;
   showOtpSection: boolean;
   setShowOtpSection: React.Dispatch<React.SetStateAction<boolean>>;
   phoneNumber: string;
@@ -23,13 +27,13 @@ export default function OtpSection({
   phoneNumber,
   localProfile,
   setLocalProfile,
+  timeLeft,
+  setTimeLeft,
+  isScaled,
+  setIsScaled,
 }: OtpSectionProps) {
   const { error: notifyError, success: notifySuccess } = useNotification();
   const [token, setTokens] = useState<string>("");
-  const { timeLeft, setTimeLeft, isScaled, setIsScaled } = useOtpTimer(
-    120,
-    showOtpSection
-  );
 
   const HandleVerify = async () => {
     try {
@@ -61,7 +65,6 @@ export default function OtpSection({
       };
       const codeSession = await PutPhoneSendOtp(phoneData);
       setLocalProfile((prev) => ({ ...prev, SessionID: codeSession }));
-      console.log(codeSession, localProfile.SessionID, phoneData);
       setTimeLeft(120);
       setIsScaled(false);
       notifySuccess("کد تایید ارسال شد");
@@ -165,9 +168,9 @@ export default function OtpSection({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="lucide lucide-square-check-big"
               >
                 <path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h12.5" />

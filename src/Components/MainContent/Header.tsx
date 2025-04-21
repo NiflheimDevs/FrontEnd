@@ -4,17 +4,22 @@ import SearchIcon from "@/assets/Dashboard/Search.svg";
 import Mail from "@/assets/Dashboard/Mail.svg";
 import FAQ from "@/assets/Dashboard/Faq.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
-import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 import { IoMdPerson } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { CgProfile } from "react-icons/cg";
 
 const Header = ({ showSearch = true }) => {
   // Added showSearch prop with default true
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const token = localStorage.getItem("authToken");
+  const profilePicture = useSelector(
+    (state: RootState) => state.profile.profile
+  );
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -37,10 +42,10 @@ const Header = ({ showSearch = true }) => {
 
   return (
     <>
-      <header className="shadow w-full top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
+      <header className="shadow w-full fixed md:relative sm:relative top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
         {/* Left Section: Logo and Title */}
         <div className="flex items-center gap-3">
-          <Link to="/main">
+          <Link to="/">
             <button className="flex w-fit h-fit items-center cursor-pointer">
               <label className="text-lg font-semibold md:flex sm:flex hidden pointer-events-none">
                 بیدلنسر
@@ -110,12 +115,20 @@ const Header = ({ showSearch = true }) => {
 
             <Link to="/profile" className="flex justify-center items-center">
               <button className="w-fit h-fit cursor-pointer">
-                <img
-                  src={ProfileDefault}
-                  className="rounded-full object-cover min-w-8 pointer-events-none"
-                  alt="Profile"
-                  tabIndex={-1}
-                />
+                {profilePicture ? (
+                  <img
+                    src={profilePicture}
+                    className="rounded-full h-[36px] w-[36px] object-cover min-w-8 pointer-events-none border-2 border-blue-500"
+                    alt="Profile"
+                    tabIndex={-1}
+                  />
+                ) : (
+                  <CgProfile
+                    color="#707070"
+                    className="rounded-full object-cover min-w-8 h-[32px] w-[32px] pointer-events-none"
+                    tabIndex={-1}
+                  />
+                )}
               </button>
             </Link>
           </div>

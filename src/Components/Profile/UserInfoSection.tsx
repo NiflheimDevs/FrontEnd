@@ -1,5 +1,5 @@
 import { Image, X } from "lucide-react";
-import { Profile } from "./types";
+import { Profile, useOtpTimer } from "./types";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { PutUserName, PutEmail, PutPhoneSendOtp } from "../../API";
 import React, { useState } from "react";
@@ -47,6 +47,11 @@ export default function UserInfoSection({
     }
   };
 
+  const { timeLeft, setTimeLeft, isScaled, setIsScaled } = useOtpTimer(
+    120,
+    showOtpSection
+  );
+
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setLocalProfile((prev) => ({ ...prev, email: value }));
@@ -65,7 +70,8 @@ export default function UserInfoSection({
         const phoneData = { phone: localProfile.phoneNumber };
         const codeSession = await PutPhoneSendOtp(phoneData);
         setLocalProfile((prev) => ({ ...prev, SessionID: codeSession }));
-        console.log(codeSession);
+        setTimeLeft(120);
+        setIsScaled(false);
         setShowOtpSection(true);
         notifySuccess("کد تایید ارسال شد");
       } catch (error: any) {
@@ -217,7 +223,7 @@ export default function UserInfoSection({
             tabIndex={3}
           />
           <button
-            className={`flex items-center gap-2 md:w-[170px] sm:w-[150px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
+            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
               changedUsername
                 ? "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
                 : "opacity-60"
@@ -263,7 +269,7 @@ export default function UserInfoSection({
             </span>
           </div>
           <button
-            className={`flex items-center gap-2 md:w-[170px] sm:w-[150px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
+            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
               changedEmail
                 ? "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
                 : "opacity-60"
@@ -303,13 +309,13 @@ export default function UserInfoSection({
             tabIndex={7}
           />
           <button
-            className={`flex items-center gap-2 md:w-[170px] sm:w-[150px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
-              changedPhone
-                ? "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
-                : "opacity-60"
+            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
+              !changedPhone || (showOtpSection && timeLeft > 0)
+                ? "opacity-60"
+                : "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
             }`}
             tabIndex={8}
-            disabled={!changedPhone}
+            disabled={!changedPhone || (showOtpSection && timeLeft > 0)}
             onClick={handlePhoneChangeSubmit}
           >
             {!showOtpSection ? (
@@ -335,9 +341,9 @@ export default function UserInfoSection({
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="lucide lucide-message-circle-reply-icon lucide-message-circle-reply"
               >
                 <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
@@ -352,6 +358,10 @@ export default function UserInfoSection({
         </div>
 
         <OtpSection
+          isScaled={isScaled}
+          setIsScaled={setIsScaled}
+          timeLeft={timeLeft}
+          setTimeLeft={setTimeLeft}
           showOtpSection={showOtpSection}
           setShowOtpSection={setShowOtpSection}
           phoneNumber={localProfile.phoneNumber}
@@ -393,7 +403,7 @@ export default function UserInfoSection({
             value={localProfile.bio}
             placeholder="درباره خودت بنویس..."
             onChange={(e) => handleInputChange("bio", e.target.value)}
-            className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
+            className="w-full sm:flex-1 p-2 min-h-[100px] border-2 rounded-lg text-right [direction:rtl]"
             tabIndex={11}
           />
         </div>
