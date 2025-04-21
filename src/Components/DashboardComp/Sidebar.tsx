@@ -94,7 +94,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               <MdArrowDropDown className="absolute right-10 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800" />
             </button>
             {isProjectsOpen && isHovered && (
-              <div className="absolute right-0 mt-2 w-48 bg-gray-200 rounded-lg shadow-lg z-50">
+              <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50">
                 <Link
                   to="/myprojects"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
@@ -144,7 +144,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               <MdArrowDropDown className="absolute right-10 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800" />
             </button>
             {isProfileOpen && isHovered && (
-              <div className="absolute right-0 mt-2 w-48 bg-gray-200 rounded-lg shadow-lg z-50">
+              <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50">
                 <Link
                   to="/profile"
                   className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg ${isActive("profile") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
