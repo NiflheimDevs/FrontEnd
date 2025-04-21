@@ -226,7 +226,7 @@ const MainContent = () => {
             {categories.map((cat, idx) => (
               <SwiperSlide
                 key={idx}
-                className="bg-white rounded-xl box-shadow-custom duration-300 ease-in-out transition-all"
+                className="bg-[#F7F7F7] rounded-xl box-shadow-custom duration-300 ease-in-out transition-all"
               >
                 <div className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center group">
                   <img
@@ -282,7 +282,7 @@ const MainContent = () => {
                 <Link
                   to={`/detail/${card.project_id}`}
                   key={card.project_id}
-                  className="bg-white rounded-xl box-shadow-custom flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px]"
+                  className="bg-[#F7F7F7] rounded-xl box-shadow-custom flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px]"
                 >
                   <div className="w-full px-2 pt-2">{card.image}</div>
                   <div className="p-4 pb-9">
@@ -293,11 +293,11 @@ const MainContent = () => {
                       {truncateText(card.description, 200)}
                     </p>
                   </div>
-                  {/* <div className="text-right pb-4 px-4">
-                    <p className="text-lg font-bold text-blue-600">
-                      {card.price}
-                    </p>
-                  </div> */}
+                  <div className="text-right p-4">
+                    {/* <p className="text-lg font-bold text-blue-600">
+                          {card.price}
+                        </p> */}
+                  </div>
                 </Link>
               ))}
             </div>
@@ -314,7 +314,7 @@ const MainContent = () => {
                   <SwiperSlide key={card.project_id}>
                     <Link
                       to={`/detail/${card.project_id}`}
-                      className="bg-white flex flex-col relative min-w-[350px]"
+                      className="bg-[#F7F7F7] flex flex-col relative min-w-[350px]"
                     >
                       <div className="w-full px-2 pt-2">{card.image}</div>
                       <div className="p-4 pb-2">
@@ -325,11 +325,11 @@ const MainContent = () => {
                           {truncateText(card.description, 200)}
                         </p>
                       </div>
-                      {/* <div className="text-right mb-4 p-4">
-                        <p className="text-lg font-bold text-blue-600">
+                      <div className="text-right p-4">
+                        {/* <p className="text-lg font-bold text-blue-600">
                           {card.price}
-                        </p>
-                      </div> */}
+                        </p> */}
+                      </div>
                     </Link>
                   </SwiperSlide>
                 ))}
