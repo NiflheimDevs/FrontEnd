@@ -57,13 +57,13 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed top-19 right-0 md:rounded-tl-3xl md:rounded-bl-3xl sm:rounded-tl-3xl sm:rounded-bl-3xl h-[calc(100vh-4rem)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 z-50
+      className={`fixed top-19 right-0 md:rounded-tl-3xl sm:rounded-tl-3xl h-[calc(100vh-76px)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 z-50
         ${isSidebarOpen ? "w-48" : "w-20"} sm:w-20 sm:hover:w-48 w-full group flex flex-col
         ${isSidebarOpen ? "block" : "hidden"} sm:block`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <nav className="flex flex-col justify-between h-full">
+      <nav className="flex flex-col justify-between h-full overflow-scroll">
         <div className="mt-5 space-y-[3.5vh] w-full items-center">
           <Link
             to="/dashboard"
@@ -180,7 +180,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           </Link>
           <button
             onClick={handleLogout}
-            className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
+            className="flex relative items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
           >
             <img src={exit} alt="exit" className="w-6 h-6" />
             <span className="cursor-pointer absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 text-gray-800">

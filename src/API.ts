@@ -23,6 +23,7 @@ apiClient.interceptors.request.use(
       "/forget-password/verify",
       "/forget-password/reset",
       "/refresh-token",
+      "/landing/projects",
     ];
 
     if (token && !publicRoutes.includes(config.url || "")) {
