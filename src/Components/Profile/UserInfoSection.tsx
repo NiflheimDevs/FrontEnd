@@ -127,8 +127,14 @@ export default function UserInfoSection({
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (!file.type.startsWith("image/")) {
-        notifyError("پروفایل باید یک تصویر باشد");
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/webp",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        notifyError("فقط فرمت‌های jpg، jpeg، png و webp مجاز هستند");
         return;
       }
       setProfilePictureFile(file);
@@ -181,10 +187,10 @@ export default function UserInfoSection({
                   <X size={20} color="white" />
                 </button>
               </>
-            ) : localProfile.profile ? (
+            ) : localProfile.high_profile ? (
               <>
                 <img
-                  src={localProfile.profile}
+                  src={localProfile.high_profile}
                   alt=""
                   className="w-full h-full object-cover transition-all duration-400 ease-in-out hover:scale-105"
                   onMouseEnter={() => {

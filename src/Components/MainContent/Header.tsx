@@ -18,7 +18,7 @@ const Header = ({ showSearch = true }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const token = localStorage.getItem("authToken");
   const profilePicture = useSelector(
-    (state: RootState) => state.profile.profile
+    (state: RootState) => state.profile.low_profile
   );
 
   const openModal = () => setIsModalOpen(true);

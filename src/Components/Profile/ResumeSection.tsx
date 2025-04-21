@@ -26,6 +26,10 @@ export default function ResumeSection({
   ) => {
     const file = e.target.files?.[0];
     if (file) {
+      if (file.type !== "application/pdf") {
+        notifyError("فقط فرمت PDF مجاز است");
+        return;
+      }
       setResumeName(file.name);
       setLocalProfile((prev) => ({ ...prev, resume: file }));
       notifySuccess("رزومه با موفقیت آپلود شد");
