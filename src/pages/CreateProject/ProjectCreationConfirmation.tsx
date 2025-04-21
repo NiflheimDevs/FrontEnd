@@ -1,6 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaCheckCircle, FaProjectDiagram } from 'react-icons/fa';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { FaCheckCircle, FaProjectDiagram } from "react-icons/fa";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
 import Header from "../../Components/DashboardComp/Header";
 
@@ -11,17 +11,17 @@ const ProjectCreationConfirmation: React.FC = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const handleViewProjects = () => {
-    navigate('/myprojects');
+    navigate("/myprojects");
   };
 
   const handleCreateNewProject = () => {
-    navigate('/createproject');
+    navigate("/createproject");
   };
 
   return (
     <>
       <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
-      <div className="container mx-auto md:px-4 sm:px-4 px-0 py-8 mt-15 lg:max-w-4xl">
+      <div className="container w-screen mx-auto md:px-4 sm:px-4 px-0 py-8 mt-15 lg:max-w-4xl">
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <Header toggleSidebar={toggleSidebar} />
 
@@ -39,7 +39,7 @@ const ProjectCreationConfirmation: React.FC = () => {
           </p>
 
           <div className="flex flex-col md:flex-row justify-center gap-4 mt-6">
-            <button 
+            <button
               onClick={handleViewProjects}
               className="flex items-center justify-center bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition-colors"
             >
@@ -47,7 +47,7 @@ const ProjectCreationConfirmation: React.FC = () => {
               مشاهده پروژه‌ها
             </button>
 
-            <button 
+            <button
               onClick={handleCreateNewProject}
               className="flex items-center justify-center bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 transition-colors"
             >
