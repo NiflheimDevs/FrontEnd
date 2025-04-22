@@ -102,10 +102,16 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
                   پروژه های من
                 </Link>
                 <Link
-                  to="/"
+                  to="/biders"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
                 >
                   پیشنهادات
+                </Link>
+                <Link
+                  to="/createproject"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
+                >
+                  ساخت پروژه
                 </Link>
               </div>
             )}
