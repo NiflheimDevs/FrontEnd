@@ -63,7 +63,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <nav className="flex flex-col justify-between h-full overflow-scroll">
+      <nav className="flex flex-col justify-between h-full">
         <div className="mt-5 space-y-[3.5vh] w-full items-center">
           <Link
             to="/dashboard"
