@@ -74,10 +74,6 @@ const ProjectDetail = () => {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
-          // This is important for dealing with self-signed certificates
-          // httpsAgent: new (require('https').Agent)({
-          //   rejectUnauthorized: false
-          // })
         });
         
         // Make the API call
@@ -86,14 +82,15 @@ const ProjectDetail = () => {
         setProjectData(response.data);
         setLoading(false);
       } catch (err: any) {
-        console.error("Error fetching project data:", err);
+        // console.error("Error fetching project data:", err);
         // More detailed error reporting
-        setError(
-          err.response 
-            ? `خطا: ${err.response.status} - ${err.response.statusText}` 
-            : "خطا در اتصال به سرور. لطفاً اتصال اینترنت خود را بررسی کنید."
-        );
+        // setError(
+        //   err.response 
+        //     ? `خطا: ${err.response.status} - ${err.response.statusText}` 
+        //     : "خطا در اتصال به سرور. لطفاً اتصال اینترنت خود را بررسی کنید."
+        // );
         setLoading(false);
+        window.location.href = 'https://bidlancer.ir/404';
       }
     };
 
@@ -102,20 +99,20 @@ const ProjectDetail = () => {
     }
   }, [project_id]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-        <Header />
-        <div className="mt-20">در حال بارگذاری...</div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+  //       <Header />
+  //       <div className="mt-20">در حال بارگذاری...</div>
+  //     </div>
+  //   );
+  // }
 
   if (error || !projectData) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-        <Header />
-        <div className="mt-20 text-red-500">{error || "اطلاعات پروژه یافت نشد."}</div>
+        {/* <Header /> */}
+        {/* <div className="mt-20 text-red-500">{error || "اطلاعات پروژه یافت نشد."}</div> */}
       </div>
     );
   }
@@ -140,7 +137,15 @@ const ProjectDetail = () => {
                 <span>{bidders.length} پیشنهاد</span>
               </div>
             </div>
-
+            {/* Creator Info */}
+            <div>
+              {/* <h3 className="text-base sm:text-lg font-semibold text-black mb-2 text-right">
+                سازنده پروژه:
+              </h3> */}
+              <p className="font-semibold text-black text-xs sm:text-sm text-right">
+                {projectData.first_name}{projectData.last_name} کارفرما این پروژه می باشد. 
+              </p>
+            </div>
             {/* Project Description */}
             <div>
               <h3 className="text-base sm:text-lg font-semibold text-black mb-2 text-right">
@@ -167,30 +172,8 @@ const ProjectDetail = () => {
                 ))}
               </div>
             </div>
-
-            {/* Budget
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-[#3E79DE] mb-2 text-right">
-                بودجه:
-              </h3>
-              <p className="text-gray-600 text-xs sm:text-sm text-right">
-                {projectData.label && (
-                  <>
-                    {projectData.label.name}: {projectData.label.price.toLocaleString()} تومان
-                  </>
-                )}
-              </p>
-            </div> */}
             
-            {/* Creator Info */}
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-black mb-2 text-right">
-                سازنده پروژه:
-              </h3>
-              <p className="text-gray-600 text-xs sm:text-sm text-right">
-                {projectData.username}
-              </p>
-            </div>
+
           </div>
 
           {/* Right Half: Bidders List and Buttons (Bottom on small screens) */}
