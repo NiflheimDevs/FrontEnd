@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Sections from "./AboutUs/sections";
 import SwiperSection from "./AboutUs/swiper";
+import Header from "../Components/MainContent/Header";
 
 import newBgImage from "../assets/aboutus/aboutus.jpg";
 
@@ -23,53 +24,15 @@ const AboutUs: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <div className="relative min-h-screen">
       {/* Background Image */}
-      <div
-        className={`fixed top-0 left-0 w-full h-screen transition-all duration-500 ${
-          scrolled ? "blur-sm opacity-100" : "opacity-100"
-        }`}
-        style={{
-          backgroundImage: `url(${newBgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          zIndex: -1,
-        }}
-      ></div>
-
-      {/* Header Section */}
-      <header className="relative z-10 flex flex-col items-center min-h-screen bg-black/60 text-white text-center p-10">
-        <div className="flex gap-20">
-          <button
-            onClick={() => scrollToSection("first-section")}
-            className="cursor-pointer bg-blue-500 px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 transition"
-          >
-            درباره ما
-          </button>
-          <button
-            onClick={() => scrollToSection("second-section")}
-            className="cursor-pointer bg-green-500 px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition"
-          >
-            اهداف ما
-          </button>
-          <button
-            onClick={() => scrollToSection("swiper-section")}
-            className="cursor-pointer bg-purple-500 px-4 py-2 rounded-lg shadow-lg hover:bg-purple-600 transition"
-          >
-            تیم ما
-          </button>
-        </div>
-      </header>
-
-      {/* Content Sections with Animation */}
+      <Header showSearch={false} />
+      <section
+        className="w-full flex h-100 flex-col justify-center items-center px-2 text-white text-center bg-cover bg-center"
+        style={{ backgroundImage: `url(${newBgImage})` }}
+      >
+      </section>
       <motion.div
         id="first-section"
         initial={{ opacity: 0, y: 50 }}
