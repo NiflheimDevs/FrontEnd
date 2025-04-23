@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 import bg from "@/assets/message/bg.png";
 import { Search, ArrowRight } from "lucide-react";
@@ -14,13 +14,18 @@ interface Chat {
 interface Message {
   id: number;
   text: string;
-  type: "sent" | "received"; // Use a union type for specific values
+  type: "sent" | "received";
 }
 
-// Define the type for allMessages with an index signature or specific keys
+// Define the type for allMessages
 interface Messages {
-  [key: number]: Message[]; // Allows any number as a key
-  // Alternatively, use specific keys: 1: Message[]; 2: Message[]; 3: Message[];
+  [key: number]: Message[];
+}
+
+// Define the shape of a search result
+interface SearchResult {
+  id: number;
+  name: string;
 }
 
 const Messages = () => {
@@ -47,6 +52,9 @@ const Messages = () => {
 
   const [selectedChat, setSelectedChat] = useState<Chat>(chatList[0]);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchError, setSearchError] = useState<string | null>(null);
   const messages: Message[] = allMessages[selectedChat.id] || [];
 
   const handleBackToChatList = () => {
@@ -56,6 +64,83 @@ const Messages = () => {
   const handleChatSelect = (chat: Chat) => {
     setSelectedChat(chat);
     setIsChatOpen(true);
+    setSearchQuery("");
+    setSearchResults([]);
+    setSearchError(null);
+  };
+
+  // Handle search API call
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setSearchResults([]);
+      setSearchError(null);
+      return;
+    }
+
+    const searchUsers = async () => {
+      try {
+        // Replace with your actual API endpoint
+        const response = await fetch(`/api/users/search?query=${encodeURIComponent(searchQuery)}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // Add any necessary authorization headers
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch users");
+        }
+
+        const data = await response.json();
+        // Expect data to be an array of { id: number, name: string }
+        if (data.length === 0) {
+          setSearchError("No such person found");
+          setSearchResults([]);
+        } else {
+          setSearchResults(data);
+          setSearchError(null);
+        }
+      } catch (error) {
+        console.error("Search error:", error);
+        setSearchError("Error searching for users");
+        setSearchResults([]);
+      }
+    };
+
+    // Debounce search to avoid too many requests
+    const timeoutId = setTimeout(searchUsers, 300);
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
+
+  // Handle starting a new chat from search results
+  const handleStartChat = async (user: SearchResult) => {
+    try {
+      // Replace with your actual API endpoint to start a new chat
+      const response = await fetch("/api/chats/start", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Add any necessary authorization headers
+        },
+        body: JSON.stringify({ userId: user.id }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to start chat");
+      }
+
+      const newChat = await response.json();
+      // Expect newChat to be { id: number, name: string, lastMessage: string }
+      setSelectedChat(newChat);
+      setIsChatOpen(true);
+      setSearchQuery("");
+      setSearchResults([]);
+      setSearchError(null);
+    } catch (error) {
+      console.error("Start chat error:", error);
+      setSearchError("Failed to start chat");
+    }
   };
 
   return (
@@ -73,7 +158,9 @@ const Messages = () => {
         <div className="relative mb-4">
           <input
             type="text"
-            placeholder="جستجو"
+            placeholder="جستجوی مخاطب..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full py-[6px] pr-10 pl-4 text-right bg-gray-300 border hover:bg-blue-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-black transition-all duration-400 ease-in-out"
           />
           <button className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center cursor-pointer">
@@ -84,27 +171,49 @@ const Messages = () => {
           </button>
         </div>
 
-        {/* Chat Items */}
+        {/* Search Results or Chat List */}
         <div className="space-y-3 overflow-y-auto flex-1">
-          {chatList.map((chat) => (
-            <div
-              key={chat.id}
-              onClick={() => handleChatSelect(chat)}
-              className={`flex items-center py-2 cursor-pointer rounded-xl hover:bg-blue-100 hover:shadow-md transition-all duration-400 ease-in-out ${
-                selectedChat.id === chat.id ? "bg-gray-50" : "bg-gray-300"
-              }`}
-            >
-              <img
-                src={ProfileDefault}
-                alt="Profile"
-                className="w-10 h-10 rounded-full mx-3"
-              />
-              <div className="flex-1 text-right">
-                <p className="text-md font-medium text-gray-800">{chat.name}</p>
-                <p className="text-[10px] text-gray-500 truncate">{chat.lastMessage}</p>
+          {searchQuery.trim() && searchResults.length > 0 ? (
+            searchResults.map((user) => (
+              <div
+                key={user.id}
+                onClick={() => handleStartChat(user)}
+                className="flex items-center py-2 cursor-pointer rounded-xl hover:bg-blue-100 hover:shadow-md transition-all duration-400 ease-in-out bg-gray-300"
+              >
+                <img
+                  src={ProfileDefault}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full mx-3"
+                />
+                <div className="flex-1 text-right">
+                  <p className="text-md font-medium text-gray-800">{user.name}</p>
+                  <p className="text-[10px] text-gray-500">شروع چت جدید</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : searchQuery.trim() && searchError ? (
+            <p className="text-center text-gray-500 text-sm">{searchError}</p>
+          ) : (
+            chatList.map((chat) => (
+              <div
+                key={chat.id}
+                onClick={() => handleChatSelect(chat)}
+                className={`flex items-center py-2 cursor-pointer rounded-xl hover:bg-blue-100 hover:shadow-md transition-all duration-400 ease-in-out ${
+                  selectedChat.id === chat.id ? "bg-gray-50" : "bg-gray-300"
+                }`}
+              >
+                <img
+                  src={ProfileDefault}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full mx-3"
+                />
+                <div className="flex-1 text-right">
+                  <p className="text-md font-medium text-gray-800">{chat.name}</p>
+                  <p className="text-[10px] text-gray-500 truncate">{chat.lastMessage}</p>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 
