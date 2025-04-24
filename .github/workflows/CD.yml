@@ -3,7 +3,7 @@ name: CD
 on:
   push:
     branches:
-      - SERVER_REPO
+      - Feat-Chat
   pull_request:
     branches:
       - develop
