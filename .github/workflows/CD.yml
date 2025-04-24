@@ -3,7 +3,7 @@ name: CD
 on:
   push:
     branches:
-      - Feat-Chat
+      - SERVER_REPO
   pull_request:
     branches:
       - develop
@@ -37,7 +37,6 @@ jobs:
         id: docker_build
         continue-on-error: true
         run: |
-          # docker compose build --no-cache 
           docker compose build | tee /tmp/output.txt
           export OUTPUT="$(cat /tmp/output.txt)"
 
