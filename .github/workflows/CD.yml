@@ -34,7 +34,7 @@ jobs:
         id: docker_build
         continue-on-error: true
         run: |
-          docker compose build --no-cache | tee /tmp/output.txt
+          docker compose build | tee /tmp/output.txt
           export OUTPUT="$(cat /tmp/output.txt)"
 
       - name: Push Docker image
