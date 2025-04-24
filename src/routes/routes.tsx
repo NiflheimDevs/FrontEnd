@@ -12,6 +12,7 @@ import ChangePasswordonForget from "../pages/ForgetPass/ChangePasswordonForget";
 import MobileVerifyforgetpass from "../pages/ForgetPass/MobileVerifyForgetPass";
 import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
 //import Wallet from "../Components/DashboardComp/Wallet";
+import PublicProfile from "../pages/PublicProfile/PublicProfile";
 import Wallet from "../pages/Wallet/Wallet";
 import Chat from "../pages/Chat";
 import DashboardMain from "../pages/Dashboard";
@@ -56,6 +57,7 @@ export const publicRoutes = [
       </MobileVerifyWrapper>
     ),
   },
+  { path: "/profile/:profile_id", element: <PublicProfile /> },
   {
     path: "/ForgetPassVerify",
     element: (

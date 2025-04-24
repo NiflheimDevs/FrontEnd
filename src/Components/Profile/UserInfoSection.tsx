@@ -146,7 +146,7 @@ export default function UserInfoSection({
 
   const handleRemoveProfile = () => {
     setProfilePictureFile(null);
-    setLocalProfile((prev) => ({ ...prev, profile: "" }));
+    setLocalProfile((prev) => ({ ...prev, high_profile: "" }));
     notifySuccess("عکس پروفایل با موفقیت حذف شد");
   };
 
@@ -181,7 +181,7 @@ export default function UserInfoSection({
                 />
                 <button
                   onClick={handleRemoveProfile}
-                  className={`absolute bg-black bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-400 ease-in-out cursor-pointer ${showX ? "md:hover:opacity-70" : "md:opacity-0 opacity-50"}`}
+                  className={`absolute bg-black bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-400 ease-in-out cursor-pointer ${showX ? "md:opacity-70 opacity-50" : "md:opacity-0 md:hover:opacity-70 opacity-50"}`}
                   tabIndex={2}
                 >
                   <X size={20} color="white" />
@@ -202,7 +202,7 @@ export default function UserInfoSection({
                 />
                 <button
                   onClick={handleRemoveProfile}
-                  className={`absolute bg-black bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-400 ease-in-out cursor-pointer ${showX ? "md:hover:opacity-70 opacity-50" : "md:opacity-0 opacity-50"}`}
+                  className={`absolute bg-black bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-400 ease-in-out cursor-pointer ${showX ? "md:opacity-70 opacity-50" : "md:opacity-0 md:hover:opacity-70 opacity-50"}`}
                   tabIndex={2}
                 >
                   <X size={20} color="white" />
