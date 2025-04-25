@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import Footer from "../Components/Footer/Footer";
 
 const AboutUs: React.FC = () => {
-  const [scrolled, setScrolled] = useState(false);
+  const [, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,8 +31,7 @@ const AboutUs: React.FC = () => {
       <section
         className="w-full flex h-100 flex-col justify-center items-center px-2 text-white text-center bg-cover bg-center"
         style={{ backgroundImage: `url(${newBgImage})` }}
-      >
-      </section>
+      ></section>
       <motion.div
         id="first-section"
         initial={{ opacity: 0, y: 50 }}
@@ -53,7 +52,7 @@ const AboutUs: React.FC = () => {
         <SwiperSection />
       </motion.div>
       <footer>
-        <Footer />  
+        <Footer />
       </footer>
     </div>
   );
