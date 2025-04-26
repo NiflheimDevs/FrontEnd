@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNotification } from "../../Notification/NotificationProvider";
@@ -9,6 +10,9 @@ import {
   PutCareer,
   UpdateProfile,
   DeleteProfile,
+  GetResume,
+  UpdateResume,
+  DeleteResume,
 } from "../../API";
 import { Skeleton } from "primereact/skeleton";
 import {
@@ -109,15 +113,16 @@ export default function ProfileForm() {
     skills?: string[];
     workExperiences?: { index: number; fields: (keyof WorkExperience)[] }[];
   }>({});
-  const [tabIndex] = useState(12); // tabIndex اولیه
+  const [tabIndex] = useState(12);
   const { error: notifyError, success: notifySuccess } = useNotification();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const apiData = await GetUser();
-        const mappedProfile = await mapApiDataToProfile(apiData);
-        console.log(apiData);
+        const apiResume = await GetResume();
+        setResumeName(apiResume ? "resume.pdf" : null);
+        const mappedProfile = await mapApiDataToProfile(apiData, apiResume);
         setLocalProfile(mappedProfile);
         dispatch(setProfile(mappedProfile));
         setIsLoading(false);
@@ -194,14 +199,19 @@ export default function ProfileForm() {
       };
 
       const LocalProfile = new FormData();
+      const LocalResume = new FormData();
+
       if (profilePictureFile) {
         LocalProfile.append("file", profilePictureFile);
-        if (localProfile.high_profile) {
+
+        if (localProfile.resume) {
+          LocalResume.append("file", localProfile.resume);
           await Promise.all([
             PutUser(userData),
             PutTag(tagData),
             PutCareer(careerData),
             UpdateProfile(LocalProfile),
+            UpdateResume(LocalResume),
           ]);
         } else {
           await Promise.all([
@@ -209,15 +219,35 @@ export default function ProfileForm() {
             PutTag(tagData),
             PutCareer(careerData),
             UpdateProfile(LocalProfile),
-            DeleteProfile(),
+            DeleteResume(),
+          ]);
+        }
+      } else if (localProfile.high_profile) {
+        if (localProfile.resume) {
+          LocalResume.append("file", localProfile.resume);
+          await Promise.all([
+            PutUser(userData),
+            PutTag(tagData),
+            PutCareer(careerData),
+            UpdateResume(LocalResume),
+          ]);
+        } else {
+          await Promise.all([
+            PutUser(userData),
+            PutTag(tagData),
+            PutCareer(careerData),
+            DeleteResume(),
           ]);
         }
       } else {
-        if (localProfile.high_profile) {
+        if (localProfile.resume) {
+          LocalResume.append("file", localProfile.resume);
           await Promise.all([
             PutUser(userData),
             PutTag(tagData),
             PutCareer(careerData),
+            DeleteProfile(),
+            UpdateResume(LocalResume),
           ]);
         } else {
           await Promise.all([
@@ -225,6 +255,7 @@ export default function ProfileForm() {
             PutTag(tagData),
             PutCareer(careerData),
             DeleteProfile(),
+            DeleteResume(),
           ]);
         }
       }
