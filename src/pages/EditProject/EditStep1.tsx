@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { motion, AnimatePresence } from "framer-motion";
 import { setProjectData } from "../../store/slices/projectSlice";
 
 interface EditStep1Props {
@@ -13,7 +14,59 @@ interface EditStep1Props {
 const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isFormValid, setIsFormValid] = useState(false);
   const MAX_DESCRIPTION_WORDS = 250;
+
+  const validateField = (id: string, value: string) => {
+    const newErrors: { [key: string]: string } = { ...errors };
+
+    if (id === "name") {
+      if (!value || value.trim().length < 5) {
+        newErrors.name = "عنوان پروژه باید حداقل 5 کاراکتر باشد";
+      } else {
+        delete newErrors.name;
+      }
+    }
+
+    if (id === "description") {
+      const words = value ? value.trim().split(/\s+/) : [];
+      if (!value || words.length < 20) {
+        newErrors.description = "توضیحات پروژه باید حداقل 20 کلمه باشد";
+      } else if (words.length > MAX_DESCRIPTION_WORDS) {
+        newErrors.description = `توضیحات نباید بیشتر از ${MAX_DESCRIPTION_WORDS} کلمه باشد`;
+      } else {
+        delete newErrors.description;
+      }
+    }
+
+    setErrors(newErrors);
+    const isValid = Object.keys(newErrors).length === 0;
+    setIsFormValid(isValid);
+  };
+
+  const validateStep = () => {
+    const newErrors: { [key: string]: string } = {};
+    const descriptionWords = formData.description
+      ? formData.description.trim().split(/\s+/)
+      : [];
+
+    if (!formData.name || formData.name.trim().length < 5) {
+      newErrors.name = "عنوان پروژه باید حداقل 5 کاراکتر باشد";
+    }
+
+    if (!formData.description || descriptionWords.length < 20) {
+      newErrors.description = "توضیحات پروژه باید حداقل 20 کلمه باشد";
+    }
+
+    if (descriptionWords.length > MAX_DESCRIPTION_WORDS) {
+      newErrors.description = `توضیحات نباید بیشتر از ${MAX_DESCRIPTION_WORDS} کلمه باشد`;
+    }
+
+    setErrors(newErrors);
+    const isValid = Object.keys(newErrors).length === 0;
+    setIsFormValid(isValid);
+    return isValid;
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -28,28 +81,9 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
     } else {
       dispatch(setProjectData({ [id]: value }));
     }
-  };
 
-  const validateStep = () => {
-    const newErrors: { [key: string]: string } = {};
-    const descriptionWords = formData.description
-      ? formData.description.trim().split(/\s+/)
-      : [];
-
-    if (!formData.name || formData.name.trim().length < 5) {
-      newErrors.name = "عنوان پروژه باید حداقل 5 کاراکتر باشد";
-    }
-
-    if (!formData.description || descriptionWords.length < 10) {
-      newErrors.description = "توضیحات پروژه باید حداقل 10 کلمه باشد";
-    }
-
-    if (descriptionWords.length > MAX_DESCRIPTION_WORDS) {
-      newErrors.description = `توضیحات نباید بیشتر از ${MAX_DESCRIPTION_WORDS} کلمه باشد`;
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    // اعتبارسنجی فقط برای فیلد در حال تغییر
+    validateField(id, value);
   };
 
   const handleNext = () => {
@@ -57,6 +91,11 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
       onNext();
     }
   };
+
+  // اعتبارسنجی اولیه هنگام بارگذاری کامپوننت
+  useEffect(() => {
+    validateStep();
+  }, [formData]);
 
   const wordCount = formData.description
     ? formData.description.trim().split(/\s+/).length
@@ -79,9 +118,20 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
           placeholder="عنوان پروژه را وارد کنید"
         />
-        {errors.name && (
-          <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-        )}
+        <AnimatePresence>
+          {errors.name && (
+            <motion.ul
+              key="name-errors"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4 }}
+              className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+            >
+              <li>{errors.name}</li>
+            </motion.ul>
+          )}
+        </AnimatePresence>
       </div>
 
       <div>
@@ -103,15 +153,31 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
           <div className="text-sm text-gray-500 mt-1 text-left">
             {wordCount} / {MAX_DESCRIPTION_WORDS} کلمه
           </div>
-          {errors.description && (
-            <p className="text-red-500 text-sm mt-1">{errors.description}</p>
-          )}
+          <AnimatePresence>
+            {errors.description && (
+              <motion.ul
+                key="description-errors"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.4 }}
+                className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+              >
+                <li>{errors.description}</li>
+              </motion.ul>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
       <button
         onClick={handleNext}
-        className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 transition-colors mt-4"
+        disabled={!isFormValid}
+        className={`w-full p-3 rounded-md transition-colors mt-4 ${
+          isFormValid
+            ? "bg-blue-500 text-white hover:bg-blue-600"
+            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+        }`}
       >
         مرحله بعد
       </button>
