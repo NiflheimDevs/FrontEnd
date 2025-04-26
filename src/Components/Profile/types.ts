@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getTags } from "../../API";
 import { useEffect, useState } from "react";
 import {
@@ -34,6 +35,7 @@ export interface Profile {
   skillProficiency: { [key: string]: string };
   workExperiences: WorkExperience[];
   resume: File | null;
+  resumeAddress?: string | null;
   high_profile?: string;
   low_profile?: string;
   SessionID?: string;
@@ -60,7 +62,10 @@ export const proficiencyLevels = ["مبتدی", "متوسط", "حرفه‌ای",
 
 export let skills: Skill[] = [];
 
-export const mapApiDataToProfile = async (apiData: any): Promise<Profile> => {
+export const mapApiDataToProfile = async (
+  apiData: any,
+  apiresume: any
+): Promise<Profile> => {
   skills = await getTags();
   return {
     phoneNumber: apiData.info?.phonenumber || initialProfile.phoneNumber,
@@ -114,7 +119,8 @@ export const mapApiDataToProfile = async (apiData: any): Promise<Profile> => {
             : {},
         }))
       : [],
-    resume: initialProfile.resume,
+    resume: apiresume || initialProfile.resume,
+    resumeAddress: apiresume,
     low_profile: apiData.info?.low_profile || initialProfile.low_profile,
     high_profile: apiData.info?.high_profile || initialProfile.high_profile,
   };

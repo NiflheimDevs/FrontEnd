@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
 const BASE_URL = "https://103.75.196.227:8080";
@@ -221,6 +222,46 @@ export const DeleteProfile = async () => {
   }
 };
 
+export const GetProfile = async () => {
+  try {
+    const response = await apiClient.get("/user/profile");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const GetResume = async () => {
+  try {
+    const response = await apiClient.get("/user/resume");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const UpdateResume = async (userData: any) => {
+  try {
+    const response = await apiClient.post("/user/resume", userData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const DeleteResume = async () => {
+  try {
+    const response = await apiClient.delete("/user/resume");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const PutTag = async (userData: any) => {
   try {
     const response = await apiClient.put("/user/tag", userData);
@@ -304,7 +345,7 @@ export const getUserProject = async (offset: any, limit: any) => {
 export const logout = () => {
   localStorage.removeItem("authToken");
   localStorage.removeItem("refreshToken");
-  window.location.href = "/auth"; // Adjust based on your routing
+  window.location.href = "/"; // Adjust based on your routing
 };
 
 export const getLabels = async () => {

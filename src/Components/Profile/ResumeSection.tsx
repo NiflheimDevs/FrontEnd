@@ -1,4 +1,5 @@
-import { Upload, X } from "lucide-react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Upload, X, Download } from "lucide-react";
 import { Profile } from "./types";
 import { useNotification } from "../../Notification/NotificationProvider";
 import React from "react";
@@ -12,7 +13,7 @@ interface ResumeSectionProps {
 }
 
 export default function ResumeSection({
-  // localProfile,
+  localProfile,
   setLocalProfile,
   resumeName,
   setResumeName,
@@ -41,6 +42,7 @@ export default function ResumeSection({
   const handleRemoveResume = () => {
     setResumeName(null);
     setLocalProfile((prev) => ({ ...prev, resume: null }));
+    setLocalProfile((prev) => ({ ...prev, resumeAddress: null }));
     notifySuccess("رزومه با موفقیت حذف شد");
   };
 
@@ -55,16 +57,29 @@ export default function ResumeSection({
           <span>انتخاب رزومه</span>
           <input
             type="file"
+            accept="application/pdf"
             onChange={(e) => handleFileChange(e, "resume")}
             className="absolute inset-0 opacity-0 cursor-pointer focus:outline-none"
             tabIndex={tabIndexStart}
           />
         </label>
         {resumeName && (
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-700 bg-gray-100 px-2 py-1 rounded-lg border border-gray-300">
-              {resumeName}
-            </span>
+          <div className="flex items-center gap-2 border border-gray-300 bg-gray-100 rounded-lg px-2 py-1">
+            {localProfile.resumeAddress ? (
+              <a
+                className="flex flex-row gap-1 items-center"
+                href={localProfile.resumeAddress}
+              >
+                <Download color="#364153" size={17} />
+                <span className="text-sm text-gray-700 pointer-events-none">
+                  {resumeName}
+                </span>
+              </a>
+            ) : (
+              <span className="text-sm text-gray-700 pointer-events-none">
+                {resumeName}
+              </span>
+            )}
             <button
               onClick={handleRemoveResume}
               className="text-gray-500 hover:text-red-500 transition-colors"

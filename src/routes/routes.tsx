@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import AuthPage from "../pages/Auth";
@@ -58,6 +59,7 @@ export const publicRoutes = [
     ),
   },
   { path: "/profile/:profile_id", element: <PublicProfile /> },
+  { path: "/detail/:project_id", element: <ProjectDetail /> },
   {
     path: "/ForgetPassVerify",
     element: (
@@ -82,7 +84,6 @@ export const privateRoutes = [
   { path: "/ChangePass", element: <ChangePasswordManually /> },
   { path: "/project-created", element: <ProjectCreationConfirmation /> },
   { path: "/edit-project/:projectId", element: <EditProject /> },
-  { path: "/detail/:project_id", element: <ProjectDetail /> },
 ];
 
 // Router configuration
