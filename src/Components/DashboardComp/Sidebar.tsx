@@ -6,9 +6,8 @@ import projects from "@/assets/Dashboard/PencilSquare.svg";
 import profile from "@/assets/Dashboard/PersonCheckFill.svg";
 import Wallet from "@/assets/Dashboard/Credit.svg";
 import messages from "@/assets/Dashboard/Message.svg";
-import settings from "@/assets/Dashboard/settings.svg"; // Re-added settings
+//import settings from "@/assets/Dashboard/settings.svg"; // Re-added settings
 import exit from "@/assets/Dashboard/DoorOpen.svg";
-import { useNotification } from "../../Notification/NotificationProvider";
 import { logout } from "../../API";
 
 interface SidebarProps {
@@ -20,13 +19,10 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const { success: notifySuccess } = useNotification();
   const location = useLocation();
 
   const handleLogout = () => {
     logout();
-    notifySuccess("شما خارج شدید");
-    console.log("User logged out");
   };
 
   const toggleProjectsDropdown = () => {
@@ -68,7 +64,9 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           <Link
             to="/dashboard"
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ${
-              isActive("/dashboard") ? "font-bold text-black bg-blue-200" : "text-gray-800"
+              isActive("/dashboard")
+                ? "font-bold text-black bg-blue-200"
+                : "text-gray-800"
             }`}
           >
             <img src={dashboard} alt="Dashboard" className="w-6 h-6" />
@@ -136,7 +134,9 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           <Link
             to="/wallet"
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ${
-              isActive("/wallet") ? "font-bold text-black bg-blue-200" : "text-gray-800"
+              isActive("/wallet")
+                ? "font-bold text-black bg-blue-200"
+                : "text-gray-800"
             }`}
           >
             <img src={Wallet} alt="Wallet" className="w-6 h-6" />
@@ -156,7 +156,9 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             <button
               onClick={toggleProfileDropdown}
               className={`cursor-pointer relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ${
-                isActive("/profile") || isActive("/profile/edit") || isActive("/changepass")
+                isActive("/profile") ||
+                isActive("/profile/edit") ||
+                isActive("/changepass")
                   ? "font-bold text-black bg-blue-200"
                   : "text-gray-800"
               }`}
@@ -164,7 +166,9 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               <img src={profile} alt="Profile" className="w-6 h-6" />
               <span
                 className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${
-                  isActive("/profile") || isActive("/profile/edit") || isActive("/changepass")
+                  isActive("/profile") ||
+                  isActive("/profile/edit") ||
+                  isActive("/changepass")
                     ? "text-black"
                     : "text-gray-800"
                 }`}
@@ -181,7 +185,9 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
                 <Link
                   to="/profile"
                   className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg ${
-                    isActive("/profile") ? "font-bold text-black bg-blue-200" : "text-gray-800"
+                    isActive("/profile")
+                      ? "font-bold text-black bg-blue-200"
+                      : "text-gray-800"
                   }`}
                 >
                   ویرایش پروفایل
@@ -189,7 +195,9 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
                 <Link
                   to="/changepass"
                   className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg ${
-                    isActive("/changepass") ? "font-bold text-black bg-blue-500" : "text-gray-800"
+                    isActive("/changepass")
+                      ? "font-bold text-black bg-blue-500"
+                      : "text-gray-800"
                   }`}
                 >
                   تغییر رمز
@@ -204,7 +212,9 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           <Link
             to="/chat"
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ${
-              isActive("/chat") ? "font-bold text-black bg-blue-200" : "text-gray-800"
+              isActive("/chat")
+                ? "font-bold text-black bg-blue-200"
+                : "text-gray-800"
             }`}
           >
             <img src={messages} alt="chat" className="w-6 h-6" />
