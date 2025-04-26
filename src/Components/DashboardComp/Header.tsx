@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Search, Menu } from "lucide-react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
@@ -5,18 +6,30 @@ import Mail from "@/assets/Dashboard/Mail.svg";
 import FAQ from "@/assets/Dashboard/Faq.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
 import { Link } from "react-router-dom";
+import { GetProfile } from "../../API";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CgProfile } from "react-icons/cg";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 
 export default function Header({ toggleSidebar }: any) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const profilePicture = useSelector(
-    (state: RootState) => state.profile.low_profile
-  );
+  const [profilePicture, setProfilePicture] = useState<string>("");
+
+  const fetchProfile = async () => {
+    try {
+      const response = await GetProfile();
+      setProfilePicture(response.low_quality);
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        setProfilePicture("");
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
