@@ -10,9 +10,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    // <div className="flex min-h-screen bg-gray-100">
+    <div className="container mx-auto md:pr-8 sm:pr-8 pr-0 py-8 mt-15 ">
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      {/* <Header toggleSidebar={toggleSidebar} /> */}
+      <Header toggleSidebar={toggleSidebar} />
       {/* Main content */}
       <div className="mr-16 md:mr-6 flex-1">
         <main className="container mx-auto px-4 py-6">
