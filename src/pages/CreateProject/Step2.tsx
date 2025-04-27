@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { setProjectData } from '../../store/slices/projectSlice';
-import { FaCheck, FaChevronDown } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { motion, AnimatePresence } from "framer-motion";
+import { setProjectData } from "../../store/slices/projectSlice";
+import { FaCheck, FaChevronDown } from "react-icons/fa";
 
 interface Tag {
   id: number;
@@ -26,20 +27,23 @@ interface Step2Props {
   onPrev: () => void;
 }
 
-const Step2: React.FC<Step2Props> = ({ 
-  formData = { tags: [], label: [] }, 
-  tags = [], 
-  labels = [], 
-  onNext, 
-  onPrev 
+const Step2: React.FC<Step2Props> = ({
+  formData = { tags: [], label: [] },
+  tags = [],
+  labels = [],
+  onNext,
+  onPrev,
 }) => {
   const dispatch = useDispatch();
   const [selectedTags, setSelectedTags] = useState<number[]>(formData.tags);
-  const [selectedLabel, setSelectedLabel] = useState<number>(formData.label[0] || (labels[0] ? labels[0].id : 1));
-  const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedLabel, setSelectedLabel] = useState<number>(
+    formData.label[0] || (labels[0] ? labels[0].id : 1)
+  );
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [dropdownOpenTags, setDropdownOpenTags] = useState(false);
-  const [_dropdownOpenLabels, setDropdownOpenLabels] = useState(false);
+  const [, setDropdownOpenLabels] = useState(false);
 
   const dropdownRefTags = useRef<HTMLDivElement>(null);
   const dropdownRefLabels = useRef<HTMLDivElement>(null);
@@ -47,56 +51,88 @@ const Step2: React.FC<Step2Props> = ({
   // Close the dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRefTags.current && !dropdownRefTags.current.contains(event.target as Node)) {
+      if (
+        dropdownRefTags.current &&
+        !dropdownRefTags.current.contains(event.target as Node)
+      ) {
         setDropdownOpenTags(false);
       }
-      if (dropdownRefLabels.current && !dropdownRefLabels.current.contains(event.target as Node)) {
+      if (
+        dropdownRefLabels.current &&
+        !dropdownRefLabels.current.contains(event.target as Node)
+      ) {
         setDropdownOpenLabels(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  const toggleTag = (tagId: number) => {
-    const newSelectedTags = selectedTags.includes(tagId)
-      ? selectedTags.filter(id => id !== tagId)
-      : [...selectedTags, tagId];
-    
-    setSelectedTags(newSelectedTags);
-    setDropdownOpenTags(false);
-  };
+  // اعتبارسنجی فرم
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
 
-  // const toggleLabel = (labelId: number) => {
-  //   setSelectedLabel(labelId);
-  //   setDropdownOpenLabels(false);
-  // };
-
-  const handleNext = () => {
     if (selectedTags.length === 0) {
-      setError('حداقل یک تگ را انتخاب کنید');
-      return;
+      newErrors.tags = "حداقل یک تگ را انتخاب کنید";
     }
 
     if (!selectedLabel) {
-      setError('یک برچسب را انتخاب کنید');
-      return;
+      newErrors.label = "یک برچسب را انتخاب کنید";
     }
 
-    dispatch(setProjectData({ 
-      tags: selectedTags, 
-      label: [selectedLabel] 
-    }));
-    
-    onNext();
+    setErrors(newErrors);
+    const isValid = Object.keys(newErrors).length === 0;
+    setIsFormValid(isValid);
+    return isValid;
   };
 
-  const filteredTags = tags.filter(tag => tag.name.toLowerCase().includes(searchTerm.toLowerCase()));
-  // const filteredLabels = labels.filter(label => label.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  // اعتبارسنجی بلادرنگ هنگام تغییر تگ‌ها
+  const toggleTag = (tagId: number) => {
+    const newSelectedTags = selectedTags.includes(tagId)
+      ? selectedTags.filter((id) => id !== tagId)
+      : [...selectedTags, tagId];
+
+    setSelectedTags(newSelectedTags);
+    setDropdownOpenTags(false);
+
+    // به‌روزرسانی فرم و اعتبارسنجی
+    dispatch(setProjectData({ tags: newSelectedTags }));
+    validateForm();
+  };
+
+  // اعتبارسنجی بلادرنگ هنگام تغییر برچسب
+  const handleLabelSelect = (labelId: number) => {
+    setSelectedLabel(labelId);
+    setDropdownOpenLabels(false);
+
+    // به‌روزرسانی فرم و اعتبارسنجی
+    dispatch(setProjectData({ label: [labelId] }));
+    validateForm();
+  };
+
+  // اعتبارسنجی اولیه
+  useEffect(() => {
+    validateForm();
+  }, [selectedTags, selectedLabel]);
+
+  const handleNext = () => {
+    if (validateForm()) {
+      dispatch(
+        setProjectData({
+          tags: selectedTags,
+          label: [selectedLabel],
+        })
+      );
+      onNext();
+    }
+  };
+
+  const filteredTags = tags.filter((tag) =>
+    tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
@@ -121,12 +157,14 @@ const Step2: React.FC<Step2Props> = ({
               />
               <div className="mt-2 space-y-1">
                 {filteredTags.length > 0 ? (
-                  filteredTags.map(tag => (
+                  filteredTags.map((tag) => (
                     <div
                       key={tag.id}
                       onClick={() => toggleTag(tag.id)}
                       className={`p-2 rounded-md flex items-center justify-between cursor-pointer transition-all ${
-                        selectedTags.includes(tag.id) ? 'hidden' : 'hover:bg-gray-100'
+                        selectedTags.includes(tag.id)
+                          ? "hidden"
+                          : "hover:bg-gray-100"
                       }`}
                     >
                       {tag.name}
@@ -140,65 +178,102 @@ const Step2: React.FC<Step2Props> = ({
             </div>
           )}
           <div className="mt-3 flex flex-wrap gap-2">
-            {selectedTags.map(tagId => {
-              const tag = tags.find(t => t.id === tagId);
+            {selectedTags.map((tagId) => {
+              const tag = tags.find((t) => t.id === tagId);
               return tag ? (
                 <span
                   key={tag.id}
                   className="px-3 py-1 bg-blue-500 text-white rounded-full flex items-center gap-2"
                 >
                   {tag.name}
-                  <button onClick={() => toggleTag(tag.id)} className="text-white">×</button>
+                  <button
+                    onClick={() => toggleTag(tag.id)}
+                    className="text-white"
+                  >
+                    ×
+                  </button>
                 </span>
               ) : null;
             })}
           </div>
+          <AnimatePresence>
+            {errors.tags && (
+              <motion.ul
+                key="tags-errors"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.4 }}
+                className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+              >
+                <li>{errors.tags}</li>
+              </motion.ul>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
       <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
         <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب برچسب</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {labels.map(label => (
-            <div 
+          {labels.map((label) => (
+            <div
               key={label.id}
-              onClick={() => setSelectedLabel(label.id)}
+              onClick={() => handleLabelSelect(label.id)}
               className={`p-6 rounded-lg cursor-pointer transition-all duration-300 border-2 ${
-                selectedLabel === label.id 
-                  ? 'bg-green-100 border-green-500 shadow-md' 
-                  : 'bg-white border-gray-200 hover:bg-gray-50 hover:shadow-lg'
+                selectedLabel === label.id
+                  ? "bg-green-100 border-green-500 shadow-md"
+                  : "bg-white border-gray-200 hover:bg-gray-50 hover:shadow-lg"
               }`}
             >
               <div className="flex justify-between items-center">
-                <h4 className="font-bold text-lg text-gray-800">{label.name}</h4>
-                {selectedLabel === label.id && <FaCheck className="text-green-600" />}
+                <h4 className="font-bold text-lg text-gray-800">
+                  {label.name}
+                </h4>
+                {selectedLabel === label.id && (
+                  <FaCheck className="text-green-600" />
+                )}
               </div>
               <p className="text-gray-600 mt-2">{label.description}</p>
               <p className="text-blue-600 font-bold mt-2">
-                {label.price === 0 ? 'رایگان' : `${label.price.toLocaleString()} تومان`}
+                {label.price === 0
+                  ? "رایگان"
+                  : `${label.price.toLocaleString()} تومان`}
               </p>
             </div>
           ))}
         </div>
+        <AnimatePresence>
+          {errors.label && (
+            <motion.ul
+              key="label-errors"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4 }}
+              className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+            >
+              <li>{errors.label}</li>
+            </motion.ul>
+          )}
+        </AnimatePresence>
       </div>
 
-
-      {error && (
-        <div className="bg-red-50 border border-red-300 text-red-800 p-3 rounded-md">
-          {error}
-        </div>
-      )}
-
       <div className="flex justify-between mt-6">
-        <button 
+        <button
           onClick={onPrev}
           className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center"
         >
           مرحله قبل
         </button>
-        <button 
+        <button
           onClick={handleNext}
-          className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors flex items-center"
+          disabled={!isFormValid}
+          className={`px-6 py-2 rounded-md transition-colors flex items-center ${
+            isFormValid
+              ? "bg-blue-500 text-white hover:bg-blue-600"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
         >
           مرحله بعد
         </button>

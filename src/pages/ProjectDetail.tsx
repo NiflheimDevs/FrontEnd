@@ -39,8 +39,8 @@ interface Bidder {
 const ProjectDetail = () => {
   const { project_id } = useParams();
   const [projectData, setProjectData] = useState<ProjectData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setLoading] = useState<boolean>(true);
+  const [error] = useState<string | null>(null);
   // Sample bidders data - in a real app, this would also come from an API
   const bidders: Bidder[] = [
     { name: "احمد۹۵", rating: 4.1, bid: "۵۰۰ دینار" },
@@ -49,7 +49,7 @@ const ProjectDetail = () => {
     { name: "رضا۶۶", rating: 2, bid: "۵۰۰ دینار" },
     { name: "حسن۵۵", rating: 4.5, bid: "۴۷۵ دینار" },
     { name: "یاسر۴۴", rating: 3.8, bid: "۴۹۵ دینار" },
-    { name: "کریم۳۳", rating: 4.0, bid: "۴۸۵ دینار" }
+    { name: "کریم۳۳", rating: 4.0, bid: "۴۸۵ دینار" },
   ];
 
   // Format date to show how long ago the project was posted
@@ -58,7 +58,7 @@ const ProjectDetail = () => {
     const currentDate = new Date();
     const diffTime = Math.abs(currentDate.getTime() - projectDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     return `${diffDays} روز پیش`;
   };
 
@@ -66,16 +66,16 @@ const ProjectDetail = () => {
     const fetchProjectData = async () => {
       try {
         setLoading(true);
-        
+
         // Create an instance of axios with custom configuration
         const axiosInstance = axios.create({
-          baseURL: 'https://103.75.196.227:8080',
+          baseURL: "https://103.75.196.227:8080",
           headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            "Content-Type": "application/json",
+            Accept: "application/json",
           },
         });
-        
+
         // Make the API call
         const response = await axiosInstance.get(`/project/${project_id}`);
         console.log("API response:", response.data);
@@ -85,12 +85,13 @@ const ProjectDetail = () => {
         // console.error("Error fetching project data:", err);
         // More detailed error reporting
         // setError(
-        //   err.response 
-        //     ? `خطا: ${err.response.status} - ${err.response.statusText}` 
+
+        //   err.response
+        //     ? `خطا: ${err.response.status} - ${err.response.statusText}`
         //     : "خطا در اتصال به سرور. لطفاً اتصال اینترنت خود را بررسی کنید."
         // );
         setLoading(false);
-        window.location.href = 'https://bidlancer.ir/404';
+        window.location.href = "https://bidlancer.ir/404";
       }
     };
 
@@ -143,7 +144,6 @@ const ProjectDetail = () => {
                 سازنده پروژه:
               </h3> */}
               <p className="font-semibold text-black text-xs sm:text-sm text-right">
-                {projectData.first_name}{projectData.last_name} کارفرما این پروژه می باشد. 
               </p>
             </div>
             {/* Project Description */}
@@ -162,18 +162,17 @@ const ProjectDetail = () => {
                 مهارت‌های مورد نیاز:
               </h3>
               <div className="flex flex-wrap gap-2 justify-start">
-                {projectData.tags && projectData.tags.map((tag) => (
-                  <span
-                    key={tag.id}
-                    className="bg-white border border-[#3E79DE] text-[#3E79DE] px-2 sm:px-3 py-1 rounded-full text-xs font-medium"
-                  >
-                    {tag.name}
-                  </span>
-                ))}
+                {projectData.tags &&
+                  projectData.tags.map((tag) => (
+                    <span
+                      key={tag.id}
+                      className="bg-white border border-[#3E79DE] text-[#3E79DE] px-2 sm:px-3 py-1 rounded-full text-xs font-medium"
+                    >
+                      {tag.name}
+                    </span>
+                  ))}
               </div>
             </div>
-            
-
           </div>
 
           {/* Right Half: Bidders List and Buttons (Bottom on small screens) */}

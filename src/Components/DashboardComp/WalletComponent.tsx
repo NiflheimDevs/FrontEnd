@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "primereact/skeleton";
 import walletPic from "../../assets/Dashboard/Wallet.svg";
@@ -110,7 +111,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       } else {
         setTotalTransactions(currentPage * transactionsPerPage + 1);
       }
-    } catch (error) {
+    } catch {
       //      console.error("Error fetching transactions:", error);
       //      console.error("Full error details:", error);
       setTransactions([]);
@@ -494,7 +495,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       {isDepositModalOpen && (
         <AnimatePresence>
           {isDepositModalOpen && (
-            <div className="fixed px-4 inset-0 backdrop-blur-xs flex justify-center items-center z-50">
+            <form className="fixed px-4 inset-0 backdrop-blur-xs flex justify-center items-center z-50">
               <motion.div
                 ref={depositModalRef}
                 className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
@@ -569,11 +570,13 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                       setIsDepositModalOpen(false);
                       setErrors([]);
                     }}
+                    type="button"
                     className="px-4 py-2 bg-gray-300 cursor-pointer text-gray-800 rounded-md hover:bg-gray-400 transition-all ml-2"
                   >
                     انصراف
                   </button>
                   <button
+                    type="submit"
                     onClick={handleDeposit}
                     disabled={
                       !!depositAmount && // Convert depositAmount to boolean (true if non-empty)
@@ -592,7 +595,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   </button>
                 </div>
               </motion.div>
-            </div>
+            </form>
           )}
         </AnimatePresence>
       )}
@@ -601,7 +604,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       {isWithdrawModalOpen && (
         <AnimatePresence>
           {isWithdrawModalOpen && (
-            <div className="fixed px-4 inset-0 backdrop-blur-xs flex justify-center items-center z-50">
+            <form className="fixed px-4 inset-0 backdrop-blur-xs flex justify-center items-center z-50">
               <motion.div
                 ref={withdrawModalRef}
                 className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
@@ -679,6 +682,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 </div>
                 <div className="flex justify-end space-x-2">
                   <button
+                    type="button"
                     onClick={() => {
                       setIsWithdrawModalOpen(false);
                       setErrors([]);
@@ -688,6 +692,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                     انصراف
                   </button>
                   <button
+                    type="submit"
                     onClick={handleWithdraw}
                     disabled={errors.length > 0}
                     className={`px-4 py-2 bg-blue-500 text-white rounded-md transition-all ${
@@ -700,7 +705,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   </button>
                 </div>
               </motion.div>
-            </div>
+            </form>
           )}
         </AnimatePresence>
       )}

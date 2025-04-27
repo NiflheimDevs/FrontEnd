@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
 import { Button } from "../Components/ui/button";
 import { FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
+import { SquarePen } from "lucide-react";
 import { Link } from "react-router-dom";
 import avatar from "@/assets/myproject/avatars.png";
-import pencil from "@/assets/myproject/PencilSquare.png";
 import { FaTrash } from "react-icons/fa";
 import { getUserProject, deleteProject } from "../API";
 import { useNotification } from "../Notification/NotificationProvider";
@@ -289,7 +290,7 @@ const MyProjects = () => {
                     <div className="flex gap-4 absolute bottom-[15px] left-[15px] z-10">
                       <Link to={`/edit-project/${project.project_id}`}>
                         <motion.button className="bg-transparent size-[24px] cursor-pointer hover:scale-[115%] transition-all duration-300">
-                          <img src={pencil} alt="Edit" />
+                          <SquarePen color="white" />
                         </motion.button>
                       </Link>
                       <motion.button

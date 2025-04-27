@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { setProjectData } from '../../store/slices/projectSlice';
-import { FaCheck, FaChevronDown } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { motion, AnimatePresence } from "framer-motion";
+import { setProjectData } from "../../store/slices/projectSlice";
+import { FaCheck, FaChevronDown } from "react-icons/fa";
 
 interface Tag {
   id: number;
@@ -26,17 +27,18 @@ interface EditStep2Props {
   onPrev: () => void;
 }
 
-const EditStep2: React.FC<EditStep2Props> = ({ 
-  formData = { tags: [], label: [] }, 
-  tags = [], 
-  projectLabel, 
-  onNext, 
-  onPrev 
+const EditStep2: React.FC<EditStep2Props> = ({
+  formData = { tags: [], label: [] },
+  tags = [],
+  projectLabel,
+  onNext,
+  onPrev,
 }) => {
   const dispatch = useDispatch();
   const [selectedTags, setSelectedTags] = useState<number[]>(formData.tags);
-  const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -44,44 +46,66 @@ const EditStep2: React.FC<EditStep2Props> = ({
   // Close the dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setDropdownOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  const toggleTag = (tagId: number) => {
-    const newSelectedTags = selectedTags.includes(tagId)
-      ? selectedTags.filter(id => id !== tagId)
-      : [...selectedTags, tagId];
-    
-    setSelectedTags(newSelectedTags);
-  };
+  // اعتبارسنجی فرم
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
 
-  const handleNext = () => {
     if (selectedTags.length === 0) {
-      setError('حداقل یک تگ را انتخاب کنید');
-      return;
+      newErrors.tags = "حداقل یک تگ را انتخاب کنید";
     }
 
     if (!formData.label || formData.label.length === 0) {
-      setError('خطا در بارگذاری برچسب. لطفاً صفحه را بارگذاری مجدد کنید.');
-      return;
+      newErrors.label =
+        "خطا در بارگذاری برچسب. لطفاً صفحه را بارگذاری مجدد کنید.";
     }
 
-    dispatch(setProjectData({ tags: selectedTags }));
-    
-    onNext();
+    setErrors(newErrors);
+    const isValid = Object.keys(newErrors).length === 0;
+    setIsFormValid(isValid);
+    return isValid;
   };
 
-  const filteredTags = tags.filter(tag => 
-    !selectedTags.includes(tag.id) && tag.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // اعتبارسنجی بلادرنگ هنگام تغییر تگ‌ها
+  const toggleTag = (tagId: number) => {
+    const newSelectedTags = selectedTags.includes(tagId)
+      ? selectedTags.filter((id) => id !== tagId)
+      : [...selectedTags, tagId];
+
+    setSelectedTags(newSelectedTags);
+    dispatch(setProjectData({ tags: newSelectedTags }));
+    validateForm();
+  };
+
+  const handleNext = () => {
+    if (validateForm()) {
+      dispatch(setProjectData({ tags: selectedTags }));
+      onNext();
+    }
+  };
+
+  // اعتبارسنجی اولیه
+  useEffect(() => {
+    validateForm();
+  }, [selectedTags, formData.label]);
+
+  const filteredTags = tags.filter(
+    (tag) =>
+      !selectedTags.includes(tag.id) &&
+      tag.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -108,12 +132,12 @@ const EditStep2: React.FC<EditStep2Props> = ({
               />
               <div className="mt-2 space-y-1">
                 {filteredTags.length > 0 ? (
-                  filteredTags.map(tag => (
+                  filteredTags.map((tag) => (
                     <div
                       key={tag.id}
                       onClick={() => {
                         toggleTag(tag.id);
-                        setDropdownOpen(false); // Close the dropdown after selecting a tag
+                        setDropdownOpen(false);
                       }}
                       className="p-2 rounded-md flex items-center justify-between cursor-pointer transition-all hover:bg-gray-100"
                     >
@@ -127,21 +151,38 @@ const EditStep2: React.FC<EditStep2Props> = ({
             </div>
           )}
           <div className="mt-3 flex flex-wrap gap-2">
-            {selectedTags.map(tagId => {
-              const tag = tags.find(t => t.id === tagId);
+            {selectedTags.map((tagId) => {
+              const tag = tags.find((t) => t.id === tagId);
               return tag ? (
                 <span
                   key={tag.id}
                   className="px-3 py-1 bg-blue-500 text-white rounded-full flex items-center gap-2"
                 >
                   {tag.name}
-                  <button 
-                    onClick={() => toggleTag(tag.id)} 
-                    className="text-white">×</button>
+                  <button
+                    onClick={() => toggleTag(tag.id)}
+                    className="text-white"
+                  >
+                    ×
+                  </button>
                 </span>
               ) : null;
             })}
           </div>
+          <AnimatePresence>
+            {errors.tags && (
+              <motion.ul
+                key="tags-errors"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.4 }}
+                className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+              >
+                <li>{errors.tags}</li>
+              </motion.ul>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
@@ -150,7 +191,7 @@ const EditStep2: React.FC<EditStep2Props> = ({
         <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب برچسب</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {projectLabel ? (
-            <div 
+            <div
               key={projectLabel.id}
               className={`p-4 rounded-lg transition-all duration-300 border-2 bg-green-100 border-green-500`}
             >
@@ -160,36 +201,52 @@ const EditStep2: React.FC<EditStep2Props> = ({
               </div>
               <p className="text-gray-600 mt-2">{projectLabel.description}</p>
               <p className="text-blue-600 font-bold mt-2">
-                {projectLabel.price === 0 ? 'رایگان' : `${projectLabel.price.toLocaleString()} تومان`}
+                {projectLabel.price === 0
+                  ? "رایگان"
+                  : `${projectLabel.price.toLocaleString()} تومان`}
               </p>
-              <div className="mt-3 text-xs text-gray-400">این برچسب قابل تغییر نیست</div>
+              <div className="mt-3 text-xs text-gray-400">
+                این برچسب قابل تغییر نیست
+              </div>
             </div>
-          ) :
-          <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-300">
-            <p className="text-yellow-700">برچسب پروژه در حال بارگذاری...</p>
-          </div>
-          }
+          ) : (
+            <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-300">
+              <p className="text-yellow-700">برچسب پروژه در حال بارگذاری...</p>
+            </div>
+          )}
         </div>
+        <AnimatePresence>
+          {errors.label && (
+            <motion.ul
+              key="label-errors"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4 }}
+              className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+            >
+              <li>{errors.label}</li>
+            </motion.ul>
+          )}
+        </AnimatePresence>
       </div>
-
-      {/* Error Message */}
-      {error && (
-        <div className="bg-red-50 border border-red-300 text-red-800 p-3 rounded-md">
-          {error}
-        </div>
-      )}
 
       {/* Navigation Buttons */}
       <div className="flex justify-between mt-6">
-        <button 
+        <button
           onClick={onPrev}
           className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center"
         >
           مرحله قبل
         </button>
-        <button 
+        <button
           onClick={handleNext}
-          className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors flex items-center"
+          disabled={!isFormValid}
+          className={`px-6 py-2 rounded-md transition-colors flex items-center ${
+            isFormValid
+              ? "bg-blue-500 text-white hover:bg-blue-600"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
         >
           مرحله بعد
         </button>

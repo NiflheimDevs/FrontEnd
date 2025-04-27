@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import AuthPage from "../pages/Auth";
@@ -12,6 +13,7 @@ import ChangePasswordonForget from "../pages/ForgetPass/ChangePasswordonForget";
 import MobileVerifyforgetpass from "../pages/ForgetPass/MobileVerifyForgetPass";
 import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
 //import Wallet from "../Components/DashboardComp/Wallet";
+import PublicProfile from "../pages/PublicProfile/PublicProfile";
 import Wallet from "../pages/Wallet/Wallet";
 import Chat from "../pages/Chat";
 import DashboardMain from "../pages/Dashboard";
@@ -59,6 +61,8 @@ export const publicRoutes = [
       </MobileVerifyWrapper>
     ),
   },
+  { path: "/profile/:profile_id", element: <PublicProfile /> },
+  { path: "/detail/:project_id", element: <ProjectDetail /> },
   {
     path: "/ForgetPassVerify",
     element: (

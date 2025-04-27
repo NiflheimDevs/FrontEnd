@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Search, Menu } from "lucide-react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
@@ -5,18 +6,39 @@ import Mail from "@/assets/Dashboard/Mail.svg";
 import FAQ from "@/assets/Dashboard/Faq.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
 import { Link } from "react-router-dom";
+import { GetProfile } from "../../API";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CgProfile } from "react-icons/cg";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 
 export default function Header({ toggleSidebar }: any) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const profilePicture = useSelector(
-    (state: RootState) => state.profile.low_profile
-  );
+  const [profilePicture, setProfilePicture] = useState<string>("");
+
+  const fetchProfile = async () => {
+    try {
+      const response = await GetProfile();
+      // Validate that low_quality is a non-empty string and a URL
+      const isValidUrl =
+        response.low_quality &&
+        typeof response.low_quality === "string" &&
+        response.low_quality.trim() !== "" &&
+        /^https?:\/\//i.test(response.low_quality);
+
+      if (isValidUrl) {
+        setProfilePicture(response.low_quality);
+      } else {
+        setProfilePicture(""); // Set to empty if not a valid URL
+      }
+    } catch (error: any) {
+      setProfilePicture(""); // Set to empty on error
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -51,7 +73,6 @@ export default function Header({ toggleSidebar }: any) {
           </button>
 
           {/* Logo and Title */}
-
           <Link to="/">
             <button className="flex w-fit h-fit items-center cursor-pointer">
               <label className="text-lg font-semibold md:flex sm:flex hidden pointer-events-none">
@@ -110,6 +131,7 @@ export default function Header({ toggleSidebar }: any) {
                   className="rounded-full h-[36px] w-[36px] object-cover min-w-8 pointer-events-none border-2 border-blue-500"
                   alt="Profile"
                   tabIndex={-1}
+                  onError={() => setProfilePicture("")} // Fallback to CgProfile if image fails to load
                 />
               ) : (
                 <CgProfile
