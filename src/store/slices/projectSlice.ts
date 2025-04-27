@@ -1,5 +1,10 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { createProject as createProjectAPI, deleteProject as deleteProjectAPI, updateProject as updateProjectAPI } from '../../API';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createProject as createProjectAPI,
+  deleteProject as deleteProjectAPI,
+  updateProject as updateProjectAPI,
+} from "../../API";
 
 // Define the project state interface
 interface ProjectState {
@@ -15,104 +20,108 @@ interface ProjectState {
 
 // Initial state
 const initialState: ProjectState = {
-  name: '',
-  description: '',
+  name: "",
+  description: "",
   tags: [],
   label: [1], // Default to '1' (Free)
   files: null,
   loading: false,
   error: null,
-  success: false
+  success: false,
 };
 
 // Async thunk for creating a project
 export const createProject = createAsyncThunk(
-  'project/createProject',
-  async (projectData: {
-    title: string;
-    description: string;
-    tags: number[];
-    label: number;
-  }, { rejectWithValue }) => {
-    try {
-      const response = await createProjectAPI(projectData);
-      return response;
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'خطا در ایجاد پروژه');
-    }
-  }
-);
-
-export const updateProject = createAsyncThunk(
-  'project/updateProject',
-  async ({ 
-    projectId, 
-    projectData 
-  }: {
-    projectId: string | number;
+  "project/createProject",
+  async (
     projectData: {
       title: string;
       description: string;
       tags: number[];
       label: number;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await createProjectAPI(projectData);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.message || "خطا در ایجاد پروژه");
     }
-  }, { rejectWithValue }) => {
+  }
+);
+
+export const updateProject = createAsyncThunk(
+  "project/updateProject",
+  async (
+    {
+      projectId,
+      projectData,
+    }: {
+      projectId: string | number;
+      projectData: {
+        title: string;
+        description: string;
+        tags: number[];
+        label: number;
+      };
+    },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await updateProjectAPI(projectId, projectData);
       return response;
     } catch (error: any) {
-      return rejectWithValue(
-        error.message || 'خطا در بروزرسانی پروژه'
-      );
+      return rejectWithValue(error.message || "خطا در بروزرسانی پروژه");
     }
   }
 );
 
 // Async thunk for deleting a project
 export const deleteProject = createAsyncThunk(
-  'project/deleteProject',
+  "project/deleteProject",
   async (projectId: string | number, { rejectWithValue }) => {
     try {
       await deleteProjectAPI(projectId);
       return projectId;
     } catch (error: any) {
-      return rejectWithValue(error.message || 'خطا در حذف پروژه');
+      return rejectWithValue(error.message || "خطا در حذف پروژه");
     }
   }
 );
 
 // Create the project slice
 const projectSlice = createSlice({
-  name: 'project',
+  name: "project",
   initialState,
   reducers: {
     // Set a single field in the project data
     setProjectData: (state, action: PayloadAction<{ [key: string]: any }>) => {
       return { ...state, ...action.payload };
     },
-    
+
     // Reset the project state to initial values
     resetProject: () => initialState,
-    
+
     // Set loading state
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
-    
+
     // Set error message
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
-    
+
     // Clear error message
     clearError: (state) => {
       state.error = null;
     },
-    
+
     // Set success status
     setSuccess: (state, action: PayloadAction<boolean>) => {
       state.success = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     // Handle create project
@@ -131,8 +140,8 @@ const projectSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
         state.success = false;
-      })
-    
+      });
+
     // Handle update project
     builder
       .addCase(updateProject.pending, (state) => {
@@ -148,8 +157,8 @@ const projectSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
         state.success = false;
-      })
-      
+      });
+
     // Handle delete project
     builder
       .addCase(deleteProject.pending, (state) => {
@@ -164,17 +173,17 @@ const projectSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       });
-  }
+  },
 });
 
 // Export actions
-export const { 
-  setProjectData, 
-  resetProject, 
-  setLoading, 
-  setError, 
-  clearError, 
-  setSuccess 
+export const {
+  setProjectData,
+  resetProject,
+  setLoading,
+  setError,
+  clearError,
+  setSuccess,
 } = projectSlice.actions;
 
 // Export reducer

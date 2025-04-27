@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useEffect } from "react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
@@ -8,18 +9,45 @@ import { IoMdPerson } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 import { CgProfile } from "react-icons/cg";
+import { GetProfile } from "../../API";
 
 const Header = ({ showSearch = true }) => {
-  // Added showSearch prop with default true
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const token = localStorage.getItem("authToken");
-  const profilePicture = useSelector(
-    (state: RootState) => state.profile.low_profile
-  );
+  const [profilePicture, setProfilePicture] = useState<string>("");
+  const [error401, seterror401] = useState<boolean>(false);
+
+  const fetchProfile = async () => {
+    try {
+      const response = await GetProfile();
+      // Validate that low_quality is a non-empty string and a URL
+      const isValidUrl =
+        response.low_quality &&
+        typeof response.low_quality === "string" &&
+        response.low_quality.trim() !== "" &&
+        /^https?:\/\//i.test(response.low_quality);
+
+      if (isValidUrl) {
+        setProfilePicture(response.low_quality);
+      } else {
+        setProfilePicture(""); // Set to empty if not a valid URL
+      }
+      seterror401(false);
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        setProfilePicture("");
+        seterror401(true);
+      } else {
+        setProfilePicture(""); // Set to empty on other errors
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -74,7 +102,7 @@ const Header = ({ showSearch = true }) => {
         )}
 
         {/* Right Section: Conditional Rendering */}
-        {token ? (
+        {token && !error401 ? (
           <div className="flex w-fit h-fit items-center md:gap-5 sm:gap-5 gap-[3vw]">
             {showSearch && (
               <button
@@ -121,6 +149,7 @@ const Header = ({ showSearch = true }) => {
                     className="rounded-full h-[36px] w-[36px] object-cover min-w-8 pointer-events-none border-2 border-blue-500"
                     alt="Profile"
                     tabIndex={-1}
+                    onError={() => setProfilePicture("")} // Fallback to CgProfile if image fails to load
                   />
                 ) : (
                   <CgProfile
