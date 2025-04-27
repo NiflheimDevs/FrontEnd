@@ -79,7 +79,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
         <div className="mt-3 pt-3 border-t">
           <div className="flex justify-end">
             <div className="flex -space-x-2 overflow-hidden">
-              {project.assignedUsers.slice(0, 3).map((user, index) => (
+              {project.assignedUsers.slice(0, 3).map((user) => (
                 <img
                   key={user.id}
                   className="inline-block h-6 w-6 rounded-full ring-2 ring-white"

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from './Layout';
 import ProjectCard from './ProjectCard';
 // import Pagination from './Pagination';
-import { projects } from './staticData';
-import { Project, Team } from './index';
+import { Project, Team,projects } from './index';
 import { useParams, Link } from 'react-router-dom';
 import { teams } from './staticData';
 
@@ -12,7 +11,8 @@ const ProjectListPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  // const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  // const [setIsCreateModalOpen] = useState(false);
   const projectsPerPage = 6;
   const [currentTeam, setCurrentTeam] = useState<Team | null>(null);
   
@@ -57,11 +57,11 @@ const ProjectListPage: React.FC = () => {
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
   const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject);
-  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+  // const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
   
-  const handleCreateProject = () => {
-    setIsCreateModalOpen(true);
-  };
+  // const handleCreateProject = () => {
+  //   setIsCreateModalOpen(true);
+  // };
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,7 +109,7 @@ const ProjectListPage: React.FC = () => {
           )}
           
           <button
-            onClick={handleCreateProject}
+            //onClick={handleCreateProject}
             className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
           >
             <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,7 +133,7 @@ const ProjectListPage: React.FC = () => {
           <div className="col-span-full text-center py-10">
             <p className="text-lg text-gray-600">هیچ پروژه‌ای یافت نشد</p>
             <button
-              onClick={handleCreateProject}
+              //onClick={handleCreateProject}
               className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
             >
               ایجاد پروژه جدید
@@ -142,13 +142,13 @@ const ProjectListPage: React.FC = () => {
         )}
       </div>
       
-      {filteredProjects.length > projectsPerPage && (
+      {/* {filteredProjects.length > projectsPerPage && (
         <Pagination 
           currentPage={currentPage} 
           totalPages={totalPages} 
           onPageChange={setCurrentPage}
         />
-      )}
+      )} */}
       
       {/* Project creation modal would be implemented here */}
       {/* Similar to CreateTeamModal */}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from './Layout';
 import TeamCard from './TeamCard';
-import Pagination from './Pagination';
+// import Pagination from './Pagination';
 import CreateTeamModal from './CreateTeamModalProps';
 import { teams } from './staticData';
 import { Team, User } from './index';
@@ -17,7 +17,7 @@ const TeamListPage: React.FC = () => {
   const indexOfLastTeam = currentPage * teamsPerPage;
   const indexOfFirstTeam = indexOfLastTeam - teamsPerPage;
   const currentTeams = filteredTeams.slice(indexOfFirstTeam, indexOfLastTeam);
-  const totalPages = Math.ceil(filteredTeams.length / teamsPerPage);
+  // const totalPages = Math.ceil(filteredTeams.length / teamsPerPage);
   
   const handleCreateTeam = () => {
     setIsModalOpen(true);
@@ -101,13 +101,13 @@ const TeamListPage: React.FC = () => {
         )}
       </div>
       
-      {filteredTeams.length > teamsPerPage && (
+      {/* {filteredTeams.length > teamsPerPage && (
         <Pagination 
           currentPage={currentPage} 
           totalPages={totalPages} 
           onPageChange={setCurrentPage}
         />
-      )}
+      )} */}
       
       <CreateTeamModal 
         isOpen={isModalOpen}

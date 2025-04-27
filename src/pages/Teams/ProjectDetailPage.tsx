@@ -3,16 +3,19 @@ import { useParams, Link } from 'react-router-dom';
 import Layout from './Layout';
 import TeamMemberCard from './TeamMemberCard';
 // import Pagination from './Pagination';
-import { projects, teams, users } from './staticData';
-import { Project, User } from './index';
+import { teams } from './staticData';
+import { projects,Project, User } from './index';
 
 const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [project, setProject] = useState<Project | null>(null);
   const [team, setTeam] = useState<any>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  //const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
+  //const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+  //const [setIsAssignModalOpen] = useState(false);
+  //const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  //const [setIsEditModalOpen] = useState(false);
   const membersPerPage = 5;
   
   useEffect(() => {
@@ -55,7 +58,7 @@ const ProjectDetailPage: React.FC = () => {
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
   const currentMembers = project.assignedUsers.slice(indexOfFirstMember, indexOfLastMember);
-  const totalPages = Math.ceil(project.assignedUsers.length / membersPerPage);
+  // const totalPages = Math.ceil(project.assignedUsers.length / membersPerPage);
   
   // Format date to Persian style
   const formatDate = (dateString: string) => {
@@ -79,13 +82,13 @@ const ProjectDetailPage: React.FC = () => {
     }
   };
   
-  const handleAssignMember = () => {
-    setIsAssignModalOpen(true);
-  };
+  // const handleAssignMember = () => {
+  //   setIsAssignModalOpen(true);
+  // };
   
-  const handleEditProject = () => {
-    setIsEditModalOpen(true);
-  };
+  // const handleEditProject = () => {
+  //   setIsEditModalOpen(true);
+  // };
   
   const handleRemoveMember = (userId: string) => {
     if (project) {
@@ -97,14 +100,14 @@ const ProjectDetailPage: React.FC = () => {
     }
   };
   
-  const handleStatusChange = (newStatus: "در انتظار" | "در حال انجام" | "تکمیل شده" | "لغو شده") => {
-    if (project) {
-      setProject({
-        ...project,
-        status: newStatus
-      });
-    }
-  };
+  // const handleStatusChange = (newStatus: "در انتظار" | "در حال انجام" | "تکمیل شده" | "لغو شده") => {
+  //   if (project) {
+  //     setProject({
+  //       ...project,
+  //       status: newStatus
+  //     });
+  //   }
+  // };
   
   return (
     <Layout>
@@ -112,7 +115,7 @@ const ProjectDetailPage: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
           <div className="flex flex-col sm:flex-row gap-2">
             <button
-              onClick={handleAssignMember}
+              //onClick={handleAssignMember}
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
             >
               <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +124,7 @@ const ProjectDetailPage: React.FC = () => {
               اضافه کردن عضو
             </button>
             <button
-              onClick={handleEditProject}
+              //onClick={handleEditProject}
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
             >
               <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -216,7 +219,7 @@ const ProjectDetailPage: React.FC = () => {
             <div className="text-center py-8 border rounded-lg">
               <p className="text-gray-500">هیچ عضوی به این پروژه اختصاص داده نشده است</p>
               <button
-                onClick={handleAssignMember}
+                //onClick={handleAssignMember}
                 className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
               >
                 اختصاص عضو
@@ -224,13 +227,13 @@ const ProjectDetailPage: React.FC = () => {
             </div>
           )}
           
-          {project.assignedUsers.length > membersPerPage && (
+          {/* {project.assignedUsers.length > membersPerPage && (
             <Pagination 
               currentPage={currentPage} 
               totalPages={totalPages} 
               onPageChange={setCurrentPage}
             />
-          )}
+          )} */}
         </div>
         
         <div className="mt-8 text-center">

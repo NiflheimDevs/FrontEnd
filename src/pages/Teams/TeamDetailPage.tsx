@@ -10,7 +10,8 @@ import { User, Team } from './index';
 
 const TeamDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [currentPage, setCurrentPage] = useState(1);
+  //const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
   const [activeTab, setActiveTab] = useState<'members' | 'projects'>('members');
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
   const [isEditTeamModalOpen, setIsEditTeamModalOpen] = useState(false);
@@ -38,7 +39,7 @@ const TeamDetailPage: React.FC = () => {
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
   const currentMembers = teamData.members.slice(indexOfFirstMember, indexOfLastMember);
-  const totalPages = Math.ceil(teamData.members.length / membersPerPage);
+  // const totalPages = Math.ceil(teamData.members.length / membersPerPage);
   
   // Handle adding a new member to the team
   const handleAddMember = (user: User, role: string) => {
@@ -146,13 +147,13 @@ const TeamDetailPage: React.FC = () => {
               )}
             </div>
             
-            {teamData.members.length > membersPerPage && (
+            {/* {teamData.members.length > membersPerPage && (
               <Pagination 
                 currentPage={currentPage} 
                 totalPages={totalPages} 
                 onPageChange={setCurrentPage}
               />
-            )}
+            )} */}
           </div>
         )}
         
