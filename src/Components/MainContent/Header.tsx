@@ -48,7 +48,6 @@ const Header = ({ showSearch = true }) => {
   useEffect(() => {
     fetchProfile();
   }, []);
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 

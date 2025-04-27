@@ -203,7 +203,6 @@ export default function ProfileForm() {
 
       if (profilePictureFile) {
         LocalProfile.append("file", profilePictureFile);
-
         if (localProfile.resume) {
           LocalResume.append("file", localProfile.resume);
           await Promise.all([
@@ -240,6 +239,7 @@ export default function ProfileForm() {
           ]);
         }
       } else {
+
         if (localProfile.resume) {
           LocalResume.append("file", localProfile.resume);
           await Promise.all([
