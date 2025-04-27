@@ -6,6 +6,7 @@ import projects from "@/assets/Dashboard/PencilSquare.svg";
 import profile from "@/assets/Dashboard/PersonCheckFill.svg";
 import Wallet from "@/assets/Dashboard/Credit.svg";
 import messages from "@/assets/Dashboard/Message.svg";
+import teams from "@/assets/Dashboard/Teams.svg";
 // import settings from "@/assets/Dashboard/settings.svg";
 import exit from "@/assets/Dashboard/DoorOpen.svg";
 import { useNotification } from "../../Notification/NotificationProvider";
@@ -184,6 +185,22 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
             )}
           </Link>
+
+          <Link
+            to="/teams"
+            className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/teams") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
+          >
+            <img src={teams} alt="teams" className="w-6 h-6" />
+            <span
+              className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/teams") ? "text-black" : "text-gray-800"}`}
+            >
+              تیم ها
+            </span>
+            {isActive("/teams") && (
+              <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
+            )}
+          </Link>
+          
           <button
             onClick={handleLogout}
             className="flex relative items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300"
