@@ -342,11 +342,6 @@ export const getUserProject = async (offset: any, limit: any) => {
   }
 };
 
-export const logout = () => {
-  localStorage.removeItem("authToken");
-  localStorage.removeItem("refreshToken");
-  window.location.href = "/"; // Adjust based on your routing
-};
 
 export const getLabels = async () => {
   try {
@@ -369,11 +364,11 @@ export const getTags = async () => {
 export const createProject = async (projectData: any) => {
   try {
     const token = localStorage.getItem("authToken");
-
+    
     if (!token) {
       throw new Error("توکن احراز هویت یافت نشد");
     }
-
+    
     const response = await apiClient.post("/project/create", projectData, {
       headers: {
         "Content-Type": "application/json",
@@ -389,11 +384,11 @@ export const createProject = async (projectData: any) => {
 export const updateProject = async (projectId: any, projectData: any) => {
   try {
     const token = localStorage.getItem("authToken");
-
+    
     if (!token) {
       throw new Error("توکن احراز هویت یافت نشد");
     }
-
+    
     const response = await apiClient.put(`/project/${projectId}`, projectData, {
       headers: {
         "Content-Type": "application/json",
@@ -409,11 +404,11 @@ export const updateProject = async (projectId: any, projectData: any) => {
 export const deleteProject = async (projectId: any) => {
   try {
     const token = localStorage.getItem("authToken");
-
+    
     if (!token) {
       throw new Error("توکن احراز هویت یافت نشد");
     }
-
+    
     const response = await apiClient.delete(`/project/${projectId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -460,11 +455,11 @@ export const getTransactions = async (
       sort_by: sortBy,
       sort_direction: sortDirection,
     };
-
+    
     if (activityFilter !== "all") {
       params.activity = activityFilter;
     }
-
+    
     const response = await apiClient.get("/transaction", { params });
     return response.data;
   } catch (error: any) {
@@ -497,4 +492,11 @@ export const withdrawFromWallet = async (withdrawData: {
   } catch (error: any) {
     throw error.response?.data || "خطا در برداشت از کیف پول";
   }
+};
+
+
+export const logout = () => {
+  localStorage.removeItem("authToken");
+  localStorage.removeItem("refreshToken");
+  window.location.href = "/"; // Adjust based on your routing
 };
