@@ -274,7 +274,7 @@ const ChatMessageArea = () => {
     >
       {/* Chat List */}
       <motion.div
-        className={`w-full md:w-[35%] h-[300px] md:h-full bg-gradient-to-b from-gray-50 to-gray-200 rounded-2xl p-5 flex flex-col transition-all duration-400 ${
+        className={`w-full md:w-[35%] h-[300px] md:h-full bg-gradient-to-b from-gray-100 to-gray-300 rounded-2xl p-5 flex flex-col transition-all duration-400 ${
           isChatOpen ? "hidden md:flex" : "flex"
         }`}
         variants={chatListVariants}
@@ -387,7 +387,7 @@ const ChatMessageArea = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex flex-col w-full flex-1 p-5 bg-gray-100 rounded-b-2xl overflow-y-auto">
+        <div className="flex flex-col w-full flex-1 p-5 bg-gray-200 rounded-b-2xl overflow-y-auto">
           <AnimatePresence>
             {messages.length > 0 ? (
               messages.map((message) => (

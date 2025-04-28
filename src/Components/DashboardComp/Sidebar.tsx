@@ -159,12 +159,6 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
                   پروژه‌های من
                 </Link>
                 <Link
-                  to="/biders"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
-                >
-                  پیشنهادات
-                </Link>
-                <Link
                   to="/createproject"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
                 >
@@ -288,7 +282,11 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           >
             <img src={teams} alt="teams" className="w-6 h-6" />
             <span
-              className={`absolute right-14 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 ${isActive("/teams") ? "text-black" : "text-gray-800"}`}
+              className={`absolute right-14 transition-all duration-300 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
+                isHovered || isSidebarOpen
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-4"
+              } ${isActive("/teams") ? "text-black" : "text-gray-800"}`}
             >
               تیم ها
             </span>
@@ -296,7 +294,6 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
             )}
           </Link>
-          
           <button
             onClick={handleLogout}
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out"

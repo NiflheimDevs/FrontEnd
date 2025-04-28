@@ -2,57 +2,77 @@ import React, { useState } from "react";
 import UserProfileCard from "../../Components/Biders/UserProfileCard";
 import Header from "../../Components/DashboardComp/Header";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
-// Import images
-import goodgirl1 from "@/assets/biders/goodgirl1.jpg";
-import goodgirl3 from "@/assets/biders/goodgirl3.jpg";
-import goodgirl4 from "@/assets/biders/goodgirl4.png";
 
 const Biders: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [filters, setFilters] = useState({
     minRating: 0,
-    maxPrice: 1000000, // High default to show all
+    maxPrice: 1000000,
     maxDeliveryDays: 30,
   });
 
   // Sample biders data
   const bidersData = [
     {
-      username: "احمد محمدی",
-      rating: 4.1,
-      reviews: 12,
-      price: 500,
+      username: "محمد حسینی",
+      rating: 4.8,
+      reviews: 145,
+      price: 1200000,
       currency: "تومان",
-      deliveryDays: 10,
-      imageUrl: goodgirl4,
-      skills: ["برنامه نویسی وب", "React", "طراحی رابط کاربری"],
+      deliveryDays: 5,
+      imageUrl: "https://example.com/images/freelancer1.jpg",
+      skills: ["توسعه وب", "React", "Node.js", "MongoDB"],
       description:
-        "توسعه دهنده وب با 5 سال تجربه در ایجاد برنامه های تحت وب با تخصص در طراحی رابط کاربری پیشرفته و توسعه اپلیکیشن های مدرن",
+        "توسعه دهنده فول استک با 7 سال تجربه حرفه‌ای در پروژه‌های بزرگ سازمانی و استارتاپی. متخصص در طراحی سیستم‌های مقیاس‌پذیر و بهینه.",
     },
     {
-      username: "سارا رضایی",
-      rating: 4.5,
-      reviews: 22,
-      price: 750,
+      username: "فاطمه امیری",
+      rating: 4.9,
+      reviews: 328,
+      price: 2500000,
+      currency: "تومان",
+      deliveryDays: 14,
+      imageUrl: "https://example.com/images/designer1.jpg",
+      skills: ["طراحی UI/UX", "Figma", "Adobe XD", "پروتوتایپ"],
+      description:
+        "طراح تجربه کاربری حرفه‌ای با سابقه همکاری با شرکت‌های معتبر بین‌المللی. تخصص در طراحی رابط‌های کاربری مدرن و کاربرپسند.",
+    },
+    {
+      username: "علی رضوانی",
+      rating: 5,
+      reviews: 42,
+      price: 800000,
+      currency: "تومان",
+      deliveryDays: 3,
+      imageUrl: "https://example.com/images/writer1.jpg",
+      skills: ["تولید محتوا", "ویراستاری", "مقاله نویسی", "SEO"],
+      description:
+        "نویسنده و مترجم حرفه‌ای با تسلط به سه زبان. تولیدکننده محتوای تخصصی در حوزه‌های فناوری، بازاریابی و پزشکی.",
+    },
+    {
+      username: "نازنین کریمی",
+      rating: 4.7,
+      reviews: 96,
+      price: 1500000,
       currency: "تومان",
       deliveryDays: 7,
-      imageUrl: goodgirl3,
-      skills: ["طراحی گرافیک", "برندسازی", "تصویرسازی"],
+      imageUrl: "https://example.com/images/marketer1.jpg",
+      skills: ["دیجیتال مارکتینگ", "اینستاگرام", "گوگل ادز", "تبلیغات"],
       description:
-        "طراح گرافیک خلاق متخصص در هویت برند و تصویرسازی دیجیتال با بیش از 8 سال تجربه در طراحی لوگو و برندینگ",
+        "متخصص بازاریابی دیجیتال با سابقه مدیریت کمپین‌های موفق برای برندهای معتبر. افزایش فروش شما را تضمین می‌کنم.",
     },
     {
-      username: "آتوسا لطیفی",
-      rating: 5,
-      reviews: 4004,
-      price: 444444,
+      username: "پویا مرادی",
+      rating: 4.5,
+      reviews: 63,
+      price: 500000,
       currency: "تومان",
-      deliveryDays: 4,
-      imageUrl: goodgirl1,
-      skills: ["طراحی گرافیک", "برندسازی", "تصویرسازی", "پرطرفدار"],
+      deliveryDays: 2,
+      imageUrl: "https://example.com/images/editor1.jpg",
+      skills: ["تدوین فیلم", "موشن گرافیک", "پریمیر", "افتر افکت"],
       description:
-        "از زمان کودکی به دنبال کار بود بعضی اوقات 4 ساعت کار می کرد و 4 بار حقوق می گرفت",
+        "تدوینگر حرفه‌ای با سابقه همکاری با شبکه‌های تلویزیونی. تخصص در ساخت تیزرهای تبلیغاتی و موشن گرافیک.",
     },
   ];
 
@@ -73,8 +93,7 @@ const Biders: React.FC = () => {
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
-        {" "}
+      <div className="container mx-auto px-4 py-20 max-w-[90rem] md:pr-24 sm:pr-24">
         {/* Increased max-w to max-w-7xl */}
         <Header toggleSidebar={toggleSidebar} />
         {/* Search and Filter Section */}
