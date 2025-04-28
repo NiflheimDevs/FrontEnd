@@ -227,14 +227,14 @@ const Dashboard = () => {
                             alt="Profile"
                             className="w-16 h-16 border-2 border-blue-500 rounded-full flex items-center justify-center bg-gray-200"
                           />
-                          <div className="text-center flex flex-col pt-3">
+                          <div className="text-center flex flex-col pt-2">
                             <p className="text-sm ltr text-gray-800">
                               {profileData.username}
                             </p>
                             <p className="text-sm ltr text-gray-800">
                               {profileData.phonenumber}
                             </p>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-1">
                               <div className="flex flex-col text-sm sm:flex-row gap-2 pt-4">
                                 <label className="mt-2 text-gray-600 w-24 text-right">
                                   نام
@@ -243,7 +243,7 @@ const Dashboard = () => {
                                   type="text"
                                   placeholder="نام"
                                   value={profileData.firstName}
-                                  className="w-full sm:flex-1 p-2 rounded-lg text-right [direction:rtl]"
+                                  className="w-full sm:flex-1 p-2 rounded-lg bg-gray-200 text-right [direction:rtl]"
                                   disabled
                                 />
                               </div>
@@ -255,7 +255,7 @@ const Dashboard = () => {
                                   type="text"
                                   placeholder="نام خانوادگی"
                                   value={profileData.lastName}
-                                  className="w-full sm:flex-1 p-2 rounded-lg text-right [direction:rtl]"
+                                  className="w-full sm:flex-1 p-2 rounded-lg bg-gray-200 text-right [direction:rtl]"
                                   disabled
                                 />
                               </div>
@@ -267,7 +267,7 @@ const Dashboard = () => {
                                   type="text"
                                   placeholder="ایمیل"
                                   value={profileData.email}
-                                  className="w-full sm:flex-1 p-2 rounded-lg text-right [direction:rtl]"
+                                  className="w-full sm:flex-1 p-2 rounded-lg bg-gray-200 text-right [direction:rtl]"
                                   disabled
                                 />
                               </div>
