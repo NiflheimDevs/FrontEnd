@@ -234,41 +234,43 @@ const Dashboard = () => {
                             <p className="text-sm ltr text-gray-800">
                               {profileData.phonenumber}
                             </p>
-                            <div className="flex flex-col text-sm sm:flex-row gap-2 pt-4">
-                              <label className="mt-2 text-gray-600 w-24 text-right">
-                                نام
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="نام"
-                                value={profileData.firstName}
-                                className="w-full sm:flex-1 p-2 rounded-lg text-right [direction:rtl]"
-                                disabled
-                              />
-                            </div>
-                            <div className="flex flex-col text-sm sm:flex-row gap-2">
-                              <label className="mt-2 text-gray-600 w-24 text-right">
-                                نام خانوادگی
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="نام خانوادگی"
-                                value={profileData.lastName}
-                                className="w-full sm:flex-1 p-2 rounded-lg text-right [direction:rtl]"
-                                disabled
-                              />
-                            </div>
-                            <div className="flex flex-col text-sm sm:flex-row gap-2">
-                              <label className="mt-2 text-gray-600 w-24 text-right">
-                                ایمیل
-                              </label>
-                              <input
-                                type="text"
-                                placeholder="ایمیل"
-                                value={profileData.email}
-                                className="w-full sm:flex-1 p-2 rounded-lg text-right [direction:rtl]"
-                                disabled
-                              />
+                            <div className="flex flex-col">
+                              <div className="flex flex-col text-sm sm:flex-row gap-2 pt-4">
+                                <label className="mt-2 text-gray-600 w-24 text-right">
+                                  نام
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="نام"
+                                  value={profileData.firstName}
+                                  className="w-full sm:flex-1 p-2 rounded-lg text-right [direction:rtl]"
+                                  disabled
+                                />
+                              </div>
+                              <div className="flex flex-col text-sm sm:flex-row gap-2">
+                                <label className="mt-2 text-gray-600 w-24 text-right">
+                                  نام خانوادگی
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="نام خانوادگی"
+                                  value={profileData.lastName}
+                                  className="w-full sm:flex-1 p-2 rounded-lg text-right [direction:rtl]"
+                                  disabled
+                                />
+                              </div>
+                              <div className="flex flex-col text-sm sm:flex-row gap-2">
+                                <label className="mt-2 text-gray-600 w-24 text-right">
+                                  ایمیل
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="ایمیل"
+                                  value={profileData.email}
+                                  className="w-full sm:flex-1 p-2 rounded-lg text-right [direction:rtl]"
+                                  disabled
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>

@@ -13,11 +13,13 @@ interface FilterProps {
   setSearchTerm: (value: string) => void;
   filters: {
     minRating: number;
+    maxPrice: number; // اضافه شده برای همگام‌سازی با Biders.tsx
     maxDeliveryDays: number;
     priceRange: [number, number];
   };
   setFilters: (filters: {
     minRating: number;
+    maxPrice: number; // اضافه شده برای همگام‌سازی
     maxDeliveryDays: number;
     priceRange: [number, number];
   }) => void;
@@ -40,7 +42,7 @@ const FilterComponent: React.FC<FilterProps> = ({
   };
 
   return (
-    <Box className="mb-8 bg-white shadow-md rounded-lg p-6">
+    <Box className="mb-8 bg-white shadow-md rounded-lg p-6" dir="rtl">
       <div className="flex flex-col space-y-6">
         {/* Search Input */}
         <div className="flex-grow">
@@ -61,7 +63,7 @@ const FilterComponent: React.FC<FilterProps> = ({
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ltr">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Rating Filter */}
           <div>
             <Text size="sm" fw={500} mb="xs">
@@ -75,13 +77,17 @@ const FilterComponent: React.FC<FilterProps> = ({
               onChange={(value) => setFilters({ ...filters, minRating: value })}
               className="transition-all duration-300 ease-in-out"
               styles={{
-                track: {
-                  background: `linear-gradient(to right, #3b82f6 ${
-                    (filters.minRating / 5) * 100
-                  }%, #e5e7eb ${(filters.minRating / 5) * 100}%)`,
+                bar: {
+                  backgroundColor: "#3b82f6",
+                  transition: "width 300ms ease-in-out",
                 },
                 thumb: {
-                  transition: "all 300ms ease-in-out",
+                  transition: "transform 300ms ease-in-out",
+                  borderColor: "#3b82f6",
+                  backgroundColor: "white",
+                },
+                track: {
+                  backgroundColor: "#e5e7eb",
                 },
               }}
             />
@@ -114,8 +120,8 @@ const FilterComponent: React.FC<FilterProps> = ({
               <NumberInput
                 min={0}
                 max={10000000}
-                hideControls={true}
                 value={filters.priceRange[1]}
+                hideControls={true}
                 onChange={(value) => handlePriceRangeChange(Number(value), 1)}
                 className="w-full"
                 thousandSeparator=","
@@ -134,7 +140,7 @@ const FilterComponent: React.FC<FilterProps> = ({
           </div>
 
           {/* Delivery Days Filter */}
-          <div className="ltr">
+          <div>
             <Text size="sm" fw={500} mb="xs">
               حداکثر روزهای تحویل: {filters.maxDeliveryDays}
             </Text>
@@ -148,13 +154,17 @@ const FilterComponent: React.FC<FilterProps> = ({
               }
               className="transition-all duration-300 ease-in-out"
               styles={{
-                track: {
-                  background: `linear-gradient(to right, #3b82f6 ${
-                    (filters.maxDeliveryDays / 30) * 100
-                  }%, #e5e7eb ${(filters.maxDeliveryDays / 30) * 100}%)`,
+                bar: {
+                  backgroundColor: "#3b82f6",
+                  transition: "width 300ms ease-in-out",
                 },
                 thumb: {
-                  transition: "all 300ms ease-in-out",
+                  transition: "transform 300ms ease-in-out",
+                  borderColor: "#3b82f6",
+                  backgroundColor: "white",
+                },
+                track: {
+                  backgroundColor: "#e5e7eb",
                 },
               }}
             />
