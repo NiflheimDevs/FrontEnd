@@ -27,7 +27,7 @@ import HomePage from "../pages/HomePage";
 import ProjectDetail from "../pages/ProjectDetail";
 
 import TeamListPage from "../pages/Teams/TeamListPage";
-import TeamDetailPage  from "../pages/Teams/TeamDetailPage";
+import TeamDetailPage from "../pages/Teams/TeamDetailPage";
 
 // Utility function to check if user is authenticated
 const isAuthenticated = () => {
@@ -83,7 +83,7 @@ export const privateRoutes = [
   { path: "/createproject", element: <CreateProject /> },
   { path: "/insufficient-balance", element: <InsufficientBalance /> },
   { path: "/myprojects", element: <MyProjects /> },
-  { path: "/biders", element: <Biders /> },
+  //{ path: "/biders", element: <Biders /> },
   { path: "/ChangePass", element: <ChangePasswordManually /> },
   { path: "/project-created", element: <ProjectCreationConfirmation /> },
   { path: "/edit-project/:projectId", element: <EditProject /> },
