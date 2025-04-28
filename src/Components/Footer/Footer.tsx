@@ -84,10 +84,18 @@ const Footer = () => {
             </div>
             <div className="flex bg-[#1B1B1B] justify-center items-center gap-[6vh] md:ml-[40px] sm:ml-[40px] ml-[0px] my-[30px]">
               <div className="flex flex-wrap md:flex-row sm:flex-row flex-row bg-[#1B1B1B] md:gap-[5.2vw] sm:gap-[5vw] gap-[12vw] max-w-[900px] md:w-fit sm:w-fit w-[400px] justify-center items-center ">
-                <TextComponent>قوانین و مقررات</TextComponent>
-                <TextComponent>سوالات متداول</TextComponent>
-                <TextComponent>تماس با ما</TextComponent>
-                <TextComponent>درباره ما</TextComponent>
+              <a href="/rules">
+                  <TextComponent>قوانین و مقررات</TextComponent>
+                </a>
+                <a href="/faq">
+                  <TextComponent>سوالات متداول</TextComponent>
+                </a>
+                <a href="/contactUs">
+                  <TextComponent>تماس با ما</TextComponent>
+                </a>
+                <a href="/AboutUs">
+                  <TextComponent>درباره ما</TextComponent>
+                </a>
               </div>
             </div>
           </div>
