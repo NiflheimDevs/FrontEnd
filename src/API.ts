@@ -182,6 +182,15 @@ export const GetUser = async () => {
   }
 };
 
+export const GetUserDashboard = async () => {
+  try {
+    const response = await apiClient.get("/user/0?include=info");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const GetLandingProjects = async () => {
   try {
     const response = await apiClient.get("/landing/projects");
@@ -342,7 +351,6 @@ export const getUserProject = async (offset: any, limit: any) => {
   }
 };
 
-
 export const getLabels = async () => {
   try {
     const response = await apiClient.get("/labels");
@@ -364,11 +372,11 @@ export const getTags = async () => {
 export const createProject = async (projectData: any) => {
   try {
     const token = localStorage.getItem("authToken");
-    
+
     if (!token) {
       throw new Error("توکن احراز هویت یافت نشد");
     }
-    
+
     const response = await apiClient.post("/project/create", projectData, {
       headers: {
         "Content-Type": "application/json",
@@ -384,11 +392,11 @@ export const createProject = async (projectData: any) => {
 export const updateProject = async (projectId: any, projectData: any) => {
   try {
     const token = localStorage.getItem("authToken");
-    
+
     if (!token) {
       throw new Error("توکن احراز هویت یافت نشد");
     }
-    
+
     const response = await apiClient.put(`/project/${projectId}`, projectData, {
       headers: {
         "Content-Type": "application/json",
@@ -404,11 +412,11 @@ export const updateProject = async (projectId: any, projectData: any) => {
 export const deleteProject = async (projectId: any) => {
   try {
     const token = localStorage.getItem("authToken");
-    
+
     if (!token) {
       throw new Error("توکن احراز هویت یافت نشد");
     }
-    
+
     const response = await apiClient.delete(`/project/${projectId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -455,11 +463,11 @@ export const getTransactions = async (
       sort_by: sortBy,
       sort_direction: sortDirection,
     };
-    
+
     if (activityFilter !== "all") {
       params.activity = activityFilter;
     }
-    
+
     const response = await apiClient.get("/transaction", { params });
     return response.data;
   } catch (error: any) {
@@ -493,7 +501,6 @@ export const withdrawFromWallet = async (withdrawData: {
     throw error.response?.data || "خطا در برداشت از کیف پول";
   }
 };
-
 
 export const logout = () => {
   localStorage.removeItem("authToken");
