@@ -25,11 +25,11 @@ const AboutUs: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative h-screen">
       {/* Background Image */}
       <Header showSearch={false} />
       <section
-        className="w-full flex h-100 flex-col justify-center items-center px-2 text-white text-center bg-cover bg-center"
+        className="w-full flex h-100 flex-col justify-center items-center px-2 text-white text-center bg-cover bg-center mt-10"
         style={{ backgroundImage: `url(${newBgImage})` }}
       ></section>
       <motion.div
