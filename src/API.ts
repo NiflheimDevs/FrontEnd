@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
+// import { count } from "console";
 
 const BASE_URL = "https://103.75.196.227:8080";
 
@@ -330,7 +331,7 @@ export const PutPhoneVerifyOtp = async (userData: any) => {
 
 export const getUserProject = async (offset: any, limit: any) => {
   try {
-    const response = await apiClient.get("/project", {
+    const response = await apiClient.get("/project/user/0", {
       params: {
         offset: 0, // Fetch all projects
         limit: 1000, // Set a high limit

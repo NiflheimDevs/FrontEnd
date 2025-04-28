@@ -293,7 +293,6 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
             )}
           </Link>
-
           <button
             onClick={handleLogout}
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out"

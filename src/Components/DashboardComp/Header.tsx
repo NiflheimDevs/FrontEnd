@@ -2,14 +2,15 @@
 import { Search, Menu } from "lucide-react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
-import Mail from "@/assets/Dashboard/Mail.svg";
-import FAQ from "@/assets/Dashboard/Faq.svg";
+// import Mail from "@/assets/Dashboard/Mail.svg";
+// import FAQ from "@/assets/Dashboard/Faq.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
 import { Link } from "react-router-dom";
 import { GetProfile } from "../../API";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CgProfile } from "react-icons/cg";
+import { House } from 'lucide-react';
 
 export default function Header({ toggleSidebar }: any) {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -116,13 +117,16 @@ export default function Header({ toggleSidebar }: any) {
             <img src={BELL} className="h-6 pointer-events-none" tabIndex={-1} />
           </button>
 
-          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
+          {/* <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
             <img src={Mail} className="h-6 pointer-events-none" tabIndex={-1} />
-          </button>
+          </button> */}
 
-          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
+          {/* <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
             <img src={FAQ} className="h-6 pointer-events-none" tabIndex={-1} />
-          </button>
+          </button> */}
+          <Link to="/dashboard" className="flex justify-center items-center">
+            <House className="w-fit h-fit cursor-pointer transition-all duration-400 ease-out" color="#74767E"/>
+          </Link>
           <Link to="/profile" className="flex justify-center items-center">
             <button className="w-fit h-fit cursor-pointer">
               {profilePicture ? (

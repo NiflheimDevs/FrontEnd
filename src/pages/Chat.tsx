@@ -49,8 +49,8 @@ export default function Profile() {
 
   return (
     <>
-      <div className="fixed inset-0 bg-gradient-to-br from-[#71C2F4] to-[#000D6E] z-[-1]"></div>
-      <div className="flex min-h-screen w-full bg-gradient-to-br from-[#71C2F4] to-[#000D6E]">
+      <div className="fixed inset-0 bg-white z-[-1]"></div>
+      <div className="flex min-h-screen w-full bg-gray-100">
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <main className="flex-1 flex flex-col pt-16 md:pr-24 sm:pr-24 md:pl-0 px-4">
           <Header toggleSidebar={toggleSidebar} />
