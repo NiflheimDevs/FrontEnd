@@ -89,6 +89,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
       onMouseLeave={handleMouseLeave}
     >
       <nav className="flex flex-col justify-between h-full">
+
         <div className="mt-5 space-y-[3.5vh] w-full items-center">
           <Link
             to="/dashboard"
@@ -100,7 +101,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           >
             <img src={dashboard} alt="Dashboard" className="w-6 h-6" />
             <span
-              className={`absolute right-14 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+              className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                 isHovered || isSidebarOpen
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
@@ -126,7 +127,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             >
               <img src={projects} alt="Projects" className="w-6 h-6" />
               <span
-                className={`absolute right-14 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+                className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                   isHovered || isSidebarOpen
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
@@ -141,7 +142,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
                 پروژه‌ها
               </span>
               <MdArrowDropDown
-                className={`absolute right-10 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+                className={`absolute right-10 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                   isHovered || isSidebarOpen
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
@@ -177,7 +178,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           >
             <img src={Wallet} alt="Wallet" className="w-6 h-6" />
             <span
-              className={`absolute right-14 transition-all duration-300 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
+              className={`absolute right-14 transition-all duration-200 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
                 isHovered || isSidebarOpen
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
@@ -203,7 +204,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             >
               <img src={profile} alt="Profile" className="w-6 h-6" />
               <span
-                className={`absolute right-14 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+                className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                   isHovered || isSidebarOpen
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
@@ -218,7 +219,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
                 پروفایل
               </span>
               <MdArrowDropDown
-                className={`absolute right-10 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+                className={`absolute right-10 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                   isHovered || isSidebarOpen
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
@@ -262,7 +263,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           >
             <img src={messages} alt="chat" className="w-6 h-6" />
             <span
-              className={`absolute right-14 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+              className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                 isHovered || isSidebarOpen
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
@@ -281,7 +282,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           >
             <img src={teams} alt="teams" className="w-6 h-6" />
             <span
-              className={`absolute right-14 transition-all duration-300 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
+              className={`absolute right-14 transition-all duration-200 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
                 isHovered || isSidebarOpen
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
@@ -293,13 +294,15 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
             )}
           </Link>
+        </div>
+        <div className="w-full mt-5">
           <button
             onClick={handleLogout}
-            className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out"
+            className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer"
           >
             <img src={exit} alt="exit" className="w-6 h-6" />
             <span
-              className={`absolute right-14 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+              className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                 isHovered || isSidebarOpen
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
