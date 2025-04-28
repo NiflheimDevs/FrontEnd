@@ -294,6 +294,8 @@ export default function WorkExperienceSection({
                             }
                             calendar={persian}
                             locale={persian_fa}
+                            onOpenPickNewDate={false}
+                            highlightToday={true}
                             calendarPosition="bottom-right"
                             containerStyle={{ width: "100%" }}
                             render={(value, openCalendar) => (

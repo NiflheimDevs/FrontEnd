@@ -183,6 +183,15 @@ export const GetUser = async () => {
   }
 };
 
+export const GetUserDashboard = async () => {
+  try {
+    const response = await apiClient.get("/user/0?include=info");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const GetLandingProjects = async () => {
   try {
     const response = await apiClient.get("/landing/projects");
