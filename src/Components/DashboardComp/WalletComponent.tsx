@@ -88,8 +88,9 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         "desc",
         "all"
       );
-      console.log(response);
-      const formattedTransactions = response.map((tx: any, index: number) => ({
+      // console.log(response.transactions);
+      const formattedTransactions = response.transactions.map((tx: any, index: number) => ({
+
         id: tx.id || index,
         date: tx.date,
         activity: tx.type === 2 ? "واریز" : "برداشت",
@@ -98,22 +99,8 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       }));
 
       setTransactions(formattedTransactions);
-      if (currentPage === 1) {
-        if (response.length < transactionsPerPage) {
-          setTotalTransactions(response.length);
-        } else {
-          setTotalTransactions(transactionsPerPage * 2);
-        }
-      } else if (response.length < transactionsPerPage) {
-        setTotalTransactions(
-          (currentPage - 1) * transactionsPerPage + response.length
-        );
-      } else {
-        setTotalTransactions(currentPage * transactionsPerPage + 1);
-      }
+      setTotalTransactions(response.count)
     } catch {
-      //      console.error("Error fetching transactions:", error);
-      //      console.error("Full error details:", error);
       setTransactions([]);
       setTotalTransactions(0);
     } finally {

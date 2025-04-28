@@ -2,8 +2,8 @@
 import { useState, useRef, useEffect } from "react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
-import Mail from "@/assets/Dashboard/Mail.svg";
-import FAQ from "@/assets/Dashboard/Faq.svg";
+// import Mail from "@/assets/Dashboard/Mail.svg";
+// import FAQ from "@/assets/Dashboard/Faq.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
 import { IoMdPerson } from "react-icons/io";
 import { Link } from "react-router-dom";
@@ -11,6 +11,7 @@ import { Search } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CgProfile } from "react-icons/cg";
 import { GetProfile } from "../../API";
+import { House } from 'lucide-react';
 
 const Header = ({ showSearch = true }) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -124,7 +125,7 @@ const Header = ({ showSearch = true }) => {
               />
             </button>
 
-            <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
+            {/* <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
               <img
                 src={Mail}
                 className="h-6 pointer-events-none"
@@ -138,8 +139,10 @@ const Header = ({ showSearch = true }) => {
                 className="h-6 pointer-events-none"
                 tabIndex={-1}
               />
-            </button>
-
+            </button> */}
+          <Link to="/dashboard" className="flex justify-center items-center">
+            <House className="w-fit h-fit cursor-pointer  transition-all duration-400 ease-out" color="#74767E"/>
+          </Link>
             <Link to="/profile" className="flex justify-center items-center">
               <button className="w-fit h-fit cursor-pointer">
                 {profilePicture ? (
