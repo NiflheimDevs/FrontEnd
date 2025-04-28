@@ -22,7 +22,7 @@ import CreateProject from "../pages/CreateProject/CreateProject";
 import InsufficientBalance from "../Components/DashboardComp/InsufficientBalance";
 import EditProject from "../pages/EditProject/EditProject";
 import MyProjects from "../pages/MyProjects";
-import Biders from "../pages/Biders/Biders";
+//import Biders from "../pages/Biders/Biders";
 import HomePage from "../pages/HomePage";
 import ProjectDetail from "../pages/ProjectDetail";
 
