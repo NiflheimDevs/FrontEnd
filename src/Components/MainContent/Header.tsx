@@ -15,6 +15,7 @@ import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { BiHome, BiHomeAlt2 } from "react-icons/bi";
 
+
 const Header = ({ showSearch = true }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -143,7 +144,6 @@ const Header = ({ showSearch = true }) => {
                 tabIndex={-1}
               />
             </button> */}
-
             <Link
               to="/"
               className="flex justify-center items-center"
