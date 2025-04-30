@@ -262,14 +262,14 @@ const Step2: React.FC<Step2Props> = ({
       <div className="flex justify-between mt-6">
         <button
           onClick={onPrev}
-          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center"
+          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer"
         >
           مرحله قبل
         </button>
         <button
           onClick={handleNext}
           disabled={!isFormValid}
-          className={`px-6 py-2 rounded-md transition-colors flex items-center ${
+          className={`px-6 py-2 rounded-md transition-colors flex items-center cursor-pointer ${
             isFormValid
               ? "bg-blue-500 text-white hover:bg-blue-600"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"

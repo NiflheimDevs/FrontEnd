@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
@@ -78,6 +78,9 @@ const MyProjects = () => {
   const projectsPerPage = 4;
 
   const { success, error } = useNotification();
+
+  // Track if the title animation has already played
+  const hasAnimatedTitle = useRef(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -176,6 +179,19 @@ const MyProjects = () => {
     setCurrentPage(pageNumber);
   };
 
+  // Only animate the title the first time the component mounts
+  let titleMotionProps = {};
+  if (!hasAnimatedTitle.current) {
+    titleMotionProps = {
+      initial: { opacity: 0, y: -100 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.8, ease: "easeInOut" },
+      onAnimationComplete: () => {
+        hasAnimatedTitle.current = true;
+      },
+    };
+  }
+
   return (
     <>
       <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
@@ -189,9 +205,7 @@ const MyProjects = () => {
           <Header toggleSidebar={toggleSidebar} />
           <div className="flex flex-row justify-between items-center mt-8 px-4">
             <motion.h2
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              {...titleMotionProps}
               className="md:text-4xl sm:text-3xl text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent transition-all duration-400"
             >
               پروژه های من
@@ -222,7 +236,16 @@ const MyProjects = () => {
                 transition={{ duration: 0.5 }}
                 className="mt-10 flex justify-center w-full"
               >
-                <p className="text-gray-500">در حال بارگذاری...</p>
+                <div className="mt-12 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 w-full max-w-[1400px] mx-auto ">
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <div key={index} className="bg-white rounded-3xl p-12 glowing-card overflow-hidden animate-pulse shiny-skeleton">
+                      <div className="w-30 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mb-8 animate-shine"></div>
+                      <div className="w-48 h-4 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mb-4 animate-shine"></div>
+                      <div className="w-48 h-4 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mb-4 animate-shine"></div>
+                      <div className="w-20 h-4 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full animate-shine"></div>
+                    </div>
+                  ))}
+                </div>
               </motion.div>
             ) : currentProjects.length > 0 ? (
               <motion.div
@@ -373,7 +396,7 @@ const MyProjects = () => {
                 <p className="text-gray-600 mb-6 text-center">
                   آیا می‌خواهید این پروژه را حذف کنید؟
                 </p>
-                <div className="flex justify-center gap-4">
+                <div className="flex justify-center gap-4 space-x-4">
                   <button
                     onClick={confirmDelete}
                     className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors cursor-pointer"

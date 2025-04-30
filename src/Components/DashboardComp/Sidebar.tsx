@@ -83,7 +83,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
   return (
     <aside
 
-      className={`fixed top-19 right-0 md:rounded-tl-3xl sm:rounded-tl-3xl h-[calc(100vh-76px)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 ease-in-out z-50 will-change-[width]
+      className={`fixed top-19 right-0 md:rounded-tl-3xl sm:rounded-tl-3xl h-[calc(100vh-76px)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 ease-in-out z-50 will-change-[width] overflow-auto
         ${isSidebarOpen ? "w-48" : "w-20"} sm:w-20 sm:hover:w-48 w-full group flex flex-col
         ${isSidebarOpen ? "block" : "hidden"} sm:block`}
       onMouseEnter={handleMouseEnter}
@@ -296,7 +296,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             )}
           </Link>
         </div>
-        <div className="w-full mt-5">
+        <div className="w-full sm:static absolute bottom-30">
           <button
             onClick={handleLogout}
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer"
