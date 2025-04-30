@@ -31,6 +31,7 @@ import ProjectDetail from "../pages/ProjectDetail";
 
 import TeamListPage from "../pages/Teams/TeamListPage";
 import TeamDetailPage from "../pages/Teams/TeamDetailPage";
+import BrowLayout from "../pages/BrowLayout";
 
 
 // Utility function to check if user is authenticated
@@ -79,6 +80,7 @@ export const publicRoutes = [
     ),
   },
   { path: "/Resetpass", element: <ChangePasswordonForget /> },
+  { path : "/Browsproject", element: <BrowLayout /> }, // Assuming this is the correct path for the BrowseProject component
 ];
 
 // Private routes (require authentication)
