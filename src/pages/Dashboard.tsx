@@ -347,7 +347,7 @@ const Dashboard = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {transactions.slice(0, 2).map((transaction) => (
+                            {transactions.map((transaction) => (
                               <tr key={transaction.id} className="border-b">
                                 <td className="py-1 ltr">{transaction.date}</td>
                                 <td className="py-1">{transaction.activity}</td>
@@ -358,11 +358,11 @@ const Dashboard = () => {
                             ))}
                           </tbody>
                         </table>
-                        <div className="md:flex sm:flex hidden justify-center mt-4">
+                        <div className="flex justify-center">
                           <img
                             src={walletPic}
                             alt="Illustration"
-                            className="w-12 h-12"
+                            className="w-22 h-22"
                           />
                         </div>
                       </div>
