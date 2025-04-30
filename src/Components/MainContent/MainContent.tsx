@@ -40,6 +40,7 @@ interface ProjectCard {
 const MainContent = () => {
   const heroStyle = {
     height: `calc(100vh - 76px)`,
+    minHeight: `450px`,
   };
   const categoriesRef = useRef<HTMLDivElement | null>(null);
 
