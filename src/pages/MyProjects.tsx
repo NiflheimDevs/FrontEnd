@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "../Components/DashboardComp/Sidebar";
 import Header from "../Components/DashboardComp/Header";
@@ -78,6 +78,9 @@ const MyProjects = () => {
   const projectsPerPage = 4;
 
   const { success, error } = useNotification();
+
+  // Track if the title animation has already played
+  const hasAnimatedTitle = useRef(false);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -176,6 +179,19 @@ const MyProjects = () => {
     setCurrentPage(pageNumber);
   };
 
+  // Only animate the title the first time the component mounts
+  let titleMotionProps = {};
+  if (!hasAnimatedTitle.current) {
+    titleMotionProps = {
+      initial: { opacity: 0, y: -100 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.8, ease: "easeInOut" },
+      onAnimationComplete: () => {
+        hasAnimatedTitle.current = true;
+      },
+    };
+  }
+
   return (
     <>
       <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
@@ -189,9 +205,7 @@ const MyProjects = () => {
           <Header toggleSidebar={toggleSidebar} />
           <div className="flex flex-row justify-between items-center mt-8 px-4">
             <motion.h2
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              {...titleMotionProps}
               className="md:text-4xl sm:text-3xl text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent transition-all duration-400"
             >
               پروژه های من
@@ -214,16 +228,38 @@ const MyProjects = () => {
 
           <AnimatePresence mode="wait">
             {isLoading ? (
-              <motion.div
+              <div
                 key="loading"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="mt-10 flex justify-center w-full"
+                className="mt-12 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 w-full max-w-[1400px] mx-auto shiny-skeleton"
               >
-                <p className="text-gray-500">در حال بارگذاری...</p>
-              </motion.div>
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div
+                    key={`loading-${index}`}
+                    className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-fit min-h-[285px] flex flex-col p-6 glowing-card overflow-hidden mx-auto animate-pulse"
+                  >
+                    <div className="flex flex-col justify-between flex-grow z-10">
+                      <div>
+                        <div className="flex flex-row justify-between">
+                          <div className="w-24 h-4 bg-white/50 rounded-full mb-4 animate-shine"></div>
+                          <div className="w-[107px] h-[29px] bg-white/50 rounded-full mb-4 animate-shine"></div>
+                        </div>
+                        <div className="w-3/4 h-6 bg-white/70 rounded-full mt-3 mb-3 animate-shine"></div>
+                        <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
+                        <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
+                        <div className="w-1/2 h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
+                      </div>
+                      <div className="flex flex-wrap w-3/4 gap-2 mt-3">
+                        <div className="w-16 h-6 bg-white/30 rounded-full animate-shine"></div>
+                        <div className="w-16 h-6 bg-white/30 rounded-full animate-shine"></div>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 absolute bottom-[15px] left-[15px] z-10">
+                      <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
+                      <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : currentProjects.length > 0 ? (
               <motion.div
                 key={currentPage}
@@ -373,7 +409,7 @@ const MyProjects = () => {
                 <p className="text-gray-600 mb-6 text-center">
                   آیا می‌خواهید این پروژه را حذف کنید؟
                 </p>
-                <div className="flex justify-center gap-4">
+                <div className="flex justify-center gap-4 space-x-4">
                   <button
                     onClick={confirmDelete}
                     className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors cursor-pointer"

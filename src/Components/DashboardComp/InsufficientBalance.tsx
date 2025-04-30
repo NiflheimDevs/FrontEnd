@@ -29,7 +29,7 @@ const InsufficientBalance: React.FC = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => navigate('/wallet')}
-            className="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition-all flex items-center justify-center"
+            className="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 transition-all flex items-center justify-center cursor-pointer"
           >
             <FaWallet className="ml-2" />
             شارژ کیف پول
@@ -37,7 +37,7 @@ const InsufficientBalance: React.FC = () => {
           
           <button
             onClick={() => navigate('/dashboard')}
-            className="bg-gray-200 text-gray-800 py-2 px-6 rounded-md hover:bg-gray-300 transition-all"
+            className="bg-gray-200 text-gray-800 py-2 px-6 rounded-md hover:bg-gray-300 transition-all cursor-pointer"
           >
             بازگشت به داشبورد
           </button>
