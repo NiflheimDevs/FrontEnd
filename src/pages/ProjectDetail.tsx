@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../Components/MainContent/Header";
 import { FaStar } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Define interfaces for our data structure
@@ -38,6 +38,7 @@ interface Bidder {
 
 const ProjectDetail = () => {
   const { project_id } = useParams();
+  const navigate = useNavigate();
   const [projectData, setProjectData] = useState<ProjectData | null>(null);
   const [, setLoading] = useState<boolean>(true);
   const [error] = useState<string | null>(null);
@@ -214,9 +215,15 @@ const ProjectDetail = () => {
             </div>
 
             {/* Buttons Below Bidders */}
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-4">
               <button className="bg-[#3E79DE] cursor-pointer w-full sm:w-3/4 h-[48px] text-white rounded hover:bg-blue-700 text-sm">
                 ارسال پیشنهاد
+              </button>
+              <button 
+                onClick={() => navigate(-1)}
+                className="bg-gray-500 cursor-pointer w-full sm:w-1/4 h-[48px] text-white rounded hover:bg-gray-600 text-sm"
+              >
+                بازگشت
               </button>
             </div>
           </div>

@@ -281,7 +281,7 @@ const Dashboard = () => {
           animate="visible"
           className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
         >
-          <Link to="/profile" className="block">
+          <Link to="/profile" className="block cursor-pointer">
             <div className="bg-[#F7F7F7] rounded-lg">
               <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900">
                 <div className="bg-white min-h-73 rounded-md p-4 overflow-hidden">
@@ -302,39 +302,39 @@ const Dashboard = () => {
                         {profileData.phonenumber}
                       </p>
                       <div className="flex flex-col gap-1">
-                        <div className="flex text-sm flex-row gap-2 pt-4">
-                          <label className="mt-2 text-gray-600 w-24 text-right">
+                        <div className="flex text-sm flex-row gap-2 pt-4 cursor-pointer">
+                          <label className="mt-2 text-gray-600 w-24 text-right ">
                             نام
                           </label>
                           <input
                             type="text"
                             placeholder="نام"
                             value={profileData.firstName}
-                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl]"
+                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl] cursor-pointer"
                             disabled
                           />
                         </div>
-                        <div className="flex flex-row text-sm gap-2">
-                          <label className="mt-2 text-gray-600 w-24 text-right">
+                        <div className="flex flex-row text-sm gap-2 cursor-pointer">
+                          <label className="mt-2 text-gray-600 w-24 text-right ">
                             نام خانوادگی
                           </label>
                           <input
                             type="text"
                             placeholder="نام خانوادگی"
                             value={profileData.lastName}
-                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl]"
+                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl] cursor-pointer"
                             disabled
                           />
                         </div>
                         <div className="flex flex-row text-sm gap-2">
-                          <label className="mt-2 text-gray-600 w-24 text-right">
+                          <label className="mt-2 text-gray-600 w-24 text-right cursor-pointer">
                             ایمیل
                           </label>
                           <input
                             type="text"
                             placeholder="ایمیل"
                             value={profileData.email}
-                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl]"
+                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl] cursor-pointer"
                             disabled
                           />
                         </div>
