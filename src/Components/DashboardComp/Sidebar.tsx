@@ -6,6 +6,9 @@ import projects from "@/assets/Dashboard/PencilSquare.svg";
 import profile from "@/assets/Dashboard/PersonCheckFill.svg";
 import Wallet from "@/assets/Dashboard/Credit.svg";
 import messages from "@/assets/Dashboard/Message.svg";
+import teams from "@/assets/Dashboard/Teams.svg";
+// import settings from "@/assets/Dashboard/settings.svg";
+
 import exit from "@/assets/Dashboard/DoorOpen.svg";
 import { logout } from "../../API";
 
@@ -79,6 +82,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
 
   return (
     <aside
+
       className={`fixed top-19 right-0 md:rounded-tl-3xl sm:rounded-tl-3xl h-[calc(100vh-76px)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 ease-in-out z-50 will-change-[width]
         ${isSidebarOpen ? "w-48" : "w-20"} sm:w-20 sm:hover:w-48 w-full group flex flex-col
         ${isSidebarOpen ? "block" : "hidden"} sm:block`}
@@ -86,6 +90,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
       onMouseLeave={handleMouseLeave}
     >
       <nav className="flex flex-col justify-between h-full">
+
         <div className="mt-5 space-y-[3.5vh] w-full items-center">
           <Link
             to="/dashboard"
@@ -97,7 +102,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           >
             <img src={dashboard} alt="Dashboard" className="w-6 h-6" />
             <span
-              className={`absolute right-14 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+              className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                 isHovered || isSidebarOpen
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
@@ -123,7 +128,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             >
               <img src={projects} alt="Projects" className="w-6 h-6" />
               <span
-                className={`absolute right-14 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+                className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                   isHovered || isSidebarOpen
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
@@ -138,13 +143,14 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
                 پروژه‌ها
               </span>
               <MdArrowDropDown
-                className={`absolute right-10 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+                className={`absolute right-10 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                   isHovered || isSidebarOpen
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
                 } text-gray-800`}
               />
             </button>
+
             {isProjectsOpen && (isHovered || isSidebarOpen) && (
               <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out">
                 <Link
@@ -152,12 +158,6 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
                 >
                   پروژه‌های من
-                </Link>
-                <Link
-                  to="/biders"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
-                >
-                  پیشنهادات
                 </Link>
                 <Link
                   to="/createproject"
@@ -179,7 +179,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           >
             <img src={Wallet} alt="Wallet" className="w-6 h-6" />
             <span
-              className={`absolute right-14 transition-all duration-300 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
+              className={`absolute right-14 transition-all duration-200 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
                 isHovered || isSidebarOpen
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
@@ -205,7 +205,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             >
               <img src={profile} alt="Profile" className="w-6 h-6" />
               <span
-                className={`absolute right-14 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+                className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                   isHovered || isSidebarOpen
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
@@ -220,13 +220,14 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
                 پروفایل
               </span>
               <MdArrowDropDown
-                className={`absolute right-10 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+                className={`absolute right-10 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                   isHovered || isSidebarOpen
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
                 } text-gray-800`}
               />
             </button>
+
             {isProfileOpen && (isHovered || isSidebarOpen) && (
               <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out">
                 <Link
@@ -263,7 +264,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
           >
             <img src={messages} alt="chat" className="w-6 h-6" />
             <span
-              className={`absolute right-14 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+              className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                 isHovered || isSidebarOpen
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
@@ -275,13 +276,34 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
             )}
           </Link>
+
+          <Link
+            to="/teams"
+            className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/teams") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
+          >
+            <img src={teams} alt="teams" className="w-6 h-6" />
+            <span
+              className={`absolute right-14 transition-all duration-200 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
+                isHovered || isSidebarOpen
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 translate-x-4"
+              } ${isActive("/teams") ? "text-black" : "text-gray-800"}`}
+            >
+              تیم ها
+            </span>
+            {isActive("/teams") && (
+              <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
+            )}
+          </Link>
+        </div>
+        <div className="w-full mt-5">
           <button
             onClick={handleLogout}
-            className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out"
+            className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer"
           >
             <img src={exit} alt="exit" className="w-6 h-6" />
             <span
-              className={`absolute right-14 transition-all duration-300 ease-in-out will-change-[opacity,transform] ${
+              className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                 isHovered || isSidebarOpen
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"

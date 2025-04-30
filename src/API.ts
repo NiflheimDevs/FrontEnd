@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
+// import { count } from "console";
 
 const BASE_URL = "https://103.75.196.227:8080";
 
@@ -182,6 +183,15 @@ export const GetUser = async () => {
   }
 };
 
+export const GetUserDashboard = async () => {
+  try {
+    const response = await apiClient.get("/user/0?include=info");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const GetLandingProjects = async () => {
   try {
     const response = await apiClient.get("/landing/projects");
@@ -321,7 +331,7 @@ export const PutPhoneVerifyOtp = async (userData: any) => {
 
 export const getUserProject = async (offset: any, limit: any) => {
   try {
-    const response = await apiClient.get("/project", {
+    const response = await apiClient.get("/project/user/0", {
       params: {
         offset: 0, // Fetch all projects
         limit: 1000, // Set a high limit
@@ -341,7 +351,6 @@ export const getUserProject = async (offset: any, limit: any) => {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
-
 
 export const getLabels = async () => {
   try {
@@ -364,11 +373,11 @@ export const getTags = async () => {
 export const createProject = async (projectData: any) => {
   try {
     const token = localStorage.getItem("authToken");
-    
+
     if (!token) {
       throw new Error("توکن احراز هویت یافت نشد");
     }
-    
+
     const response = await apiClient.post("/project/create", projectData, {
       headers: {
         "Content-Type": "application/json",
@@ -384,11 +393,11 @@ export const createProject = async (projectData: any) => {
 export const updateProject = async (projectId: any, projectData: any) => {
   try {
     const token = localStorage.getItem("authToken");
-    
+
     if (!token) {
       throw new Error("توکن احراز هویت یافت نشد");
     }
-    
+
     const response = await apiClient.put(`/project/${projectId}`, projectData, {
       headers: {
         "Content-Type": "application/json",
@@ -404,11 +413,11 @@ export const updateProject = async (projectId: any, projectData: any) => {
 export const deleteProject = async (projectId: any) => {
   try {
     const token = localStorage.getItem("authToken");
-    
+
     if (!token) {
       throw new Error("توکن احراز هویت یافت نشد");
     }
-    
+
     const response = await apiClient.delete(`/project/${projectId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -455,11 +464,11 @@ export const getTransactions = async (
       sort_by: sortBy,
       sort_direction: sortDirection,
     };
-    
+
     if (activityFilter !== "all") {
       params.activity = activityFilter;
     }
-    
+
     const response = await apiClient.get("/transaction", { params });
     return response.data;
   } catch (error: any) {
@@ -493,7 +502,6 @@ export const withdrawFromWallet = async (withdrawData: {
     throw error.response?.data || "خطا در برداشت از کیف پول";
   }
 };
-
 
 export const logout = () => {
   localStorage.removeItem("authToken");

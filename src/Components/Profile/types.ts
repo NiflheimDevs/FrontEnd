@@ -119,6 +119,7 @@ export const mapApiDataToProfile = async (
             : {},
         }))
       : [],
+
     resume: apiresume || initialProfile.resume,
     resumeAddress: apiresume,
     low_profile: apiData.info?.low_profile || initialProfile.low_profile,

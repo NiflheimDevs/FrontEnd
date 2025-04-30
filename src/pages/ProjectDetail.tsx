@@ -85,6 +85,7 @@ const ProjectDetail = () => {
         // console.error("Error fetching project data:", err);
         // More detailed error reporting
         // setError(
+
         //   err.response
         //     ? `خطا: ${err.response.status} - ${err.response.statusText}`
         //     : "خطا در اتصال به سرور. لطفاً اتصال اینترنت خود را بررسی کنید."
@@ -143,8 +144,6 @@ const ProjectDetail = () => {
                 سازنده پروژه:
               </h3> */}
               <p className="font-semibold text-black text-xs sm:text-sm text-right">
-                {projectData.first_name}
-                {projectData.last_name} کارفرما این پروژه می باشد.
               </p>
             </div>
             {/* Project Description */}

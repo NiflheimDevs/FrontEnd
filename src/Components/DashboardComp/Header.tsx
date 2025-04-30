@@ -2,19 +2,29 @@
 import { Search, Menu } from "lucide-react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
-import Mail from "@/assets/Dashboard/Mail.svg";
-import FAQ from "@/assets/Dashboard/Faq.svg";
+// import Mail from "@/assets/Dashboard/Mail.svg";
+// import FAQ from "@/assets/Dashboard/Faq.svg";
 import BELL from "@/assets/Dashboard/Bell.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { GetProfile } from "../../API";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CgProfile } from "react-icons/cg";
+import { BiHome, BiHomeAlt2 } from "react-icons/bi";
+import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { LuLayoutDashboard } from "react-icons/lu";
 
 export default function Header({ toggleSidebar }: any) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profilePicture, setProfilePicture] = useState<string>("");
+  const [hoverDashboard, setHoverDashboard] = useState<boolean>(false);
+  const [hoverHome, setHoverHome] = useState<boolean>(false);
+  const location = useLocation();
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
 
   const fetchProfile = async () => {
     try {
@@ -31,7 +41,7 @@ export default function Header({ toggleSidebar }: any) {
       } else {
         setProfilePicture(""); // Set to empty if not a valid URL
       }
-    } catch (error: any) {
+    } catch {
       setProfilePicture(""); // Set to empty on error
     }
   };
@@ -112,31 +122,114 @@ export default function Header({ toggleSidebar }: any) {
             />
           </button>
 
-          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
-            <img src={BELL} className="h-6 pointer-events-none" tabIndex={-1} />
-          </button>
+          <div
+            className={`flex justify-center items-center rounded-lg transition-all duration-300 hover:bg-gray-100 p-1`}
+          >
+            <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
+              <img
+                src={BELL}
+                className="h-6 pointer-events-none"
+                tabIndex={-1}
+              />
+            </button>
+          </div>
 
-          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
+          {/* <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
             <img src={Mail} className="h-6 pointer-events-none" tabIndex={-1} />
-          </button>
+          </button> */}
 
-          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
+          {/* <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
             <img src={FAQ} className="h-6 pointer-events-none" tabIndex={-1} />
-          </button>
-          <Link to="/profile" className="flex justify-center items-center">
-            <button className="w-fit h-fit cursor-pointer">
+          </button> */}
+          <Link
+            to="/"
+            className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
+              isActive("/") ? "active glow" : "hover:bg-gray-100 p-1"
+            }`}
+            onMouseEnter={() => {
+              setHoverHome(true);
+            }}
+            onMouseLeave={() => {
+              setHoverHome(false);
+            }}
+          >
+            <div className="relative hover:scale-110 duration-400">
+              {hoverHome || isActive("/") ? (
+                <div
+                  key="home-hover"
+                  className="flex items-center justify-center"
+                >
+                  <BiHome
+                    className="icon"
+                    color={isActive("/") ? "#3B82F6" : "#74767E"}
+                    size={28}
+                  />
+                </div>
+              ) : (
+                <div key="home-default">
+                  <BiHomeAlt2 className="icon" color="#74767E" size={28} />
+                </div>
+              )}
+            </div>
+          </Link>
+          <Link
+            to="/dashboard"
+            className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
+              isActive("/dashboard") ? "active glow" : "hover:bg-gray-100 p-1"
+            }`}
+            onMouseEnter={() => {
+              setHoverDashboard(true);
+            }}
+            onMouseLeave={() => {
+              setHoverDashboard(false);
+            }}
+          >
+            <div className="relative hover:scale-110 duration-400">
+              {hoverDashboard || isActive("/dashboard") ? (
+                <div
+                  key="dashboard-hover"
+                  className="flex items-center justify-center"
+                >
+                  <LuLayoutDashboard
+                    className="icon"
+                    color={isActive("/dashboard") ? "#3B82F6" : "#74767E"}
+                    size={28}
+                  />
+                </div>
+              ) : (
+                <div key="dashboard-default">
+                  <MdOutlineSpaceDashboard
+                    className="w-fit h-fit cursor-pointer transition-all hover: duration-400 ease-out"
+                    color="#74767E"
+                    size={28}
+                  />
+                </div>
+              )}
+            </div>
+          </Link>
+          <Link
+            to="/profile"
+            className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
+              isActive("/profile")
+                ? "active glow"
+                : "hover:bg-gray-100 hover:scale-110 p-1"
+            }`}
+          >
+            <button className="relative duration-400 cursor-pointer">
               {profilePicture ? (
                 <img
                   src={profilePicture}
-                  className="rounded-full h-[36px] w-[36px] object-cover min-w-8 pointer-events-none border-2 border-blue-500"
+                  className={`rounded-full h-[36px] w-[36px] object-cover min-w-8 pointer-events-none ${
+                    isActive("/profile") ? "border-3" : "border-2"
+                  } border-blue-500`}
                   alt="Profile"
                   tabIndex={-1}
-                  onError={() => setProfilePicture("")} // Fallback to CgProfile if image fails to load
+                  onError={() => setProfilePicture("")}
                 />
               ) : (
                 <CgProfile
-                  color="#707070"
-                  className="rounded-full object-cover min-w-8 h-[32px] w-[32px] pointer-events-none"
+                  color={isActive("/profile") ? "#3B82F6" : "#707070"}
+                  className="rounded-full object-cover min-w-8 h-[32px] w-[32px] pointer-events-none transition-all hover: duration-400 ease-out"
                   tabIndex={-1}
                 />
               )}
@@ -150,7 +243,7 @@ export default function Header({ toggleSidebar }: any) {
         {isModalOpen && (
           <motion.div
             ref={modalRef}
-            className="fixed left-0 right-0 z-50 md:hidden sm:hidden flex justify-center bg-transparent items-center py-4 px-2"
+            className="fixed left-0 right-0 z-50 md:hidden sm:hidden flex items-start justify-center bg-transparent backdrop-blur-xs h-screen py-4 px-2"
             style={{ top: "64px" }}
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
