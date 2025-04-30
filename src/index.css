@@ -41,7 +41,7 @@ html {
   }
 }
 .hover\:animate-shake:hover {
-  animation: shake 0.8s ease-in-out;
+  animation: shake 1s ease-in-out;
 }
 
 .box-shadow-custom {
