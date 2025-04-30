@@ -228,25 +228,38 @@ const MyProjects = () => {
 
           <AnimatePresence mode="wait">
             {isLoading ? (
-              <motion.div
+              <div
                 key="loading"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="mt-10 flex justify-center w-full"
+                className="mt-12 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 w-full max-w-[1400px] mx-auto shiny-skeleton"
               >
-                <div className="mt-12 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 w-full max-w-[1400px] mx-auto ">
-                  {Array.from({ length: 4 }).map((_, index) => (
-                    <div key={index} className="bg-white rounded-3xl p-12 glowing-card overflow-hidden animate-pulse shiny-skeleton">
-                      <div className="w-30 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mb-8 animate-shine"></div>
-                      <div className="w-48 h-4 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mb-4 animate-shine"></div>
-                      <div className="w-48 h-4 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mb-4 animate-shine"></div>
-                      <div className="w-20 h-4 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full animate-shine"></div>
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div
+                    key={`loading-${index}`}
+                    className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-fit min-h-[285px] flex flex-col p-6 glowing-card overflow-hidden mx-auto animate-pulse"
+                  >
+                    <div className="flex flex-col justify-between flex-grow z-10">
+                      <div>
+                        <div className="flex flex-row justify-between">
+                          <div className="w-24 h-4 bg-white/50 rounded-full mb-4 animate-shine"></div>
+                          <div className="w-[107px] h-[29px] bg-white/50 rounded-full mb-4 animate-shine"></div>
+                        </div>
+                        <div className="w-3/4 h-6 bg-white/70 rounded-full mt-3 mb-3 animate-shine"></div>
+                        <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
+                        <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
+                        <div className="w-1/2 h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
+                      </div>
+                      <div className="flex flex-wrap w-3/4 gap-2 mt-3">
+                        <div className="w-16 h-6 bg-white/30 rounded-full animate-shine"></div>
+                        <div className="w-16 h-6 bg-white/30 rounded-full animate-shine"></div>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </motion.div>
+                    <div className="flex gap-4 absolute bottom-[15px] left-[15px] z-10">
+                      <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
+                      <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : currentProjects.length > 0 ? (
               <motion.div
                 key={currentPage}
