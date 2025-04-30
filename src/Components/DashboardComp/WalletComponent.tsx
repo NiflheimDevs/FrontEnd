@@ -89,17 +89,18 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         "all"
       );
       // console.log(response.transactions);
-      const formattedTransactions = response.transactions.map((tx: any, index: number) => ({
-
-        id: tx.id || index,
-        date: tx.date,
-        activity: tx.type === 2 ? "واریز" : "برداشت",
-        description: tx.description || "-",
-        amount: tx.amount,
-      }));
+      const formattedTransactions = response.transactions.map(
+        (tx: any, index: number) => ({
+          id: tx.id || index,
+          date: tx.date,
+          activity: tx.type === 2 ? "واریز" : "برداشت",
+          description: tx.description || "-",
+          amount: tx.amount,
+        })
+      );
 
       setTransactions(formattedTransactions);
-      setTotalTransactions(response.count)
+      setTotalTransactions(response.count);
     } catch {
       setTransactions([]);
       setTotalTransactions(0);

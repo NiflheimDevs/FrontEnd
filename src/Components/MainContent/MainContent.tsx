@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useRef } from "react";
 import { BsArrowLeft, BsCashCoin } from "react-icons/bs";
 import { FaChartColumn, FaPeopleGroup, FaMedal } from "react-icons/fa6";
@@ -255,7 +256,7 @@ const MainContent = () => {
         </div>
       </section>
 
-      {/* Freelancer Cards */}
+      {/* Project Cards */}
       <section className="w-full py-12 rounded-3xl">
         <div className="flex justify-between items-center px-6 max-w-7xl mx-auto mb-6">
           <h2 className="md:text-2xl sm:text-2xl text-[18px] font-bold text-[#333] duration-300 ease-in-out transition-all">
@@ -308,7 +309,7 @@ const MainContent = () => {
                 pagination={{ clickable: true }}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
                 modules={[Pagination, Autoplay]}
-                className="mySwiper rounded-xl box-shadow-custom"
+                className="mySwiper rounded-xl box-shadow-custom bg-[#F7F7F7]"
               >
                 {projectCards.map((card) => (
                   <SwiperSlide key={card.project_id}>

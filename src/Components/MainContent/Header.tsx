@@ -11,7 +11,10 @@ import { Search } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CgProfile } from "react-icons/cg";
 import { GetProfile } from "../../API";
-import { House } from 'lucide-react';
+import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { LuLayoutDashboard } from "react-icons/lu";
+import { BiHome, BiHomeAlt2 } from "react-icons/bi";
+
 
 const Header = ({ showSearch = true }) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -19,7 +22,8 @@ const Header = ({ showSearch = true }) => {
   const token = localStorage.getItem("authToken");
   const [profilePicture, setProfilePicture] = useState<string>("");
   const [error401, seterror401] = useState<boolean>(false);
-
+  const [hoverDashboard, setHoverDashboard] = useState<boolean>(false);
+  const [hoverHome, setHoverHome] = useState<boolean>(false);
   const fetchProfile = async () => {
     try {
       const response = await GetProfile();
@@ -140,9 +144,66 @@ const Header = ({ showSearch = true }) => {
                 tabIndex={-1}
               />
             </button> */}
-          <Link to="/dashboard" className="flex justify-center items-center">
-            <House className="w-fit h-fit cursor-pointer  transition-all duration-400 ease-out" color="#74767E"/>
-          </Link>
+            <Link
+              to="/"
+              className="flex justify-center items-center"
+              onMouseEnter={() => {
+                setHoverHome(true);
+              }}
+              onMouseLeave={() => {
+                setHoverHome(false);
+              }}
+            >
+              <div className="hover:scale-110 duration-400">
+                {hoverHome ? (
+                  <motion.div
+                    key="home-hover"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <BiHome className="icon" color="#74767E" size={28} />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="home-default"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    <BiHomeAlt2 className="icon" color="#74767E" size={28} />
+                  </motion.div>
+                )}
+              </div>
+            </Link>
+            <Link
+              to="/dashboard"
+              className="flex justify-center items-center"
+              onMouseEnter={() => {
+                setHoverDashboard(true);
+              }}
+              onMouseLeave={() => {
+                setHoverDashboard(false);
+              }}
+            >
+              <div className="hover:scale-110 duration-400">
+                {!hoverDashboard ? (
+                  <MdOutlineSpaceDashboard
+                    className="w-fit h-fit cursor-pointer transition-all hover: duration-400 ease-out"
+                    color="#74767E"
+                    size={28}
+                  />
+                ) : (
+                  <LuLayoutDashboard
+                    className="w-fit h-fit cursor-pointer transition-all hover: duration-400 ease-out"
+                    color="#74767E"
+                    size={28}
+                  />
+                )}
+              </div>
+            </Link>
             <Link to="/profile" className="flex justify-center items-center">
               <button className="w-fit h-fit cursor-pointer">
                 {profilePicture ? (

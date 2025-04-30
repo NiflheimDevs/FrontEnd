@@ -10,12 +10,16 @@ import { GetProfile } from "../../API";
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CgProfile } from "react-icons/cg";
-import { House } from 'lucide-react';
+import { BiHome, BiHomeAlt2 } from "react-icons/bi";
+import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { LuLayoutDashboard } from "react-icons/lu";
 
 export default function Header({ toggleSidebar }: any) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profilePicture, setProfilePicture] = useState<string>("");
+  const [hoverDashboard, setHoverDashboard] = useState<boolean>(false);
+  const [hoverHome, setHoverHome] = useState<boolean>(false);
 
   const fetchProfile = async () => {
     try {
@@ -32,7 +36,7 @@ export default function Header({ toggleSidebar }: any) {
       } else {
         setProfilePicture(""); // Set to empty if not a valid URL
       }
-    } catch (error: any) {
+    } catch {
       setProfilePicture(""); // Set to empty on error
     }
   };
@@ -113,7 +117,7 @@ export default function Header({ toggleSidebar }: any) {
             />
           </button>
 
-          <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
+          <button className="w-fit h-fit cursor-pointer hover:animate-shake transition-all hover:scale-110 duration-400 ease-out">
             <img src={BELL} className="h-6 pointer-events-none" tabIndex={-1} />
           </button>
 
@@ -124,8 +128,65 @@ export default function Header({ toggleSidebar }: any) {
           {/* <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake transition-all duration-400 ease-out">
             <img src={FAQ} className="h-6 pointer-events-none" tabIndex={-1} />
           </button> */}
-          <Link to="/dashboard" className="flex justify-center items-center">
-            <House className="w-fit h-fit cursor-pointer transition-all duration-400 ease-out" color="#74767E"/>
+          <Link
+            to="/"
+            className="flex justify-center items-center"
+            onMouseEnter={() => {
+              setHoverHome(true);
+            }}
+            onMouseLeave={() => {
+              setHoverHome(false);
+            }}
+          >
+            <div className="hover:scale-110 duration-400">
+              {hoverHome ? (
+                <motion.div
+                  key="home-hover"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  <BiHome className="icon" color="#74767E" size={28} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="home-default"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  <BiHomeAlt2 className="icon" color="#74767E" size={28} />
+                </motion.div>
+              )}
+            </div>
+          </Link>
+          <Link
+            to="/dashboard"
+            className="flex justify-center items-center"
+            onMouseEnter={() => {
+              setHoverDashboard(true);
+            }}
+            onMouseLeave={() => {
+              setHoverDashboard(false);
+            }}
+          >
+            <div className="hover:scale-110 duration-400">
+              {!hoverDashboard ? (
+                <MdOutlineSpaceDashboard
+                  className="w-fit h-fit cursor-pointer transition-all hover: duration-400 ease-out"
+                  color="#74767E"
+                  size={28}
+                />
+              ) : (
+                <LuLayoutDashboard
+                  className="w-fit h-fit cursor-pointer transition-all hover: duration-400 ease-out"
+                  color="#74767E"
+                  size={28}
+                />
+              )}
+            </div>
           </Link>
           <Link to="/profile" className="flex justify-center items-center">
             <button className="w-fit h-fit cursor-pointer">
