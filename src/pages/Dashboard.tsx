@@ -8,7 +8,7 @@ import { Search } from "lucide-react";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 import walletPic from "@/assets/Dashboard/Wallet.svg";
 import LadyPic from "@/assets/ChangePass.svg";
-import { GetUserDashboard } from "../API";
+import { getBalance, getTransactions, GetUserDashboard } from "../API";
 import { useNotification } from "../Notification/NotificationProvider";
 import { errorMapper } from "./Error/Error";
 
@@ -22,26 +22,17 @@ interface ProfileData {
   low_profile: string;
 }
 
+type Transaction = {
+  id: number;
+  date: string;
+  activity: string;
+  description: string;
+  amount: number;
+};
+
 // نمونه داده‌ها برای پیش‌نمایش
 const chatList = [
   { id: 1, name: "ادمین", lastMessage: "سلام، چطور می‌توانم به شما کمک کنم؟" },
-];
-
-const transactions = [
-  {
-    id: 1,
-    date: "2023-10-01",
-    activity: "واریز",
-    description: "پروژه‌ی سایت",
-    amount: 5000,
-  },
-  {
-    id: 2,
-    date: "2023-10-02",
-    activity: "برداشت",
-    description: "پروژه‌ی سایت",
-    amount: 10000,
-  },
 ];
 
 // انیمیشن‌ها
@@ -69,12 +60,14 @@ const cardVariants = {
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [balance, setBalance] = useState<number>(0);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [profileData, setProfileData] = useState<ProfileData>({
-    firstName: "نام",
-    lastName: "نام خانوادگی",
-    email: "example@gmail.com",
-    phonenumber: "09109879973",
-    username: "@A12345",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phonenumber: "",
+    username: "",
     low_profile: "",
   });
 
@@ -84,10 +77,32 @@ const Dashboard = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-US").format(price);
+  };
+
+  const bindtransaction = async () => {
+    try {
+      const response = await getTransactions(0, 2, "date", "desc", "all");
+      const formattedTransactions = response.transactions.map(
+        (tx: any, index: number) => ({
+          id: tx.id || index,
+          date: tx.date,
+          activity: tx.type === 2 ? "واریز" : "برداشت",
+          description: tx.description || "-",
+          amount: tx.amount,
+        })
+      );
+
+      setTransactions(formattedTransactions);
+    } catch {
+      setTransactions([]);
+    }
+  };
+
   const bindData = async () => {
     try {
       const data = await GetUserDashboard();
-      console.log(data);
       setProfileData({
         firstName: data.info.firstname || "نام",
         lastName: data.info.lastname || "نام خانوادگی",
@@ -108,8 +123,20 @@ const Dashboard = () => {
     }
   };
 
+  const fetchBalance = async () => {
+    try {
+      const balanceData = await getBalance();
+      setBalance(Number(balanceData) || 0);
+    } catch (error) {
+      console.error("Error fetching balance:", error);
+      setBalance(0);
+    }
+  };
+
   useEffect(() => {
     bindData();
+    fetchBalance();
+    bindtransaction();
   }, []);
 
   return (
@@ -235,7 +262,7 @@ const Dashboard = () => {
                               {profileData.phonenumber}
                             </p>
                             <div className="flex flex-col gap-1">
-                              <div className="flex flex-col text-sm sm:flex-row gap-2 pt-4">
+                              <div className="flex text-sm flex-row gap-2 pt-4">
                                 <label className="mt-2 text-gray-600 w-24 text-right">
                                   نام
                                 </label>
@@ -243,11 +270,11 @@ const Dashboard = () => {
                                   type="text"
                                   placeholder="نام"
                                   value={profileData.firstName}
-                                  className="w-full sm:flex-1 p-2 rounded-lg bg-gray-200 text-right [direction:rtl]"
+                                  className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl]"
                                   disabled
                                 />
                               </div>
-                              <div className="flex flex-col text-sm sm:flex-row gap-2">
+                              <div className="flex flex-row text-sm gap-2">
                                 <label className="mt-2 text-gray-600 w-24 text-right">
                                   نام خانوادگی
                                 </label>
@@ -255,11 +282,11 @@ const Dashboard = () => {
                                   type="text"
                                   placeholder="نام خانوادگی"
                                   value={profileData.lastName}
-                                  className="w-full sm:flex-1 p-2 rounded-lg bg-gray-200 text-right [direction:rtl]"
+                                  className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl]"
                                   disabled
                                 />
                               </div>
-                              <div className="flex flex-col text-sm sm:flex-row gap-2">
+                              <div className="flex flex-row text-sm gap-2">
                                 <label className="mt-2 text-gray-600 w-24 text-right">
                                   ایمیل
                                 </label>
@@ -267,7 +294,7 @@ const Dashboard = () => {
                                   type="text"
                                   placeholder="ایمیل"
                                   value={profileData.email}
-                                  className="w-full sm:flex-1 p-2 rounded-lg bg-gray-200 text-right [direction:rtl]"
+                                  className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl]"
                                   disabled
                                 />
                               </div>
@@ -300,7 +327,9 @@ const Dashboard = () => {
                           <span className="mr-2">💰</span> کیف پول
                         </h3>
                         <div className="text-center mb-3">
-                          <p className="text-xl font-bold text-gray-800">0</p>
+                          <p className="text-xl font-bold text-gray-800">
+                            {formatPrice(balance)}
+                          </p>
                           <p className="text-xs text-gray-600">تومان</p>
                         </div>
                         <table className="w-full text-center text-xs text-gray-800">
@@ -320,9 +349,11 @@ const Dashboard = () => {
                           <tbody>
                             {transactions.slice(0, 2).map((transaction) => (
                               <tr key={transaction.id} className="border-b">
-                                <td className="py-1">{transaction.date}</td>
+                                <td className="py-1 ltr">{transaction.date}</td>
                                 <td className="py-1">{transaction.activity}</td>
-                                <td className="py-1">{transaction.amount}</td>
+                                <td className="py-1">
+                                  {formatPrice(transaction.amount)}
+                                </td>
                               </tr>
                             ))}
                           </tbody>
