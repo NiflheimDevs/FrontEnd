@@ -1,121 +1,138 @@
-import { Search } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { GetLandingProjects } from "../../API";
+import SearchBar from "./SearchBar";
+import FilterDropdown from "./FilterDropdown";
+import ProjectCard from "./ProjectCard";
+
+interface Project {
+  project_id: number;
+  title: string;
+  description: string;
+  label: string;
+  timeLeft?: string;
+  views?: number;
+  tags?: string[];
+}
 
 const BrowseProject: React.FC = () => {
-  const projects = [
-    {
-      title: "توسعه فرانت‌اند و بک‌اند یک پلتفرم وب (بر اساس UI/UX آماده)",
-      description:
-        "داریوش روانیم کردییییییییییییییییییییییییییییییییییییییییییییییییییییییییییییییییییییییییییییی",
-      timeLeft: "14 روز و 23 ساعت",
-      views: 42,
-      tags: ["SEO", "Photoshop", "Freelancing", "eCommerce", "Social Media"],
-    },
-    {
-      title: "توسعه فرانت‌اند و بک‌اند یک پلتفرم وب (بر اساس UI/UX آماده)",
-      description:
-        "چرا کارییییییییییییییییییییییییی نمیکنی عرفاااااااااااااان",
-      timeLeft: "14 روز و 23 ساعت",
-      views: 42,
-      tags: ["SEO", "Photoshop", "Freelancing", "eCommerce", "Social Media"],
-    },
-  ];
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // State for filter dropdowns
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [skillsOpen, setSkillsOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("دسته‌بندی");
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [selectedSort, setSelectedSort] = useState("نوع مرتب‌سازی");
+
+  // Sample filter options
+  const categories = ["همه", "توسعه وب", "طراحی گرافیک", "دیجیتال مارکتینگ"];
+  const skills = ["React", "Node.js", "Photoshop", "SEO"];
+  const sortOptions = ["جدیدترین", "قدیمی‌ترین", "بیشترین پیشنهاد", "کمترین پیشنهاد"];
+
+  // Fetch projects from API
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setLoading(true);
+        const response = await GetLandingProjects();
+        const formattedProjects: Project[] = response.map((project: any) => ({
+          project_id: project.project_id,
+          title: project.title || "بدون عنوان",
+          description: project.descriptoin || "بدون توضیحات",
+          label: project.label,
+          timeLeft: "14 روز و 23 ساعت",
+          views: 42,
+          tags: ["SEO", "Photoshop", "Freelancing", "eCommerce", "Social Media"],
+        }));
+        setProjects(formattedProjects);
+      } catch (err) {
+        setError("خطا در دریافت پروژه‌ها");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  // Toggle skill selection
+  const toggleSkill = (skill: string) => {
+    if (selectedSkills.includes(skill)) {
+      setSelectedSkills(selectedSkills.filter((s) => s !== skill));
+    } else {
+      setSelectedSkills([...selectedSkills, skill]);
+    }
+  };
+
+  // Display text for skills dropdown
+  const getSkillsDisplayText = () => {
+    if (selectedSkills.length === 0) return "مهارت‌ها";
+    if (selectedSkills.length === 1) return selectedSkills[0];
+    return `${selectedSkills[0]} +${selectedSkills.length - 1}`;
+  };
 
   return (
     <div className="flex flex-col w-full py-6 px-4 font-vazirmatn">
-      {/* Search Box */}
-      <div className="flex justify-center mb-6">
-        <div className="flex w-[70%]">
-          <button className="bg-blue-600 text-white px-4 rounded-r flex items-center justify-center">
-            <Search size={20} />
-          </button>
-          <input
-            type="text"
-            placeholder="جستجو"
-            className="border border-blue-600 rounded-l py-2 pr-3 w-full text-right"
-          />
-        </div>
+      <SearchBar />
+      <div className="relative flex justify-center gap-8 mb-6 flex-wrap">
+        <FilterDropdown
+          isOpen={categoryOpen}
+          toggleDropdown={() => {
+            setCategoryOpen(!categoryOpen);
+            setSkillsOpen(false);
+            setSortOpen(false);
+          }}
+          selectedValue={selectedCategory}
+          options={categories}
+          onSelect={(value) => {
+            setSelectedCategory(value);
+            setCategoryOpen(false);
+          }}
+        />
+        <FilterDropdown
+          isOpen={skillsOpen}
+          toggleDropdown={() => {
+            setSkillsOpen(!skillsOpen);
+            setCategoryOpen(false);
+            setSortOpen(false);
+          }}
+          selectedValue={getSkillsDisplayText()}
+          options={skills}
+          onSelect={toggleSkill}
+          isMultiSelect
+          selectedValues={selectedSkills}
+        />
+        <FilterDropdown
+          isOpen={sortOpen}
+          toggleDropdown={() => {
+            setSortOpen(!sortOpen);
+            setCategoryOpen(false);
+            setSkillsOpen(false);
+          }}
+          selectedValue={selectedSort}
+          options={sortOptions}
+          onSelect={(value) => {
+            setSelectedSort(value);
+            setSortOpen(false);
+          }}
+        />
       </div>
-
-      {/* Filters */}
-      <div className="flex justify-center gap-10 mb-6">
-        <button className="bg-gray-200 px-6 py-2 rounded text-sm">
-          دسته بندی
-        </button>
-        <button className="bg-gray-200 px-6 py-2 rounded text-sm">
-          مهارت ها
-        </button>
-        <button className="bg-gray-200 px-6 py-2 rounded text-sm">
-          نوع مرتب سازی
-        </button>
-      </div>
-
-      {/* Project Cards */}
       <div className="space-y-6">
-        {projects.map((project, index) => (
-          <div
-            key={index}
-            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 text-right"
-          >
-            <h2 className="text-blue-600 font-bold text-md">{project.title}</h2>
-            <p className="text-gray-600 text-sm mt-2 leading-relaxed">
-              {project.description}
-            </p>
-
-            <div className="flex flex-col mt-3 text-sm text-gray-700">
-              <div className="flex items-center gap-1">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>{project.timeLeft} زمان باقی‌مانده</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 10h18M3 6h18M3 14h18M3 18h18"
-                  />
-                </svg>
-                <span>{project.views} پیشنهاد</span>
-              </div>
-            </div>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mt-4">
-              {project.tags.map((tag, i) => (
-                <span
-                  key={i}
-                  className="bg-white border border-[#3E79DE] text-[#3E79DE] text-xs font-semibold px-3 py-1 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <div className="flex justify-end mt-4">
-              <button className="text-blue-600 text-sm hover:underline">
-                ارسال پیشنهاد
-              </button>
-            </div>
-          </div>
-        ))}
+        {loading ? (
+          <p className="text-center">در حال بارگذاری...</p>
+        ) : error ? (
+          <p className="text-center text-red-500">{error}</p>
+        ) : projects.length === 0 ? (
+          <p className="text-center">هیچ پروژه‌ای یافت نشد</p>
+        ) : (
+          projects.map((project) => (
+            <ProjectCard key={project.project_id} project={project} />
+          ))
+        )}
       </div>
     </div>
   );
