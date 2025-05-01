@@ -476,7 +476,7 @@ export default function WorkExperienceSection({
         </AnimatePresence>
         <button
           onClick={handleAddWorkExperience}
-          className="mt-2 bg-[#3E79DE] text-white py-2 px-4 rounded-[20px] shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 focus:shadow-lg"
+          className="mt-2 bg-[#3E79DE] text-white py-2 px-4 rounded-[20px] shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 focus:shadow-lg cursor-pointer"
           tabIndex={tabIndexStart + localProfile.workExperiences.length * 10}
         >
           + افزودن سابقه کاری

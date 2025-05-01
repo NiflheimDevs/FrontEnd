@@ -314,7 +314,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             )}
           </Link>
         </div>
-        <div className="w-full mt-5">
+        <div className="w-full sm:static absolute bottom-30">
           <button
             onClick={handleLogout}
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer"
