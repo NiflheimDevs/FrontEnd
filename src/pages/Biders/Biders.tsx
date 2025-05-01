@@ -138,7 +138,7 @@ const Biders: React.FC = () => {
             ))
           ) : (
             <div className="text-center bg-white shadow-md rounded-lg p-8 col-span-full">
-              <p className="text-gray-600 text-xl">هیچ پیمانکاری یافت نشد</p>
+              <p className="text-gray-600 text-xl">هیچ کارجویی یافت نشد.</p>
             </div>
           )}
         </div>

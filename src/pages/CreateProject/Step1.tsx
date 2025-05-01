@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { setProjectData } from "../../store/slices/projectSlice";
 
 interface Step1Props {
@@ -14,6 +15,7 @@ interface Step1Props {
 
 const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isFormValid, setIsFormValid] = useState(false);
   const MAX_DESCRIPTION_WORDS = 250;
@@ -170,18 +172,25 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
           </div>
         </div>
       </div>
-
-      <button
-        onClick={handleNext}
-        disabled={!isFormValid}
-        className={`w-full p-3 rounded-md transition-colors mt-6 ${
-          isFormValid
-            ? "bg-blue-500 text-white hover:bg-blue-600"
-            : "bg-gray-300 text-gray-500 cursor-not-allowed"
-        }`}
-      >
-        مرحله بعد
-      </button>
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer"
+        >
+          بازگشت به داشبورد
+        </button>
+        <button
+          onClick={handleNext}
+          disabled={!isFormValid}
+          className={`px-6 py-2 rounded-md transition-colors flex items-center cursor-pointer ${
+            isFormValid
+              ? "bg-blue-500 text-white hover:bg-blue-600"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
+        >
+          مرحله بعد
+        </button>
+      </div>
     </div>
   );
 };

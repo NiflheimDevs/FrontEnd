@@ -25,14 +25,13 @@ import CreateProject from "../pages/CreateProject/CreateProject";
 import InsufficientBalance from "../Components/DashboardComp/InsufficientBalance";
 import EditProject from "../pages/EditProject/EditProject";
 import MyProjects from "../pages/MyProjects";
-//import Biders from "../pages/Biders/Biders";
+import Biders from "../pages/Biders/Biders";
 import HomePage from "../pages/HomePage";
 import ProjectDetail from "../pages/ProjectDetail";
 
 import TeamListPage from "../pages/Teams/TeamListPage";
 import TeamDetailPage from "../pages/Teams/TeamDetailPage";
 import BrowLayout from "../pages/BrowLayout";
-
 
 // Utility function to check if user is authenticated
 const isAuthenticated = () => {
@@ -56,9 +55,9 @@ export const publicRoutes = [
     ),
   },
   { path: "/aboutUs", element: <AboutUs /> },
-  { path: "/ContactUs", element: <ContactUs />},
-  { path: "/FAQ", element: <FAQ />},
-  { path: "/Rules", element: <Rules />},
+  { path: "/ContactUs", element: <ContactUs /> },
+  { path: "/FAQ", element: <FAQ /> },
+  { path: "/Rules", element: <Rules /> },
   { path: "/", element: <HomePage /> }, // Assuming homepage is public
   { path: "/forgetpassword", element: <ForgetPassword /> },
   {
@@ -92,7 +91,7 @@ export const privateRoutes = [
   { path: "/createproject", element: <CreateProject /> },
   { path: "/insufficient-balance", element: <InsufficientBalance /> },
   { path: "/myprojects", element: <MyProjects /> },
-  //{ path: "/biders", element: <Biders /> },
+  { path: "/biders/:projectId", element: <Biders /> },
   { path: "/ChangePass", element: <ChangePasswordManually /> },
   { path: "/project-created", element: <ProjectCreationConfirmation /> },
   { path: "/edit-project/:projectId", element: <EditProject /> },
