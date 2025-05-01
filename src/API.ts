@@ -172,10 +172,10 @@ export const ChangePass = async (userData: any) => {
   }
 };
 
-export const GetUser = async () => {
+export const GetUser = async (id: number) => {
   try {
     const response = await apiClient.get(
-      "/user/0?include=career&include=info&include=tag"
+      `/user/${id}?include=career&include=info&include=tag`
     );
     return response.data;
   } catch (error: any) {
@@ -329,12 +329,12 @@ export const PutPhoneVerifyOtp = async (userData: any) => {
   }
 };
 
-export const getUserProject = async (offset: any, limit: any) => {
+export const getUserProject = async (offset: any, limit: any, id: number) => {
   try {
-    const response = await apiClient.get("/project/user/0", {
+    const response = await apiClient.get(`/project/user/${id}`, {
       params: {
-        offset: 0, // Fetch all projects
-        limit: 1000, // Set a high limit
+        offset: 0,
+        limit: 1000,
       },
     });
 

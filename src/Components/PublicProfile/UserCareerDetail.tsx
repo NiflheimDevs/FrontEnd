@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Color, Profile } from "./types";
+import { Color, Profile, SkillPageSize } from "./types";
 import { Star, MessageSquareText } from "lucide-react";
 
 interface UserCareerDetailProps {
@@ -7,7 +7,7 @@ interface UserCareerDetailProps {
   localcolor: Color;
 }
 
-const PAGE_SIZE = 4; // تعداد مهارت‌ها در هر صفحه
+const PAGE_SIZE = SkillPageSize;
 
 const UserCareerDetail = ({
   localprofile,
@@ -15,29 +15,24 @@ const UserCareerDetail = ({
 }: UserCareerDetailProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  // مرتب‌سازی مهارت‌ها بر اساس level به‌صورت نزولی
   const sortedSkills = [...(localprofile.skills || [])].sort(
     (a, b) => b.level - a.level
   );
 
-  // محاسبه تعداد کل صفحات
   const totalPages = Math.ceil(sortedSkills.length / PAGE_SIZE);
 
-  // استخراج مهارت‌های صفحه فعلی
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const paginatedSkills = sortedSkills.slice(
     startIndex,
     startIndex + PAGE_SIZE
   );
 
-  // هندل کردن دکمه قبلی
   const handlePrevious = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-  // هندل کردن دکمه بعدی
   const handleNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -73,33 +68,38 @@ const UserCareerDetail = ({
         </div>
       </div>
       <div className="flex flex-col gap-8 mt-4">
-        {paginatedSkills.map((tag) => (
-          <div
-            key={tag.id}
-            className="flex flex-col items-center gap-2"
-            role="region"
-            aria-label={`مهارت: ${tag.name}، سطح ${tag.level}`}
-          >
+        {paginatedSkills.length > 0 ? (
+          paginatedSkills.map((tag) => (
             <div
-              className="bg-gray-400 relative h-10 w-full max-w-md rounded-full box-shadow-custom transition-all overflow-hidden"
-              dir="ltr"
+              key={tag.id}
+              className="flex flex-col items-center gap-2"
+              role="region"
+              aria-label={`مهارت: ${tag.name}، سطح ${tag.level}`}
             >
               <div
-                className={`bg-${localcolor.color} h-full rounded-full absolute top-0 left-0 transition-all duration-500 ease-out`}
-                style={{ width: `${tag.level * 25}%` }}
-                aria-hidden="true"
-              ></div>
-              <span
-                className="absolute inset-0 flex items-center justify-center font-[vazirmatn] text-sm text-white pointer-events-none truncate px-2"
-                style={{ zIndex: 10 }}
+                className="bg-gray-400 relative h-10 w-full max-w-md rounded-full box-shadow-custom transition-all overflow-hidden"
+                dir="ltr"
               >
-                {tag.name}
-              </span>
+                <div
+                  className={`bg-${localcolor.color} h-full rounded-full absolute top-0 left-0 transition-all duration-500 ease-out`}
+                  style={{ width: `${tag.level * 25}%` }}
+                  aria-hidden="true"
+                ></div>
+                <span
+                  className="absolute inset-0 flex items-center justify-center font-[vazirmatn] text-sm text-white pointer-events-none truncate px-2"
+                  style={{ zIndex: 10 }}
+                >
+                  {tag.name}
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-sm text-gray-500 font-[vazirmatn] text-center">
+            هیچ اطلاعاتی یافت نشد.
+          </p>
+        )}
       </div>
-      {/* بخش پیجینیشن */}
       {sortedSkills.length > PAGE_SIZE && (
         <div className="flex flex-row justify-center items-center gap-4 mt-4">
           <button

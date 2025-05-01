@@ -91,7 +91,8 @@ const MyProjects = () => {
       const offset = (page - 1) * projectsPerPage;
       const data: { projects: Project[]; total: number } = await getUserProject(
         offset,
-        projectsPerPage
+        projectsPerPage,
+        0
       );
 
       console.log(

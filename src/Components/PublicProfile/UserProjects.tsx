@@ -1,5 +1,7 @@
+import { ReactElement } from "react";
 import { Color, Projects, Skill } from "./types";
 import { Link } from "react-router-dom";
+import { FaMedal } from "react-icons/fa6";
 
 interface UserProjectsProps {
   project: Projects;
@@ -7,9 +9,22 @@ interface UserProjectsProps {
 }
 
 const UserProjects = ({ project, localcolor }: UserProjectsProps) => {
+  const getMedalIcon = (label: string): ReactElement => {
+    switch (label) {
+      case "Urgent":
+        return <FaMedal size={22} color="#FFD700" />;
+      case "Bold":
+        return <FaMedal size={22} color="#A6A6A6" />;
+      case "Free":
+        return <FaMedal size={22} color="#CD7F32" />;
+      default:
+        return <FaMedal size={22} color="#A6A6A6" />;
+    }
+  };
   return (
     <div className="w-full p-6 flex flex-col gap-4 bg-white rounded-2xl transition-all duration-300 box-shadow-custom">
-      <h3 className="text-lg font-bold text-gray-800 font-[vazirmatn]">
+      <h3 className="text-lg font-bold text-gray-800 font-[vazirmatn] flex flex-row gap-1">
+        <span>{getMedalIcon(project.label)}</span>
         {project.title}
       </h3>
       <p className="text-sm text-gray-600 font-[vazirmatn] leading-relaxed">
@@ -20,16 +35,22 @@ const UserProjects = ({ project, localcolor }: UserProjectsProps) => {
           {project.skills.map((skill: Skill) => (
             <span
               key={skill.id || skill.name}
-              className={`flex items-center gap-1 text-white text-sm px-3 py-1.5 rounded-full transition-colors duration-200 bg-${localcolor.color} hover:bg-${localcolor.hover} shadow-sm font-[vazirmatn]`}
+              className={`flex items-center gap-1 px-2 py-1 h-fit rounded-full bg-${localcolor.color} hover:bg-${localcolor.hover} transition-colors duration-200`}
               aria-label={`مهارت: ${skill.name}`}
             >
-              <span className="pointer-events-none">{skill.name}</span>
+              <span className="text-white text-xs font-[vazirmatn] pointer-events-none">
+                {skill.name}
+              </span>
             </span>
           ))}
         </div>
-        <Link to={`/detail/${project.id}`} key={project.id}>
+        <Link
+          to={`/detail/${project.id}`}
+          className="flex items-end"
+          key={project.id}
+        >
           <button
-            className={`flex items-center cursor-pointer justify-center gap-2 px-4 py-2 bg-${localcolor.color} text-white text-sm font-[vazirmatn] rounded-full shadow-md hover:bg-${localcolor.hover} focus:ring-2 focus:ring-${localcolor.color} focus:ring-offset-2 transition-all duration-200`}
+            className={`flex items-center h-fit cursor-pointer justify-center whitespace-nowrap gap-2 px-4 py-2 bg-${localcolor.color} text-white text-sm font-[vazirmatn] rounded-full shadow-md hover:bg-${localcolor.hover} focus:ring-2 focus:ring-${localcolor.color} focus:ring-offset-2 transition-all duration-200`}
             onClick={() =>
               console.log(`Show details for project: ${project.title}`)
             }

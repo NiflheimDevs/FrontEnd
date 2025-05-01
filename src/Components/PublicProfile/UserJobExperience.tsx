@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Color, Profile } from "./types";
+import { Color, JobPageSize, Profile } from "./types";
 import { Globe } from "lucide-react";
 
 interface UserJobExperienceProps {
@@ -7,7 +7,7 @@ interface UserJobExperienceProps {
   localcolor: Color;
 }
 
-const PAGE_SIZE = 4; // تعداد سوابق شغلی در هر صفحه
+const PAGE_SIZE = JobPageSize;
 
 const UserJobExperience = ({
   localprofile,
@@ -15,27 +15,22 @@ const UserJobExperience = ({
 }: UserJobExperienceProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  // استخراج سوابق شغلی یا آرایه خالی اگر وجود نداشته باشد
   const workExperience = localprofile.workExperience || [];
 
-  // محاسبه تعداد کل صفحات
   const totalPages = Math.ceil(workExperience.length / PAGE_SIZE);
 
-  // استخراج سوابق صفحه فعلی
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const paginatedExperience = workExperience.slice(
     startIndex,
     startIndex + PAGE_SIZE
   );
 
-  // هندل کردن دکمه قبلی
   const handlePrevious = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-  // هندل کردن دکمه بعدی
   const handleNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -71,7 +66,11 @@ const UserJobExperience = ({
                 </span>
                 {experience.website && (
                   <a
-                    href={experience.website}
+                    href={
+                      experience.website.startsWith("http")
+                        ? experience.website
+                        : `https://${experience.website}`
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`flex items-center gap-1 text-${localcolor.color} hover:text-${localcolor.hover}`}
@@ -103,7 +102,6 @@ const UserJobExperience = ({
           سابقه شغلی ثبت نشده است.
         </p>
       )}
-      {/* بخش پیجینیشن */}
       {workExperience.length > PAGE_SIZE && (
         <div className="flex flex-row justify-center items-center gap-4 mt-4">
           <button
