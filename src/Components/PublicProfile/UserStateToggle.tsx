@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Color, Profile, Projects } from "./types";
+import { Color, Profile, Projects, TogglePageSize } from "./types";
 import UserProjects from "./UserProjects";
 
 interface UserStateToggleProps {
@@ -8,7 +8,7 @@ interface UserStateToggleProps {
   setLocalColor: React.Dispatch<React.SetStateAction<Color>>;
 }
 
-const PAGE_SIZE = 4; // تعداد پروژه‌ها در هر صفحه
+const PAGE_SIZE = TogglePageSize;
 
 const UserStateToggle = ({
   localprofile,
@@ -20,7 +20,6 @@ const UserStateToggle = ({
   >("employer");
   const [currentPage, setCurrentPage] = useState(1);
 
-  // انتخاب پروژه‌ها بر اساس activeTab
   const projects =
     activeTab === "employer"
       ? localprofile.employerprojects || []
@@ -28,31 +27,26 @@ const UserStateToggle = ({
         ? localprofile.freelancerprojects || []
         : [];
 
-  // محاسبه تعداد کل صفحات
   const totalPages = Math.ceil(projects.length / PAGE_SIZE);
 
-  // استخراج پروژه‌های صفحه فعلی
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const paginatedProjects = projects.slice(startIndex, startIndex + PAGE_SIZE);
 
-  // هندل کردن دکمه قبلی
   const handlePrevious = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-  // هندل کردن دکمه بعدی
   const handleNext = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
   };
 
-  // ریست کردن صفحه به 1 هنگام تغییر تب
   const handleTabChange = (tab: "employer" | "teams" | "jobseeker") => {
     setActiveTab(tab);
-    setCurrentPage(1); // ریست صفحه به 1
+    setCurrentPage(1);
     setLocalColor({
       color:
         tab === "employer"
@@ -123,7 +117,7 @@ const UserStateToggle = ({
           ))
         ) : (
           <p className="text-sm text-gray-500 font-[vazirmatn] text-center">
-            هیچ پروژه‌ای یافت نشد.
+            هیچ اطلاعاتی یافت نشد.
           </p>
         )}
         {/* بخش پیجینیشن */}
