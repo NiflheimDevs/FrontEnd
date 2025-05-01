@@ -15,7 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <Header toggleSidebar={toggleSidebar} />
       {/* Main content */}
-      <div className="mr-16 md:mr-6 flex-1">
+      <div className=" md:mr-6 flex-1">
         <main className="container mx-auto px-4 py-6">
           {children}
         </main>
