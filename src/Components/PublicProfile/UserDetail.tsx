@@ -13,7 +13,7 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
       {/* Profile Image and Actions */}
       <div className="flex flex-col items-center gap-4 w-full md:w-1/4 min-w-[160px]">
         <div
-          className={`relative w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-${localcolor.color} overflow-hidden bg-gray-100 shadow-md transition-transform duration-300 hover:scale-105`}
+          className={`relative flex justify-center items-center w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-${localcolor.color} overflow-hidden bg-gray-100 shadow-md transition-transform duration-300 hover:scale-105`}
         >
           {localprofile.high_profile ? (
             <img

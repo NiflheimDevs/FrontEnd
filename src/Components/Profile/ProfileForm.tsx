@@ -119,7 +119,7 @@ export default function ProfileForm() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const apiData = await GetUser();
+        const apiData = await GetUser(0);
         const apiResume = await GetResume();
         setResumeName(apiResume ? "resume.pdf" : null);
         const mappedProfile = await mapApiDataToProfile(apiData, apiResume);
@@ -239,7 +239,6 @@ export default function ProfileForm() {
           ]);
         }
       } else {
-
         if (localProfile.resume) {
           LocalResume.append("file", localProfile.resume);
           await Promise.all([
