@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from "react";
 import Header from "../../Components/DashboardComp/Header";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
 interface LayoutProps {
@@ -11,14 +11,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     // <div className="flex min-h-screen bg-gray-100">
-    <div className="container mx-auto md:pr-8 sm:pr-8 pr-0 py-8 mt-15 ">
+    <div className="container mx-auto md:pr-8 sm:pr-8 pr-0 py-8 mt-15">
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <Header toggleSidebar={toggleSidebar} />
       {/* Main content */}
       <div className=" md:mr-6 flex-1">
-        <main className="container mx-auto px-4 py-6">
-          {children}
-        </main>
+        <main className="container mx-auto px-4 py-6">{children}</main>
       </div>
     </div>
   );

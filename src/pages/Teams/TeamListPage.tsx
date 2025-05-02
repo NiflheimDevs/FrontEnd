@@ -88,7 +88,7 @@ const TeamListPage: React.FC = () => {
         </div>
         <button
           onClick={handleCreateTeam}
-          className="w-full md:w-auto flex items-center justify-center order-1 md:order-2 cursor-pointer rounded-full bg-gradient-to-l from-purple-600 to-blue-600 text-white px-6 py-3 md:scale-[100%] sm:scale-110 scale-100 transition-all duration-400 glowing-shadow"
+          className="w-full md:w-auto flex items-center justify-center order-1 md:order-2 cursor-pointer rounded-full bg-gradient-to-l from-purple-600 to-blue-600 text-white px-6 py-3 md:scale-[100%] sm:scale-100 scale-100 transition-all duration-400 glowing-shadow"
         >
           <svg
             className="w-4 h-4 ml-1"
