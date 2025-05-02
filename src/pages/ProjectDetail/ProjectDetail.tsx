@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Header from "../../Components/MainContent/Header";
 import { FaStar } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { GetProject } from "../../API";
+import { errorMapper } from "../Error/Error";
+import { useNotification } from "../../Notification/NotificationProvider";
 
 // Define interfaces for our data structure
 interface Tag {
@@ -38,19 +41,20 @@ interface Bidder {
 
 const ProjectDetail = () => {
   const { project_id } = useParams();
+  const { error: notifyError } = useNotification();
   const navigate = useNavigate();
   const [projectData, setProjectData] = useState<ProjectData | null>(null);
   const [, setLoading] = useState<boolean>(true);
   const [error] = useState<string | null>(null);
   // Sample bidders data - in a real app, this would also come from an API
   const bidders: Bidder[] = [
-    { name: "احمد۹۵", rating: 4.1, bid: "۵۰۰ دینار" },
-    { name: "محمد۸۸", rating: 4.2, bid: "۴۹۰ دینار" },
-    { name: "علی۷۷", rating: 3, bid: "۴۸۰ دینار" },
-    { name: "رضا۶۶", rating: 2, bid: "۵۰۰ دینار" },
-    { name: "حسن۵۵", rating: 4.5, bid: "۴۷۵ دینار" },
-    { name: "یاسر۴۴", rating: 3.8, bid: "۴۹۵ دینار" },
-    { name: "کریم۳۳", rating: 4.0, bid: "۴۸۵ دینار" },
+    { name: "احمد احمدی", rating: 4.1, bid: "۵۰۰ تومان" },
+    { name: "محمد محمدی", rating: 4.2, bid: "۴۹۰ تومان" },
+    { name: "علی رنجبر", rating: 3, bid: "۴۸۰ تومان" },
+    { name: "رضا غلامی", rating: 2, bid: "۵۰۰ تومان" },
+    { name: "حسن سهرابی", rating: 4.5, bid: "۴۷۵ تومان" },
+    { name: "یاسر سمیعی", rating: 3.8, bid: "۴۹۵ تومان" },
+    { name: "کریم صیاد فعال", rating: 4.0, bid: "۴۸۵ تومان" },
   ];
 
   // Format date to show how long ago the project was posted
@@ -66,39 +70,31 @@ const ProjectDetail = () => {
   useEffect(() => {
     const fetchProjectData = async () => {
       try {
-        setLoading(true);
-
-        // Create an instance of axios with custom configuration
-        const axiosInstance = axios.create({
-          baseURL: "https://103.75.196.227:8080",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        });
-
-        // Make the API call
-        const response = await axiosInstance.get(`/project/${project_id}`);
-        console.log("API response:", response.data);
-        setProjectData(response.data);
+        if (project_id) {
+          setLoading(true);
+          const response = await GetProject(project_id);
+          console.log("API response:", response);
+          setProjectData(response);
+          setLoading(false);
+        }
+      } catch (error: any) {
+        const errorData = error;
+        if (errorData.tag && errorData.errors?.length > 0) {
+          if (errorData.tag == "NOT_FOUND") {
+            navigate("/error");
+          } else {
+            const allErrors = errorData.errors;
+            const errorMessages = allErrors.map((err: any) => errorMapper(err));
+            notifyError(`${errorMessages.join(" ")}`);
+          }
+        } else {
+          notifyError(`${errorMapper(errorData)}`);
+        }
+      } finally {
         setLoading(false);
-      } catch {
-        // console.error("Error fetching project data:", err);
-        // More detailed error reporting
-        // setError(
-
-        //   err.response
-        //     ? `خطا: ${err.response.status} - ${err.response.statusText}`
-        //     : "خطا در اتصال به سرور. لطفاً اتصال اینترنت خود را بررسی کنید."
-        // );
-        setLoading(false);
-        window.location.href = "https://bidlancer.ir/404";
       }
     };
-
-    if (project_id) {
-      fetchProjectData();
-    }
+    fetchProjectData();
   }, [project_id]);
 
   // if (loading) {
@@ -182,11 +178,11 @@ const ProjectDetail = () => {
               <h3 className="text-base sm:text-lg font-semibold text-[#3E79DE] mb-3 text-right">
                 پیشنهاد دهندگان:
               </h3>
-              <div className="space-y-3 max-h-96 overflow-y-auto pl-3 custom-scrollbar">
+              <div className="space-y-3 max-h-105 overflow-y-auto pl-3 custom-scrollbar">
                 {bidders.map((bidder, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 bg-gradient-to-b from-[#B1D8FC] to-[#D4D4D4] rounded-lg shadow-sm hover:bg-gray-100 transition"
+                    className="flex items-center justify-between p-3 bg-gradient-to-l from-blue-500 to-blue-400 rounded-lg shadow-sm hover:bg-scale-103 transition"
                   >
                     <div className="flex items-center space-x-3 gap-3 space-x-reverse">
                       <div className="w-8 sm:w-9 h-8 sm:h-9 bg-gray-300 rounded-full flex items-center justify-center">
@@ -194,18 +190,18 @@ const ProjectDetail = () => {
                         {bidder.name.charAt(0)}
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold text-xs sm:text-sm text-[#000000]">
+                        <p className="font-semibold text-xs sm:text-sm text-gray-200">
                           {bidder.name}
                         </p>
                         <div className="flex items-center gap-1">
                           <FaStar className="text-yellow-400" size={12} />
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-yellow-400">
                             {bidder.rating}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <p className="text-gray-700 text-xs sm:text-sm font-medium">
+                    <p className="text-gray-200 text-xs sm:text-sm font-medium">
                       {bidder.bid}
                     </p>
                   </div>
@@ -215,12 +211,12 @@ const ProjectDetail = () => {
 
             {/* Buttons Below Bidders */}
             <div className="flex justify-center gap-4">
-              <button className="bg-[#3E79DE] cursor-pointer w-full sm:w-3/4 h-[48px] text-white rounded hover:bg-blue-700 text-sm">
+              <button className="bg-blue-500 cursor-pointer w-full sm:w-3/4 h-[48px] text-white rounded-lg hover:bg-blue-600 text-sm">
                 ارسال پیشنهاد
               </button>
               <button
                 onClick={() => navigate(-1)}
-                className="bg-gray-500 cursor-pointer w-full sm:w-1/4 h-[48px] text-white rounded hover:bg-gray-600 text-sm"
+                className="bg-gray-500 cursor-pointer w-full sm:w-1/4 h-[48px] rounded-lg text-white hover:bg-gray-600 text-sm"
               >
                 بازگشت
               </button>
@@ -228,24 +224,6 @@ const ProjectDetail = () => {
           </div>
         </div>
       </main>
-
-      {/* Custom Scrollbar Styles */}
-      <style>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: #f1f1f1;
-          border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #888;
-          border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #555;
-        }
-      `}</style>
     </div>
   );
 };

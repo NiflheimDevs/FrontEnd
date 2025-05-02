@@ -250,6 +250,15 @@ export const GetResume = async () => {
   }
 };
 
+export const GetProject = async (project_id: string) => {
+  try {
+    const response = await apiClient.get(`/project/${project_id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const UpdateResume = async (userData: any) => {
   try {
     const response = await apiClient.post("/user/resume", userData, {

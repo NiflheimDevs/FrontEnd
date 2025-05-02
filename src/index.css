@@ -52,6 +52,31 @@ html {
   box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.18);
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #e5e7eb !important;
+  border-radius: 4px;
+  margin: 4px 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: oklch(80.9% 0.105 251.813) !important;
+  border-radius: 4px;
+  transition: 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6 !important;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(80.9% 0.105 251.813) #e5e7eb;
+}
+
 .shiny-skeleton {
   position: relative;
   overflow: hidden;
