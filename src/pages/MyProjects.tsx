@@ -284,7 +284,7 @@ const MyProjects = () => {
                       <div>
                         <div className="flex flex-row justify-between">
                           <p className="text-white text-[13.3px] opacity-70 font-semibold tracking-wider text-right">
-                            مرحله: انتخاب کارفرما
+                            مرحله: انتخاب فریلنسر
                           </p>
                           <motion.img
                             src={avatar}

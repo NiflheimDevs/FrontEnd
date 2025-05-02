@@ -4,9 +4,108 @@ import { Image, X } from "lucide-react";
 import { Profile, useOtpTimer } from "./types";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { PutUserName, PutEmail, PutPhoneSendOtp } from "../../API";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import OtpSection from "./OtpSection";
 import { errorMapper } from "../../pages/Error/Error";
+import Cropper from "react-easy-crop";
+import { useDropzone } from "react-dropzone";
+import { Area } from "react-easy-crop";
+
+// Utility function to resize image before cropping
+const resizeImage = (imageSrc: string, maxSize: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const image: HTMLImageElement = document.createElement("img");
+    image.src = imageSrc;
+
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      let { width, height } = image;
+
+      // Resize if the image is larger than maxSize
+      if (width > height && width > maxSize) {
+        height = (maxSize / width) * height;
+        width = maxSize;
+      } else if (height > maxSize) {
+        width = (maxSize / height) * width;
+        height = maxSize;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+
+      if (!ctx) {
+        reject(new Error("خطا در ایجاد کانتکس کانواس برای تغییر اندازه"));
+        return;
+      }
+
+      ctx.drawImage(image, 0, 0, width, height);
+      resolve(canvas.toDataURL("image/jpeg", 0.8));
+    };
+
+    image.onerror = () => {
+      reject(new Error("خطا در بارگذاری تصویر برای تغییر اندازه"));
+    };
+  });
+};
+
+// Utility function to convert cropped image to File
+const getCroppedImg = (imageSrc: string, pixelCrop: Area): Promise<File> => {
+  return new Promise((resolve, reject) => {
+    const image: HTMLImageElement = document.createElement("img");
+    image.src = imageSrc;
+
+    image.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = pixelCrop.width;
+        canvas.height = pixelCrop.height;
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) {
+          reject(new Error("خطا در ایجاد کانتکس کانواس برای برش"));
+          return;
+        }
+
+        ctx.drawImage(
+          image,
+          pixelCrop.x,
+          pixelCrop.y,
+          pixelCrop.width,
+          pixelCrop.height,
+          0,
+          0,
+          pixelCrop.width,
+          pixelCrop.height
+        );
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(new File([blob], "profile-picture.jpg", { type: "image/jpeg" }));
+            } else {
+              const dataUrl = canvas.toDataURL("image/jpeg");
+              fetch(dataUrl)
+                .then((res) => res.blob())
+                .then((blob) =>
+                  resolve(new File([blob], "profile-picture.jpg", { type: "image/jpeg" }))
+                )
+                .catch(() => reject(new Error("خطا در تبدیل تصویر به فایل")));
+            }
+          },
+          "image/jpeg",
+          0.9
+        );
+      } catch (error) {
+        reject(new Error("خطا در پردازش تصویر: " + (error instanceof Error ? error.message : String(error))));
+      }
+    };
+
+    image.onerror = () => {
+      reject(new Error("خطا در بارگذاری تصویر برای برش"));
+    };
+  });
+};
 
 interface UserInfoSectionProps {
   localProfile: Profile;
@@ -37,116 +136,109 @@ export default function UserInfoSection({
 }: UserInfoSectionProps) {
   const { error: notifyError, success: notifySuccess } = useNotification();
   const [showOtpSection, setShowOtpSection] = useState(false);
-  const [showX, setshowX] = useState(false);
-  const handleChangePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, "");
-    const value = e.target.value;
-    setLocalProfile((prev) => ({ ...prev, phoneNumber: value }));
-    if (value.startsWith("09") && value.length === 11) {
-      setChangedPhone(value !== profileFromRedux.phoneNumber);
-    } else {
-      setChangedPhone(false);
-    }
-  };
+  const [showX, setShowX] = useState(false);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [resizedImageSrc, setResizedImageSrc] = useState<string | null>(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+  const [showCropper, setShowCropper] = useState(false);
 
   const { timeLeft, setTimeLeft, isScaled, setIsScaled } = useOtpTimer(
     120,
     showOtpSection
   );
 
-  const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setLocalProfile((prev) => ({ ...prev, email: value }));
-    setChangedEmail(value !== profileFromRedux.email);
-  };
-
-  const handleChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setLocalProfile((prev) => ({ ...prev, username: value }));
-    setChangedUsername(value !== profileFromRedux.username);
-  };
-
-  const handlePhoneChangeSubmit = async () => {
-    if (changedPhone) {
-      try {
-        const phoneData = { phone: localProfile.phoneNumber };
-        const codeSession = await PutPhoneSendOtp(phoneData);
-        setLocalProfile((prev) => ({ ...prev, SessionID: codeSession }));
-        setTimeLeft(120);
-        setIsScaled(false);
-        setShowOtpSection(true);
-        notifySuccess("کد تایید ارسال شد");
-      } catch (error: any) {
-        const errorData = error;
-        if (errorData.tag && errorData.errors?.length > 0) {
-          const allErrors = errorData.errors;
-          const errorMessages = allErrors.map((err: any) => errorMapper(err));
-          notifyError(`${errorMessages.join(" ")}`);
-        } else {
-          notifyError(`${errorMapper(errorData)}`);
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      if (file) {
+        const allowedTypes = [
+          "image/jpeg",
+          "image/jpg",
+          "image/png",
+          "image/webp",
+        ];
+        if (!allowedTypes.includes(file.type)) {
+          notifyError("فقط فرمت‌های jpg، jpeg، png و webp مجاز هستند");
+          return;
         }
-      }
-    }
-  };
+        if (file.size > 5 * 1024 * 1024) {
+          notifyError("حجم فایل باید کمتر از ۵ مگابایت باشد");
+          return;
+        }
 
-  const ChangeUserName = async () => {
-    try {
-      const usernameData = { username: localProfile.username };
-      await PutUserName(usernameData);
-      notifySuccess("نام کاربری با موفقیت تغییر کرد");
-    } catch (error: any) {
-      const errorData = error;
-      if (errorData.tag && errorData.errors?.length > 0) {
-        const allErrors = errorData.errors;
-        const errorMessages = allErrors.map((err: any) => errorMapper(err));
-        notifyError(`${errorMessages.join(" ")}`);
+        const reader = new FileReader();
+        reader.onload = async () => {
+          try {
+            const originalSrc = reader.result as string;
+            setImageSrc(originalSrc);
+
+            // Resize the image before cropping
+            const resizedSrc = await resizeImage(originalSrc, 1000);
+            setResizedImageSrc(resizedSrc);
+            setShowCropper(true);
+          } catch (error) {
+            notifyError("خطا در تغییر اندازه تصویر: " + (error instanceof Error ? error.message : String(error)));
+          }
+        };
+        reader.onerror = () => {
+          notifyError("خطا در خواندن فایل تصویر");
+        };
+        reader.readAsDataURL(file);
       } else {
-        notifyError(`${errorMapper(errorData)}`);
+        notifyError("هیچ فایلی انتخاب نشد");
       }
-    }
-  };
+    },
+    [notifyError]
+  );
 
-  const ChangeEmail = async () => {
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: { "image/*": [".jpeg", ".jpg", ".png", ".webp"] },
+    maxFiles: 1,
+    noDrag: true,
+  });
+
+  const onCropComplete = useCallback(
+    (_croppedArea: Area, croppedAreaPixels: Area) => {
+      setCroppedAreaPixels(croppedAreaPixels);
+    },
+    []
+  );
+
+  const handleCropConfirm = useCallback(async () => {
+    if (!imageSrc) {
+      notifyError("هیچ تصویری برای برش انتخاب نشده است");
+      return;
+    }
+    if (!croppedAreaPixels) {
+      notifyError("منطقه برش تصویر مشخص نشده است");
+      return;
+    }
+
     try {
-      const emailData = { email: localProfile.email };
-      await PutEmail(emailData);
-      notifySuccess("ایمیل با موفقیت تغییر کرد");
-    } catch (error: any) {
-      const errorData = error;
-      if (errorData.tag && errorData.errors?.length > 0) {
-        const allErrors = errorData.errors;
-        const errorMessages = allErrors.map((err: any) => errorMapper(err));
-        notifyError(`${errorMessages.join(" ")}`);
-      } else {
-        notifyError(`${errorMapper(errorData)}`);
-      }
+      const croppedFile = await getCroppedImg(resizedImageSrc || imageSrc, croppedAreaPixels);
+      setProfilePictureFile(croppedFile);
+      setLocalProfile((prev) => ({
+        ...prev,
+        high_profile: URL.createObjectURL(croppedFile),
+      }));
+      setShowCropper(false);
+      setImageSrc(null);
+      setResizedImageSrc(null);
+      notifySuccess("عکس پروفایل با موفقیت انتخاب شد");
+    } catch (error) {
+      notifyError(
+        error instanceof Error
+          ? error.message
+          : "خطا در برش تصویر: مشکلی رخ داده است"
+      );
     }
-  };
+  }, [imageSrc, resizedImageSrc, croppedAreaPixels, setProfilePictureFile, setLocalProfile, notifyError, notifySuccess]);
 
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    _field: "profilePicture"
-  ) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const allowedTypes = [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/webp",
-      ];
-      if (!allowedTypes.includes(file.type)) {
-        notifyError("فقط فرمت‌های jpg، jpeg، png و webp مجاز هستند");
-        return;
-      }
-      setProfilePictureFile(file);
-      notifySuccess("عکس پروفایل با موفقیت آپلود شد");
-    } else {
-      notifyError("هیچ فایلی انتخاب نشد");
-    }
-  };
-
-  const handleRemoveProfile = () => {
+  const handleRemoveProfile = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setProfilePictureFile(null);
     setLocalProfile((prev) => ({ ...prev, high_profile: "" }));
     notifySuccess("عکس پروفایل با موفقیت حذف شد");
@@ -160,26 +252,20 @@ export default function UserInfoSection({
     <>
       <div className="flex justify-center mb-6">
         <div className="flex flex-col items-center">
-          <label className="w-32 h-32 md:w-36 md:h-36 border-2 border-blue-500 rounded-full flex items-center justify-center cursor-pointer overflow-hidden bg-gray-200 relative">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleFileChange(e, "profilePicture")}
-              className="hidden"
-              tabIndex={1}
-            />
+          <div
+            {...getRootProps()}
+            className="w-32 h-32 md:w-36 md:h-36 border-2 border-blue-500 rounded-full flex items-center justify-center overflow-hidden bg-gray-200 relative cursor-pointer"
+            tabIndex={1}
+          >
+            <input {...getInputProps()} />
             {profilePictureFile ? (
               <>
                 <img
                   src={URL.createObjectURL(profilePictureFile)}
                   alt="Profile Preview"
                   className="w-full h-full object-cover transition-all duration-400 ease-in-out hover:scale-105"
-                  onMouseEnter={() => {
-                    setshowX(true);
-                  }}
-                  onMouseLeave={() => {
-                    setshowX(false);
-                  }}
+                  onMouseEnter={() => setShowX(true)}
+                  onMouseLeave={() => setShowX(false)}
                 />
                 <button
                   onClick={handleRemoveProfile}
@@ -193,14 +279,10 @@ export default function UserInfoSection({
               <>
                 <img
                   src={localProfile.high_profile}
-                  alt=""
+                  alt="Profile"
                   className="w-full h-full object-cover transition-all duration-400 ease-in-out hover:scale-105"
-                  onMouseEnter={() => {
-                    setshowX(true);
-                  }}
-                  onMouseLeave={() => {
-                    setshowX(false);
-                  }}
+                  onMouseEnter={() => setShowX(true)}
+                  onMouseLeave={() => setShowX(false)}
                 />
                 <button
                   onClick={handleRemoveProfile}
@@ -213,10 +295,50 @@ export default function UserInfoSection({
             ) : (
               <Image className="text-gray-500" size={36} />
             )}
-          </label>
+          </div>
           <span className="mt-2 font-semibold text-gray-600">پروفایل</span>
         </div>
       </div>
+
+      {/* Cropper Modal */}
+      {showCropper && imageSrc && (
+        <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg border border-gray-200">
+            <div className="relative w-full h-64">
+              <Cropper
+                image={resizedImageSrc || imageSrc}
+                crop={crop}
+                zoom={zoom}
+                aspect={1}
+                cropShape="round"
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+              />
+            </div>
+            <div className="mt-4 flex justify-end space-x-2">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-lg"
+                onClick={() => {
+                  setShowCropper(false);
+                  setImageSrc(null);
+                  setResizedImageSrc(null);
+                }}
+                tabIndex={3}
+              >
+                لغو
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                onClick={handleCropConfirm}
+                tabIndex={4}
+              >
+                تایید
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row gap-2">
@@ -226,9 +348,13 @@ export default function UserInfoSection({
           <input
             type="text"
             value={localProfile.username}
-            onChange={handleChangeUsername}
+            onChange={(e) => {
+              const value = e.target.value;
+              setLocalProfile((prev) => ({ ...prev, username: value }));
+              setChangedUsername(value !== profileFromRedux.username);
+            }}
             className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
-            tabIndex={3}
+            tabIndex={5}
           />
           <button
             className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
@@ -236,8 +362,25 @@ export default function UserInfoSection({
                 ? "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
                 : "opacity-60"
             }`}
-            onClick={ChangeUserName}
-            tabIndex={4}
+            onClick={async () => {
+              try {
+                const usernameData = { username: localProfile.username };
+                await PutUserName(usernameData);
+                notifySuccess("نام کاربری با موفقیت تغییر کرد");
+              } catch (error: any) {
+                const errorData = error;
+                if (errorData.tag && errorData.errors?.length > 0) {
+                  const allErrors = errorData.errors;
+                  const errorMessages = allErrors.map((err: any) =>
+                    errorMapper(err)
+                  );
+                  notifyError(`${errorMessages.join(" ")}`);
+                } else {
+                  notifyError(`${errorMapper(errorData)}`);
+                }
+              }
+            }}
+            tabIndex={6}
             disabled={!changedUsername}
           >
             <svg
@@ -265,13 +408,19 @@ export default function UserInfoSection({
             <input
               type="email"
               value={localProfile.email}
-              onChange={handleChangeEmail}
+              onChange={(e) => {
+                const value = e.target.value;
+                setLocalProfile((prev) => ({ ...prev, email: value }));
+                setChangedEmail(value !== profileFromRedux.email);
+              }}
               placeholder="example@gmail.com"
               className="w-full py-2 pr-2 pl-20 border-2 rounded-lg text-right [direction:rtl]"
-              tabIndex={5}
+              tabIndex={7}
             />
             <span
-              className={`absolute h-full justify-center items-center px-2 rounded-lg shadow-lg ${localProfile.is_verified ? `bg-green-500` : `bg-gray-500`} flex left-0 top-1/2 transform -translate-y-1/2 text-sm ${"text-white"}`}
+              className={`absolute h-full justify-center items-center px-2 rounded-lg shadow-lg ${
+                localProfile.is_verified ? `bg-green-500` : `bg-gray-500`
+              } flex left-0 top-1/2 transform -translate-y-1/2 text-sm text-white`}
             >
               {localProfile.is_verified ? `تایید شده` : `تایید نشده`}
             </span>
@@ -282,8 +431,25 @@ export default function UserInfoSection({
                 ? "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
                 : "opacity-60"
             }`}
-            onClick={ChangeEmail}
-            tabIndex={6}
+            onClick={async () => {
+              try {
+                const emailData = { email: localProfile.email };
+                await PutEmail(emailData);
+                notifySuccess("ایمیل با موفقیت تغییر کرد");
+              } catch (error: any) {
+                const errorData = error;
+                if (errorData.tag && errorData.errors?.length > 0) {
+                  const allErrors = errorData.errors;
+                  const errorMessages = allErrors.map((err: any) =>
+                    errorMapper(err)
+                  );
+                  notifyError(`${errorMessages.join(" ")}`);
+                } else {
+                  notifyError(`${errorMapper(errorData)}`);
+                }
+              }
+            }}
+            tabIndex={8}
             disabled={!changedEmail}
           >
             <svg
@@ -310,11 +476,20 @@ export default function UserInfoSection({
           <input
             type="tel"
             value={localProfile.phoneNumber}
-            onChange={handleChangePhone}
+            onChange={(e) => {
+              e.target.value = e.target.value.replace(/[^0-9]/g, "");
+              const value = e.target.value;
+              setLocalProfile((prev) => ({ ...prev, phoneNumber: value }));
+              if (value.startsWith("09") && value.length === 11) {
+                setChangedPhone(value !== profileFromRedux.phoneNumber);
+              } else {
+                setChangedPhone(false);
+              }
+            }}
             placeholder="*********09"
             className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
             maxLength={11}
-            tabIndex={7}
+            tabIndex={9}
           />
           <button
             className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
@@ -322,9 +497,32 @@ export default function UserInfoSection({
                 ? "opacity-60"
                 : "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
             }`}
-            tabIndex={8}
+            tabIndex={10}
             disabled={!changedPhone || (showOtpSection && timeLeft > 0)}
-            onClick={handlePhoneChangeSubmit}
+            onClick={async () => {
+              if (changedPhone) {
+                try {
+                  const phoneData = { phone: localProfile.phoneNumber };
+                  const codeSession = await PutPhoneSendOtp(phoneData);
+                  setLocalProfile((prev) => ({ ...prev, SessionID: codeSession }));
+                  setTimeLeft(120);
+                  setIsScaled(false);
+                  setShowOtpSection(true);
+                  notifySuccess("کد تایید ارسال شد");
+                } catch (error: any) {
+                  const errorData = error;
+                  if (errorData.tag && errorData.errors?.length > 0) {
+                    const allErrors = errorData.errors;
+                    const errorMessages = allErrors.map((err: any) =>
+                      errorMapper(err)
+                    );
+                    notifyError(`${errorMessages.join(" ")}`);
+                  } else {
+                    notifyError(`${errorMapper(errorData)}`);
+                  }
+                }
+              }
+            }}
           >
             {!showOtpSection ? (
               <svg
@@ -387,7 +585,7 @@ export default function UserInfoSection({
             placeholder="نام خود را وارد کنید"
             onChange={(e) => handleInputChange("firstName", e.target.value)}
             className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
-            tabIndex={9}
+            tabIndex={11}
           />
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
@@ -400,7 +598,7 @@ export default function UserInfoSection({
             placeholder="نام خانوادگی خود را وارد کنید"
             onChange={(e) => handleInputChange("lastName", e.target.value)}
             className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
-            tabIndex={10}
+            tabIndex={12}
           />
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
@@ -412,7 +610,7 @@ export default function UserInfoSection({
             placeholder="درباره خودت بنویس..."
             onChange={(e) => handleInputChange("bio", e.target.value)}
             className="w-full sm:flex-1 p-2 min-h-[100px] border-2 rounded-lg text-right [direction:rtl]"
-            tabIndex={11}
+            tabIndex={13}
           />
         </div>
       </div>

@@ -3,7 +3,6 @@
 @import '@fontsource/vazirmatn';
 @import "@mantine/core/styles.css";
 
-
 @custom-variant dark (&:is(.dark *));
 
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap');
@@ -229,4 +228,28 @@ body {
   body {
     position: relative;
   }
+}
+
+/* Custom Scrollbar Styles */
+html {
+  scrollbar-width: thin; /* Firefox: Thin scrollbar */
+  scrollbar-color: #e0e0e0 var(--background); /* Light gray thumb, background matches page */
+}
+
+html::-webkit-scrollbar {
+  width: 4px; /* WebKit: Very thin scrollbar */
+  height: 4px; /* For horizontal scrollbars */
+}
+
+html::-webkit-scrollbar-track {
+  background: var(--background); /* Matches page background (#F7F7F7) */
+}
+
+html::-webkit-scrollbar-thumb {
+  background: #e0e0e0; /* Very light gray thumb to match the image */
+  border-radius: 2px; /* Slightly rounded edges */
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: #d0d0d0; /* Slightly darker gray on hover for usability */
 }
