@@ -217,7 +217,6 @@ const ProjectDetail = () => {
               <button
                 onClick={() => navigate(-1)}
                 className="bg-gray-500 cursor-pointer w-full sm:w-1/4 h-[48px] rounded-lg text-white hover:bg-gray-600 text-sm"
-              >
                 بازگشت
               </button>
             </div>
