@@ -1,8 +1,9 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
 import moment from "moment-jalaali";
-import Sidebar from "../Components/DashboardComp/Sidebar";
-import Header from "../Components/DashboardComp/Header";
-import ProfileForm from "../Components/Profile/ProfileForm";
+import Sidebar from "../../Components/DashboardComp/Sidebar";
+import Header from "../../Components/DashboardComp/Header";
+import ProfileForm from "../../Components/Profile/ProfileForm";
 
 export default function Profile() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,7 +24,11 @@ export default function Profile() {
   );
 }
 
-export function persianToEnglishNumber(persianNumber: string): string {
+export function persianToEnglishNumber({
+  persianNumber,
+}: {
+  persianNumber: string;
+}): string {
   const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   const englishDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
   return persianNumber

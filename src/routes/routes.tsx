@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import AuthPage from "../pages/Auth";
-import Profile from "../pages/Profile";
-import AboutUs from "../pages/AboutUs";
+import AuthPage from "../pages/Auth/Auth";
+import Profile from "../pages/Profile/Profile";
+import AboutUs from "../pages/AboutUs/AboutUs";
 import ContactUs from "../pages/FooterPages/ContactUs";
 import FAQ from "../pages/FooterPages/FAQ";
 import Rules from "../pages/FooterPages/Rules";
 import Error from "../pages/Error/Error";
-import MobileVerify from "../pages/MobileVerify";
+import MobileVerify from "../pages/ForgetPass/MobileVerify";
 import MobileVerifyWrapper from "../wrapper/MobileVerifyWrapper";
 import MobileVerifyWrapperForgetPass from "../wrapper/MobileVerifyWrapperForgetPass";
 import ForgetPassword from "../pages/ForgetPass/ForgetPassword";
@@ -18,20 +18,20 @@ import ChangePasswordManually from "../pages/ForgetPass/ChangePasswordManually";
 //import Wallet from "../Components/DashboardComp/Wallet";
 import PublicProfile from "../pages/PublicProfile/PublicProfile";
 import Wallet from "../pages/Wallet/Wallet";
-import Chat from "../pages/Chat";
-import DashboardMain from "../pages/Dashboard";
-import ProjectCreationConfirmation from "../pages/CreateProject/ProjectCreationConfirmation";
+import Chat from "../pages/Chat/Chat";
+import DashboardMain from "../pages/Dashboard/Dashboard";
+import ProjectCreationConfirmation from "../Components/CreateProject/ProjectCreationConfirmation";
 import CreateProject from "../pages/CreateProject/CreateProject";
 import InsufficientBalance from "../Components/DashboardComp/InsufficientBalance";
-import EditProject from "../pages/EditProject/EditProject";
-import MyProjects from "../pages/MyProjects";
+import EditProject from "../pages/Projects/EditProject";
+import MyProjects from "../pages/Projects/MyProjects";
 import Biders from "../pages/Biders/Biders";
-import HomePage from "../pages/HomePage";
-import ProjectDetail from "../pages/ProjectDetail";
+import HomePage from "../pages/Home/HomePage";
+import ProjectDetail from "../pages/ProjectDetail/ProjectDetail";
 
 import TeamListPage from "../pages/Teams/TeamListPage";
 import TeamDetailPage from "../pages/Teams/TeamDetailPage";
-import BrowLayout from "../pages/BrowLayout";
+import BrowLayout from "../pages/Brows/BrowLayout";
 
 // Utility function to check if user is authenticated
 const isAuthenticated = () => {

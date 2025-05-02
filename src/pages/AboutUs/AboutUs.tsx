@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Sections from "./AboutUs/sections";
-import SwiperSection from "./AboutUs/swiper";
-import Header from "../Components/MainContent/Header";
+import Sections from "../../Components/AboutUs/sections";
+import SwiperSection from "../../Components/AboutUs/swiper";
+import Header from "../../Components/MainContent/Header";
 
-import newBgImage from "../assets/aboutus/aboutus.jpg";
+import newBgImage from "../../assets/aboutus/aboutus.jpg";
 
 import { motion } from "framer-motion";
-import Footer from "../Components/Footer/Footer";
+import Footer from "../../Components/Footer/Footer";
 
 const AboutUs: React.FC = () => {
   const [, setScrolled] = useState(false);

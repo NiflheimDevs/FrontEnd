@@ -2,7 +2,7 @@
 import {
   englishToPersianNumber,
   gregorianToPersian,
-} from "../../pages/Profile";
+} from "../../pages/Profile/Profile";
 
 export interface Skill {
   id?: number;

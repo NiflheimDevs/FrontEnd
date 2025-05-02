@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Sidebar from "../Components/DashboardComp/Sidebar";
-import Header from "../Components/DashboardComp/Header";
-import { Button } from "../Components/ui/button";
+import Sidebar from "../../Components/DashboardComp/Sidebar";
+import Header from "../../Components/DashboardComp/Header";
+import { Button } from "../../Components/ui/button";
 import { FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
 import { SquarePen } from "lucide-react";
 import { Link } from "react-router-dom";
 import avatar from "@/assets/myproject/avatars.png";
 import { FaTrash } from "react-icons/fa";
-import { getUserProject, deleteProject } from "../API";
-import { useNotification } from "../Notification/NotificationProvider";
+import { getUserProject, deleteProject } from "../../API";
+import { useNotification } from "../../Notification/NotificationProvider";
 
 // Define interfaces
 interface Tag {

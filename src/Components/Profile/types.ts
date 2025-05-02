@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import {
   gregorianToPersian,
   englishToPersianNumber,
-} from "../../pages/Profile";
+} from "../../pages/Profile/Profile";
 
 export interface Skill {
   id?: number;

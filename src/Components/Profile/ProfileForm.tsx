@@ -31,7 +31,7 @@ import ResumeSection from "./ResumeSection";
 import {
   persianToEnglishNumber,
   persianToGregorian,
-} from "../../pages/Profile";
+} from "../../pages/Profile/Profile";
 import { errorMapper } from "../../pages/Error/Error";
 
 const renderSkeleton = () => (
@@ -180,12 +180,12 @@ export default function ProfileForm() {
           id: exp.id || -1,
           company: exp.companyName || "",
           start_date: exp.startDate
-            ? `${persianToGregorian(persianToEnglishNumber(exp.startDate))}T00:00:00Z`
+            ? `${persianToGregorian(persianToEnglishNumber({ persianNumber: exp.startDate }))}T00:00:00Z`
             : "0001-01-01T00:00:00Z",
           end_date: exp.isOngoing
             ? "0001-01-01T00:00:00Z"
             : exp.endDate
-              ? `${persianToGregorian(persianToEnglishNumber(exp.endDate))}T00:00:00Z`
+              ? `${persianToGregorian(persianToEnglishNumber({ persianNumber: exp.endDate }))}T00:00:00Z`
               : "0001-01-01T00:00:00Z",
           role: exp.jobTitle || "",
           website: exp.website || "",

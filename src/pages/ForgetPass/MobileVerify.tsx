@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import OtpInput from "react-otp-input";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store/store";
-import { signupSendOTP, signupVerifyOTP } from "../API";
-import { useNotification } from "../Notification/NotificationProvider";
-import { authenticate } from "../store/slices/authSlice";
-import { errorMapper } from "../pages/Error/Error";
+import { RootState } from "../../store/store";
+import { signupSendOTP, signupVerifyOTP } from "../../API";
+import { useNotification } from "../../Notification/NotificationProvider";
+import { authenticate } from "../../store/slices/authSlice";
+import { errorMapper } from "../Error/Error";
 import { useNavigate } from "react-router-dom";
-import OTP_G from "../assets/Otp_G.svg";
-import Clock from "../assets/Clock.svg";
-import Clock_G from "../assets/Clock_G.svg";
+import OTP_G from "../../assets/Otp_G.svg";
+import Clock from "../../assets/Clock.svg";
+import Clock_G from "../../assets/Clock_G.svg";
 
 const MobileVerify = () => {
   const navigate = useNavigate();

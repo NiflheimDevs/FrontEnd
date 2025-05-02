@@ -2,15 +2,15 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import Sidebar from "../Components/DashboardComp/Sidebar";
-import Header from "../Components/DashboardComp/Header";
+import Sidebar from "../../Components/DashboardComp/Sidebar";
+import Header from "../../Components/DashboardComp/Header";
 import { Search } from "lucide-react";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 import walletPic from "@/assets/Dashboard/Wallet.svg";
 import LadyPic from "@/assets/ChangePass.svg";
-import { getBalance, getTransactions, GetUserDashboard } from "../API";
-import { useNotification } from "../Notification/NotificationProvider";
-import { errorMapper } from "./Error/Error";
+import { getBalance, getTransactions, GetUserDashboard } from "../../API";
+import { useNotification } from "../../Notification/NotificationProvider";
+import { errorMapper } from "../Error/Error";
 import { Skeleton } from "primereact/skeleton";
 
 // تعریف تایپ برای داده‌های پروفایل
@@ -175,7 +175,8 @@ const Dashboard = () => {
           animate="shimmer"
           className="bg-gray-300 rounded-lg h-80 w-full"
           style={{
-            background: "linear-gradient(90deg, #f0f0f0 25%, #d0d0d0 50%, #f0f0f0 75%)",
+            background:
+              "linear-gradient(90deg, #f0f0f0 25%, #d0d0d0 50%, #f0f0f0 75%)",
             backgroundSize: "200% auto",
           }}
         >
@@ -186,8 +187,14 @@ const Dashboard = () => {
             <Skeleton width="90%" height="1.5rem" />
           </div>
           <div className="flex flex-col items-center">
-                <Skeleton width="10%" height="1.5rem" shiny-skeleton />
-                <Skeleton width="40%" height="1.5rem" shiny-skeleton rounded-md shadow-md />
+            <Skeleton width="10%" height="1.5rem" shiny-skeleton />
+            <Skeleton
+              width="40%"
+              height="1.5rem"
+              shiny-skeleton
+              rounded-md
+              shadow-md
+            />
           </div>
         </motion.div>
       </motion.div>
@@ -375,15 +382,9 @@ const Dashboard = () => {
                   <table className="w-full text-center text-xs text-gray-800">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-sm font-semibold py-1">
-                          تاریخ
-                        </th>
-                        <th className="text-sm font-semibold py-1">
-                          فعالیت
-                        </th>
-                        <th className="text-sm font-semibold py-1">
-                          مقدار
-                        </th>
+                        <th className="text-sm font-semibold py-1">تاریخ</th>
+                        <th className="text-sm font-semibold py-1">فعالیت</th>
+                        <th className="text-sm font-semibold py-1">مقدار</th>
                       </tr>
                     </thead>
                     <tbody>
