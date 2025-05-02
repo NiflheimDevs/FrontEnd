@@ -59,16 +59,16 @@ const cardVariants = {
   },
 };
 
-const skeletonVariants = {
-  shimmer: {
-    backgroundPosition: ["-100% center", "100% center"],
-    transition: {
-      duration: 1.2,
-      ease: "linear",
-      repeat: Infinity,
-    },
-  },
-};
+// const skeletonVariants = {
+//   shimmer: {
+//     backgroundPosition: ["-100% center", "100% center"],
+//     transition: {
+//       duration: 1.2,
+//       ease: "linear",
+//       repeat: Infinity,
+//     },
+//   },
+// };
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -162,41 +162,18 @@ const Dashboard = () => {
 
   const renderSkeletonGrid = () => {
     return Array.from({ length: 4 }).map((_, index) => (
-      <motion.div
-        key={index}
-        custom={index}
-        variants={cardVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 cursor-pointer overflow-hidden shiny-skeleton"
-      >
-        <motion.div
-          variants={skeletonVariants}
-          animate="shimmer"
-          className="bg-gray-300 rounded-lg h-80 w-full"
-          style={{
-            background:
-              "linear-gradient(90deg, #f0f0f0 25%, #d0d0d0 50%, #f0f0f0 75%)",
-            backgroundSize: "200% auto",
-          }}
-        >
-          <div className="p-4 space-y-4 shiny-skeleton ">
-            <Skeleton width="100%" height="2rem" />
-            <Skeleton width="80%" height="1.5rem" />
-            <Skeleton width="60%" height="1.5rem" />
-            <Skeleton width="90%" height="1.5rem" />
-          </div>
-          <div className="flex flex-col items-center">
-            <Skeleton width="10%" height="1.5rem" shiny-skeleton />
+      <motion.div key={index} custom={index} initial="hidden" animate="visible">
+        <div>
+          <div className="rounded-lg p-4 flex items-center flex-col md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out">
+            <Skeleton className="relative border-8 border-gray-300 z-10 w-full p-4 rounded-lg max-w-[490px] min-h-[300px] justify-center items-center flex flex-col gap-2 mx-auto overflow-hidden shiny-skeleton" />
+            <Skeleton width="1.5rem" height="1.5rem" className="bg-gray-300" />
             <Skeleton
-              width="40%"
-              height="1.5rem"
-              shiny-skeleton
-              rounded-md
-              shadow-md
+              width="8rem"
+              height="1rem"
+              className="rounded-md bg-gray-300"
             />
           </div>
-        </motion.div>
+        </div>
       </motion.div>
     ));
   };
