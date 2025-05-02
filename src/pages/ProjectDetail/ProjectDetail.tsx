@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Header from "../Components/MainContent/Header";
+import Header from "../../Components/MainContent/Header";
 import { FaStar } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -82,7 +82,7 @@ const ProjectDetail = () => {
         console.log("API response:", response.data);
         setProjectData(response.data);
         setLoading(false);
-      } catch (err: any) {
+      } catch {
         // console.error("Error fetching project data:", err);
         // More detailed error reporting
         // setError(
@@ -144,8 +144,7 @@ const ProjectDetail = () => {
               {/* <h3 className="text-base sm:text-lg font-semibold text-black mb-2 text-right">
                 سازنده پروژه:
               </h3> */}
-              <p className="font-semibold text-black text-xs sm:text-sm text-right">
-              </p>
+              <p className="font-semibold text-black text-xs sm:text-sm text-right"></p>
             </div>
             {/* Project Description */}
             <div>
@@ -219,7 +218,7 @@ const ProjectDetail = () => {
               <button className="bg-[#3E79DE] cursor-pointer w-full sm:w-3/4 h-[48px] text-white rounded hover:bg-blue-700 text-sm">
                 ارسال پیشنهاد
               </button>
-              <button 
+              <button
                 onClick={() => navigate(-1)}
                 className="bg-gray-500 cursor-pointer w-full sm:w-1/4 h-[48px] text-white rounded hover:bg-gray-600 text-sm"
               >

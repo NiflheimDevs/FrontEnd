@@ -19,9 +19,9 @@ import {
 } from "react-icons/fa";
 import Header from "../../Components/DashboardComp/Header";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
-import Step1 from "./Step1";
-import Step2 from "./Step2";
-import Step3 from "./Step3";
+import Step1 from "../../Components/CreateProject/Step1";
+import Step2 from "../../Components/CreateProject/Step2";
+import Step3 from "../../Components/CreateProject/Step3";
 
 interface Tag {
   id: number;

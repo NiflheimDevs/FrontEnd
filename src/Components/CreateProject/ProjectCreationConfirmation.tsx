@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCheckCircle, FaProjectDiagram } from "react-icons/fa";
-import Sidebar from "../../Components/DashboardComp/Sidebar";
-import Header from "../../Components/DashboardComp/Header";
+import Sidebar from "../DashboardComp/Sidebar";
+import Header from "../DashboardComp/Header";
 
 const ProjectCreationConfirmation: React.FC = () => {
   const navigate = useNavigate();
