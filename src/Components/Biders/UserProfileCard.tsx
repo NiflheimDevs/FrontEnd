@@ -138,7 +138,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
 
           {/* Action Buttons */}
           <div className="mt-6 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 rtl:space-x-reverse">
-            <button className="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center">
+            <button className="w-full bg-blue-500 cursor-pointer text-white py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 ml-2"
@@ -155,7 +155,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
               </svg>
               چت
             </button>
-            <button className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center">
+            <button className="w-full bg-green-500 cursor-pointer text-white py-3 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 ml-2"

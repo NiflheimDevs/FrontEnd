@@ -99,7 +99,7 @@ const TeamDetailPage: React.FC = () => {
 
   // Navigate to team projects
   const navigateToTeamProjects = () => {
-    // navigate(`/teams/${id}/projects`);
+   // navigate(`/teams/${id}/projects`);
     navigate(`/Browsproject`);
   };
 
@@ -108,6 +108,7 @@ const TeamDetailPage: React.FC = () => {
   //   // This would typically navigate to a create project page with the team pre-selected
   //   navigate(`/projects/new?teamId=${id}`);
   // };
+
 
   // Get project status badge color
   const getStatusBadgeColor = (status: any) => {
