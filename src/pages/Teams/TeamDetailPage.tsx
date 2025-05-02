@@ -99,14 +99,16 @@ const TeamDetailPage: React.FC = () => {
 
   // Navigate to team projects
   const navigateToTeamProjects = () => {
-    navigate(`/teams/${id}/projects`);
+   // navigate(`/teams/${id}/projects`);
+    navigate(`/Browsproject`);
   };
 
-  // Navigate to add new project page
-  const handleAddProject = () => {
-    // This would typically navigate to a create project page with the team pre-selected
-    navigate(`/projects/new?teamId=${id}`);
-  };
+  // // Navigate to add new project page
+  // const handleAddProject = () => {
+  //   // This would typically navigate to a create project page with the team pre-selected
+  //   navigate(`/projects/new?teamId=${id}`);
+  // };
+
 
   // Get project status badge color
   const getStatusBadgeColor = (status: any) => {
@@ -354,12 +356,12 @@ const TeamDetailPage: React.FC = () => {
                 </div>
               )}
               <div className="text-center p-4">
-                <button
+                {/* <button
                   onClick={handleAddProject}
                   className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
                 >
                   افزودن پروژه جدید
-                </button>
+                </button> */}
                 {teamProjects.length > 0 && (
                   <button
                     onClick={navigateToTeamProjects}

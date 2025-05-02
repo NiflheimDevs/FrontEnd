@@ -1,7 +1,8 @@
 import React from "react";
 import { Team } from "./index";
 import { Link } from "react-router-dom";
-import UserPic from "../../assets/User.svg";
+import { Layers } from "lucide-react";
+// import UserPic from "../../assets/User.svg";
 
 interface TeamCardProps {
   team: Team;
@@ -10,70 +11,46 @@ interface TeamCardProps {
 const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
   return (
     <Link to={`/teams/${team.id}`}>
-      {/* className="relative 
-      rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-fit min-h-[285px] flex
-      flex-col p-6 glowing-card overflow-hidden mx-auto" */}
-      <div className="bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 h-full flex flex-col ">
-        <div className="flex items-center justify-between mb-4 ">
-          <div className="flex items-center">
-            <h3 className="text-white text-xl font-bold text-right">
-              {team.name}
-            </h3>
-            {/* <svg
-            className="h-5 w-5 text-gray-500"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-              clipRule="evenodd"
-            />
-          </svg> */}
-            {/* <span className="text-sm text-gray-600 mr-1">{team.memberCount}</span> */}
+      <div className="group relative w-full max-w-md overflow-hidden rounded-xl border-0 bg-gradient-to-br from-blue-600 to-blue-800 p-1 shadow-xl transition-all duration-300 hover:shadow-blue-500/20">
+        <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-400/20 blur-3xl filter" />
+        <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-blue-300/20 blur-3xl filter" />
+
+        <div className="relative rounded-lg bg-blue-900/50 p-6 backdrop-blur-sm">
+          <div className="mb-6 flex items-start justify-end">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 p-2 backdrop-blur-sm">
+              <Layers className="h-7 w-7 text-blue-100" />
+            </div>
           </div>
-        </div>
 
-        <p className="text-white bg-clip-text truncate mb-4 text-right flex-grow">
-          {team.description}
-        </p>
+          <div className="space-y-4 text-right">
+            <h2 className="text-2xl font-bold text-white">{team.name}</h2>
+            <p className="text-sm leading-relaxed text-blue-100 mb-4">
+              {team.description}
+            </p>
+          </div>
 
-        <div className="mb-4">
-          <h4 className="text-white text-right mb-2"> اعضای تیم :</h4>
-          <div className="flex justify-start flex-wrap">
-            {team.members.slice(0, 2).map((member) => (
-              <div
-                key={member.id}
-                className="flex flex-col items-center mr-2 mb-2"
-              >
-                <div className="flex items-center">
-                  <img
-                    src={UserPic}
-                    alt={member.name}
-                    className="text-white w-6 h-6 md:w-8 md:h-8 rounded-full mr-1"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "/avatar-placeholder.png"; // Fallback image
-                    }}
-                  />
-                  <span className="text-xs md:text-sm text-white truncate max-w-20">
-                    {member.role}
-                  </span>
-                  {/* <img 
-                  src={member.avatar} 
-                  alt={member.name} 
-                  className="w-6 h-6 md:w-8 md:h-8 rounded-full mr-1"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/avatar-placeholder.png"; // Fallback image
-                  }}
-                /> */}
+          <div className="mb-4">
+            <h4 className="text-white text-right mb-2">جایگاه شما در تیم:</h4>
+            <div className="flex justify-end">
+              {team.members.slice(0, 1).map((member) => (
+                <div
+                  key={member.id}
+                  className="flex items-center bg-white/10 rounded-lg p-2 backdrop-blur-sm"
+                >
+                  <div className="flex flex-col items-end">
+                    <span className="text-sm font-medium text-white">
+                      {member.name}
+                    </span>
+                    <span className="text-xs text-blue-100">{member.role}</span>
+                  </div>
+                  <div className="bg-blue-400/30 w-8 h-8 rounded-full flex items-center justify-center mr-2">
+                    <span className="text-white text-sm font-bold">
+                      {member.name.charAt(0)}
+                    </span>
+                  </div>
                 </div>
-                <span className="text-xs md:text-sm text-white mt-1 truncate max-w-20">
-                  {member.name}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
