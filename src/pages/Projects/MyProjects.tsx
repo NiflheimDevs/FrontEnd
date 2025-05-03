@@ -5,7 +5,8 @@ import Sidebar from "../../Components/DashboardComp/Sidebar";
 import Header from "../../Components/DashboardComp/Header";
 import { Button } from "../../Components/ui/button";
 import { FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
-import { SquarePen } from "lucide-react";
+import { SquarePen, Eye } from "lucide-react";
+import { RiAuctionLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import avatar from "@/assets/myproject/avatars.png";
 import { FaTrash } from "react-icons/fa";
@@ -231,16 +232,16 @@ const MyProjects = () => {
             {isLoading ? (
               <div
                 key="loading"
-                className="mt-12 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 w-full max-w-[1400px] mx-auto shiny-skeleton"
+                className="mt-12 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 w-full max-w-[1400px] mx-auto"
               >
                 {Array.from({ length: 4 }).map((_, index) => (
                   <div
                     key={`loading-${index}`}
-                    className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-fit min-h-[285px] flex flex-col p-6 glowing-card overflow-hidden mx-auto animate-pulse"
+                    className="relative !bg-gradient-to-br !from-[#5189CA] !to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-fit min-h-[285px] flex flex-col p-6 glowing-card overflow-hidden mx-auto animate-pulse shiny-skeleton"
                   >
                     <div className="flex flex-col justify-between flex-grow z-10">
                       <div>
-                        <div className="flex flex-row justify-between">
+                        <div className="flex flex-row justify-between gap-1">
                           <div className="w-24 h-4 bg-white/50 rounded-full mb-4 animate-shine"></div>
                           <div className="w-[107px] h-[29px] bg-white/50 rounded-full mb-4 animate-shine"></div>
                         </div>
@@ -254,7 +255,9 @@ const MyProjects = () => {
                         <div className="w-16 h-6 bg-white/30 rounded-full animate-shine"></div>
                       </div>
                     </div>
-                    <div className="flex gap-4 absolute bottom-[15px] left-[15px] z-10">
+                    <div className="flex w-16 flex-wrap gap-2 absolute bottom-[15px] left-[15px] z-10">
+                      <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
+                      <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
                       <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
                       <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
                     </div>
@@ -306,7 +309,7 @@ const MyProjects = () => {
                             : project.description}
                         </p>
                       </div>
-                      <div className="flex flex-wrap w-3/4 gap-2 mt-3">
+                      <div className="flex flex-wrap w-67/100 gap-2 mt-3">
                         {project.tags.slice(0, 2).map((tag: Tag) => (
                           <span
                             key={tag.id}
@@ -324,17 +327,27 @@ const MyProjects = () => {
                         )}
                       </div>
                     </div>
-                    <div className="flex gap-4 absolute bottom-[15px] left-[15px] z-10">
+                    <div className="flex flex-row justify-between gap-2 px-1 absolute bottom-[15px] left-[15px] z-10 w-16 flex-wrap">
+                      <Link to={`/biders/${project.project_id}`}>
+                        <motion.button className="bg-transparent h-fit cursor-pointer hover:scale-[115%] transition-all duration-300">
+                          <RiAuctionLine color="white" size={23} />
+                        </motion.button>
+                      </Link>
+                      <Link to={`/detail/${project.project_id}`}>
+                        <motion.button className="bg-transparent h-fit cursor-pointer hover:scale-[115%] transition-all duration-300">
+                          <Eye color="white" />
+                        </motion.button>
+                      </Link>
                       <Link to={`/edit-project/${project.project_id}`}>
-                        <motion.button className="bg-transparent size-[24px] cursor-pointer hover:scale-[115%] transition-all duration-300">
-                          <SquarePen color="white" />
+                        <motion.button className="bg-transparent h-fit cursor-pointer hover:scale-[115%] transition-all duration-300">
+                          <SquarePen color="white" size={22} />
                         </motion.button>
                       </Link>
                       <motion.button
                         onClick={() => handleDeleteProject(project.project_id)}
-                        className="bg-transparent size-[24px] text-red-500 cursor-pointer hover:scale-[115%] transition-all duration-300"
+                        className="bg-transparent text-red-500 h-fit cursor-pointer hover:scale-[115%] transition-all duration-300"
                       >
-                        <FaTrash className="w-5 h-5" />
+                        <FaTrash size={22} />
                       </motion.button>
                     </div>
                   </motion.div>
