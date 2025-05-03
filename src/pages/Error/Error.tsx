@@ -1,5 +1,7 @@
-import { useLocation } from "react-router-dom";
-import ErrorSVG from "../../assets/Error.svg";
+import { Link, useLocation } from "react-router-dom";
+import ErrorSVG from "../../assets/err.svg";
+import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 // Define the possible error codes as a union type
 type ErrorCode = keyof typeof errorMessages;
@@ -56,7 +58,7 @@ const Error = () => {
     | { errorCode?: ErrorCode; title?: string }
     | undefined) || {
     errorCode: "error_404" as const, // Explicitly type as ErrorCode
-    title: "404 خطا",
+    title: "خطا 404",
   };
 
   // Ensure errorCode is always ErrorCode by providing a fallback
@@ -64,15 +66,63 @@ const Error = () => {
   const description = errorMapper(safeErrorCode);
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-r from-[#DA1E30] to-[#74101A] px-10 text-center">
-      <div className="text-white text-4xl font-bold space-y-4">
-        <h1>{title}</h1>
-        <h2 className="text-2xl">{description}</h2>
-      </div>
-      <img
-        src={ErrorSVG}
-        className="w-[300px] h-[300px] sm:w-[300px] sm:h-[450px] md:w-[480px] md:h-[590px]"
-      />
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="bg-white rounded-2xl box-shadow-custom max-w-5xl w-full flex flex-col justify-between md:flex-row items-center overflow-hidden"
+      >
+        <div className="w-fit flex md:hidden">
+          <img
+            src={ErrorSVG}
+            alt="Error Illustration"
+            className="w-full h-full object-cover max-w-[570px] max-h-[570px]"
+          />
+        </div>
+        {/* Constrain text div size and reduce padding on small screens */}
+        <div className="flex p-6 md:py-12 md:pr-10 pl-8 md:text-right text-center space-y-4 max-w-[90%] md:max-w-[50%] flex-col">
+          {/* Reduced padding to p-6 on small screens and constrained max-width */}
+          <motion.h1
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-3xl md:text-5xl font-extrabold text-gray-800"
+          >
+            {title}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-base md:text-xl text-gray-600 leading-relaxed"
+          >
+            {description}
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Link to="/">
+              <button className="group bg-blue-600 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-base md:text-lg font-semibold hover:bg-blue-700 transition-colors duration-300">
+                <ArrowRight
+                  className="group-hover:translate-x-1 transition-transform"
+                  size={20}
+                />
+                بازگشت به خانه
+              </button>
+            </Link>
+          </motion.div>
+        </div>
+        <div className="w-fit hidden md:flex">
+          <img
+            src={ErrorSVG}
+            alt="Error Illustration"
+            className="w-full h-full object-cover max-w-[570px] max-h-[570px]"
+          />
+        </div>
+      </motion.div>
     </div>
   );
 };
