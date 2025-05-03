@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useRef, useState, useEffect } from "react";
-import { TextInput, NumberInput, Group, Text, Box } from "@mantine/core";
 
 interface FilterProps {
   searchTerm: string;
@@ -18,7 +17,7 @@ interface FilterProps {
   }) => void;
 }
 
-// کامپوننت اسلایدر سفارشی
+// کامپوننت اسلایدر سفارشی (بدون تغییر، چون از Mantine استفاده نمی‌کند)
 const CustomSlider: React.FC<{
   min: number;
   max: number;
@@ -70,9 +69,9 @@ const CustomSlider: React.FC<{
 
   return (
     <div dir="rtl" className="space-y-2">
-      <Text size="sm" fw={600} className="text-gray-800">
+      <span className="text-sm font-semibold text-gray-800">
         {label}: {value}
-      </Text>
+      </span>
       <div
         ref={trackRef}
         className="relative h-2.5 mt-1 bg-gray-200 rounded-full cursor-pointer transition-all duration-300 hover:bg-gray-300"
@@ -122,41 +121,29 @@ const FilterComponent: React.FC<FilterProps> = ({
   };
 
   return (
-    <Box
+    <div
       className="mb-8 bg-white shadow-xl rounded-2xl p-8 border border-gray-50"
       dir="rtl"
     >
       <form className="flex flex-col space-y-8">
         {/* Search Input */}
         <div className="flex-grow">
-          <TextInput
-            label="جستجوی پیمانکاران یا مهارت‌ها"
+          <label
+            className="mb-2 font-semibold text-gray-800 text-base"
+            htmlFor="search-input"
+          >
+            جستجوی پیمانکاران یا مهارت‌ها
+          </label>
+          <input
+            id="search-input"
+            type="text"
             placeholder="جستجوی پیمانکاران یا مهارت‌ها..."
             value={tempSearchTerm}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setTempSearchTerm(e.currentTarget.value)
             }
-            className="w-full"
-            styles={{
-              input: {
-                direction: "rtl",
-                textAlign: "right",
-                borderRadius: "12px",
-                border: "1px solid #e5e7eb",
-                padding: "12px",
-                transition: "all 0.3s ease",
-                "&:focus": {
-                  borderColor: "#4f46e5",
-                  boxShadow: "0 0 0 4px rgba(79, 70, 229, 0.1)",
-                },
-              },
-              label: {
-                marginBottom: "8px",
-                fontWeight: 600,
-                color: "#1f2937",
-                fontSize: "16px",
-              },
-            }}
+            className="w-full rounded-xl border border-gray-200 p-3 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+            style={{ direction: "rtl" }}
           />
         </div>
 
@@ -187,64 +174,38 @@ const FilterComponent: React.FC<FilterProps> = ({
 
           {/* Price Range Filter */}
           <div className="px-4">
-            <Text size="sm" fw={600} mb="xs" className="text-gray-800">
+            <span className="text-sm font-semibold text-gray-800 block mb-2">
               محدوده قیمت (تومان)
-            </Text>
-            <Group gap="md" align="center" dir="rtl">
-              <NumberInput
+            </span>
+            <div className="flex items-center gap-4" dir="rtl">
+              <input
+                type="number"
                 min={0}
                 max={10000000}
                 value={tempFilters.priceRange[0]}
-                hideControls={true}
-                onChange={(value) => handlePriceRangeChange(Number(value), 0)}
-                className="w-full"
-                thousandSeparator=","
-                styles={{
-                  input: {
-                    direction: "rtl",
-                    textAlign: "right",
-                    borderRadius: "12px",
-                    border: "1px solid #e5e7eb",
-                    padding: "10px",
-                    transition: "all 0.3s ease",
-                    "&:focus": {
-                      borderColor: "#4f46e5",
-                      boxShadow: "0 0 0 4px rgba(79, 70, 229, 0.1)",
-                    },
-                  },
-                }}
+                onChange={(e) =>
+                  handlePriceRangeChange(Number(e.target.value), 0)
+                }
+                className="w-full rounded-xl border border-gray-200 p-2.5 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
+                style={{ direction: "rtl" }}
               />
-              <Text size="sm" c="dimmed" fw={500}>
-                تا
-              </Text>
-              <NumberInput
+              <span className="text-sm text-gray-500 font-medium">تا</span>
+              <input
+                type="number"
                 min={0}
                 max={10000000}
                 value={tempFilters.priceRange[1]}
-                hideControls={true}
-                onChange={(value) => handlePriceRangeChange(Number(value), 1)}
-                className="w-full"
-                thousandSeparator=","
-                styles={{
-                  input: {
-                    direction: "rtl",
-                    textAlign: "right",
-                    borderRadius: "12px",
-                    border: "1px solid #e5e7eb",
-                    padding: "10px",
-                    transition: "all 0.3s ease",
-                    "&:focus": {
-                      borderColor: "#4f46e5",
-                      boxShadow: "0 0 0 4px rgba(79, 70, 229, 0.1)",
-                    },
-                  },
-                }}
+                onChange={(e) =>
+                  handlePriceRangeChange(Number(e.target.value), 1)
+                }
+                className="w-full rounded-xl border border-gray-200 p-2.5 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
+                style={{ direction: "rtl" }}
               />
-            </Group>
-            <Text size="xs" c="dimmed" mt="md">
+            </div>
+            <span className="text-xs text-gray-500 mt-3 block">
               از {formatPrice(tempFilters.priceRange[0])} تومان تا{" "}
               {formatPrice(tempFilters.priceRange[1])} تومان
-            </Text>
+            </span>
           </div>
         </div>
 
@@ -255,18 +216,14 @@ const FilterComponent: React.FC<FilterProps> = ({
               e.preventDefault();
               applyFilters();
             }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              applyFilters();
-            }}
             type="submit"
-            className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl px-8 py-3 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-103"
+            className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl px-8 py-3 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
           >
             اعمال فیلتر
           </button>
         </div>
       </form>
-    </Box>
+    </div>
   );
 };
 

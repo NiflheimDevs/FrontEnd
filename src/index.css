@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 @import '@fontsource/vazirmatn';
-@import "@mantine/core/styles.css";
 
 @custom-variant dark (&:is(.dark *));
 

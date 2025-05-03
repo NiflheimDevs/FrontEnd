@@ -401,7 +401,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 {transactions && transactions.length > 0 ? (
                   transactions.map((transaction) => (
                     <tr key={transaction.id} className="border-b">
-                      <td className="py-2">{transaction.date}</td>
+                      <td className="py-2 ltr">{transaction.date}</td>
                       <td className="py-2">{transaction.activity}</td>
                       <td className="py-2">{transaction.description || "-"}</td>
                       <td
@@ -565,7 +565,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   </button>
                   <button
                     type="submit"
-                    onClick={handleDeposit}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDeposit();
+                    }}
                     disabled={
                       !!depositAmount && // Convert depositAmount to boolean (true if non-empty)
                       (parseFloat(depositAmount) > 10_000_000 ||
@@ -681,7 +684,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   </button>
                   <button
                     type="submit"
-                    onClick={handleWithdraw}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleWithdraw();
+                    }}
                     disabled={errors.length > 0}
                     className={`px-4 py-2 bg-blue-500 text-white rounded-md transition-all ${
                       errors.length > 0
