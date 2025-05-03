@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
 import Header from "../../Components/DashboardComp/Header";
-import BrowseProject from "../../Brows/BrowsProject";
+import BrowseProject from "../../Components/Brows/BrowsProject";
 
 const BrowLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

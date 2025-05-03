@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
-import { GetLandingProjects } from "../API";
+import { GetLandingProjects } from "../../API";
 import SearchBar from "./SearchBar";
 import FilterDropdown from "./FilterDropdown";
 import ProjectCard from "./ProjectCard";
