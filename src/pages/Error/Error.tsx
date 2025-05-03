@@ -105,7 +105,7 @@ const Error = () => {
             transition={{ delay: 0.4 }}
           >
             <Link to="/">
-              <button className="group bg-blue-600 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-base md:text-lg font-semibold hover:bg-blue-700 transition-colors duration-300">
+              <button className="group cursor-pointer bg-blue-600 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-base md:text-lg font-semibold hover:bg-blue-700 transition-colors duration-300">
                 <ArrowRight
                   className="group-hover:translate-x-1 transition-transform"
                   size={20}
