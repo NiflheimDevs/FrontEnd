@@ -11,11 +11,10 @@ export interface Team {
   id: string;
   name: string;
   description: string;
-  memberCount: number;
+  profile: string;
   members: User[];
-  projects?: Project[]; // Add projects to teams
+  projects?: Project[];
 }
-
 export interface Project {
   id: string;
   title: string;
@@ -41,7 +40,7 @@ export const projects: Project[] = [
     assignedUsers: [],
   },
   {
-    id: "2",
+    id: "9",
     title: "اپلیکیشن موبایل",
     description: "توسعه اپلیکیشن موبایل برای پلتفرم‌های iOS و Android",
     status: "در انتظار",

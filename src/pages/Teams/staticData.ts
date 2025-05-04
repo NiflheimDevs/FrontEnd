@@ -33,21 +33,21 @@ export const users: User[] = [
 
 export const teams: Team[] = [
   {
-    id: "1",
+    id: "8",
     name: "پسر عمه های باحال",
     description: "طراحی UI/UX سایت ها و موبایل اپلیکیشن ها",
     memberCount: 3,
     members: [users[0], users[1], users[2]],
   },
   {
-    id: "2",
+    id: "10",
     name: "پسر عمه های باحال",
     description: "طراحی UI/UX سایت ها و موبایل اپلیکیشن ها",
     memberCount: 3,
     members: [users[0], users[1], users[2]],
   },
   {
-    id: "3",
+    id: "9",
     name: "پسر عمه های باحال",
     description: "طراحی UI/UX سایت ها و موبایل اپلیکیشن ها",
     memberCount: 3,
