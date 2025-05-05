@@ -9,9 +9,7 @@ interface UserDetailProps {
 }
 
 const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
-  const [profileExists, setprofileExists] = useState<boolean>(
-    localprofile.high_profile ? true : false
-  );
+  const [profileExists, setprofileExists] = useState<boolean>(true);
   return (
     <div className="flex flex-col md:flex-row items-start justify-center gap-6 sm:px-6 px-4 py-8 md:px-10 md:py-12">
       {/* Profile Image and Actions */}

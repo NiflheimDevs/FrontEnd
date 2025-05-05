@@ -274,9 +274,7 @@ export default function UserInfoSection({
     setLocalProfile((prev) => ({ ...prev, [field]: value }));
   };
 
-  const [ProfileExists, SetProfileExist] = useState<boolean>(
-    localProfile.high_profile ? true : false
-  );
+  const [ProfileExists, SetProfileExist] = useState<boolean>(true);
 
   return (
     <>
