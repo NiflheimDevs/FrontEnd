@@ -13,6 +13,23 @@ export interface Skill {
 export const TogglePageSize = 4;
 export const JobPageSize = 4;
 export const SkillPageSize = 4;
+export interface Teams {
+  id: number;
+  title: string;
+  description: string;
+  position: string;
+  profile: string;
+  owner: {
+    member_info: {
+      userid: number;
+      username: string;
+      firstname: string;
+      lastname: string;
+      position: string;
+    };
+    profile: string;
+  };
+}
 
 export interface WorkExperience {
   id?: number;
@@ -41,6 +58,7 @@ export interface Profile {
   workExperience?: WorkExperience[];
   freelancerprojects?: Projects[];
   employerprojects?: Projects[];
+  teams?: Teams[];
   rate?: string;
   comments?: string;
   resume?: File;
@@ -60,12 +78,17 @@ export const initialColor: Color = {
 
 export const mapApiDataToProfile = async (
   apiData: any,
-  apiEmployer: any
+  apiEmployer: any,
+  apiTeams: any
 ): Promise<Profile> => {
   return {
     firstName: apiData.info?.firstname || initialProfile.firstName,
     lastName: apiData.info?.lastname || initialProfile.lastName,
     bio: apiData.info?.bio || initialProfile.bio,
+    join_Date:
+      englishToPersianNumber(
+        gregorianToPersian(apiData.info?.created_at?.split("T")[0])
+      ) || initialProfile.join_Date,
     skills: apiData.tag
       ? apiData.tag.map((tag: any) => ({
           id: tag.id,
@@ -98,10 +121,28 @@ export const mapApiDataToProfile = async (
             : [],
         }))
       : [],
-
+    teams: apiTeams
+      ? apiTeams.map((team: any) => ({
+          id: team.id,
+          title: team.title,
+          description: team.description,
+          position: team.position,
+          profile: team.profile,
+          owner: {
+            member_info: {
+              userid: team.owner.member_info.userid,
+              username: team.owner.member_info.username,
+              firstname: team.owner.member_info.firstname,
+              lastname: team.owner.member_info.lastname,
+              position: team.owner.member_info.position,
+            },
+            profile: team.owner.profile,
+          },
+        }))
+      : initialProfile.teams,
     employerprojects: apiEmployer.projects
       ? apiEmployer.projects.map((project: any) => ({
-          id: project.id,
+          id: project.project_id,
           title: project.title || "",
           description: project.description || "",
           label: project.label.name,
@@ -114,10 +155,9 @@ export const mapApiDataToProfile = async (
             : [],
         }))
       : [],
-    join_Date: initialProfile.join_Date,
     rate: initialProfile.rate,
     comments: initialProfile.comments,
-    high_profile: apiData.info?.low_profile || initialProfile.high_profile,
+    high_profile: apiData.info?.high_profile || initialProfile.high_profile,
   };
 };
 
@@ -126,6 +166,7 @@ export const initialProfile: Profile = {
   lastName: "",
   bio: "",
   skills: [],
+  teams: [],
   workExperience: [],
   freelancerprojects: [],
   employerprojects: [],
