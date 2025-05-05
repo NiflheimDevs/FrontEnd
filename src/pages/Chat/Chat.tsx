@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import Sidebar from "../Components/DashboardComp/Sidebar";
-import Header from "../Components/DashboardComp/Header";
-import ChatMessageArea from "./MessageBox/ChatMessageArea";
+import Sidebar from "../../Components/DashboardComp/Sidebar";
+import Header from "../../Components/DashboardComp/Header";
+import ChatMessageArea from "../MessageBox/ChatMessageArea";
 // import { Skeleton } from 'primereact/skeleton';
 // import { Search } from "lucide-react";
 

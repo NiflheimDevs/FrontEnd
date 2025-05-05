@@ -219,9 +219,9 @@ const Header = ({ showSearch = true }) => {
               </div>
             </Link>
             <Link
-              to="/profile"
+              to="/profile/0"
               className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
-                isActive("/profile")
+                isActive("/profile/0")
                   ? "active glow"
                   : "hover:bg-gray-100 hover:scale-110 p-1"
               }`}
@@ -231,7 +231,7 @@ const Header = ({ showSearch = true }) => {
                   <img
                     src={profilePicture}
                     className={`rounded-full  h-[36px] w-[36px] object-cover min-w-8 pointer-events-none ${
-                      isActive("/profile") ? "border-3" : "border-2"
+                      isActive("/profile/0") ? "border-3" : "border-2"
                     } border-blue-500`}
                     alt="Profile"
                     tabIndex={-1}
@@ -239,7 +239,7 @@ const Header = ({ showSearch = true }) => {
                   />
                 ) : (
                   <CgProfile
-                    color={isActive("/profile") ? "#3B82F6" : "#707070"}
+                    color={isActive("/profile/0") ? "#3B82F6" : "#707070"}
                     className="rounded-full object-cover min-w-8 h-[32px] w-[32px] pointer-events-none transition-all hover: duration-400 ease-out"
                     tabIndex={-1}
                   />

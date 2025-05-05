@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 @import '@fontsource/vazirmatn';
-@import "@mantine/core/styles.css";
-
 
 @custom-variant dark (&:is(.dark *));
 
@@ -51,6 +49,31 @@ html {
 
 .box-shadow-custom:hover {
   box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.18);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #e5e7eb !important;
+  border-radius: 4px;
+  margin: 4px 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: oklch(80.9% 0.105 251.813) !important;
+  border-radius: 4px;
+  transition: 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6 !important;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(80.9% 0.105 251.813) #e5e7eb;
 }
 
 .shiny-skeleton {
@@ -229,4 +252,28 @@ body {
   body {
     position: relative;
   }
+}
+
+/* Custom Scrollbar Styles */
+html {
+  scrollbar-width: thin; /* Firefox: Thin scrollbar */
+  scrollbar-color: #e0e0e0 var(--background); /* Light gray thumb, background matches page */
+}
+
+html::-webkit-scrollbar {
+  width: 4px; /* WebKit: Very thin scrollbar */
+  height: 4px; /* For horizontal scrollbars */
+}
+
+html::-webkit-scrollbar-track {
+  background: var(--background); /* Matches page background (#F7F7F7) */
+}
+
+html::-webkit-scrollbar-thumb {
+  background: #e0e0e0; /* Very light gray thumb to match the image */
+  border-radius: 2px; /* Slightly rounded edges */
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: #d0d0d0; /* Slightly darker gray on hover for usability */
 }

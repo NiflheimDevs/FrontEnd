@@ -2,9 +2,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "../../../node_modules/swiper/swiper.css";
 import "../../../node_modules/swiper/modules/pagination.css";
 import "../../../node_modules/swiper/modules/navigation.css";
-// import "swiper/css";
-// import "swiper/css/navigation";
-// import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import kia from "../../assets/aboutus/kia2.jpg";
@@ -76,7 +73,7 @@ const people = [
 
 const SwiperSection: React.FC = () => {
   return (
-    <section className="flex flex-col bg-transparent items-center justify-center py-16 ">
+    <section className="flex flex-col bg-transparent items-center justify-center py-16">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -90,21 +87,21 @@ const SwiperSection: React.FC = () => {
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={30}
         slidesPerView={1}
-        navigation
+        navigation={false} // Disable navigation arrows
         pagination={{ clickable: true }}
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         breakpoints={{
-          640: { slidesPerView: 1 },
-          768: { slidesPerView: 2 },
+          360: { slidesPerView: 1 },
+          540: { slidesPerView: 2 },
           1024: { slidesPerView: 3 },
         }}
-        className="relative w-full max-w-5xl py-12"
+        className="relative w-full max-w-5xl py-12 px-8" // Added padding on left and right
       >
         {people.map((person) => (
           <SwiperSlide key={person.id}>
             <motion.div
               whileHover={{ zIndex: 10 }}
-              className="relative w-full text-center p-8 border rounded-3xl bg-[#e5e5e5] transition-all duration-300"
+              className="my-10 p-6  relative w-full text-center border rounded-3xl bg-[#e5e5e5] transition-all duration-300"
             >
               <img
                 src={person.image}

@@ -88,7 +88,6 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         "desc",
         "all"
       );
-      // console.log(response.transactions);
       const formattedTransactions = response.transactions.map(
         (tx: any, index: number) => ({
           id: tx.id || index,
@@ -120,17 +119,14 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
   const validateAmount = (amount: string, isWithdraw: boolean = false) => {
     const newErrors: string[] = [];
 
-    // بررسی مقدار بیشتر از 10,000,000
     if (!isWithdraw && amount && parseFloat(amount) > 10_000_000) {
       newErrors.push("مبلغ نمی‌تواند بیشتر از ۱۰,۰۰۰,۰۰۰ تومان باشد.");
     }
 
-    // بررسی مقدار معتبر
     if (!amount || parseFloat(amount) <= 0) {
       newErrors.push("لطفاً مبلغ معتبر وارد کنید.");
     }
 
-    // بررسی موجودی برای برداشت
     if (isWithdraw && parseFloat(amount) > balance) {
       newErrors.push("موجودی کافی نیست.");
     }
@@ -212,13 +208,24 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
   const renderPageNumbers = () => {
     const pageNumbers: React.ReactNode[] = [];
 
+    // For mobile: show only the current page
+    pageNumbers.push(
+      <span
+        key="current-page"
+        className="flex px-4 py-2 mx-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md font-medium md:hidden"
+      >
+        {currentPage}
+      </span>
+    );
+
+    // For larger screens: show full pagination
     if (totalPages <= 5) {
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(
           <button
             key={i}
             onClick={() => goToPage(i)}
-            className={`cursor-pointer flex px-4 py-2 mx-1 ${
+            className={`cursor-pointer hidden md:flex px-4 py-2 mx-1 ${
               currentPage === i
                 ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
                 : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50"
@@ -235,7 +242,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       <button
         key={1}
         onClick={() => goToPage(1)}
-        className={`cursor-pointer flex px-4 py-2 mx-1 ${
+        className={`cursor-pointer hidden md:flex px-4 py-2 mx-1 ${
           currentPage === 1
             ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
             : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50"
@@ -249,7 +256,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       pageNumbers.push(
         <span
           key="start-ellipsis"
-          className="px-1 text-gray-500 hidden md:block sm:block"
+          className="px-1 text-gray-500 hidden md:block"
         >
           ...
         </span>
@@ -265,7 +272,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         <button
           key={i}
           onClick={() => goToPage(i)}
-          className={`cursor-pointer flex px-4 py-2 mx-1 ${
+          className={`cursor-pointer hidden md:flex px-4 py-2 mx-1 ${
             currentPage === i
               ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
               : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50"
@@ -280,7 +287,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       pageNumbers.push(
         <span
           key="end-ellipsis"
-          className="px-2 text-gray-500 hidden md:block sm:block"
+          className="px-2 text-gray-500 hidden md:block"
         >
           ...
         </span>
@@ -291,11 +298,11 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       <button
         key={totalPages}
         onClick={() => goToPage(totalPages)}
-        className={`cursor-pointer flex px-4 py-2 mx-1 ${
+        className={`cursor-pointer hidden md:flex px-4 py-2 mx-1 ${
           currentPage === totalPages
             ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
             : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50"
-        } rounded-md transition-all duration-300 font-medium ${currentPage < totalPages - 1 ? "hidden" : "block"} md:block sm:block`}
+        } rounded-md transition-all duration-300 font-medium`}
       >
         {totalPages}
       </button>
@@ -386,7 +393,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   <th className="md:text-lg sm:text-lg text-[15px] font-semibold py-2">
                     تاریخ
                   </th>
-                  <th className="md:text-lg sm:text-lg text-[15px] font-semibold py-2">
+                  <th className="md:text-lg sm:textlg text-[15px] font-semibold py-2">
                     فعالیت
                   </th>
                   <th className="md:text-lg sm:text-lg text-[15px] font-semibold py-2">
@@ -401,7 +408,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 {transactions && transactions.length > 0 ? (
                   transactions.map((transaction) => (
                     <tr key={transaction.id} className="border-b">
-                      <td className="py-2">{transaction.date}</td>
+                      <td className="py-2 ltr">{transaction.date}</td>
                       <td className="py-2">{transaction.activity}</td>
                       <td className="py-2">{transaction.description || "-"}</td>
                       <td
@@ -554,6 +561,8 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 </div>
                 <div className="flex justify-end space-x-2">
                   <button
+
+
                     onClick={() => {
                       setIsDepositModalOpen(false);
                       setErrors([]);
@@ -565,9 +574,12 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   </button>
                   <button
                     type="submit"
-                    onClick={handleDeposit}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDeposit();
+                    }}
                     disabled={
-                      !!depositAmount && // Convert depositAmount to boolean (true if non-empty)
+                      !!depositAmount &&
                       (parseFloat(depositAmount) > 10_000_000 ||
                         errors.length > 0)
                     }
@@ -640,7 +652,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                     htmlFor="withdraw-amount"
                     className="block text-gray-700 mb-2"
                   >
-                    مبلغ برداشت (تومان)
+                    summed برداشت (تومان)
                   </label>
                   <input
                     type="number"
@@ -681,7 +693,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   </button>
                   <button
                     type="submit"
-                    onClick={handleWithdraw}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleWithdraw();
+                    }}
                     disabled={errors.length > 0}
                     className={`px-4 py-2 bg-blue-500 text-white rounded-md transition-all ${
                       errors.length > 0

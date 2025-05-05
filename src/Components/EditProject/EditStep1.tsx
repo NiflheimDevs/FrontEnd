@@ -173,7 +173,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
       </div>
       <div className="flex justify-between mt-4">
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate("/dashboard")}
           className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer"
         >
           بازگشت به داشبورد
