@@ -100,7 +100,7 @@ const CustomSlider: React.FC<{
 
   return (
     <div className="space-y-2">
-      <span className="text-sm font-semibold text-gray-800 pointer-events-none">
+      <span className="text-sm font-semibold text-gray-800 select-none">
         {label}: {value}
       </span>
       <div
@@ -156,7 +156,7 @@ const FilterComponent: React.FC<FilterProps> = ({
         {/* Search Input */}
         <div className="flex-grow">
           <label
-            className="mb-2 font-semibold text-gray-800 text-base"
+            className="mb-2 font-semibold text-gray-800 text-base select-none"
             htmlFor="search-input"
           >
             جستجوی پیمانکاران یا مهارت‌ها
@@ -200,7 +200,7 @@ const FilterComponent: React.FC<FilterProps> = ({
 
           {/* Price Range Filter */}
           <div className="px-4">
-            <span className="text-sm font-semibold text-gray-800 block mb-2 pointer-events-none">
+            <span className="text-sm font-semibold text-gray-800 block mb-2 select-none">
               محدوده قیمت (تومان)
             </span>
             <div className="flex items-center gap-4">
@@ -215,7 +215,9 @@ const FilterComponent: React.FC<FilterProps> = ({
                 }
                 className="w-full rounded-xl border border-gray-200 p-2.5 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
               />
-              <span className="text-sm text-gray-500 font-medium">تا</span>
+              <span className="text-sm text-gray-500 font-medium select-none">
+                تا
+              </span>
               <input
                 type="number"
                 inputMode="numeric"
@@ -228,7 +230,7 @@ const FilterComponent: React.FC<FilterProps> = ({
                 className="w-full rounded-xl border border-gray-200 p-2.5 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
               />
             </div>
-            <span className="text-xs text-gray-500 mt-3 block pointer-events-none">
+            <span className="text-xs text-gray-500 mt-3 block select-none">
               از {formatPrice(tempFilters.priceRange[0])} تومان تا{" "}
               {formatPrice(tempFilters.priceRange[1])} تومان
             </span>
