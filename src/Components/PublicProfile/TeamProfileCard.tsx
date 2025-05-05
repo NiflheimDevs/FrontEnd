@@ -11,12 +11,8 @@ interface TeamProfileCardProps {
 }
 
 const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
-  const [ProfileExists, SetProfileExist] = useState<boolean>(
-    data.profile ? true : false
-  );
-  const [OwnerProfileExists, SetOwnerProfileExist] = useState<boolean>(
-    data.owner.profile ? true : false
-  );
+  const [ProfileExists, SetProfileExist] = useState<boolean>(true);
+  const [OwnerProfileExists, SetOwnerProfileExist] = useState<boolean>(true);
   return (
     <div className="w-full p-5 flex flex-col gap-4 box-shadow-custom rounded-2xl transition-all duration-300 transform">
       {/* Header */}

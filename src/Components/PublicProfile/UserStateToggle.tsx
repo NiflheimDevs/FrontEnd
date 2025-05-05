@@ -54,13 +54,13 @@ const UserStateToggle = ({
           ? "blue-500"
           : tab === "jobseeker"
             ? "green-500"
-            : "gray-500", // رنگ متفاوت برای تب تیم‌ها
+            : "gray-500",
       hover:
         tab === "employer"
           ? "blue-600"
           : tab === "jobseeker"
             ? "green-600"
-            : "gray-600", // رنگ hover متفاوت
+            : "gray-600",
     });
   };
 
