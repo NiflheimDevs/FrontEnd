@@ -172,8 +172,9 @@ export default function WorkExperienceSection({
                   </button>
                   <div className="flex flex-col gap-3 mt-8">
                     <div className="flex items-center gap-2">
-                      <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right">
-                        اسم شرکت
+                      <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right flex gap-1">
+                        <span>اسم شرکت</span>
+                        <span className="text-red-400">*</span>
                       </label>
                       <input
                         type="text"
@@ -195,8 +196,9 @@ export default function WorkExperienceSection({
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right">
-                        عنوان شغلی
+                      <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right flex gap-1">
+                        <span>عنوان شغلی</span>
+                        <span className="text-red-400">*</span>
                       </label>
                       <input
                         type="text"
@@ -237,8 +239,9 @@ export default function WorkExperienceSection({
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right">
-                        تاریخ شروع
+                      <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right flex gap-1">
+                        <span>تاریخ شروع</span>
+                        <span className="text-red-400">*</span>
                       </label>
                       <DatePicker
                         value={exp.startDate || ""}
@@ -280,8 +283,9 @@ export default function WorkExperienceSection({
                           exit="hidden"
                           className="flex items-center gap-2"
                         >
-                          <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right">
-                            تاریخ اتمام
+                          <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right flex gap-1">
+                            <span>تاریخ پایان</span>
+                            <span className="text-red-400">*</span>
                           </label>
                           <DatePicker
                             value={exp.endDate || ""}
