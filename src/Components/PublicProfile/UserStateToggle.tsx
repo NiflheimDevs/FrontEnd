@@ -127,7 +127,7 @@ const UserStateToggle = ({
             )
           )
         ) : (
-          <p className="text-sm text-gray-500 font-[vazirmatn] text-center">
+          <p className="text-sm text-gray-500 pointer-events-none font-[vazirmatn] text-center">
             هیچ اطلاعاتی یافت نشد.
           </p>
         )}

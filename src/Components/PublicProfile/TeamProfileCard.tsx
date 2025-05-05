@@ -91,7 +91,7 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between items-center">
         {/* Description */}
         <p className="text-sm flex w-6/10 text-gray-600 font-[vazirmatn] md:text-right sm:text-right text-center">
           {data.description}
