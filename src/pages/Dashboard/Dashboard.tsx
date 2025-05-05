@@ -12,6 +12,7 @@ import { getBalance, getTransactions, GetUserDashboard } from "../../API";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { errorMapper } from "../Error/Error";
 import { Skeleton } from "primereact/skeleton";
+import { CgProfile } from "react-icons/cg";
 
 // تعریف تایپ برای داده‌های پروفایل
 interface ProfileData {
@@ -178,6 +179,8 @@ const Dashboard = () => {
     ));
   };
 
+  const [ProfileExists, SetProfileExist] = useState<boolean>(true);
+
   const renderContentGrid = () => {
     return (
       <>
@@ -273,11 +276,16 @@ const Dashboard = () => {
                     <span className="mr-2">👤</span> پروفایل
                   </h3>
                   <div className="flex flex-col items-center space-y-1">
-                    <img
-                      src={profileData.low_profile || ProfileDefault}
-                      alt="Profile"
-                      className="w-16 h-16 border-2 border-blue-500 rounded-full flex items-center justify-center bg-gray-200"
-                    />
+                    {ProfileExists ? (
+                      <img
+                        src={profileData.low_profile}
+                        alt="Profile"
+                        className="w-16 h-16 border-2 border-blue-500 rounded-full flex items-center justify-center bg-gray-200"
+                        onError={() => SetProfileExist(false)}
+                      />
+                    ) : (
+                      <CgProfile className="text-gray-400" size={46} />
+                    )}
                     <div className="text-center flex flex-col pt-2">
                       <p className="text-sm ltr text-gray-800">
                         {profileData.username}

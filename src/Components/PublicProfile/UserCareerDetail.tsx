@@ -95,7 +95,7 @@ const UserCareerDetail = ({
             </div>
           ))
         ) : (
-          <p className="text-sm text-gray-500 font-[vazirmatn] text-center">
+          <p className="text-sm pointer-events-none text-gray-500 font-[vazirmatn] text-center">
             هیچ اطلاعاتی یافت نشد.
           </p>
         )}

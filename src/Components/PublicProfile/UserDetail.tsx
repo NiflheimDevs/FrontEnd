@@ -50,12 +50,24 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
       <div className="flex flex-col md:px-0 px-6 gap-6 w-full md:text-start text-center md:w-1/2">
         {/* Bio */}
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-[vazirmatn]">
-            {`${localprofile.firstName} ${localprofile.lastName}`}
-          </h2>
-          <p className="text-sm md:text-base text-gray-600 font-[vazirmatn] leading-relaxed">
-            {localprofile.bio}
-          </p>
+          {localprofile.firstName && localprofile.lastName ? (
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-[vazirmatn]">
+              {`${localprofile.firstName} ${localprofile.lastName}`}
+            </h2>
+          ) : (
+            <h2 className="text-lg w-fit py-1 px-2 rounded-4xl md:text-xl font-bold text-gray-400 pointer-events-none box-shadow-custom font-[vazirmatn]">
+              مشخصات فردی کاربر ثبت نشده است
+            </h2>
+          )}
+          {localprofile.bio ? (
+            <p className="text-sm md:text-base text-gray-600 font-[vazirmatn] leading-relaxed">
+              {localprofile.bio}
+            </p>
+          ) : (
+            <p className="text-lg md:text-xl w-fit text-gray-400 pointer-events-none box-shadow-custom rounded-4xl py-1 px-2 font-[vazirmatn] leading-relaxed">
+              بیوگرافی کاربر ثبت نشده است
+            </p>
+          )}
         </div>
       </div>
 
