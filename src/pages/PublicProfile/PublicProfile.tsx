@@ -58,7 +58,7 @@ const PublicProfile = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [navigate, profile_id]);
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="fixed inset-0 bg-gray-100 z-[-1]"></div>
