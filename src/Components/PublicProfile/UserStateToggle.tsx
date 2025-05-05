@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { Color, Profile, Projects, TogglePageSize } from "./types";
+import { Color, Profile, Projects, TogglePageSize, Teams } from "./types";
 import UserProjects from "./UserProjects";
+import TeamProfileCard from "./TeamProfileCard"; // کامپوننت جدیدی که ساختیم
+
+const PAGE_SIZE = TogglePageSize;
 
 interface UserStateToggleProps {
   localprofile: Profile;
   localcolor: Color;
   setLocalColor: React.Dispatch<React.SetStateAction<Color>>;
 }
-
-const PAGE_SIZE = TogglePageSize;
 
 const UserStateToggle = ({
   localprofile,
@@ -20,17 +21,17 @@ const UserStateToggle = ({
   >("employer");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const projects =
+  // داده‌های نمایشی بر اساس تب فعال
+  const displayData =
     activeTab === "employer"
       ? localprofile.employerprojects || []
       : activeTab === "jobseeker"
         ? localprofile.freelancerprojects || []
-        : [];
+        : localprofile.teams || []; // فرض می‌کنیم teams در localprofile وجود دارد
 
-  const totalPages = Math.ceil(projects.length / PAGE_SIZE);
-
+  const totalPages = Math.ceil(displayData.length / PAGE_SIZE);
   const startIndex = (currentPage - 1) * PAGE_SIZE;
-  const paginatedProjects = projects.slice(startIndex, startIndex + PAGE_SIZE);
+  const paginatedData = displayData.slice(startIndex, startIndex + PAGE_SIZE);
 
   const handlePrevious = () => {
     if (currentPage > 1) {
@@ -53,13 +54,13 @@ const UserStateToggle = ({
           ? "blue-500"
           : tab === "jobseeker"
             ? "green-500"
-            : "gray-500",
+            : "gray-500", // رنگ متفاوت برای تب تیم‌ها
       hover:
         tab === "employer"
           ? "blue-600"
           : tab === "jobseeker"
             ? "green-600"
-            : "gray-600",
+            : "gray-600", // رنگ hover متفاوت
     });
   };
 
@@ -106,22 +107,33 @@ const UserStateToggle = ({
         </div>
       </div>
 
-      <div className="w-full md:px-6 sm:px-6 px-4 flex flex-col gap-6 justify-center">
-        {paginatedProjects.length > 0 ? (
-          paginatedProjects.map((project: Projects) => (
-            <UserProjects
-              key={project.id}
-              project={project}
-              localcolor={localcolor}
-            />
-          ))
+      <div
+        className={`w-full md:px-6 sm:px-6 px-4 flex flex-col gap-6 justify-center`}
+      >
+        {paginatedData.length > 0 ? (
+          paginatedData.map((item: Projects | Teams) =>
+            activeTab === "teams" ? (
+              <TeamProfileCard
+                key={item.id}
+                data={item as Teams}
+                localcolor={localcolor}
+              />
+            ) : (
+              <UserProjects
+                key={item.id}
+                project={item as Projects}
+                localcolor={localcolor}
+              />
+            )
+          )
         ) : (
           <p className="text-sm text-gray-500 font-[vazirmatn] text-center">
             هیچ اطلاعاتی یافت نشد.
           </p>
         )}
+
         {/* بخش پیجینیشن */}
-        {projects.length > PAGE_SIZE && (
+        {displayData.length > PAGE_SIZE && (
           <div className="flex flex-row justify-center items-center gap-4 mt-4">
             <button
               onClick={handlePrevious}
