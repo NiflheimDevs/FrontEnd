@@ -64,7 +64,10 @@ const DeleteChatModal = ({
       animate="visible"
       exit="hidden"
     >
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      />
       <motion.div
         className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg z-10"
         variants={modalVariants}
@@ -73,7 +76,8 @@ const DeleteChatModal = ({
           حذف چت
         </h3>
         <p className="text-gray-600 mb-6 text-center">
-          آیا مطمئن هستید که می‌خواهید چت با <span className="font-medium">{chatName}</span> را حذف کنید؟
+          آیا مطمئن هستید که می‌خواهید چت با{" "}
+          <span className="font-medium">{chatName}</span> را حذف کنید؟
         </p>
         <div className="flex justify-center gap-4">
           <button
@@ -96,23 +100,57 @@ const DeleteChatModal = ({
 
 const ChatMessageArea = () => {
   const [chatList, setChatList] = useState<Chat[]>([
-    { id: "1", name: "ادمین", lastMessage: "سلام، چطور می‌توانم به شما کمک کنم؟" },
+    {
+      id: "1",
+      name: "ادمین",
+      lastMessage: "سلام، چطور می‌توانم به شما کمک کنم؟",
+    },
     { id: "2", name: "سبحان رنجبر", lastMessage: "پروژه جدید رو دیدی؟" },
     { id: "3", name: "کیارش سهرابی", lastMessage: "فردا ساعت چند جلسه داریم؟" },
   ]);
 
   const [allMessages, setAllMessages] = useState<Messages>({
     "1": [
-      { id: "1", text: "سلام! چطور می‌توانم به شما کمک کنم؟", type: "received", timestamp: "2025-04-25T10:00:00" },
-      { id: "2", text: "نیاز به کمک در پروژه‌ام دارم", type: "sent", timestamp: "2025-04-25T10:01:00" },
+      {
+        id: "1",
+        text: "سلام! چطور می‌توانم به شما کمک کنم؟",
+        type: "received",
+        timestamp: "2025-04-25T10:00:00",
+      },
+      {
+        id: "2",
+        text: "نیاز به کمک در پروژه‌ام دارم",
+        type: "sent",
+        timestamp: "2025-04-25T10:01:00",
+      },
     ],
     "2": [
-      { id: "1", text: "پروژه جدید رو دیدی؟", type: "received", timestamp: "2025-04-25T09:30:00" },
-      { id: "2", text: "آره خیلی خوبه", type: "sent", timestamp: "2025-04-25T09:31:00" },
+      {
+        id: "1",
+        text: "پروژه جدید رو دیدی؟",
+        type: "received",
+        timestamp: "2025-04-25T09:30:00",
+      },
+      {
+        id: "2",
+        text: "آره خیلی خوبه",
+        type: "sent",
+        timestamp: "2025-04-25T09:31:00",
+      },
     ],
     "3": [
-      { id: "1", text: "فردا ساعت چند جلسه داریم؟", type: "received", timestamp: "2025-04-25T08:00:00" },
-      { id: "2", text: "ساعت ۱۰ صبح", type: "sent", timestamp: "2025-04-25T08:01:00" },
+      {
+        id: "1",
+        text: "فردا ساعت چند جلسه داریم؟",
+        type: "received",
+        timestamp: "2025-04-25T08:00:00",
+      },
+      {
+        id: "2",
+        text: "ساعت ۱۰ صبح",
+        type: "sent",
+        timestamp: "2025-04-25T08:01:00",
+      },
     ],
   });
 
@@ -126,7 +164,9 @@ const ChatMessageArea = () => {
   const [chatToDelete, setChatToDelete] = useState<Chat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const messages: Message[] = selectedChat ? allMessages[selectedChat.id] || [] : [];
+  const messages: Message[] = selectedChat
+    ? allMessages[selectedChat.id] || []
+    : [];
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -180,12 +220,15 @@ const ChatMessageArea = () => {
     }
 
     try {
-      const response = await fetch(`/api/users/search?query=${encodeURIComponent(searchQuery)}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `/api/users/search?query=${encodeURIComponent(searchQuery)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch users");
@@ -221,7 +264,10 @@ const ChatMessageArea = () => {
       }
 
       const newChat = await response.json();
-      setChatList((prev) => [...prev, { id: newChat.id, name: newChat.name, lastMessage: "" }]);
+      setChatList((prev) => [
+        ...prev,
+        { id: newChat.id, name: newChat.name, lastMessage: "" },
+      ]);
       setAllMessages((prev) => ({
         ...prev,
         [newChat.id]: [],
@@ -254,7 +300,9 @@ const ChatMessageArea = () => {
 
     setChatList((prev) =>
       prev.map((chat) =>
-        chat.id === selectedChat.id ? { ...chat, lastMessage: newMessage } : chat
+        chat.id === selectedChat.id
+          ? { ...chat, lastMessage: newMessage }
+          : chat
       )
     );
 
@@ -274,7 +322,7 @@ const ChatMessageArea = () => {
     >
       {/* Chat List */}
       <motion.div
-        className={`w-full md:w-[35%] h-[300px] md:h-full bg-gradient-to-b from-gray-100 to-gray-300 rounded-2xl p-5 flex flex-col transition-all duration-400 ${
+        className={`w-full md:w-[35%] h-full bg-gradient-to-b from-gray-100 to-gray-300 rounded-2xl p-5 flex flex-col transition-all duration-400 ${
           isChatOpen ? "hidden md:flex" : "flex"
         }`}
         variants={chatListVariants}
@@ -315,10 +363,12 @@ const ChatMessageArea = () => {
                 <img
                   src={ProfileDefault}
                   alt="Profile"
-                  className="w-10 h-10 rounded-full mx-3"
+                  className="w-10 h-10 min-w-10 min-h-10 rounded-full mx-3"
                 />
                 <div className="flex-1 text-right">
-                  <p className="text-sm font-medium text-gray-800">{user.name}</p>
+                  <p className="text-sm font-medium text-gray-800">
+                    {user.name}
+                  </p>
                   <p className="text-xs text-gray-500">شروع چت جدید</p>
                 </div>
               </motion.div>
@@ -330,16 +380,18 @@ const ChatMessageArea = () => {
               <motion.div
                 key={chat.id}
                 onClick={() => handleChatSelect(chat)}
-                className={`flex items-center py-3 px-4 cursor-pointer rounded-xl transition-all duration-300 ${
-                  selectedChat?.id === chat.id ? "bg-blue-50 shadow-md" : "bg-white hover:bg-blue-50"
+                className={`flex items-center py-3 px-4 cursor-pointer rounded-xl transition-all overflow-x-hidden duration-300 ${
+                  selectedChat?.id === chat.id
+                    ? "bg-blue-50 shadow-md"
+                    : "bg-white hover:bg-blue-50"
                 }`}
                 whileHover={{ scale: 1.02 }}
               >
-                <div className="relative mx-3">
+                <div className="relative mx-1">
                   <img
                     src={ProfileDefault}
                     alt="Profile"
-                    className="w-10 h-10 rounded-full"
+                    className="w-10 h-10 min-w-10 min-h-10 rounded-full"
                   />
                   <button
                     onClick={(e) => {
@@ -353,7 +405,9 @@ const ChatMessageArea = () => {
                   </button>
                 </div>
                 <div className="flex-1 text-right">
-                  <p className="text-sm font-medium text-gray-800">{chat.name}</p>
+                  <p className="text-sm font-medium text-gray-800">
+                    {chat.name}
+                  </p>
                   <p className="text-xs text-gray-500 truncate max-w-[200px]">
                     {truncateMessage(chat.lastMessage)}
                   </p>
@@ -383,7 +437,9 @@ const ChatMessageArea = () => {
             alt="Profile"
             className="w-10 h-10 rounded-full mx-3"
           />
-          <h2 className="text-lg font-semibold">{selectedChat?.name || "انتخاب چت"}</h2>
+          <h2 className="text-lg font-semibold">
+            {selectedChat?.name || "انتخاب چت"}
+          </h2>
         </div>
 
         {/* Messages */}
@@ -404,7 +460,10 @@ const ChatMessageArea = () => {
                 >
                   <p className="break-all">{message.text}</p>
                   <p className="text-xs text-gray-400 mt-1 text-right">
-                    {new Date(message.timestamp).toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" })}
+                    {new Date(message.timestamp).toLocaleTimeString("fa-IR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </p>
                 </motion.div>
               ))
