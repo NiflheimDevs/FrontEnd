@@ -4,7 +4,8 @@ import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
 // import Mail from "@/assets/Dashboard/Mail.svg";
 // import FAQ from "@/assets/Dashboard/Faq.svg";
-import BELL from "@/assets/Dashboard/Bell.svg";
+// import BELL from "@/assets/Dashboard/Bell.svg";
+import { FaRegBell } from "react-icons/fa6";
 import { IoMdPerson } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
 import { Search } from "lucide-react";
@@ -126,14 +127,10 @@ const Header = ({ showSearch = true }) => {
               </button>
             )}
             <div
-              className={`flex justify-center items-center rounded-lg transition-all duration-300 hover:bg-gray-100 p-1`}
+              className={`flex justify-center items-center rounded-lg transition-all duration-300 hover:bg-gray-100 pb-1 pt-1.25 px-1`}
             >
               <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
-                <img
-                  src={BELL}
-                  className="h-6 pointer-events-none"
-                  tabIndex={-1}
-                />
+                <FaRegBell className="icon" color={"#74767E"} size={26} />
               </button>
             </div>
 
