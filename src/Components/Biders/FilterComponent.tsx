@@ -99,7 +99,7 @@ const CustomSlider: React.FC<{
   const percentage = ((value - min) / (max - min)) * 100;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 flex flex-col w-full">
       <span className="text-sm font-semibold text-gray-800 select-none">
         {label}: {value}
       </span>
@@ -151,31 +151,67 @@ const FilterComponent: React.FC<FilterProps> = ({
   };
 
   return (
-    <div className="mb-8 bg-white shadow-xl rounded-2xl p-8 border border-gray-50">
+    <div className="mb-8 mt-2 bg-white shadow-xl rounded-2xl py-8 px-10 border border-gray-50">
       <form className="flex flex-col space-y-8">
-        {/* Search Input */}
-        <div className="flex-grow">
-          <label
-            className="mb-2 font-semibold text-gray-800 text-base select-none"
-            htmlFor="search-input"
-          >
-            جستجوی پیمانکاران یا مهارت‌ها
-          </label>
-          <input
-            id="search-input"
-            type="text"
-            placeholder="جستجوی پیمانکاران یا مهارت‌ها..."
-            value={tempSearchTerm}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setTempSearchTerm(e.currentTarget.value)
-            }
-            className="w-full rounded-xl border border-gray-200 p-3 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-          />
-        </div>
+        <div className="flex md:flex-row sm:flex-row flex-col gap-[4vw]">
+          <div className="flex-col w-full flex gap-[3vh]">
+            {/* Search Input */}
+            <div className="flex w-full flex-col">
+              <span className="text-sm font-semibold text-gray-800 block mb-2 select-none">
+                جستجوی پیمانکاران یا مهارت‌ها
+              </span>
+              <input
+                id="search-input"
+                type="text"
+                placeholder="جستجو..."
+                value={tempSearchTerm}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setTempSearchTerm(e.currentTarget.value)
+                }
+                className="w-full h-fit rounded-xl border border-gray-200 p-3 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+              />
+            </div>
+            {/* Price Range Filter */}
+            <div className="flex-col flex w-full">
+              <span className="text-sm font-semibold text-gray-800 block mb-2 select-none">
+                محدوده قیمت (تومان)
+              </span>
+              <div className="flex items-center gap-4">
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  max={10000000}
+                  value={tempFilters.priceRange[0]}
+                  onChange={(e) =>
+                    handlePriceRangeChange(Number(e.target.value), 0)
+                  }
+                  className="w-full rounded-xl border border-gray-200 p-2.5 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
+                />
+                <span className="text-sm text-gray-500 font-medium select-none">
+                  تا
+                </span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  max={10000000}
+                  value={tempFilters.priceRange[1]}
+                  onChange={(e) =>
+                    handlePriceRangeChange(Number(e.target.value), 1)
+                  }
+                  className="w-full rounded-xl border border-gray-200 p-2.5 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
+                />
+              </div>
+              <span className="text-xs text-gray-500 mt-3 block select-none">
+                از {formatPrice(tempFilters.priceRange[0])} تومان تا{" "}
+                {formatPrice(tempFilters.priceRange[1])} تومان
+              </span>
+            </div>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Sliders (Vertical Layout) */}
-          <div className="space-y-20 px-4 py-2">
+          <div className="flex flex-col gap-[10vh] w-full">
             <CustomSlider
               min={0}
               max={5}
@@ -196,44 +232,6 @@ const FilterComponent: React.FC<FilterProps> = ({
               }
               label="حداکثر روزهای تحویل"
             />
-          </div>
-
-          {/* Price Range Filter */}
-          <div className="px-4">
-            <span className="text-sm font-semibold text-gray-800 block mb-2 select-none">
-              محدوده قیمت (تومان)
-            </span>
-            <div className="flex items-center gap-4">
-              <input
-                type="number"
-                inputMode="numeric"
-                min={0}
-                max={10000000}
-                value={tempFilters.priceRange[0]}
-                onChange={(e) =>
-                  handlePriceRangeChange(Number(e.target.value), 0)
-                }
-                className="w-full rounded-xl border border-gray-200 p-2.5 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
-              />
-              <span className="text-sm text-gray-500 font-medium select-none">
-                تا
-              </span>
-              <input
-                type="number"
-                inputMode="numeric"
-                min={0}
-                max={10000000}
-                value={tempFilters.priceRange[1]}
-                onChange={(e) =>
-                  handlePriceRangeChange(Number(e.target.value), 1)
-                }
-                className="w-full rounded-xl border border-gray-200 p-2.5 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
-              />
-            </div>
-            <span className="text-xs text-gray-500 mt-3 block select-none">
-              از {formatPrice(tempFilters.priceRange[0])} تومان تا{" "}
-              {formatPrice(tempFilters.priceRange[1])} تومان
-            </span>
           </div>
         </div>
 
