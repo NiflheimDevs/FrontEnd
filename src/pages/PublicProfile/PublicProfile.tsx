@@ -11,7 +11,7 @@ import {
 } from "../../Components/PublicProfile/types";
 import UserStateToggle from "../../Components/PublicProfile/UserStateToggle";
 import UserJobExperience from "../../Components/PublicProfile/UserJobExperience";
-import { GetUser, getUserProject } from "../../API";
+import { GetUser, getUserProject, GetUserTeams } from "../../API";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { errorMapper } from "../Error/Error";
@@ -27,13 +27,18 @@ const PublicProfile = () => {
       try {
         if (profile_id) {
           const apiData = await GetUser(parseInt(profile_id, 0));
+          const apiTeams = await GetUserTeams(parseInt(profile_id, 0));
           const apiEmployer = await getUserProject(
             0,
             1000,
             parseInt(profile_id, 0)
           );
           console.log(apiData);
-          const mappedProfile = await mapApiDataToProfile(apiData, apiEmployer);
+          const mappedProfile = await mapApiDataToProfile(
+            apiData,
+            apiEmployer,
+            apiTeams
+          );
           setLocalProfile(mappedProfile);
         }
       } catch (error: any) {
@@ -53,7 +58,7 @@ const PublicProfile = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [navigate, profile_id]);
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="fixed inset-0 bg-gray-100 z-[-1]"></div>

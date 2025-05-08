@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,9 +17,9 @@ import {
 } from "react-icons/fa";
 import Header from "../../Components/DashboardComp/Header";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
-import EditStep1 from "./EditStep1";
-import EditStep2 from "./EditStep2";
-import EditStep3 from "./EditStep3";
+import EditStep1 from "../../Components/EditProject/EditStep1";
+import EditStep2 from "../../Components/EditProject/EditStep2";
+import EditStep3 from "../../Components/EditProject/EditStep3";
 import axios from "axios";
 
 interface Tag {
@@ -111,7 +112,7 @@ const EditProject: React.FC = () => {
         setTags(fetchedTags);
 
         setLoading(false);
-      } catch (error) {
+      } catch {
         setError("خطا در بارگذاری اطلاعات پروژه. لطفاً دوباره تلاش کنید.");
         setLoading(false);
       }
@@ -142,7 +143,7 @@ const EditProject: React.FC = () => {
         ).unwrap();
         navigate("/myprojects");
       }
-    } catch (error) {
+    } catch {
       setError("خطا در بروزرسانی پروژه. لطفاً دوباره تلاش کنید.");
     }
   };

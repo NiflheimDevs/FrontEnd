@@ -168,6 +168,7 @@ const TeamDetailPage: React.FC = () => {
     navigate(`/Browsproject`);
   };
 
+
   // Get project status badge color
   const getStatusBadgeColor = (status: any) => {
     switch (status) {
@@ -487,6 +488,7 @@ const TeamDetailPage: React.FC = () => {
                 </div>
               )}
               <div className="text-center p-4">
+
                 {teamProjects.length > 0 && (
                   <button
                     onClick={navigateToTeamProjects}

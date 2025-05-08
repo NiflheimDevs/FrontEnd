@@ -82,13 +82,19 @@ const getCroppedImg = (imageSrc: string, pixelCrop: Area): Promise<File> => {
         canvas.toBlob(
           (blob) => {
             if (blob) {
-              resolve(new File([blob], "profile-picture.jpg", { type: "image/jpeg" }));
+              resolve(
+                new File([blob], "profile-picture.jpg", { type: "image/jpeg" })
+              );
             } else {
               const dataUrl = canvas.toDataURL("image/jpeg");
               fetch(dataUrl)
                 .then((res) => res.blob())
                 .then((blob) =>
-                  resolve(new File([blob], "profile-picture.jpg", { type: "image/jpeg" }))
+                  resolve(
+                    new File([blob], "profile-picture.jpg", {
+                      type: "image/jpeg",
+                    })
+                  )
                 )
                 .catch(() => reject(new Error("خطا در تبدیل تصویر به فایل")));
             }
@@ -97,7 +103,12 @@ const getCroppedImg = (imageSrc: string, pixelCrop: Area): Promise<File> => {
           0.9
         );
       } catch (error) {
-        reject(new Error("خطا در پردازش تصویر: " + (error instanceof Error ? error.message : String(error))));
+        reject(
+          new Error(
+            "خطا در پردازش تصویر: " +
+              (error instanceof Error ? error.message : String(error))
+          )
+        );
       }
     };
 
@@ -179,7 +190,10 @@ export default function UserInfoSection({
             setResizedImageSrc(resizedSrc);
             setShowCropper(true);
           } catch (error) {
-            notifyError("خطا در تغییر اندازه تصویر: " + (error instanceof Error ? error.message : String(error)));
+            notifyError(
+              "خطا در تغییر اندازه تصویر: " +
+                (error instanceof Error ? error.message : String(error))
+            );
           }
         };
         reader.onerror = () => {
@@ -218,7 +232,10 @@ export default function UserInfoSection({
     }
 
     try {
-      const croppedFile = await getCroppedImg(resizedImageSrc || imageSrc, croppedAreaPixels);
+      const croppedFile = await getCroppedImg(
+        resizedImageSrc || imageSrc,
+        croppedAreaPixels
+      );
       setProfilePictureFile(croppedFile);
       setLocalProfile((prev) => ({
         ...prev,
@@ -235,11 +252,20 @@ export default function UserInfoSection({
           : "خطا در برش تصویر: مشکلی رخ داده است"
       );
     }
-  }, [imageSrc, resizedImageSrc, croppedAreaPixels, setProfilePictureFile, setLocalProfile, notifyError, notifySuccess]);
+  }, [
+    imageSrc,
+    resizedImageSrc,
+    croppedAreaPixels,
+    setProfilePictureFile,
+    setLocalProfile,
+    notifyError,
+    notifySuccess,
+  ]);
 
   const handleRemoveProfile = (e: React.MouseEvent) => {
     e.stopPropagation();
     setProfilePictureFile(null);
+    SetProfileExist(false);
     setLocalProfile((prev) => ({ ...prev, high_profile: "" }));
     notifySuccess("عکس پروفایل با موفقیت حذف شد");
   };
@@ -247,6 +273,8 @@ export default function UserInfoSection({
   const handleInputChange = (field: keyof Profile, value: any) => {
     setLocalProfile((prev) => ({ ...prev, [field]: value }));
   };
+
+  const [ProfileExists, SetProfileExist] = useState<boolean>(true);
 
   return (
     <>
@@ -275,7 +303,7 @@ export default function UserInfoSection({
                   <X size={20} color="white" />
                 </button>
               </>
-            ) : localProfile.high_profile ? (
+            ) : ProfileExists ? (
               <>
                 <img
                   src={localProfile.high_profile}
@@ -283,6 +311,7 @@ export default function UserInfoSection({
                   className="w-full h-full object-cover transition-all duration-400 ease-in-out hover:scale-105"
                   onMouseEnter={() => setShowX(true)}
                   onMouseLeave={() => setShowX(false)}
+                  onError={() => SetProfileExist(false)}
                 />
                 <button
                   onClick={handleRemoveProfile}
@@ -293,7 +322,7 @@ export default function UserInfoSection({
                 </button>
               </>
             ) : (
-              <Image className="text-gray-500" size={36} />
+              <Image className="text-gray-500" size={46} />
             )}
           </div>
           <span className="mt-2 font-semibold text-gray-600">پروفایل</span>
@@ -504,7 +533,10 @@ export default function UserInfoSection({
                 try {
                   const phoneData = { phone: localProfile.phoneNumber };
                   const codeSession = await PutPhoneSendOtp(phoneData);
-                  setLocalProfile((prev) => ({ ...prev, SessionID: codeSession }));
+                  setLocalProfile((prev) => ({
+                    ...prev,
+                    SessionID: codeSession,
+                  }));
                   setTimeLeft(120);
                   setIsScaled(false);
                   setShowOtpSection(true);
@@ -576,8 +608,9 @@ export default function UserInfoSection({
         />
 
         <div className="flex flex-col sm:flex-row gap-2">
-          <label className="font-semibold mt-2 text-gray-600 w-24 text-right">
-            نام
+          <label className="font-semibold mt-2 text-gray-600 w-24 text-right flex gap-1">
+            <span>نام</span>
+            <span className="text-red-400">*</span>
           </label>
           <input
             type="text"
@@ -589,8 +622,9 @@ export default function UserInfoSection({
           />
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
-          <label className="font-semibold mt-2 text-gray-600 w-24 text-right">
-            نام خانوادگی
+          <label className="font-semibold mt-2 flex text-gray-600 w-24 text-right gap-1">
+            <span>نام خانوادگی</span>
+            <span className="text-red-400">*</span>
           </label>
           <input
             type="text"

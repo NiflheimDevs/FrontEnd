@@ -183,6 +183,15 @@ export const GetUser = async (id: number) => {
   }
 };
 
+export const GetUserTeams = async (id: number) => {
+  try {
+    const response = await apiClient.get(`/team/user/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const GetUserDashboard = async () => {
   try {
     const response = await apiClient.get("/user/0?include=info");
@@ -244,6 +253,15 @@ export const GetProfile = async () => {
 export const GetResume = async () => {
   try {
     const response = await apiClient.get("/user/resume");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const GetProject = async (project_id: string) => {
+  try {
+    const response = await apiClient.get(`/project/${project_id}`);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";

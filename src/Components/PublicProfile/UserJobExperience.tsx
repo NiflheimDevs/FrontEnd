@@ -98,7 +98,7 @@ const UserJobExperience = ({
           </div>
         ))
       ) : (
-        <p className="text-sm text-gray-500 font-[vazirmatn] text-center">
+        <p className="text-sm text-gray-500 pointer-events-none font-[vazirmatn] text-center">
           سابقه شغلی ثبت نشده است.
         </p>
       )}

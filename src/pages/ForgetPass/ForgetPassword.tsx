@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -14,7 +15,7 @@ const ForgetPassword = () => {
   const [phone, setPhone] = useState("");
   const [phoneErrors, setPhoneErrors] = useState<string[]>([]);
   const { error: notifyError, success: notifySuccess } = useNotification();
-  const [ispic, _setIspic] = useState(true);
+  const [ispic] = useState(true);
   const navigate = useNavigate();
   const dispatcher = useDispatch();
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { motion, AnimatePresence } from "framer-motion";
 import { Profile, Skill } from "./types";
 import { proficiencyLevels, skills } from "./types";
@@ -168,8 +169,9 @@ export default function SkillsSection({
 
         {localProfile.skills.length > 0 && (
           <div className="mt-4 space-y-3">
-            <h3 className="text-sm font-semibold text-gray-600 text-right">
-              میزان تسلط بر مهارت‌ها
+            <h3 className="text-sm font-semibold text-gray-600 text-right flex gap-1">
+              <span>میزان تسلط بر مهارت‌ها</span>
+              <span className="text-red-400">*</span>
             </h3>
             <AnimatePresence>
               {localProfile.skills.map((skill: Skill, skillIndex) => (

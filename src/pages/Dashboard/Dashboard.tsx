@@ -2,16 +2,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import Sidebar from "../Components/DashboardComp/Sidebar";
-import Header from "../Components/DashboardComp/Header";
+import Sidebar from "../../Components/DashboardComp/Sidebar";
+import Header from "../../Components/DashboardComp/Header";
 import { Search } from "lucide-react";
 import ProfileDefault from "@/assets/Dashboard/DefaultProfile.png";
 import walletPic from "@/assets/Dashboard/Wallet.svg";
 import LadyPic from "@/assets/ChangePass.svg";
-import { getBalance, getTransactions, GetUserDashboard } from "../API";
-import { useNotification } from "../Notification/NotificationProvider";
-import { errorMapper } from "./Error/Error";
+import { getBalance, getTransactions, GetUserDashboard } from "../../API";
+import { useNotification } from "../../Notification/NotificationProvider";
+import { errorMapper } from "../Error/Error";
 import { Skeleton } from "primereact/skeleton";
+import { CgProfile } from "react-icons/cg";
 
 // تعریف تایپ برای داده‌های پروفایل
 interface ProfileData {
@@ -59,16 +60,16 @@ const cardVariants = {
   },
 };
 
-const skeletonVariants = {
-  shimmer: {
-    backgroundPosition: ["-100% center", "100% center"],
-    transition: {
-      duration: 1.2,
-      ease: "linear",
-      repeat: Infinity,
-    },
-  },
-};
+// const skeletonVariants = {
+//   shimmer: {
+//     backgroundPosition: ["-100% center", "100% center"],
+//     transition: {
+//       duration: 1.2,
+//       ease: "linear",
+//       repeat: Infinity,
+//     },
+//   },
+// };
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -162,37 +163,23 @@ const Dashboard = () => {
 
   const renderSkeletonGrid = () => {
     return Array.from({ length: 4 }).map((_, index) => (
-      <motion.div
-        key={index}
-        custom={index}
-        variants={cardVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 cursor-pointer overflow-hidden shiny-skeleton"
-      >
-        <motion.div
-          variants={skeletonVariants}
-          animate="shimmer"
-          className="bg-gray-300 rounded-lg h-80 w-full"
-          style={{
-            background: "linear-gradient(90deg, #f0f0f0 25%, #d0d0d0 50%, #f0f0f0 75%)",
-            backgroundSize: "200% auto",
-          }}
-        >
-          <div className="p-4 space-y-4 shiny-skeleton ">
-            <Skeleton width="100%" height="2rem" />
-            <Skeleton width="80%" height="1.5rem" />
-            <Skeleton width="60%" height="1.5rem" />
-            <Skeleton width="90%" height="1.5rem" />
+      <motion.div key={index} custom={index} initial="hidden" animate="visible">
+        <div>
+          <div className="rounded-lg p-4 flex items-center flex-col md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out">
+            <Skeleton className="relative border-8 border-gray-300 z-10 w-full p-4 rounded-lg max-w-[490px] min-h-[300px] justify-center items-center flex flex-col gap-2 mx-auto overflow-hidden shiny-skeleton" />
+            <Skeleton width="1.5rem" height="1.5rem" className="bg-gray-300" />
+            <Skeleton
+              width="8rem"
+              height="1rem"
+              className="rounded-md bg-gray-300"
+            />
           </div>
-          <div className="flex flex-col items-center">
-                <Skeleton width="10%" height="1.5rem" shiny-skeleton />
-                <Skeleton width="40%" height="1.5rem" shiny-skeleton rounded-md shadow-md />
-          </div>
-        </motion.div>
+        </div>
       </motion.div>
     ));
   };
+
+  const [ProfileExists, SetProfileExist] = useState<boolean>(true);
 
   const renderContentGrid = () => {
     return (
@@ -289,11 +276,16 @@ const Dashboard = () => {
                     <span className="mr-2">👤</span> پروفایل
                   </h3>
                   <div className="flex flex-col items-center space-y-1">
-                    <img
-                      src={profileData.low_profile || ProfileDefault}
-                      alt="Profile"
-                      className="w-16 h-16 border-2 border-blue-500 rounded-full flex items-center justify-center bg-gray-200"
-                    />
+                    {ProfileExists ? (
+                      <img
+                        src={profileData.low_profile}
+                        alt="Profile"
+                        className="w-16 h-16 border-2 border-blue-500 rounded-full flex items-center justify-center bg-gray-200"
+                        onError={() => SetProfileExist(false)}
+                      />
+                    ) : (
+                      <CgProfile className="text-gray-400" size={46} />
+                    )}
                     <div className="text-center flex flex-col pt-2">
                       <p className="text-sm ltr text-gray-800">
                         {profileData.username}
@@ -375,15 +367,9 @@ const Dashboard = () => {
                   <table className="w-full text-center text-xs text-gray-800">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-sm font-semibold py-1">
-                          تاریخ
-                        </th>
-                        <th className="text-sm font-semibold py-1">
-                          فعالیت
-                        </th>
-                        <th className="text-sm font-semibold py-1">
-                          مقدار
-                        </th>
+                        <th className="text-sm font-semibold py-1">تاریخ</th>
+                        <th className="text-sm font-semibold py-1">فعالیت</th>
+                        <th className="text-sm font-semibold py-1">مقدار</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -495,7 +481,7 @@ const Dashboard = () => {
               داشبورد
             </motion.h2>
             {/* Grid of Previews */}
-            <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-16">
+            <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-[3vw]">
               {isLoading ? renderSkeletonGrid() : renderContentGrid()}
             </div>
           </div>

@@ -4,7 +4,8 @@ import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
 // import Mail from "@/assets/Dashboard/Mail.svg";
 // import FAQ from "@/assets/Dashboard/Faq.svg";
-import BELL from "@/assets/Dashboard/Bell.svg";
+// import BELL from "@/assets/Dashboard/Bell.svg";
+import { FaRegBell } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
 import { GetProfile } from "../../API";
 import { useState, useRef, useEffect } from "react";
@@ -123,14 +124,10 @@ export default function Header({ toggleSidebar }: any) {
           </button>
 
           <div
-            className={`flex justify-center items-center rounded-lg transition-all duration-300 hover:bg-gray-100 p-1`}
+            className={`flex justify-center items-center rounded-lg transition-all duration-300 hover:bg-gray-100 pb-1 pt-1.25 px-1`}
           >
             <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
-              <img
-                src={BELL}
-                className="h-6 pointer-events-none"
-                tabIndex={-1}
-              />
+              <FaRegBell className="icon" color={"#74767E"} size={26} />
             </button>
           </div>
 
@@ -153,7 +150,7 @@ export default function Header({ toggleSidebar }: any) {
               setHoverHome(false);
             }}
           >
-            <div className="relative hover:scale-110 duration-400">
+            <div className="relative hover:scale-110 duration-400 justify-center items-center flex">
               {hoverHome || isActive("/") ? (
                 <div
                   key="home-hover"
@@ -184,7 +181,7 @@ export default function Header({ toggleSidebar }: any) {
               setHoverDashboard(false);
             }}
           >
-            <div className="relative hover:scale-110 duration-400">
+            <div className="relative hover:scale-110 duration-400 justify-center items-center flex">
               {hoverDashboard || isActive("/dashboard") ? (
                 <div
                   key="dashboard-hover"
@@ -208,9 +205,9 @@ export default function Header({ toggleSidebar }: any) {
             </div>
           </Link>
           <Link
-            to="/profile"
+            to="/profile/0"
             className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
-              isActive("/profile")
+              isActive("/profile/0")
                 ? "active glow"
                 : "hover:bg-gray-100 hover:scale-110 p-1"
             }`}
@@ -220,7 +217,7 @@ export default function Header({ toggleSidebar }: any) {
                 <img
                   src={profilePicture}
                   className={`rounded-full h-[36px] w-[36px] object-cover min-w-8 pointer-events-none ${
-                    isActive("/profile") ? "border-3" : "border-2"
+                    isActive("/profile/0") ? "border-3" : "border-2"
                   } border-blue-500`}
                   alt="Profile"
                   tabIndex={-1}
@@ -228,7 +225,7 @@ export default function Header({ toggleSidebar }: any) {
                 />
               ) : (
                 <CgProfile
-                  color={isActive("/profile") ? "#3B82F6" : "#707070"}
+                  color={isActive("/profile/0") ? "#3B82F6" : "#707070"}
                   className="rounded-full object-cover min-w-8 h-[32px] w-[32px] pointer-events-none transition-all hover: duration-400 ease-out"
                   tabIndex={-1}
                 />

@@ -12,6 +12,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
   // console.log("TeamCard", team);
   return (
     <Link to={`/teams/${team.id}`} className="flex min-w-[400px]">
+
       <div className="group relative w-full max-w-md overflow-hidden rounded-xl border-0 bg-gradient-to-br from-blue-600 to-blue-800 p-1 shadow-xl transition-all duration-300 hover:shadow-blue-500/20">
         <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-400/20 blur-3xl filter" />
         <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-blue-300/20 blur-3xl filter" />
@@ -28,6 +29,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
                   className="h-7 w-7 rounded-full"
                 />
               )}
+
             </div>
           </div>
 
@@ -40,12 +42,14 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
 
           <div className="mb-4">
             <div className="flex justify-start">
+
               {team.members.slice(0, 1).map((member) => (
                 <div
                   key={member.id}
                   className="flex items-center bg-white/10 rounded-lg p-2 backdrop-blur-sm"
                 >
                   <div className="flex flex-col items-start">
+
                     <span className="text-sm font-medium text-white">
                       {member.name}
                     </span>
@@ -62,6 +66,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
                           className="h-7 w-7 rounded-full"
                         />
                       )}
+
                     </span>
                   </div>
                 </div>

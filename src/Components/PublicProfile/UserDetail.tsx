@@ -1,6 +1,7 @@
 import { Image, Send, Calendar } from "lucide-react";
 import { Color, Profile } from "./types";
 import UserCareerDetail from "./UserCareerDetail";
+import { useState } from "react";
 
 interface UserDetailProps {
   localprofile: Profile;
@@ -8,6 +9,7 @@ interface UserDetailProps {
 }
 
 const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
+  const [profileExists, setprofileExists] = useState<boolean>(true);
   return (
     <div className="flex flex-col md:flex-row items-start justify-center gap-6 sm:px-6 px-4 py-8 md:px-10 md:py-12">
       {/* Profile Image and Actions */}
@@ -15,11 +17,12 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
         <div
           className={`relative flex justify-center items-center w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-${localcolor.color} overflow-hidden bg-gray-100 shadow-md transition-transform duration-300 hover:scale-105`}
         >
-          {localprofile.high_profile ? (
+          {profileExists ? (
             <img
               src={localprofile.high_profile}
               alt={`${localprofile.firstName} ${localprofile.lastName}`}
               className="w-full h-full object-cover"
+              onError={() => setprofileExists(false)}
             />
           ) : (
             <Image className="text-gray-400" size={48} />
@@ -45,12 +48,24 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
       <div className="flex flex-col md:px-0 px-6 gap-6 w-full md:text-start text-center md:w-1/2">
         {/* Bio */}
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-[vazirmatn]">
-            {`${localprofile.firstName} ${localprofile.lastName}`}
-          </h2>
-          <p className="text-sm md:text-base text-gray-600 font-[vazirmatn] leading-relaxed">
-            {localprofile.bio}
-          </p>
+          {localprofile.firstName && localprofile.lastName ? (
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-[vazirmatn]">
+              {`${localprofile.firstName} ${localprofile.lastName}`}
+            </h2>
+          ) : (
+            <h2 className="text-lg w-fit py-1 px-2 rounded-4xl md:text-xl font-bold text-gray-400 pointer-events-none box-shadow-custom font-[vazirmatn]">
+              مشخصات فردی کاربر ثبت نشده است
+            </h2>
+          )}
+          {localprofile.bio ? (
+            <p className="text-sm md:text-base text-gray-600 font-[vazirmatn] leading-relaxed">
+              {localprofile.bio}
+            </p>
+          ) : (
+            <p className="text-lg md:text-xl w-fit text-gray-400 pointer-events-none box-shadow-custom rounded-4xl py-1 px-2 font-[vazirmatn] leading-relaxed">
+              بیوگرافی کاربر ثبت نشده است
+            </p>
+          )}
         </div>
       </div>
 

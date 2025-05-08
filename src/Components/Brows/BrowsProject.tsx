@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { GetLandingProjects } from "../../API";
 import SearchBar from "./SearchBar";
@@ -30,7 +31,12 @@ const BrowseProject: React.FC = () => {
   // Sample filter options
   const categories = ["همه", "توسعه وب", "طراحی گرافیک", "دیجیتال مارکتینگ"];
   const skills = ["React", "Node.js", "Photoshop", "SEO"];
-  const sortOptions = ["جدیدترین", "قدیمی‌ترین", "بیشترین پیشنهاد", "کمترین پیشنهاد"];
+  const sortOptions = [
+    "جدیدترین",
+    "قدیمی‌ترین",
+    "بیشترین پیشنهاد",
+    "کمترین پیشنهاد",
+  ];
 
   // Fetch projects from API
   useEffect(() => {
@@ -45,7 +51,13 @@ const BrowseProject: React.FC = () => {
           label: project.label,
           timeLeft: "14 روز و 23 ساعت",
           views: 42,
-          tags: ["SEO", "Photoshop", "Freelancing", "eCommerce", "Social Media"],
+          tags: [
+            "SEO",
+            "Photoshop",
+            "Freelancing",
+            "eCommerce",
+            "Social Media",
+          ],
         }));
         setProjects(formattedProjects);
       } catch (err) {
