@@ -23,18 +23,17 @@ const TeamListPage: React.FC = () => {
       try {
         setIsLoading(true);
         const teamsData = await getTeams();
-
         // Transform API response to match Team interface
         const transformedTeams: Team[] = teamsData.map((team: any) => ({
-          id: team.id.toString(),
+          id: team.id,
           name: team.title,
           description: team.description,
-          memberCount: team.owner ? 1 : 0, // Starting with owner count
+          // memberCount: team.owner ? 1 : 0, // Starting with owner count
           members: team.owner
             ? [
                 {
-                  id: team.owner.userid.toString(),
-                  name: `${team.owner.firstname} ${team.owner.lastname}`,
+                  id: team.owner.userid,
+                  name: `${team.owner.member_info.firstname} ${team.owner.member_info.lastname}`,
                   role: team.owner.position || "مالک",
                   avatar: team.owner.profile || "",
                 },
@@ -43,6 +42,7 @@ const TeamListPage: React.FC = () => {
           position: team.position || "",
           profile: team.profile || "",
         }));
+        // console.log("teamsData", transformedTeams);
 
         setTeams(transformedTeams);
         setFilteredTeams(transformedTeams);
@@ -61,7 +61,7 @@ const TeamListPage: React.FC = () => {
   const indexOfLastTeam = currentPage * teamsPerPage;
   const indexOfFirstTeam = indexOfLastTeam - teamsPerPage;
   const currentTeams = filteredTeams.slice(indexOfFirstTeam, indexOfLastTeam);
-  const totalPages = Math.ceil(filteredTeams.length / teamsPerPage);
+  // const totalPages = Math.ceil(filteredTeams.length / teamsPerPage);
   // console.log("currentTeams", currentTeams);
   const handleCreateTeam = () => {
     setIsModalOpen(true);
@@ -94,7 +94,7 @@ const TeamListPage: React.FC = () => {
         id: response.id.toString(),
         name: response.title || teamData.name,
         description: response.description || teamData.description,
-        memberCount: teamData.members.length,
+        // memberCount: teamData.members.length,
         members: teamData.members,
         position: response.position || "",
         profile: response.profile || "",

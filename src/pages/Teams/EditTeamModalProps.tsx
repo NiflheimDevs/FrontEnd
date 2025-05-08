@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Team } from "./index";
+import { Team, TeamData } from "./index";
 import { updateTeamInfo } from "../../API";
 
 interface EditTeamModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (teamData: Team) => void;
-  team: Team;
+  onSubmit: (teamData: TeamData) => void;
+  team: TeamData;
 }
 
 const EditTeamModal: React.FC<EditTeamModalProps> = ({

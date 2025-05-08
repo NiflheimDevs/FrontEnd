@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User } from "./index";
-import { users } from "./staticData";
+// import { users } from "./staticData";
 
 interface AddMemberModalProps {
   isOpen: boolean;
@@ -13,7 +13,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
-  existingMemberIds,
+  // existingMemberIds,
 }) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,12 +26,12 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
   const searchRef = useRef<HTMLDivElement>(null);
 
   // Filter out existing members and filter by search term
-  const availableUsers = users.filter(
-    (user) =>
-      !existingMemberIds.includes(user.id) &&
-      (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  // const availableUsers = users.filter(
+  //   (user) =>
+  //     !existingMemberIds.includes(user.id) &&
+  //     (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+  // );
 
   // Handle click outside to close modal
   useEffect(() => {
@@ -111,11 +111,11 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
     setError("");
   };
 
-  const selectUser = (user: User) => {
-    setSelectedUser(user);
-    setSearchTerm(user.name);
-    setIsSearching(false);
-  };
+  // const selectUser = (user: User) => {
+  //   setSelectedUser(user);
+  //   setSearchTerm(user.name);
+  //   setIsSearching(false);
+  // };
 
   if (!isOpen) return null;
 
@@ -174,7 +174,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
                 required
               />
 
-              {isSearching && (
+              {/* {isSearching && (
                 <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
                   {availableUsers.length > 0 ? (
                     availableUsers.map((user) => (
@@ -209,7 +209,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
                     </div>
                   )}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
 

@@ -53,7 +53,15 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
                   </div>
                   <div className="bg-blue-400/30 w-8 h-8 rounded-full flex items-center justify-center mr-2">
                     <span className="text-white text-sm font-bold">
-                      {member.name.charAt(0)}
+                      {member.avatar === "" ? (
+                        member.name.charAt(0)
+                      ) : (
+                        <img
+                          src={member.avatar}
+                          alt="Team Profile"
+                          className="h-7 w-7 rounded-full"
+                        />
+                      )}
                     </span>
                   </div>
                 </div>

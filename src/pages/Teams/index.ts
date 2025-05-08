@@ -1,3 +1,12 @@
+export type Permission =
+  | "ADD_MEMBER"
+  | "REMOVE_MEMEBER"
+  | "BIDDER"
+  | "EDIT_INFO"
+  | "EDIT_NICKNAME"
+  | "EDIT_ROLE"
+  | "DELETE_TEAM";
+
 // Update index.ts with project interfaces
 export interface User {
   id: string;
@@ -5,15 +14,27 @@ export interface User {
   email: string;
   role: string;
   avatar: string;
+  position: string;
+  username?: string;
 }
-
+export interface TeamData {
+  id: string;
+  name: string;
+  description: string;
+  members: User[];
+  memberCount?: number;
+  createdAt?: string;
+  profileImage?: string;
+  permissions?: Permission[];
+}
 export interface Team {
   id: string;
   name: string;
   description: string;
-  profile: string;
+  profile?: string;
   members: User[];
   projects?: Project[];
+  position?: string;
 }
 export interface Project {
   id: string;

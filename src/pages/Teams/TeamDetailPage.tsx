@@ -6,8 +6,7 @@ import TeamMemberCard from "./TeamMemberCard";
 import AddMemberModal from "./AddMemberModal";
 import EditTeamModal from "./EditTeamModalProps";
 import { getTeam } from "../../API"; // Import your API function
-import { User, Project, projects } from "./index";
-
+import { User, Project, projects, TeamData, Permission } from "./index";
 // Define types based on the API response structure
 interface TeamMember {
   member_info: {
@@ -31,18 +30,9 @@ interface TeamInfo {
 interface TeamResponse {
   team_info: TeamInfo;
   members: TeamMember[];
+  profile?: string;
   user_id: number;
-  permissions: any;
-}
-
-// Create a type for our component state that matches our existing Team type as closely as possible
-interface TeamData {
-  id: string;
-  name: string;
-  description: string;
-  members: User[];
-  memberCount: number;
-  createdAt?: string;
+  permissions: string[];
 }
 
 const TeamDetailPage: React.FC = () => {
@@ -59,6 +49,12 @@ const TeamDetailPage: React.FC = () => {
 
   const membersPerPage = 5;
 
+  // Check if user has a specific permission
+  const hasPermission = (permission: Permission): boolean => {
+    if (!teamData) return false;
+    return (teamData.permissions ?? []).includes(permission);
+  };
+
   // Fetch team data from API when component mounts
   useEffect(() => {
     const fetchTeamData = async () => {
@@ -66,7 +62,7 @@ const TeamDetailPage: React.FC = () => {
 
       try {
         setIsLoading(true);
-        const response = await getTeam({}, id);
+        const response: TeamResponse = await getTeam({}, id);
 
         // Transform API response to match our component's expected format
         const transformedData: TeamData = {
@@ -84,6 +80,8 @@ const TeamDetailPage: React.FC = () => {
           })),
           memberCount: response.members.length,
           createdAt: response.team_info.created_at,
+          profileImage: response.profile,
+          permissions: response.permissions as Permission[],
         };
 
         setTeamData(transformedData);
@@ -134,8 +132,11 @@ const TeamDetailPage: React.FC = () => {
   };
 
   // Handle updating the team data
-  const handleEditTeam = (updatedTeam: TeamData) => {
-    setTeamData(updatedTeam);
+  const handleEditTeam = (updatedTeam: TeamData): void => {
+    setTeamData({
+      ...updatedTeam,
+      permissions: teamData?.permissions || [],
+    });
     setIsEditTeamModalOpen(false);
 
     // Here you would also make an API call to update the backend
@@ -144,7 +145,7 @@ const TeamDetailPage: React.FC = () => {
 
   // Handle removing a member from the team
   const handleDeleteMember = (userId: string) => {
-    if (!teamData) return;
+    if (!teamData || !hasPermission("REMOVE_MEMEBER")) return;
 
     const updatedMembers = teamData.members.filter(
       (member) => member.id !== userId
@@ -230,48 +231,82 @@ const TeamDetailPage: React.FC = () => {
       <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
           <div className="flex flex-col sm:flex-row gap-2">
-            <button
-              onClick={() => setIsAddMemberModalOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
-            >
-              <svg
-                className="w-5 h-5 ml-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {hasPermission("ADD_MEMBER") && (
+              <button
+                onClick={() => setIsAddMemberModalOpen(true)}
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              اضافه کردن عضو
-            </button>
-            <button
-              onClick={() => setIsEditTeamModalOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
-            >
-              <svg
-                className="w-5 h-5 ml-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                <svg
+                  className="w-5 h-5 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                اضافه کردن عضو
+              </button>
+            )}
+            {hasPermission("EDIT_INFO") && (
+              <button
+                onClick={() => setIsEditTeamModalOpen(true)}
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                />
-              </svg>
-              ویرایش تیم
-            </button>
+                <svg
+                  className="w-5 h-5 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+                ویرایش تیم
+              </button>
+            )}
+            {hasPermission("BIDDER") && (
+              <button
+                onClick={() => navigate("/Browsproject")}
+                className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded flex items-center justify-center"
+              >
+                <svg
+                  className="w-5 h-5 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+                مشاهده پروژه‌های موجود
+              </button>
+            )}
           </div>
-          <h1 className="text-2xl font-bold text-right order-first md:order-first">
-            {teamData.name}
-          </h1>
+          <div className="flex items-center gap-3">
+            {teamData.profileImage && (
+              <img
+                src={teamData.profileImage}
+                alt={teamData.name}
+                className="w-12 h-12 rounded-full object-cover border-2 border-blue-500"
+              />
+            )}
+            <h1 className="text-2xl font-bold text-right order-first md:order-first">
+              {teamData.name}
+            </h1>
+          </div>
         </div>
 
         <div className="text-right mb-8">
@@ -315,6 +350,9 @@ const TeamDetailPage: React.FC = () => {
                     key={member.id}
                     user={member}
                     onDelete={() => handleDeleteMember(member.id)}
+                    canDelete={hasPermission("REMOVE_MEMEBER")}
+                    canEditRole={hasPermission("EDIT_ROLE")}
+                    canEditNickname={hasPermission("EDIT_NICKNAME")}
                   />
                 ))
               ) : (
@@ -469,6 +507,25 @@ const TeamDetailPage: React.FC = () => {
           >
             بازگشت به صفحه تیم
           </Link>
+
+          {hasPermission("DELETE_TEAM") && (
+            <button
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "آیا از حذف این تیم اطمینان دارید؟ این عمل قابل بازگشت نیست."
+                  )
+                ) {
+                  // Call API to delete team
+                  // Example: deleteTeam(id);
+                  navigate("/teams");
+                }
+              }}
+              className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors duration-300"
+            >
+              حذف تیم
+            </button>
+          )}
         </div>
       </div>
 

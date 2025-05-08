@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User } from "./index";
-import { users } from "./staticData";
 
 interface CreateTeamModalProps {
   isOpen: boolean;
@@ -28,13 +27,13 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  // Filter users based on search term
-  const filteredUsers = users.filter(
-    (user) =>
-      !selectedMembers.find((member) => member.id === user.id) &&
-      (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  // // Filter users based on search term
+  // const filteredUsers = users.filter(
+  //   (user) =>
+  //     !selectedMembers.find((member) => member.id === user.id) &&
+  //     (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+  // );
 
   // Handle click outside to close modal
   useEffect(() => {
@@ -101,11 +100,11 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
     }
   }, [isOpen]);
 
-  const addMember = (user: User) => {
-    setSelectedMembers([...selectedMembers, user]);
-    setSearchTerm("");
-    setIsSearching(false);
-  };
+  // const addMember = (user: User) => {
+  //   setSelectedMembers([...selectedMembers, user]);
+  //   setSearchTerm("");
+  //   setIsSearching(false);
+  // };
 
   const removeMember = (userId: string) => {
     setSelectedMembers(
@@ -201,7 +200,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                 disabled={isSubmitting}
               />
 
-              {isSearching && !isSubmitting && (
+              {/* {isSearching && !isSubmitting && (
                 <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
                   {filteredUsers.length > 0 ? (
                     filteredUsers.map((user) => (
@@ -236,7 +235,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                     </div>
                   )}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
 
