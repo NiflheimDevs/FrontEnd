@@ -526,3 +526,46 @@ export const logout = () => {
   localStorage.removeItem("refreshToken");
   window.location.href = "/"; // Adjust based on your routing
 };
+
+// teams API
+export const getTeams = async () => {
+  try {
+    const response = await apiClient.get("/team/user/0");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت تیم";
+  }
+};
+
+export const createTeam = async (teamData: any) => {
+  try {
+    const apiTeamData = {
+      title: teamData.name,
+      description: teamData.description,
+      members: teamData.members.map((member: any) => member.id),
+    };
+
+    const response = await apiClient.post("/team", apiTeamData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const updateTeamInfo = async (TeamData: any) => {
+  try {
+    const response = await apiClient.patch("/team", TeamData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const getTeam = async (TeamData: any, id: any) => {
+  try {
+    const response = await apiClient.get(`/team/${id}`, TeamData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};

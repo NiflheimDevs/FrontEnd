@@ -5,63 +5,115 @@ import TeamMemberCard from "./TeamMemberCard";
 // import Pagination from './Pagination';
 import AddMemberModal from "./AddMemberModal";
 import EditTeamModal from "./EditTeamModalProps";
-import { teams } from "./staticData";
-import { User, Team, Project, projects } from "./index";
+import { getTeam } from "../../API"; // Import your API function
+import { User, Project, projects, TeamData, Permission } from "./index";
+// Define types based on the API response structure
+interface TeamMember {
+  member_info: {
+    userid: number;
+    username: string;
+    firstname: string;
+    lastname: string;
+    position: string;
+  };
+  profile: string;
+  role: string;
+}
+
+interface TeamInfo {
+  id: number;
+  title: string;
+  description: string;
+  created_at: string;
+}
+
+interface TeamResponse {
+  team_info: TeamInfo;
+  members: TeamMember[];
+  profile?: string;
+  user_id: number;
+  permissions: string[];
+}
 
 const TeamDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  //const [currentPage, setCurrentPage] = useState(1);
   const [currentPage] = useState(1);
   const [activeTab, setActiveTab] = useState<"members" | "projects">("members");
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
   const [isEditTeamModalOpen, setIsEditTeamModalOpen] = useState(false);
-  // Add state to manage the team data
-  const [teamData, setTeamData] = useState<Team | undefined>(
-    teams.find((team) => team.id === id)
-  );
-  // Add state to store team's projects
+  const [teamData, setTeamData] = useState<TeamData | null>(null);
   const [teamProjects, setTeamProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const membersPerPage = 5;
 
-  // Fetch team's projects when component mounts or team changes
-  useEffect(() => {
-    if (id) {
-      const teamProjectsList = projects.filter(
-        (project) => project.teamId === id
-      );
-      setTeamProjects(teamProjectsList);
-    }
-  }, [id, projects]);
+  // Check if user has a specific permission
+  const hasPermission = (permission: Permission): boolean => {
+    if (!teamData) return false;
+    return (teamData.permissions ?? []).includes(permission);
+  };
 
-  if (!teamData) {
-    return (
-      <Layout>
-        <div className="text-center py-10">
-          <h2 className="text-2xl font-bold text-gray-700">تیم پیدا نشد</h2>
-          <Link
-            to="/teams"
-            className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded"
-          >
-            بازگشت به صفحه تیم
-          </Link>
-        </div>
-      </Layout>
-    );
-  }
+  // Fetch team data from API when component mounts
+  useEffect(() => {
+    const fetchTeamData = async () => {
+      if (!id) return;
+
+      try {
+        setIsLoading(true);
+        const response: TeamResponse = await getTeam({}, id);
+
+        // Transform API response to match our component's expected format
+        const transformedData: TeamData = {
+          id: response.team_info.id.toString(),
+          name: response.team_info.title,
+          description: response.team_info.description,
+          members: response.members.map((member: TeamMember) => ({
+            id: member.member_info.userid.toString(),
+            name: `${member.member_info.firstname} ${member.member_info.lastname}`,
+            username: member.member_info.username,
+            email: "", // Not provided in API response
+            avatar: member.profile || "", // Using profile as avatar
+            role: member.role,
+            position: member.member_info.position || "عضو",
+          })),
+          memberCount: response.members.length,
+          createdAt: response.team_info.created_at,
+          profileImage: response.profile,
+          permissions: response.permissions as Permission[],
+        };
+
+        setTeamData(transformedData);
+
+        // Fetch team projects (still using static data for now)
+        // You'll need to replace this with an API call later
+        const teamProjectsList = projects.filter(
+          (project) => project.teamId === id
+        );
+        setTeamProjects(teamProjectsList);
+      } catch (err: any) {
+        console.error("Error fetching team data:", err);
+        setError(err.message || "خطا در دریافت اطلاعات تیم");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTeamData();
+  }, [id]);
 
   // Calculate pagination for members
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
-  const currentMembers = teamData.members.slice(
-    indexOfFirstMember,
-    indexOfLastMember
-  );
-  // const totalPages = Math.ceil(teamData.members.length / membersPerPage);
+  const currentMembers =
+    teamData?.members.slice(indexOfFirstMember, indexOfLastMember) || [];
+  // const totalPages = Math.ceil((teamData?.members.length || 0) / membersPerPage);
 
   // Handle adding a new member to the team
   const handleAddMember = (user: User, role: string) => {
+    if (!teamData) return;
+
     // Create updated user with role
     const updatedUser = { ...user, role };
 
@@ -74,16 +126,27 @@ const TeamDetailPage: React.FC = () => {
 
     setTeamData(updatedTeam);
     setIsAddMemberModalOpen(false);
+
+    // Here you would also make an API call to update the backend
+    // Example: addTeamMember(id, { userId: user.id, role });
   };
 
   // Handle updating the team data
-  const handleEditTeam = (updatedTeam: Team) => {
-    setTeamData(updatedTeam);
+  const handleEditTeam = (updatedTeam: TeamData): void => {
+    setTeamData({
+      ...updatedTeam,
+      permissions: teamData?.permissions || [],
+    });
     setIsEditTeamModalOpen(false);
+
+    // Here you would also make an API call to update the backend
+    // Example: updateTeam(id, { title: updatedTeam.name, description: updatedTeam.description });
   };
 
   // Handle removing a member from the team
   const handleDeleteMember = (userId: string) => {
+    if (!teamData || !hasPermission("REMOVE_MEMEBER")) return;
+
     const updatedMembers = teamData.members.filter(
       (member) => member.id !== userId
     );
@@ -95,19 +158,15 @@ const TeamDetailPage: React.FC = () => {
     };
 
     setTeamData(updatedTeam);
+
+    // Here you would also make an API call to update the backend
+    // Example: removeTeamMember(id, userId);
   };
 
   // Navigate to team projects
   const navigateToTeamProjects = () => {
-   // navigate(`/teams/${id}/projects`);
     navigate(`/Browsproject`);
   };
-
-  // // Navigate to add new project page
-  // const handleAddProject = () => {
-  //   // This would typically navigate to a create project page with the team pre-selected
-  //   navigate(`/projects/new?teamId=${id}`);
-  // };
 
 
   // Get project status badge color
@@ -138,57 +197,127 @@ const TeamDetailPage: React.FC = () => {
     }
   };
 
+  // Show loading state
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500"></div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Show error state
+  if (error || !teamData) {
+    return (
+      <Layout>
+        <div className="text-center py-10">
+          <h2 className="text-2xl font-bold text-gray-700">
+            {error || "تیم پیدا نشد"}
+          </h2>
+          <Link
+            to="/teams"
+            className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded"
+          >
+            بازگشت به صفحه تیم
+          </Link>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
           <div className="flex flex-col sm:flex-row gap-2">
-            <button
-              onClick={() => setIsAddMemberModalOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
-            >
-              <svg
-                className="w-5 h-5 ml-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {hasPermission("ADD_MEMBER") && (
+              <button
+                onClick={() => setIsAddMemberModalOpen(true)}
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              اضافه کردن عضو
-            </button>
-            <button
-              onClick={() => setIsEditTeamModalOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
-            >
-              <svg
-                className="w-5 h-5 ml-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                <svg
+                  className="w-5 h-5 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                اضافه کردن عضو
+              </button>
+            )}
+            {hasPermission("EDIT_INFO") && (
+              <button
+                onClick={() => setIsEditTeamModalOpen(true)}
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                />
-              </svg>
-              ویرایش تیم
-            </button>
+                <svg
+                  className="w-5 h-5 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+                ویرایش تیم
+              </button>
+            )}
+            {hasPermission("BIDDER") && (
+              <button
+                onClick={() => navigate("/Browsproject")}
+                className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded flex items-center justify-center"
+              >
+                <svg
+                  className="w-5 h-5 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+                مشاهده پروژه‌های موجود
+              </button>
+            )}
           </div>
-          <h1 className="text-2xl font-bold text-right order-first md:order-first">
-            {teamData.name}
-          </h1>
+          <div className="flex items-center gap-3">
+            {teamData.profileImage && (
+              <img
+                src={teamData.profileImage}
+                alt={teamData.name}
+                className="w-12 h-12 rounded-full object-cover border-2 border-blue-500"
+              />
+            )}
+            <h1 className="text-2xl font-bold text-right order-first md:order-first">
+              {teamData.name}
+            </h1>
+          </div>
         </div>
 
         <div className="text-right mb-8">
           <p className="text-gray-700">{teamData.description || " "}</p>
+          {teamData.createdAt && (
+            <p className="text-gray-500 text-sm mt-2">
+              تاریخ ایجاد:{" "}
+              {new Date(teamData.createdAt).toLocaleDateString("fa-IR")}
+            </p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -222,6 +351,9 @@ const TeamDetailPage: React.FC = () => {
                     key={member.id}
                     user={member}
                     onDelete={() => handleDeleteMember(member.id)}
+                    canDelete={hasPermission("REMOVE_MEMEBER")}
+                    canEditRole={hasPermission("EDIT_ROLE")}
+                    canEditNickname={hasPermission("EDIT_NICKNAME")}
                   />
                 ))
               ) : (
@@ -356,12 +488,7 @@ const TeamDetailPage: React.FC = () => {
                 </div>
               )}
               <div className="text-center p-4">
-                {/* <button
-                  onClick={handleAddProject}
-                  className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-                >
-                  افزودن پروژه جدید
-                </button> */}
+
                 {teamProjects.length > 0 && (
                   <button
                     onClick={navigateToTeamProjects}
@@ -382,23 +509,46 @@ const TeamDetailPage: React.FC = () => {
           >
             بازگشت به صفحه تیم
           </Link>
+
+          {hasPermission("DELETE_TEAM") && (
+            <button
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "آیا از حذف این تیم اطمینان دارید؟ این عمل قابل بازگشت نیست."
+                  )
+                ) {
+                  // Call API to delete team
+                  // Example: deleteTeam(id);
+                  navigate("/teams");
+                }
+              }}
+              className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors duration-300"
+            >
+              حذف تیم
+            </button>
+          )}
         </div>
       </div>
 
       {/* Add the modals */}
-      <AddMemberModal
-        isOpen={isAddMemberModalOpen}
-        onClose={() => setIsAddMemberModalOpen(false)}
-        onSubmit={handleAddMember}
-        existingMemberIds={teamData.members.map((member) => member.id)}
-      />
+      {teamData && (
+        <>
+          <AddMemberModal
+            isOpen={isAddMemberModalOpen}
+            onClose={() => setIsAddMemberModalOpen(false)}
+            onSubmit={handleAddMember}
+            existingMemberIds={teamData.members.map((member) => member.id)}
+          />
 
-      <EditTeamModal
-        isOpen={isEditTeamModalOpen}
-        onClose={() => setIsEditTeamModalOpen(false)}
-        onSubmit={handleEditTeam}
-        team={teamData}
-      />
+          <EditTeamModal
+            isOpen={isEditTeamModalOpen}
+            onClose={() => setIsEditTeamModalOpen(false)}
+            onSubmit={handleEditTeam}
+            team={teamData}
+          />
+        </>
+      )}
     </Layout>
   );
 };
