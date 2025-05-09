@@ -500,7 +500,6 @@ export const AcceptBid = async (bid_id: string, apiData: any) => {
 export const GetProjectBid = async (project_id: string) => {
   try {
     const response = await apiClient.get(`/project/${project_id}/bid`);
-    console.log(response);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در دریافت موجودی کیف پول";
@@ -636,4 +635,3 @@ export const addMember = async (addMemberData: any) => {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
-
