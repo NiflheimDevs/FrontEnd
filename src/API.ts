@@ -542,9 +542,8 @@ export const createTeam = async (teamData: any) => {
     const apiTeamData = {
       title: teamData.name,
       description: teamData.description,
-      members: teamData.members.map((member: any) => member.id),
+      members: teamData.members.map((member: any) => Number(member.id)),
     };
-
     const response = await apiClient.post("/team", apiTeamData);
     return response.data;
   } catch (error: any) {
@@ -552,9 +551,10 @@ export const createTeam = async (teamData: any) => {
   }
 };
 
-export const updateTeamInfo = async (TeamData: any) => {
+export const updateTeamInfo = async (teamData: any) => {
   try {
-    const response = await apiClient.patch("/team", TeamData);
+    console.log(teamData);
+    const response = await apiClient.patch("/team", teamData);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
@@ -564,6 +564,33 @@ export const updateTeamInfo = async (TeamData: any) => {
 export const getTeam = async (TeamData: any, id: any) => {
   try {
     const response = await apiClient.get(`/team/${id}`, TeamData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const deleteTeam = async (id: any) => {
+  try {
+    const response = await apiClient.delete(`/team/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const getTeamRole = async () => {
+  try {
+    const response = await apiClient.get("/role/team");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const addMember = async (addMemberData: any) => {
+  try {
+    const response = await apiClient.post("/team/member", addMemberData);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";

@@ -91,7 +91,7 @@ const TeamListPage: React.FC = () => {
 
       // Create a new team object from the API response
       const newTeam: Team = {
-        id: response.id.toString(),
+        id: response.id,
         name: response.title || teamData.name,
         description: response.description || teamData.description,
         // memberCount: teamData.members.length,

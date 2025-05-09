@@ -9,7 +9,7 @@ export type Permission =
 
 // Update index.ts with project interfaces
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   role: string;
@@ -18,7 +18,7 @@ export interface User {
   username?: string;
 }
 export interface TeamData {
-  id: string;
+  id: number;
   name: string;
   description: string;
   members: User[];
@@ -28,7 +28,7 @@ export interface TeamData {
   permissions?: Permission[];
 }
 export interface Team {
-  id: string;
+  id: number;
   name: string;
   description: string;
   profile?: string;
@@ -37,7 +37,7 @@ export interface Team {
   position?: string;
 }
 export interface Project {
-  id: string;
+  id: number;
   title: string;
   description: string;
   status: "در انتظار" | "در حال انجام" | "تکمیل شده" | "لغو شده";
@@ -47,10 +47,9 @@ export interface Project {
   assignedUsers: User[];
 }
 
-// Sample project data for staticData.ts
 export const projects: Project[] = [
   {
-    id: "1",
+    id: 1,
     title: "طراحی وب‌سایت فروشگاهی",
     description:
       "طراحی و توسعه یک فروشگاه آنلاین با قابلیت پرداخت آنلاین و مدیریت موجودی",
@@ -61,7 +60,7 @@ export const projects: Project[] = [
     assignedUsers: [],
   },
   {
-    id: "9",
+    id: 9,
     title: "اپلیکیشن موبایل",
     description: "توسعه اپلیکیشن موبایل برای پلتفرم‌های iOS و Android",
     status: "در انتظار",
@@ -71,7 +70,7 @@ export const projects: Project[] = [
     assignedUsers: [],
   },
   {
-    id: "3",
+    id: 3,
     title: "بهینه‌سازی SEO سایت",
     description: "بهبود رتبه سایت در موتورهای جستجو و افزایش ترافیک ارگانیک",
     status: "تکمیل شده",

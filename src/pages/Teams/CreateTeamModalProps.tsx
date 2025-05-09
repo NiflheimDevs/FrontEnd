@@ -12,6 +12,50 @@ interface CreateTeamModalProps {
   isSubmitting?: boolean;
 }
 
+// Mock users data with your ID (5) included
+const mockUsers: User[] = [
+  {
+    id: 5,
+    name: "شما",
+    email: "your.email@example.com",
+    role: "مدیر",
+    avatar: "/avatar-placeholder.png",
+    position: "",
+  },
+  {
+    id: 1,
+    name: "رضا احمدی",
+    email: "reza.ahmadi@example.com",
+    role: "توسعه دهنده",
+    avatar: "/avatar-placeholder.png",
+    position: "",
+  },
+  {
+    id: 2,
+    name: "سارا محمدی",
+    email: "sara.mohammadi@example.com",
+    role: "طراح",
+    avatar: "/avatar-placeholder.png",
+    position: "",
+  },
+  {
+    id: 3,
+    name: "امیر حسینی",
+    email: "amir.hosseini@example.com",
+    role: "مدیر محصول",
+    avatar: "/avatar-placeholder.png",
+    position: "",
+  },
+  {
+    id: 4,
+    name: "نازنین کریمی",
+    email: "nazanin.karimi@example.com",
+    role: "بازاریاب",
+    avatar: "/avatar-placeholder.png",
+    position: "",
+  },
+];
+
 const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   isOpen,
   onClose,
@@ -27,13 +71,13 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  // // Filter users based on search term
-  // const filteredUsers = users.filter(
-  //   (user) =>
-  //     !selectedMembers.find((member) => member.id === user.id) &&
-  //     (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //       user.email.toLowerCase().includes(searchTerm.toLowerCase()))
-  // );
+  // Filter users based on search term
+  const filteredUsers = mockUsers.filter(
+    (user) =>
+      !selectedMembers.find((member) => member.id === user.id) &&
+      (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   // Handle click outside to close modal
   useEffect(() => {
@@ -100,13 +144,13 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
     }
   }, [isOpen]);
 
-  // const addMember = (user: User) => {
-  //   setSelectedMembers([...selectedMembers, user]);
-  //   setSearchTerm("");
-  //   setIsSearching(false);
-  // };
+  const addMember = (user: User) => {
+    setSelectedMembers([...selectedMembers, user]);
+    setSearchTerm("");
+    setIsSearching(false);
+  };
 
-  const removeMember = (userId: string) => {
+  const removeMember = (userId: number) => {
     setSelectedMembers(
       selectedMembers.filter((member) => member.id !== userId)
     );
@@ -115,15 +159,21 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
       <div
         ref={modalRef}
-        className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-screen overflow-y-auto"
+        className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn"
+        style={{
+          boxShadow:
+            "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+          direction: "rtl",
+        }}
       >
-        <div className="flex justify-between items-center border-b p-4">
+        <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600">
+          <h2 className="text-xl font-bold text-white">ساخت تیم جدید</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-white hover:bg-blue-700 hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
             disabled={isSubmitting}
           >
             <svg
@@ -140,14 +190,13 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
               />
             </svg>
           </button>
-          <h2 className="text-xl font-bold">ساخت تیم جدید</h2>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-4">
-          <div className="mb-4">
+        <form onSubmit={handleSubmit} className="p-6">
+          <div className="mb-5">
             <label
               htmlFor="name"
-              className="block text-gray-700 text-right mb-2"
+              className="block text-gray-700 text-right mb-2 font-medium"
             >
               نام تیم
             </label>
@@ -156,17 +205,17 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border border-gray-300 p-2 rounded text-right"
+              className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               placeholder="نام تیم را وارد کنید"
               required
               disabled={isSubmitting}
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-5">
             <label
               htmlFor="description"
-              className="block text-gray-700 text-right mb-2"
+              className="block text-gray-700 text-right mb-2 font-medium"
             >
               توضیحات
             </label>
@@ -174,7 +223,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full border border-gray-300 p-2 rounded text-right"
+              className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               placeholder="توضیحات تیم را وارد کنید"
               rows={3}
               required
@@ -182,8 +231,8 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
             />
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 text-right mb-2">
+          <div className="mb-5">
+            <label className="block text-gray-700 text-right mb-2 font-medium">
               اعضای تیم
             </label>
             <div className="relative" ref={searchRef}>
@@ -195,23 +244,40 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                   setIsSearching(true);
                 }}
                 onClick={() => setIsSearching(true)}
-                className="w-full border border-gray-300 p-2 rounded text-right"
+                className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 placeholder="جستجوی کاربران..."
                 disabled={isSubmitting}
               />
 
-              {/* {isSearching && !isSubmitting && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+              <div className="absolute left-3 top-3 text-gray-400">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+
+              {isSearching && !isSubmitting && (
+                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto animate-fadeIn">
                   {filteredUsers.length > 0 ? (
                     filteredUsers.map((user) => (
                       <div
                         key={user.id}
                         onClick={() => addMember(user)}
-                        className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer border-b"
+                        className="flex items-center justify-between p-3 hover:bg-blue-50 cursor-pointer border-b transition-colors duration-150"
                       >
                         <div className="text-gray-500 text-sm">{user.role}</div>
                         <div className="flex items-center">
-                          <div className="mr-2 text-right">
+                          <div className="mr-3 text-right">
                             <p className="text-sm font-medium">{user.name}</p>
                             <p className="text-xs text-gray-500">
                               {user.email}
@@ -220,7 +286,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                           <img
                             src={user.avatar}
                             alt={user.name}
-                            className="w-8 h-8 rounded-full"
+                            className="w-10 h-10 rounded-full border-2 border-gray-200"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.src = "/avatar-placeholder.png";
@@ -230,29 +296,44 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                       </div>
                     ))
                   ) : (
-                    <div className="p-3 text-center text-gray-500">
+                    <div className="p-4 text-center text-gray-500">
                       کاربری یافت نشد
                     </div>
                   )}
                 </div>
-              )} */}
+              )}
             </div>
           </div>
 
           {selectedMembers.length > 0 && (
-            <div className="mb-4">
-              <h3 className="text-gray-700 text-right mb-2">
+            <div className="mb-6">
+              <h3 className="text-gray-700 text-right mb-3 font-medium">
                 اعضای انتخاب شده:
               </h3>
-              <div className="border rounded-lg overflow-hidden">
+              <div className="border rounded-lg overflow-hidden bg-gray-50">
                 {selectedMembers.map((member) => (
                   <div
                     key={member.id}
-                    className="flex items-center justify-between p-2 border-b last:border-b-0"
+                    className="flex items-center justify-between p-3 border-b last:border-b-0 hover:bg-gray-100 transition-colors duration-150"
                   >
+                    <div className="flex items-center">
+                      <img
+                        src={member.avatar}
+                        alt={member.name}
+                        className="w-10 h-10 rounded-full border-2 border-blue-200"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "/avatar-placeholder.png";
+                        }}
+                      />
+                      <div className="mr-3 text-right">
+                        <p className="text-sm font-medium">{member.name}</p>
+                        <p className="text-xs text-gray-500">{member.role}</p>
+                      </div>
+                    </div>
                     <button
                       onClick={() => removeMember(member.id)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded-full transition-colors duration-150"
                       type="button"
                       disabled={isSubmitting}
                     >
@@ -270,40 +351,31 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                         />
                       </svg>
                     </button>
-
-                    <div className="flex items-center">
-                      <div className="mr-2 text-right">
-                        <p className="text-sm font-medium">{member.name}</p>
-                        <p className="text-xs text-gray-500">{member.role}</p>
-                      </div>
-                      <img
-                        src={member.avatar}
-                        alt={member.name}
-                        className="w-8 h-8 rounded-full"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = "/avatar-placeholder.png";
-                        }}
-                      />
-                    </div>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between mt-8">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded"
+              className="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium"
               disabled={isSubmitting}
             >
               انصراف
             </button>
             <button
               type="submit"
-              className={`bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
+              className={`bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium ${
+                isSubmitting ||
+                !name ||
+                !description ||
+                selectedMembers.length === 0
+                  ? "opacity-70 cursor-not-allowed"
+                  : ""
+              }`}
               disabled={
                 !name ||
                 !description ||
@@ -313,7 +385,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
             >
               {isSubmitting && (
                 <svg
-                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                  className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -341,5 +413,14 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
     </div>
   );
 };
+
+// Add these animations to your global CSS or tailwind.config.js
+// @keyframes fadeIn {
+//   from { opacity: 0; transform: translateY(-10px); }
+//   to { opacity: 1; transform: translateY(0); }
+// }
+// .animate-fadeIn {
+//   animation: fadeIn 0.3s ease-out forwards;
+// }
 
 export default CreateTeamModal;
