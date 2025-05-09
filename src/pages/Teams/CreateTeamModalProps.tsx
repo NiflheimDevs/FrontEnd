@@ -12,7 +12,6 @@ interface CreateTeamModalProps {
   isSubmitting?: boolean;
 }
 
-
 const mockUsers: User[] = [
   {
     id: 5,
@@ -56,7 +55,6 @@ const mockUsers: User[] = [
   },
 ];
 
-
 const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   isOpen,
   onClose,
@@ -72,14 +70,12 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
 
-
   const filteredUsers = mockUsers.filter(
     (user) =>
       !selectedMembers.find((member) => member.id === user.id) &&
       (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase()))
   );
-
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -152,7 +148,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   };
 
   const removeMember = (userId: number) => {
-
     setSelectedMembers(
       selectedMembers.filter((member) => member.id !== userId)
     );
@@ -176,7 +171,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
           <button
             onClick={onClose}
             className="text-white hover:bg-blue-700 hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
-
             disabled={isSubmitting}
           >
             <svg
@@ -200,7 +194,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
             <label
               htmlFor="name"
               className="block text-gray-700 text-right mb-2 font-medium"
-
             >
               نام تیم
             </label>
@@ -220,7 +213,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
             <label
               htmlFor="description"
               className="block text-gray-700 text-right mb-2 font-medium"
-
             >
               توضیحات
             </label>
@@ -238,7 +230,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
 
           <div className="mb-5">
             <label className="block text-gray-700 text-right mb-2 font-medium">
-
               اعضای تیم
             </label>
             <div className="relative" ref={searchRef}>
@@ -274,7 +265,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
 
               {isSearching && !isSubmitting && (
                 <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto animate-fadeIn">
-
                   {filteredUsers.length > 0 ? (
                     filteredUsers.map((user) => (
                       <div
@@ -294,7 +284,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                             src={user.avatar}
                             alt={user.name}
                             className="w-10 h-10 rounded-full border-2 border-gray-200"
-
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.src = "/avatar-placeholder.png";
@@ -309,7 +298,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                     </div>
                   )}
                 </div>
-              )} */}
+              )}
             </div>
           </div>
 
@@ -319,7 +308,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                 اعضای انتخاب شده:
               </h3>
               <div className="border rounded-lg overflow-hidden bg-gray-50">
-
                 {selectedMembers.map((member) => (
                   <div
                     key={member.id}
@@ -330,7 +318,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                         src={member.avatar}
                         alt={member.name}
                         className="w-10 h-10 rounded-full border-2 border-blue-200"
-
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.src = "/avatar-placeholder.png";
@@ -372,7 +359,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
               type="button"
               onClick={onClose}
               className="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium"
-
               disabled={isSubmitting}
             >
               انصراف
@@ -387,7 +373,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                   ? "opacity-70 cursor-not-allowed"
                   : ""
               }`}
-
               disabled={
                 !name ||
                 !description ||
@@ -398,7 +383,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
               {isSubmitting && (
                 <svg
                   className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
-
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -426,8 +410,5 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
     </div>
   );
 };
-
-
-
 
 export default CreateTeamModal;
