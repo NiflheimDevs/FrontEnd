@@ -3,7 +3,7 @@ import { User } from "./index";
 
 interface TeamMemberCardProps {
   user: User;
-  onDelete?: (userId: string) => void;
+  onDelete?: (userId: number) => void;
   canDelete?: boolean;
   canEditRole?: boolean;
   canEditNickname?: boolean;

@@ -5,8 +5,11 @@ import TeamMemberCard from "./TeamMemberCard";
 // import Pagination from './Pagination';
 import AddMemberModal from "./AddMemberModal";
 import EditTeamModal from "./EditTeamModalProps";
-import { getTeam } from "../../API"; // Import your API function
+import DeleteTeamModal from "./DeleteTeamModalProps"; // Import the DeleteTeamModal component
+import { getTeam, deleteTeam } from "../../API"; // Import your API functions
 import { User, Project, projects, TeamData, Permission } from "./index";
+
+
 // Define types based on the API response structure
 interface TeamMember {
   member_info: {
@@ -42,6 +45,9 @@ const TeamDetailPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"members" | "projects">("members");
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
   const [isEditTeamModalOpen, setIsEditTeamModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Add state for delete modal
+  const [isDeleting, setIsDeleting] = useState(false); // Add state for delete loading
+
   const [teamData, setTeamData] = useState<TeamData | null>(null);
   const [teamProjects, setTeamProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -66,11 +72,12 @@ const TeamDetailPage: React.FC = () => {
 
         // Transform API response to match our component's expected format
         const transformedData: TeamData = {
-          id: response.team_info.id.toString(),
+          id: response.team_info.id,
           name: response.team_info.title,
           description: response.team_info.description,
           members: response.members.map((member: TeamMember) => ({
-            id: member.member_info.userid.toString(),
+            id: member.member_info.userid,
+
             name: `${member.member_info.firstname} ${member.member_info.lastname}`,
             username: member.member_info.username,
             email: "", // Not provided in API response
@@ -103,6 +110,31 @@ const TeamDetailPage: React.FC = () => {
     fetchTeamData();
   }, [id]);
 
+  // Handle team deletion
+  const handleDeleteTeam = async () => {
+    if (!id || !teamData) return;
+
+    try {
+      setIsDeleting(true);
+      await deleteTeam(id); // Call your API function to delete the team
+
+      // Navigate back to teams page after successful deletion
+      navigate("/teams");
+
+      // You could also add a toast notification here if you're using a notification library
+      // toast.success("تیم با موفقیت حذف شد");
+    } catch (err: any) {
+      console.error("Error deleting team:", err);
+      setError(err.message || "خطا در حذف تیم");
+      // You could also add a toast notification for the error
+      // toast.error("خطا در حذف تیم");
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteModalOpen(false);
+    }
+  };
+
+
   // Calculate pagination for members
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
@@ -111,11 +143,12 @@ const TeamDetailPage: React.FC = () => {
   // const totalPages = Math.ceil((teamData?.members.length || 0) / membersPerPage);
 
   // Handle adding a new member to the team
-  const handleAddMember = (user: User, role: string) => {
+  const handleAddMember = (user: User) => {
+
     if (!teamData) return;
 
     // Create updated user with role
-    const updatedUser = { ...user, role };
+    const updatedUser = { ...user };
 
     // Update team data with new member
     const updatedTeam = {
@@ -144,7 +177,8 @@ const TeamDetailPage: React.FC = () => {
   };
 
   // Handle removing a member from the team
-  const handleDeleteMember = (userId: string) => {
+  const handleDeleteMember = (userId: number) => {
+
     if (!teamData || !hasPermission("REMOVE_MEMEBER")) return;
 
     const updatedMembers = teamData.members.filter(
@@ -231,6 +265,23 @@ const TeamDetailPage: React.FC = () => {
     <Layout>
       <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-right order-first md:order-first">
+              {teamData.name}
+            </h1>
+
+            {teamData.profileImage ? (
+              <img
+                src={teamData.profileImage}
+                alt={teamData.name}
+                className="w-12 h-12 rounded-full object-cover border-2 border-blue-500"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full object-cover border-2 border-blue-500">
+                {teamData.name.charAt(0)}
+              </div>
+            )}
+          </div>
           <div className="flex flex-col sm:flex-row gap-2">
             {hasPermission("ADD_MEMBER") && (
               <button
@@ -295,18 +346,7 @@ const TeamDetailPage: React.FC = () => {
                 مشاهده پروژه‌های موجود
               </button>
             )}
-          </div>
-          <div className="flex items-center gap-3">
-            {teamData.profileImage && (
-              <img
-                src={teamData.profileImage}
-                alt={teamData.name}
-                className="w-12 h-12 rounded-full object-cover border-2 border-blue-500"
-              />
-            )}
-            <h1 className="text-2xl font-bold text-right order-first md:order-first">
-              {teamData.name}
-            </h1>
+
           </div>
         </div>
 
@@ -512,17 +552,8 @@ const TeamDetailPage: React.FC = () => {
 
           {hasPermission("DELETE_TEAM") && (
             <button
-              onClick={() => {
-                if (
-                  window.confirm(
-                    "آیا از حذف این تیم اطمینان دارید؟ این عمل قابل بازگشت نیست."
-                  )
-                ) {
-                  // Call API to delete team
-                  // Example: deleteTeam(id);
-                  navigate("/teams");
-                }
-              }}
+              onClick={() => setIsDeleteModalOpen(true)} // Open the delete modal instead of window.confirm
+
               className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors duration-300"
             >
               حذف تیم
@@ -539,6 +570,8 @@ const TeamDetailPage: React.FC = () => {
             onClose={() => setIsAddMemberModalOpen(false)}
             onSubmit={handleAddMember}
             existingMemberIds={teamData.members.map((member) => member.id)}
+            teamId={0}
+
           />
 
           <EditTeamModal
@@ -547,6 +580,17 @@ const TeamDetailPage: React.FC = () => {
             onSubmit={handleEditTeam}
             team={teamData}
           />
+
+          {/* Add the DeleteTeamModal */}
+          <DeleteTeamModal
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+            onConfirm={() => handleDeleteTeam()}
+            teamId={teamData.id.toString()}
+            teamName={teamData.name}
+            isDeleting={isDeleting}
+          />
+
         </>
       )}
     </Layout>
