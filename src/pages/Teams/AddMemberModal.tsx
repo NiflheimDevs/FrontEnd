@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { User } from "./index";
 import { addMember } from "../../API";
 
+
 interface AddMemberModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -54,16 +55,19 @@ const sampleUsers: User[] = [
   },
 ];
 
+
 const AddMemberModal: React.FC<AddMemberModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
   existingMemberIds,
   teamId,
+
 }) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -77,6 +81,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
       (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+
 
   // Handle click outside to close modal
   useEffect(() => {
@@ -127,6 +132,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
     setError("");
     setSearchTerm("");
     setSelectedUser(null);
+
   }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -143,6 +149,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
         });
 
         onSubmit(selectedUser);
+
         resetForm();
         onClose();
       } catch (err) {
@@ -168,6 +175,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
     setIsSearching(false);
   };
 
+
   if (!isOpen) return null;
 
   return (
@@ -183,6 +191,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
       >
         <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600">
           <h2 className="text-xl font-bold text-white">افزودن عضو به تیم</h2>
+
           <button
             onClick={onClose}
             className="text-white hover:bg-blue-700 hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
@@ -205,6 +214,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
+
           {error && (
             <div className="mb-5 p-3 bg-red-100 text-red-700 rounded-lg text-right animate-fadeIn">
               {error}
@@ -215,6 +225,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
             <label className="block text-gray-700 text-right mb-2 font-medium">
               کاربر
             </label>
+
             <div className="relative" ref={searchRef}>
               <input
                 type="text"
@@ -232,6 +243,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
               />
 
               {isSearching && (
+
                 <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
                   {availableUsers.length > 0 ? (
                     availableUsers.map((user) => (
@@ -266,13 +278,14 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
                     </div>
                   )}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
 
           {selectedUser && (
             <div className="mb-5 p-4 bg-gray-50 rounded-lg">
               <h3 className="text-gray-700 text-right mb-2 font-medium">
+
                 کاربر انتخاب شده:
               </h3>
               <div className="flex items-center justify-end">
@@ -295,6 +308,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
           )}
 
           <div className="flex justify-between mt-8">
+
             <button
               type="button"
               onClick={onClose}

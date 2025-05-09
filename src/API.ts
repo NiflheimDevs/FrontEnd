@@ -555,6 +555,7 @@ export const updateTeamInfo = async (teamData: any) => {
   try {
     console.log(teamData);
     const response = await apiClient.patch("/team", teamData);
+
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
@@ -596,3 +597,4 @@ export const addMember = async (addMemberData: any) => {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
+

@@ -19,6 +19,7 @@ export interface User {
 }
 export interface TeamData {
   id: number;
+
   name: string;
   description: string;
   members: User[];
@@ -61,6 +62,7 @@ export const projects: Project[] = [
   },
   {
     id: 9,
+
     title: "اپلیکیشن موبایل",
     description: "توسعه اپلیکیشن موبایل برای پلتفرم‌های iOS و Android",
     status: "در انتظار",

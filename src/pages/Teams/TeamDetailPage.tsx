@@ -9,6 +9,7 @@ import DeleteTeamModal from "./DeleteTeamModalProps"; // Import the DeleteTeamMo
 import { getTeam, deleteTeam } from "../../API"; // Import your API functions
 import { User, Project, projects, TeamData, Permission } from "./index";
 
+
 // Define types based on the API response structure
 interface TeamMember {
   member_info: {
@@ -46,6 +47,7 @@ const TeamDetailPage: React.FC = () => {
   const [isEditTeamModalOpen, setIsEditTeamModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Add state for delete modal
   const [isDeleting, setIsDeleting] = useState(false); // Add state for delete loading
+
   const [teamData, setTeamData] = useState<TeamData | null>(null);
   const [teamProjects, setTeamProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -75,6 +77,7 @@ const TeamDetailPage: React.FC = () => {
           description: response.team_info.description,
           members: response.members.map((member: TeamMember) => ({
             id: member.member_info.userid,
+
             name: `${member.member_info.firstname} ${member.member_info.lastname}`,
             username: member.member_info.username,
             email: "", // Not provided in API response
@@ -131,6 +134,7 @@ const TeamDetailPage: React.FC = () => {
     }
   };
 
+
   // Calculate pagination for members
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
@@ -140,6 +144,7 @@ const TeamDetailPage: React.FC = () => {
 
   // Handle adding a new member to the team
   const handleAddMember = (user: User) => {
+
     if (!teamData) return;
 
     // Create updated user with role
@@ -154,6 +159,9 @@ const TeamDetailPage: React.FC = () => {
 
     setTeamData(updatedTeam);
     setIsAddMemberModalOpen(false);
+
+    // Here you would also make an API call to update the backend
+    // Example: addTeamMember(id, { userId: user.id, role });
   };
 
   // Handle updating the team data
@@ -170,6 +178,7 @@ const TeamDetailPage: React.FC = () => {
 
   // Handle removing a member from the team
   const handleDeleteMember = (userId: number) => {
+
     if (!teamData || !hasPermission("REMOVE_MEMEBER")) return;
 
     const updatedMembers = teamData.members.filter(
@@ -192,6 +201,7 @@ const TeamDetailPage: React.FC = () => {
   const navigateToTeamProjects = () => {
     navigate(`/Browsproject`);
   };
+
 
   // Get project status badge color
   const getStatusBadgeColor = (status: any) => {
@@ -336,6 +346,7 @@ const TeamDetailPage: React.FC = () => {
                 مشاهده پروژه‌های موجود
               </button>
             )}
+
           </div>
         </div>
 
@@ -517,6 +528,7 @@ const TeamDetailPage: React.FC = () => {
                 </div>
               )}
               <div className="text-center p-4">
+
                 {teamProjects.length > 0 && (
                   <button
                     onClick={navigateToTeamProjects}
@@ -541,6 +553,7 @@ const TeamDetailPage: React.FC = () => {
           {hasPermission("DELETE_TEAM") && (
             <button
               onClick={() => setIsDeleteModalOpen(true)} // Open the delete modal instead of window.confirm
+
               className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors duration-300"
             >
               حذف تیم
@@ -558,6 +571,7 @@ const TeamDetailPage: React.FC = () => {
             onSubmit={handleAddMember}
             existingMemberIds={teamData.members.map((member) => member.id)}
             teamId={0}
+
           />
 
           <EditTeamModal
@@ -576,6 +590,7 @@ const TeamDetailPage: React.FC = () => {
             teamName={teamData.name}
             isDeleting={isDeleting}
           />
+
         </>
       )}
     </Layout>

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Team, TeamData } from "./index";
 // import { updateTeamInfo } from "../../API";
 
+
 interface EditTeamModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -64,12 +65,13 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
       description: description,
       id: team.id,
     };
-    console.log("teamData", teamData);
+    //console.log("teamData", teamData);
     try {
       setIsSubmitting(true);
 
       // Send data to backend
       // const result = await updateTeamInfo(teamData);
+
 
       // Update team with new data (for frontend state)
       const updatedTeam: Team = {
@@ -105,6 +107,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
       >
         <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600">
           <h2 className="text-xl font-bold text-white">ویرایش تیم</h2>
+
           <button
             onClick={onClose}
             className="text-white hover:bg-blue-700 hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
@@ -127,6 +130,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} className="p-6">
+
           {error && (
             <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-right animate-fadeIn">
               {error}
@@ -137,6 +141,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
             <label
               htmlFor="name"
               className="block text-gray-700 text-right mb-2 font-medium"
+
             >
               نام تیم
             </label>
@@ -156,6 +161,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
             <label
               htmlFor="description"
               className="block text-gray-700 text-right mb-2 font-medium"
+
             >
               توضیحات
             </label>
@@ -172,6 +178,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
           </div>
 
           <div className="flex justify-between mt-8">
+
             <button
               type="button"
               onClick={onClose}
@@ -211,6 +218,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
                   ></path>
                 </svg>
               )}
+
               {isSubmitting ? "در حال ذخیره..." : "ذخیره تغییرات"}
             </button>
           </div>
