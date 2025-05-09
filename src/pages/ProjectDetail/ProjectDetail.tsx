@@ -5,12 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { GetProject, GetProjectBid } from "../../API";
 import { errorMapper } from "../Error/Error";
 import { useNotification } from "../../Notification/NotificationProvider";
-import {
-  Bider,
-  BiderSummery,
-  ProjectData,
-  Team,
-} from "../../Components/Biders/types";
+import { Bider, ProjectData, Team } from "../../Components/Biders/types";
 import ProjectBiderCard from "../../Components/ProjectDetail/ProjectBiderCard";
 import BidModal from "../../Components/ProjectDetail/BidModal";
 
@@ -106,18 +101,20 @@ const ProjectDetail = () => {
     const fetchProjectBids = async () => {
       try {
         if (project_id) {
-          const bids: BiderSummery[] = await GetProjectBid(project_id);
-          const mappedBiders: Bider[] = bids.map((bid) => ({
-            type: bid.team_info.type,
-            bid_id: bid.bid_id.toString(),
-            title: bid.team_info.title,
-            pre_payment: 0,
-            total: bid.total,
-            expected_time: bid.expected_time,
-            profile: bid.team_info.profile,
-            description: bid.team_info.description,
-          }));
-          setBiders(mappedBiders);
+          const bids = await GetProjectBid(project_id);
+          if (bids) {
+            const mappedBiders: Bider[] = bids.map((bid: any) => ({
+              type: bid.team_info.type,
+              bid_id: bid.bid_id.toString(),
+              title: bid.team_info.title,
+              pre_payment: 0,
+              total: bid.total,
+              expected_time: bid.expected_time,
+              profile: bid.team_info.profile,
+              description: bid.team_info.description,
+            }));
+            setBiders(mappedBiders);
+          }
         }
       } catch (error: any) {
         setError(errorMapper(error));
