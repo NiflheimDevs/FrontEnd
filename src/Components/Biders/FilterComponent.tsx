@@ -106,16 +106,16 @@ const CustomSlider: React.FC<{
       <div
         dir="ltr"
         ref={trackRef}
-        className="relative h-3 mt-1 bg-gray-200 rounded-full cursor-pointer transition-all duration-300 hover:bg-gray-300 touch-none"
+        className="relative h-2 mt-1 bg-gray-200 rounded-full cursor-pointer transition-all duration-300 hover:bg-gray-300 touch-none"
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
       >
         <div
-          className="absolute h-3 bg-gradient-to-l from-blue-500 to-blue-600 rounded-full"
+          className="absolute h-2 bg-gradient-to-l from-blue-500 to-blue-600 rounded-full"
           style={{ width: `${percentage}%` }}
         />
         <div
-          className="absolute w-8 h-8 bg-white border-2 border-blue-500 rounded-full -top-2.5 shadow-lg transition-transform duration-200 hover:scale-110 active:scale-125"
+          className="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full -top-1.5 shadow-lg transition-transform duration-200 hover:scale-110 active:scale-125"
           style={{
             left: `${percentage}%`,
             transform: "translateX(-50%)",
@@ -168,7 +168,7 @@ const FilterComponent: React.FC<FilterProps> = ({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setTempSearchTerm(e.currentTarget.value)
                 }
-                className="w-full h-fit rounded-xl border border-gray-200 p-3 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                className="w-full h-fit rounded-xl border border-gray-200 px-3 py-2 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
               />
             </div>
             {/* Price Range Filter */}
@@ -186,7 +186,7 @@ const FilterComponent: React.FC<FilterProps> = ({
                   onChange={(e) =>
                     handlePriceRangeChange(Number(e.target.value), 0)
                   }
-                  className="w-full rounded-xl border border-gray-200 p-2.5 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
+                  className="w-full rounded-xl border border-gray-200 px-3 py-2 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
                 />
                 <span className="text-sm text-gray-500 font-medium select-none">
                   تا
@@ -200,7 +200,7 @@ const FilterComponent: React.FC<FilterProps> = ({
                   onChange={(e) =>
                     handlePriceRangeChange(Number(e.target.value), 1)
                   }
-                  className="w-full rounded-xl border border-gray-200 p-2.5 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
+                  className="w-full rounded-xl border border-gray-200 px-3 py-2 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
                 />
               </div>
               <span className="text-xs text-gray-500 mt-3 block select-none">
@@ -243,7 +243,7 @@ const FilterComponent: React.FC<FilterProps> = ({
               applyFilters();
             }}
             type="submit"
-            className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl px-8 py-3 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+            className="bg-gradient-to-r cursor-pointer from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl px-8 py-3 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
           >
             اعمال فیلتر
           </button>
