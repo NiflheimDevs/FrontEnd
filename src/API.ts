@@ -28,7 +28,18 @@ apiClient.interceptors.request.use(
       "/landing/projects",
     ];
 
-    if (token && !publicRoutes.includes(config.url || "")) {
+    // Regex to match dynamic routes like /project/{project_id}/bid
+    const isPublicDynamicRoute = (url: string | undefined): boolean => {
+      if (!url) return false;
+      // Matches /project/{any_number}/bid
+      return /^\/project\/\d+\/bid$/.test(url);
+    };
+
+    if (
+      token &&
+      !publicRoutes.includes(config.url || "") &&
+      !isPublicDynamicRoute(config.url)
+    ) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -462,6 +473,34 @@ export const getWalletBalance = async (): Promise<number> => {
 export const getBalance = async () => {
   try {
     const response = await apiClient.get("/user/balance");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت موجودی کیف پول";
+  }
+};
+
+export const GetProjectView = async (project_id: string) => {
+  try {
+    const response = await apiClient.get(`/project/${project_id}/view`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت موجودی کیف پول";
+  }
+};
+
+export const AcceptBid = async (bid_id: string, apiData: any) => {
+  try {
+    const response = await apiClient.post(`/bid/${bid_id}/accept`, apiData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت موجودی کیف پول";
+  }
+};
+
+export const GetProjectBid = async (project_id: string) => {
+  try {
+    const response = await apiClient.get(`/project/${project_id}/bid`);
+    console.log(response);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در دریافت موجودی کیف پول";

@@ -1,69 +1,76 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Header from "../../Components/MainContent/Header";
-import { FaStar } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
-import { GetProject } from "../../API";
+import { GetProject, GetProjectBid } from "../../API";
 import { errorMapper } from "../Error/Error";
 import { useNotification } from "../../Notification/NotificationProvider";
-
-// Define interfaces for our data structure
-interface Tag {
-  id: number;
-  name: string;
-}
-
-interface Label {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-}
-
-interface ProjectData {
-  project_id: number;
-  Owner_id: number;
-  title: string;
-  description: string;
-  label: Label;
-  tags: Tag[];
-  first_name: string;
-  last_name: string;
-  username: string;
-  duration: string;
-}
-
-interface Bidder {
-  name: string;
-  rating: number;
-  bid: string;
-}
+import {
+  Bider,
+  BiderSummery,
+  ProjectData,
+  Team,
+} from "../../Components/Biders/types";
+import ProjectBiderCard from "../../Components/ProjectDetail/ProjectBiderCard";
+import BidModal from "../../Components/ProjectDetail/BidModal";
 
 const ProjectDetail = () => {
   const { project_id } = useParams();
-  const { error: notifyError } = useNotification();
+  const { error: notifyError, success: notifySuccess } = useNotification();
   const navigate = useNavigate();
   const [projectData, setProjectData] = useState<ProjectData | null>(null);
-  const [, setLoading] = useState<boolean>(true);
-  const [error] = useState<string | null>(null);
-  // Sample bidders data - in a real app, this would also come from an API
-  const bidders: Bidder[] = [
-    { name: "احمد احمدی", rating: 4.1, bid: "۵۰۰ تومان" },
-    { name: "محمد محمدی", rating: 4.2, bid: "۴۹۰ تومان" },
-    { name: "علی رنجبر", rating: 3, bid: "۴۸۰ تومان" },
-    { name: "رضا غلامی", rating: 2, bid: "۵۰۰ تومان" },
-    { name: "حسن سهرابی", rating: 4.5, bid: "۴۷۵ تومان" },
-    { name: "یاسر سمیعی", rating: 3.8, bid: "۴۹۵ تومان" },
-    { name: "کریم صیاد فعال", rating: 4.0, bid: "۴۸۵ تومان" },
+  const [biders, setBiders] = useState<Bider[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [formData, setFormData] = useState({
+    team_id: 0,
+    description: "",
+    project_id: project_id ? parseInt(project_id) : 0,
+  });
+
+  const myBid: Bider = {
+    type: 1,
+    bid_id: "1",
+    title: "تیم من",
+    pre_payment: 500000,
+    total: 2000000,
+    expected_time: 7,
+    profile: "https://example.com/profiles/team-professional.jpg",
+    description:
+      "ما تیمی با تجربه در توسعه وب هستیم و آماده‌ایم پروژه شما را با کیفیت بالا و در زمان مقرر تحویل دهیم.",
+  };
+
+  const teams: Team[] = [
+    {
+      team_id: 14,
+      title: "تیم حرفه‌ای",
+      description: "تیم با تجربه در توسعه وب",
+      profile:
+        "https://www.potential.com/wp-content/uploads/2020/11/Image-1.png",
+      isValid: true,
+    },
+    {
+      team_id: 16,
+      title: "تیم حرفه‌ای",
+      description: "تیم با تجربه در توسعه وب",
+      profile: "https://gfjbdkgb/profile1.jpg",
+      isValid: true,
+    },
+    {
+      team_id: 15,
+      title: "تیم تازه‌کار",
+      description: "تیم جدید اما پر انرژی",
+      profile: "https://fjdsnfkdsnfm/profile2.jpg",
+      isValid: false,
+    },
   ];
 
-  // Format date to show how long ago the project was posted
   const formatDuration = (dateString: string) => {
     const projectDate = new Date(dateString);
     const currentDate = new Date();
     const diffTime = Math.abs(currentDate.getTime() - projectDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
     return `${diffDays} روز پیش`;
   };
 
@@ -73,14 +80,12 @@ const ProjectDetail = () => {
         if (project_id) {
           setLoading(true);
           const response = await GetProject(project_id);
-          console.log("API response:", response);
           setProjectData(response);
-          setLoading(false);
         }
       } catch (error: any) {
         const errorData = error;
         if (errorData.tag && errorData.errors?.length > 0) {
-          if (errorData.tag == "NOT_FOUND") {
+          if (errorData.tag === "NOT_FOUND") {
             navigate("/error");
           } else {
             const allErrors = errorData.errors;
@@ -95,66 +100,109 @@ const ProjectDetail = () => {
       }
     };
     fetchProjectData();
-  }, [project_id]);
+  }, [project_id, navigate, notifyError]);
 
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-  //       <Header />
-  //       <div className="mt-20">در حال بارگذاری...</div>
-  //     </div>
-  //   );
-  // }
+  useEffect(() => {
+    const fetchProjectBids = async () => {
+      try {
+        if (project_id) {
+          const bids: BiderSummery[] = await GetProjectBid(project_id);
+          const mappedBiders: Bider[] = bids.map((bid) => ({
+            type: bid.team_info.type,
+            bid_id: bid.bid_id.toString(),
+            title: bid.team_info.title,
+            pre_payment: 0,
+            total: bid.total,
+            expected_time: bid.expected_time,
+            profile: bid.team_info.profile,
+            description: bid.team_info.description,
+          }));
+          setBiders(mappedBiders);
+        }
+      } catch (error: any) {
+        setError(errorMapper(error));
+        notifyError(`${errorMapper(error)}`);
+      }
+    };
+    fetchProjectBids();
+  }, [project_id, notifyError]);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        name === "pre_payment" || name === "total" || name === "expected_time"
+          ? parseInt(value) || 0
+          : value,
+    }));
+  };
+
+  const handleTeamSelect = (team_id: number) => {
+    setFormData((prev) => ({ ...prev, team_id }));
+  };
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      notifySuccess("پیشنهاد با موفقیت ارسال شد.");
+      setIsModalOpen(false);
+    } catch (error: any) {
+      notifyError(`${errorMapper(error)}`);
+    }
+  };
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+          <div className="text-gray-800">در حال بارگذاری...</div>
+        </div>
+      </>
+    );
+  }
 
   if (error || !projectData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-        {/* <Header /> */}
-        {/* <div className="mt-20 text-red-500">{error || "اطلاعات پروژه یافت نشد."}</div> */}
-      </div>
+      <>
+        <Header />
+        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+          <div className="text-red-500">
+            {error || "اطلاعات پروژه یافت نشد."}
+          </div>
+        </div>
+      </>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
       <Header />
-
-      {/* Main Content */}
-      <main className="flex-1 p-4 sm:p-6 mt-20 flex justify-center">
-        <div className="shadow-2xl rounded-2xl bg-white flex flex-col sm:flex-row w-full max-w-7xl mx-auto h-auto sm:h-[600px] gap-6 sm:gap-20 p-4 sm:p-6">
-          {/* Left Half: Project Information (Top on small screens) */}
+      <main className="flex-1 p-4 sm:p-6 md:mt-2 sm:mt-2 mt-20 flex justify-center">
+        <div className="shadow-xl rounded-2xl bg-white flex flex-col sm:flex-row w-full max-w-7xl mx-auto h-auto sm:h-[600px] gap-6 sm:gap-12 p-4 sm:p-6">
           <div className="w-full sm:w-1/2 flex flex-col space-y-6">
-            {/* Project Title and Info */}
             <div className="flex flex-col space-y-2">
-              <h2 className="text-xl sm:text-2xl font-bold text-[#3E79DE] text-right">
+              <h2 className="text-xl sm:text-2xl font-bold text-blue-400 text-right">
                 عنوان پروژه: {projectData.title}
               </h2>
               <div className="flex flex-col text-right text-xs sm:text-sm text-gray-500">
                 <span>{formatDuration(projectData.duration)}</span>
-                <span>{bidders.length} پیشنهاد</span>
+                <span>{biders.length} پیشنهاد</span>
               </div>
             </div>
-            {/* Creator Info */}
             <div>
-              {/* <h3 className="text-base sm:text-lg font-semibold text-black mb-2 text-right">
-                سازنده پروژه:
-              </h3> */}
-              <p className="font-semibold text-black text-xs sm:text-sm text-right"></p>
-            </div>
-            {/* Project Description */}
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-black mb-2 text-right">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 text-right">
                 توضیحات پروژه:
               </h3>
               <p className="text-gray-600 text-xs sm:text-sm leading-relaxed text-right">
                 {projectData.description}
               </p>
             </div>
-
-            {/* Skills Required */}
             <div>
-              <h3 className="text-base sm:text-lg font-semibold text-black mb-2 text-right">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 text-right">
                 مهارت‌های مورد نیاز:
               </h3>
               <div className="flex flex-wrap gap-2 justify-start">
@@ -162,7 +210,7 @@ const ProjectDetail = () => {
                   projectData.tags.map((tag) => (
                     <span
                       key={tag.id}
-                      className="bg-white border border-[#3E79DE] text-[#3E79DE] px-2 sm:px-3 py-1 rounded-full text-xs font-medium"
+                      className="bg-blue-50 border border-blue-200 text-blue-400 px-2 sm:px-3 py-1 rounded-full text-xs font-medium"
                     >
                       {tag.name}
                     </span>
@@ -170,53 +218,39 @@ const ProjectDetail = () => {
               </div>
             </div>
           </div>
-
-          {/* Right Half: Bidders List and Buttons (Bottom on small screens) */}
-          <div className="w-full sm:w-1/2 flex flex-col space-y-6">
-            {/* Bidders List */}
+          <div className="w-full sm:w-1/2 flex flex-col space-y-4">
             <div className="flex-1">
-              <h3 className="text-base sm:text-lg font-semibold text-[#3E79DE] mb-3 text-right">
+              <h3
+                className={`text-base sm:text-lg font-semibold text-gray-800 text-right ${myBid ? "block" : "hidden"}`}
+              >
+                پیشنهاد من:
+              </h3>
+              <div
+                className={`flex flex-wrap gap-2 justify-start pl-3 mb-4 mt-1 ${myBid ? "block" : "hidden"}`}
+              >
+                <ProjectBiderCard bider={myBid} color={1} />
+              </div>
+              <h3 className="text-base sm:text-lg font-semibold text-blue-400 mb-1 mt-3 text-right">
                 پیشنهاد دهندگان:
               </h3>
-              <div className="space-y-3 max-h-105 overflow-y-auto pl-3 custom-scrollbar">
-                {bidders.map((bidder, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-3 bg-gradient-to-l from-blue-500 to-blue-400 rounded-lg shadow-sm hover:bg-scale-103 transition"
-                  >
-                    <div className="flex items-center space-x-3 gap-3 space-x-reverse">
-                      <div className="w-8 sm:w-9 h-8 sm:h-9 bg-gray-300 rounded-full flex items-center justify-center">
-                        {/* User initial or placeholder */}
-                        {bidder.name.charAt(0)}
-                      </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-xs sm:text-sm text-gray-200">
-                          {bidder.name}
-                        </p>
-                        <div className="flex items-center gap-1">
-                          <FaStar className="text-yellow-400" size={12} />
-                          <span className="text-xs text-yellow-400">
-                            {bidder.rating}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-gray-200 text-xs sm:text-sm font-medium">
-                      {bidder.bid}
-                    </p>
-                  </div>
+              <div className="space-y-3 max-h-74 overflow-y-auto pl-3 custom-scrollbar">
+                {biders.map((bider) => (
+                  <>
+                    <ProjectBiderCard bider={bider} color={0} />
+                  </>
                 ))}
               </div>
             </div>
-
-            {/* Buttons Below Bidders */}
             <div className="flex justify-center gap-4">
-              <button className="bg-blue-500 cursor-pointer w-full sm:w-3/4 h-[48px] text-white rounded-lg hover:bg-blue-600 text-sm">
-                ارسال پیشنهاد
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-blue-400 hover:bg-blue-500 cursor-pointer w-full sm:w-3/4 h-[48px] text-white rounded-lg text-sm shadow-md transition-colors"
+              >
+                {myBid ? "تغییر پیشنهاد" : "ارسال پیشنهاد"}
               </button>
               <button
                 onClick={() => navigate(-1)}
-                className="bg-gray-500 cursor-pointer w-full sm:w-1/4 h-[48px] rounded-lg text-white hover:bg-gray-600 text-sm"
+                className="bg-gray-400 hover:bg-gray-500 cursor-pointer w-full sm:w-1/4 h-[48px] rounded-lg text-white text-sm shadow-md transition-colors"
               >
                 بازگشت
               </button>
@@ -224,6 +258,16 @@ const ProjectDetail = () => {
           </div>
         </div>
       </main>
+
+      <BidModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        teams={teams}
+        formData={formData}
+        handleInputChange={handleInputChange}
+        handleTeamSelect={handleTeamSelect}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 };

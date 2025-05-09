@@ -7,8 +7,6 @@ import profile from "@/assets/Dashboard/PersonCheckFill.svg";
 import Wallet from "@/assets/Dashboard/Credit.svg";
 import messages from "@/assets/Dashboard/Message.svg";
 import teams from "@/assets/Dashboard/Teams.svg";
-// import settings from "@/assets/Dashboard/settings.svg";
-
 import exit from "@/assets/Dashboard/DoorOpen.svg";
 import { logout } from "../../API";
 
@@ -17,11 +15,15 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
-export default function Sidebar({ isSidebarOpen }: SidebarProps) {
+export default function Sidebar({
+  isSidebarOpen,
+  toggleSidebar,
+}: SidebarProps) {
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const location = useLocation();
+  const sidebarRef = useRef<HTMLElement>(null);
 
   const projectsDropdownRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
@@ -45,18 +47,39 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
   };
 
   const handleMouseEnter = () => {
-    setIsHovered(true);
+    if (window.innerWidth >= 640) {
+      setIsHovered(true);
+    }
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
-    setIsProjectsOpen(false);
-    setIsProfileOpen(false);
+    if (window.innerWidth >= 640) {
+      setIsHovered(false);
+      setIsProjectsOpen(false);
+      setIsProfileOpen(false);
+    }
   };
 
   const isActive = (path: string) => {
     return location.pathname === path;
   };
+
+  useEffect(() => {
+    if (window.innerWidth < 640) return;
+
+    const checkHoverStatus = () => {
+      if (sidebarRef.current) {
+        const isMouseOver = sidebarRef.current.matches(":hover");
+        setIsHovered(isMouseOver);
+      }
+    };
+
+    checkHoverStatus();
+
+    const interval = setInterval(checkHoverStatus, 100);
+
+    return () => clearInterval(interval);
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -84,22 +107,33 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
     const handleResize = () => {
       if (window.innerWidth >= 640) {
         setIsHovered(false);
+        if (isSidebarOpen) {
+          toggleSidebar();
+        }
       } else {
-        setIsHovered(true);
+        setIsHovered(isSidebarOpen);
       }
     };
 
     handleResize();
-
     window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [isSidebarOpen, toggleSidebar]);
+
+  useEffect(() => {
+    if (window.innerWidth < 640) {
+      setIsHovered(isSidebarOpen);
+    }
+  }, [isSidebarOpen]);
+
+  const isTextVisible = window.innerWidth < 640 ? isSidebarOpen : isHovered;
 
   return (
     <aside
+      ref={sidebarRef}
       className={`fixed top-19 right-0 md:rounded-tl-3xl sm:rounded-tl-3xl h-[calc(100vh-76px)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 ease-in-out z-50 will-change-[width]
         ${isSidebarOpen ? "w-48" : "w-20"} sm:w-20 sm:hover:w-48 w-full group flex flex-col
         ${isSidebarOpen ? "block" : "hidden"} sm:block`}
@@ -119,7 +153,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             <img src={dashboard} alt="Dashboard" className="w-6 h-6" />
             <span
               className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
-                (window.innerWidth >= 640 ? isHovered : isSidebarOpen)
+                isTextVisible
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
               } ${isActive("/dashboard") ? "text-black" : "text-gray-800"}`}
@@ -145,7 +179,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               <img src={projects} alt="Projects" className="w-6 h-6" />
               <span
                 className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
-                  (window.innerWidth >= 640 ? isHovered : isSidebarOpen)
+                  isTextVisible
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
                 } ${
@@ -160,30 +194,29 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               </span>
               <MdArrowDropDown
                 className={`absolute right-10 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
-                  (window.innerWidth >= 640 ? isHovered : isSidebarOpen)
+                  isTextVisible
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
                 } text-gray-800`}
               />
             </button>
 
-            {isProjectsOpen &&
-              (window.innerWidth >= 640 ? isHovered : isSidebarOpen) && (
-                <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out">
-                  <Link
-                    to="/myprojects"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
-                  >
-                    پروژه‌های من
-                  </Link>
-                  <Link
-                    to="/createproject"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
-                  >
-                    ساخت پروژه
-                  </Link>
-                </div>
-              )}
+            {isProjectsOpen && isTextVisible && (
+              <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out">
+                <Link
+                  to="/myprojects"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
+                >
+                  پروژه‌های من
+                </Link>
+                <Link
+                  to="/createproject"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg"
+                >
+                  ساخت پروژه
+                </Link>
+              </div>
+            )}
           </div>
 
           <Link
@@ -197,7 +230,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             <img src={Wallet} alt="Wallet" className="w-6 h-6" />
             <span
               className={`absolute right-14 transition-all duration-200 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
-                (window.innerWidth >= 640 ? isHovered : isSidebarOpen)
+                isTextVisible
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
               } ${isActive("/wallet") ? "text-black" : "text-gray-800"}`}
@@ -223,7 +256,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               <img src={profile} alt="Profile" className="w-6 h-6" />
               <span
                 className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
-                  (window.innerWidth >= 640 ? isHovered : isSidebarOpen)
+                  isTextVisible
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
                 } ${
@@ -238,38 +271,37 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
               </span>
               <MdArrowDropDown
                 className={`absolute right-10 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
-                  (window.innerWidth >= 640 ? isHovered : isSidebarOpen)
+                  isTextVisible
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
                 } text-gray-800`}
               />
             </button>
 
-            {isProfileOpen &&
-              (window.innerWidth >= 640 ? isHovered : isSidebarOpen) && (
-                <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out">
-                  <Link
-                    to="/profile"
-                    className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg ${
-                      isActive("/profile")
-                        ? "font-bold text-black bg-blue-200"
-                        : "text-gray-800"
-                    }`}
-                  >
-                    ویرایش پروفایل
-                  </Link>
-                  <Link
-                    to="/changepass"
-                    className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg ${
-                      isActive("/changepass")
-                        ? "font-bold text-black bg-blue-200"
-                        : "text-gray-800"
-                    }`}
-                  >
-                    تغییر رمز
-                  </Link>
-                </div>
-              )}
+            {isProfileOpen && isTextVisible && (
+              <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out">
+                <Link
+                  to="/profile"
+                  className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg ${
+                    isActive("/profile")
+                      ? "font-bold text-black bg-blue-200"
+                      : "text-gray-800"
+                  }`}
+                >
+                  ویرایش پروفایل
+                </Link>
+                <Link
+                  to="/changepass"
+                  className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg ${
+                    isActive("/changepass")
+                      ? "font-bold text-black bg-blue-200"
+                      : "text-gray-800"
+                  }`}
+                >
+                  تغییر رمز
+                </Link>
+              </div>
+            )}
           </div>
 
           <Link
@@ -283,7 +315,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             <img src={messages} alt="chat" className="w-6 h-6" />
             <span
               className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
-                (window.innerWidth >= 640 ? isHovered : isSidebarOpen)
+                isTextVisible
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
               } ${isActive("/chat") ? "text-black" : "text-gray-800"}`}
@@ -297,24 +329,47 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
 
           <Link
             to="/teams"
-            className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${isActive("/teams") ? "font-bold text-black bg-blue-200" : "text-gray-800"}`}
+            className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 ${
+              isActive("/teams")
+                ? "font-bold text-black bg-blue-200"
+                : "text-gray-800"
+            }`}
           >
             <img src={teams} alt="teams" className="w-6 h-6" />
             <span
               className={`absolute right-14 transition-all duration-200 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
-                (window.innerWidth >= 640 ? isHovered : isSidebarOpen)
+                isTextVisible
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
               } ${isActive("/teams") ? "text-black" : "text-gray-800"}`}
             >
-              تیم ها
+              تیم‌ها
             </span>
             {isActive("/teams") && (
               <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
             )}
           </Link>
+
+          <div className="w-full relative lg:hidden md:hidden sm:hidden block">
+            <button
+              onClick={handleLogout}
+              className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer"
+            >
+              <img src={exit} alt="exit" className="w-6 h-6" />
+              <span
+                className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
+                  isTextVisible
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 translate-x-4"
+                } text-gray-800 cursor-pointer`}
+              >
+                خروج
+              </span>
+            </button>
+          </div>
         </div>
-        <div className="w-full sm:static absolute bottom-30">
+
+        <div className="w-full static lg:block md:block sm:block hidden">
           <button
             onClick={handleLogout}
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer"
@@ -322,7 +377,7 @@ export default function Sidebar({ isSidebarOpen }: SidebarProps) {
             <img src={exit} alt="exit" className="w-6 h-6" />
             <span
               className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
-                (window.innerWidth >= 640 ? isHovered : isSidebarOpen)
+                isTextVisible
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 translate-x-4"
               } text-gray-800 cursor-pointer`}
