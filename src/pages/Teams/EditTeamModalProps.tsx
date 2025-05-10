@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { TeamData } from "./index";
 // import { UpdateProfileTeam, DeleteProfileTeam } from "../../API";
 
-
 interface EditTeamModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -116,7 +115,6 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
       setError("لطفا همه فیلدهای ضروری را پر کنید");
       return;
     }
-
     try {
       setIsSubmitting(true);
 
