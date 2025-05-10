@@ -17,6 +17,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   canEditNickname = false,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [AvatarExists, SetAvatarExist] = useState<boolean>(true);
   const [editingNickname, setEditingNickname] = useState(false);
   const [nickname, setNickname] = useState(user.position || "عضو");
   const menuRef = useRef<HTMLDivElement>(null);
@@ -67,17 +68,20 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   const showMenu = canDelete || canEditRole || canEditNickname;
   return (
     <div className="flex items-center justify-between py-3 px-4 border-b hover:bg-gray-50">
-      <div className="flex items-center space-x-2 space-x-reverse">
-        {user.avatar ? (
+      <div className="flex items-center justify-center space-x-2 space-x-reverse">
+        {AvatarExists ? (
           <img
             src={user.avatar}
             alt={user.username}
-            className="h-8 w-8 rounded-full object-cover"
+            className="h-8 w-8 min-h-8 min-w-8 rounded-full object-cover"
+            onError={() => SetAvatarExist(false)}
           />
-        ) : (
-          <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-            {user.name.charAt(0)}
+        ) : user.username ? (
+          <div className="h-8 w-8 min-h-8 min-w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+            {user.username.charAt(0)}
           </div>
+        ) : (
+          <></>
         )}
         <div className="mr-3">
           <p className="text-gray-900 font-medium">{user.username}</p>

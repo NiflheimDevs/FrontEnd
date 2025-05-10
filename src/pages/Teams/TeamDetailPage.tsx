@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Layout from "./Layout";
@@ -6,9 +7,13 @@ import TeamMemberCard from "./TeamMemberCard";
 import AddMemberModal from "./AddMemberModal";
 import EditTeamModal from "./EditTeamModalProps";
 import DeleteTeamModal from "./DeleteTeamModalProps"; // Import the DeleteTeamModal component
-import { getTeam, deleteTeam } from "../../API"; // Import your API functions
+import {
+  getTeam,
+  deleteTeam,
+  UpdateProfileTeam,
+  DeleteProfileTeam,
+} from "../../API";
 import { User, Project, projects, TeamData, Permission } from "./index";
-
 
 // Define types based on the API response structure
 interface TeamMember {
@@ -47,7 +52,7 @@ const TeamDetailPage: React.FC = () => {
   const [isEditTeamModalOpen, setIsEditTeamModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Add state for delete modal
   const [isDeleting, setIsDeleting] = useState(false); // Add state for delete loading
-
+  const [ProfileExists, SetProfileExist] = useState<boolean>(true);
   const [teamData, setTeamData] = useState<TeamData | null>(null);
   const [teamProjects, setTeamProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -134,7 +139,6 @@ const TeamDetailPage: React.FC = () => {
     }
   };
 
-
   // Calculate pagination for members
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
@@ -144,7 +148,6 @@ const TeamDetailPage: React.FC = () => {
 
   // Handle adding a new member to the team
   const handleAddMember = (user: User) => {
-
     if (!teamData) return;
 
     // Create updated user with role
@@ -164,21 +167,45 @@ const TeamDetailPage: React.FC = () => {
     // Example: addTeamMember(id, { userId: user.id, role });
   };
 
-  // Handle updating the team data
-  const handleEditTeam = (updatedTeam: TeamData): void => {
-    setTeamData({
-      ...updatedTeam,
-      permissions: teamData?.permissions || [],
-    });
-    setIsEditTeamModalOpen(false);
+  const handleEditTeam = async (
+    updatedTeam: TeamData,
+    teamPictureFile: File | null
+  ): Promise<void> => {
+    try {
+      // First update the basic team info
+      // Here you would call your API to update the team info
+      // Example: await updateTeam(id, { title: updatedTeam.name, description: updatedTeam.description });
 
-    // Here you would also make an API call to update the backend
-    // Example: updateTeam(id, { title: updatedTeam.name, description: updatedTeam.description });
+      // Handle profile picture update
+      if (teamPictureFile) {
+        // Upload new profile picture
+        const formData = new FormData();
+        formData.append("file", teamPictureFile);
+
+        const result = await UpdateProfileTeam(updatedTeam.id, formData);
+        // Update the picture URL in the updatedTeam object
+        updatedTeam.picture = result?.profile || updatedTeam.picture;
+      } else if (updatedTeam.picture === null) {
+        // && team.picture !== null
+        // Delete profile picture if it was removed
+        await DeleteProfileTeam(updatedTeam.id);
+      }
+
+      // Update the local state with the updated team
+      setTeamData({
+        ...updatedTeam,
+        permissions: teamData?.permissions || [],
+      });
+
+      setIsEditTeamModalOpen(false);
+    } catch (error) {
+      console.error("Error updating team:", error);
+      // Handle error (maybe show an error message)
+    }
   };
 
   // Handle removing a member from the team
   const handleDeleteMember = (userId: number) => {
-
     if (!teamData || !hasPermission("REMOVE_MEMEBER")) return;
 
     const updatedMembers = teamData.members.filter(
@@ -201,7 +228,6 @@ const TeamDetailPage: React.FC = () => {
   const navigateToTeamProjects = () => {
     navigate(`/Browsproject`);
   };
-
 
   // Get project status badge color
   const getStatusBadgeColor = (status: any) => {
@@ -265,22 +291,20 @@ const TeamDetailPage: React.FC = () => {
     <Layout>
       <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-right order-first md:order-first">
-              {teamData.name}
-            </h1>
-
-            {teamData.profileImage ? (
+          <div className="flex items-center gap-3 ">
+            {ProfileExists ? (
               <img
                 src={teamData.profileImage}
                 alt={teamData.name}
-                className="w-12 h-12 rounded-full object-cover border-2 border-blue-500"
+                className="w-12 h-12 rounded-full object-cover border-2 border-blue-500  order-first md:order-first"
+                onError={() => SetProfileExist(false)}
               />
             ) : (
-              <div className="w-12 h-12 rounded-full object-cover border-2 border-blue-500">
+              <div className="w-12 h-12 items-center justify-center flex bg-blue-400/30 text-xl font-semibold rounded-full object-cover border-2 border-blue-500  order-first md:order-first">
                 {teamData.name.charAt(0)}
               </div>
             )}
+            <h1 className="text-2xl font-bold text-right">{teamData.name}</h1>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
             {hasPermission("ADD_MEMBER") && (
@@ -346,7 +370,6 @@ const TeamDetailPage: React.FC = () => {
                 مشاهده پروژه‌های موجود
               </button>
             )}
-
           </div>
         </div>
 
@@ -528,7 +551,6 @@ const TeamDetailPage: React.FC = () => {
                 </div>
               )}
               <div className="text-center p-4">
-
                 {teamProjects.length > 0 && (
                   <button
                     onClick={navigateToTeamProjects}
@@ -553,7 +575,6 @@ const TeamDetailPage: React.FC = () => {
           {hasPermission("DELETE_TEAM") && (
             <button
               onClick={() => setIsDeleteModalOpen(true)} // Open the delete modal instead of window.confirm
-
               className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors duration-300"
             >
               حذف تیم
@@ -571,7 +592,6 @@ const TeamDetailPage: React.FC = () => {
             onSubmit={handleAddMember}
             existingMemberIds={teamData.members.map((member) => member.id)}
             teamId={0}
-
           />
 
           <EditTeamModal
@@ -590,7 +610,6 @@ const TeamDetailPage: React.FC = () => {
             teamName={teamData.name}
             isDeleting={isDeleting}
           />
-
         </>
       )}
     </Layout>
