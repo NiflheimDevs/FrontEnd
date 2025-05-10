@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useRef, useState, useEffect } from "react";
 
 interface FilterProps {
+  maxDeliveryDays: number;
   searchTerm: string;
   setSearchTerm: (value: string) => void;
   filters: {
@@ -127,6 +128,7 @@ const CustomSlider: React.FC<{
 };
 
 const FilterComponent: React.FC<FilterProps> = ({
+  maxDeliveryDays,
   searchTerm,
   setSearchTerm,
   filters,
@@ -224,7 +226,7 @@ const FilterComponent: React.FC<FilterProps> = ({
             />
             <CustomSlider
               min={1}
-              max={filters.maxDeliveryDays}
+              max={maxDeliveryDays}
               step={1}
               value={tempFilters.maxDeliveryDays}
               onChange={(value) =>

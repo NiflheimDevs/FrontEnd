@@ -20,6 +20,7 @@ const Biders: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filterVersion, setFilterVersion] = useState(0);
+  const [maxExpectedTime, setmaxExpectedTime] = useState(0);
   const [filters, setFilters] = useState({
     minRating: 0,
     maxPrice: Number.MAX_SAFE_INTEGER,
@@ -65,11 +66,7 @@ const Biders: React.FC = () => {
               maxDeliveryDays: maxExpectedTime,
             });
             setFilterVersion(1);
-            console.log("Updated filters:", {
-              ...filtersRef.current,
-              priceRange: [0, maxTotal],
-              maxDeliveryDays: maxExpectedTime,
-            });
+            setmaxExpectedTime(maxExpectedTime);
           }
         }
       } catch {
@@ -104,6 +101,7 @@ const Biders: React.FC = () => {
 
         {/* Filter Section */}
         <FilterComponent
+          maxDeliveryDays={maxExpectedTime}
           key={`filter-${filterVersion}`}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
