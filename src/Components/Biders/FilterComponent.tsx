@@ -224,7 +224,7 @@ const FilterComponent: React.FC<FilterProps> = ({
             />
             <CustomSlider
               min={1}
-              max={30}
+              max={filters.maxDeliveryDays}
               step={1}
               value={tempFilters.maxDeliveryDays}
               onChange={(value) =>
