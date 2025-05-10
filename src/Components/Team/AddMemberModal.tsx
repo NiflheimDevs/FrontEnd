@@ -174,7 +174,6 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-xs">
-
       <div
         ref={modalRef}
         className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn"
@@ -189,7 +188,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
 
           <button
             onClick={onClose}
-            className="text-white hover:bg-blue-700 hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
+            className="text-white hover:bg-blue-700 cursor-pointer hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
             disabled={loading}
           >
             <svg
@@ -303,14 +302,14 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium"
+              className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium"
               disabled={loading}
             >
               انصراف
             </button>
             <button
               type="submit"
-              className={`bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium ${
+              className={`bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium ${
                 loading || !selectedUser ? "opacity-70 cursor-not-allowed" : ""
               }`}
               disabled={!selectedUser || loading}
