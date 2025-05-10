@@ -54,6 +54,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
                   <div className="bg-blue-400/30 w-8 h-8 rounded-full flex items-center justify-center ">
                     <span className="text-white text-sm font-semibold">
                       {AvatarExists ? (
+
                         <img
                           src={member.avatar}
                           alt="Team Profile"
@@ -63,7 +64,9 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
                       ) : (
                         member.name.charAt(0)
                       )}
+
                     </span>
+                    <span className="text-xs text-blue-100">{member.role}</span>
                   </div>
                   <div className="flex flex-col items-start mr-2">
                     <span className="text-sm font-medium text-white">
@@ -71,6 +74,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
                     </span>
                     <span className="text-xs text-blue-100">{member.role}</span>
                   </div>
+
                 </div>
               ))}
             </div>

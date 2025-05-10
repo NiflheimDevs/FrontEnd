@@ -174,6 +174,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-xs">
+
       <div
         ref={modalRef}
         className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn"

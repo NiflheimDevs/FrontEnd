@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { TeamData } from "./index";
 // import { UpdateProfileTeam, DeleteProfileTeam } from "../../API";
 
+
 interface EditTeamModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -119,6 +120,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
     try {
       setIsSubmitting(true);
 
+
       // Create basic team data object
       const teamData = {
         ...team,
@@ -150,6 +152,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
 
   return (
     <div className="fixed inset-0 backdrop-blur-xs bg-opacity-60 flex items-center justify-center z-50 p-4">
+
       <div
         ref={modalRef}
         className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn"
@@ -267,6 +270,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
               {teamPicturePreview ? "تغییر تصویر تیم" : "افزودن تصویر تیم"}
             </button>
           </div>
+
 
           <div className="mb-5">
             <label
