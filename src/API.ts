@@ -635,3 +635,26 @@ export const addMember = async (addMemberData: any) => {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
+
+export const UpdateProfileTeam = async (id: number, userData: any) => {
+  try {
+    const response = await apiClient.post(`/team/profile/${id}`, userData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const DeleteProfileTeam = async (id: number) => {
+  try {
+    const response = await apiClient.delete(`/team/profile/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+

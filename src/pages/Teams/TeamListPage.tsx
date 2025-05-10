@@ -184,7 +184,7 @@ const TeamListPage: React.FC = () => {
             </button>
           </div>
         ) : (
-          <div className="flex flex-row flex-wrap gap-4 lg:justify-start md:justify-start justify-center">
+          <div className="flex flex-row flex-wrap gap-[1vw] lg:justify-start md:justify-start sm:justify-start justify-center">
             {currentTeams.length > 0 ? (
               currentTeams.map((team) => <TeamCard key={team.id} team={team} />)
             ) : (

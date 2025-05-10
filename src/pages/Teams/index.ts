@@ -27,6 +27,7 @@ export interface TeamData {
   createdAt?: string;
   profileImage?: string;
   permissions?: Permission[];
+  picture?: string;
 }
 export interface Team {
   id: number;

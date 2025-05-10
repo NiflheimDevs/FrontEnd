@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Team, TeamData } from "./index";
-// import { updateTeamInfo } from "../../API";
+import { TeamData } from "./index";
+// import { UpdateProfileTeam, DeleteProfileTeam } from "../../API";
+
 
 interface EditTeamModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (teamData: TeamData) => void;
+  onSubmit: (teamData: TeamData, teamPictureFile: File | null) => void;
   team: TeamData;
 }
 
@@ -19,13 +20,24 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
   const [description, setDescription] = useState(team.description);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [ProfileExists, SetProfileExist] = useState<boolean>(true);
+  const [teamPictureFile, setTeamPictureFile] = useState<File | null>(null);
+  const [teamPicturePreview, setTeamPicturePreview] = useState<string | null>(
+    team.picture || null
+  );
+  // const [removePicture, setRemovePicture] = useState(false);
+  const [, setRemovePicture] = useState(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Reset form when team changes
   useEffect(() => {
     setName(team.name);
     setDescription(team.description);
+    setTeamPicturePreview(team.picture || null);
+    setTeamPictureFile(null);
+    setRemovePicture(false);
   }, [team]);
 
   // Handle click outside to close modal
@@ -50,6 +62,53 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
     };
   }, [isOpen, onClose]);
 
+  // Handle picture file selection
+  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setTeamPictureFile(file);
+      setTeamPicturePreview(URL.createObjectURL(file));
+      setRemovePicture(false);
+    }
+  };
+
+  // Trigger file input click
+  const handlePictureClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // Remove picture
+  const handleRemovePicture = () => {
+    setTeamPictureFile(null);
+    setTeamPicturePreview(null);
+    setRemovePicture(true);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  // Handle profile picture upload
+  // const handleProfilePictureUpdate = async (teamId: number) => {
+  //   try {
+  //     if (removePicture) {
+  //       // Delete profile picture
+  //       await DeleteProfileTeam(teamId);
+  //       return null;
+  //     } else if (teamPictureFile) {
+  //       // Upload new profile picture
+  //       const formData = new FormData();
+  //       formData.append("file", teamPictureFile);
+
+  //       const result = await UpdateProfileTeam(teamId, formData);
+  //       return result?.profile || null;
+  //     }
+  //     return team.picture; // Return existing picture if no changes
+  //   } catch (error) {
+  //     console.error("Error updating profile picture:", error);
+  //     throw error;
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -58,28 +117,27 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
       return;
     }
 
-    // Create data object to send to backend
-    // const teamData = {
-    //   title: name,
-    //   description: description,
-    //   id: team.id,
-    // };
-    //console.log("teamData", teamData);
     try {
       setIsSubmitting(true);
 
-      // Send data to backend
-      // const result = await updateTeamInfo(teamData);
 
-      // Update team with new data (for frontend state)
-      const updatedTeam: Team = {
+      // Create basic team data object
+      const teamData = {
         ...team,
         name,
         description,
+        picture: team.picture, // We'll update this after handling the picture
       };
 
-      // Call parent onSubmit function
-      onSubmit(updatedTeam);
+      // Update the team data (for frontend state)
+      const updatedTeam: TeamData = {
+        ...teamData,
+        picture: teamPicturePreview || team.picture,
+      };
+
+      // Call parent onSubmit function with updated team data and picture file
+      onSubmit(updatedTeam, teamPictureFile);
+
       setError("");
       onClose();
     } catch (error: any) {
@@ -93,7 +151,8 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 backdrop-blur-xs bg-opacity-60 flex items-center justify-center z-50 p-4">
+
       <div
         ref={modalRef}
         className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn"
@@ -133,6 +192,85 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
               {error}
             </div>
           )}
+
+          {/* Team Picture Section */}
+          <div className="mb-6 flex flex-col items-center">
+            <div className="relative">
+              <div
+                className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 mb-2 border-4 border-white shadow-lg cursor-pointer"
+                onClick={handlePictureClick}
+              >
+                {ProfileExists && teamPicturePreview ? (
+                  <img
+                    src={teamPicturePreview}
+                    alt="تصویر تیم"
+                    className="w-full h-full object-cover"
+                    onError={() => SetProfileExist(false)}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="40"
+                      height="40"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-gray-400"
+                    >
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                  </div>
+                )}
+              </div>
+
+              {teamPicturePreview && (
+                <button
+                  type="button"
+                  onClick={handleRemovePicture}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 shadow-md hover:bg-red-600 transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6L6 18"></path>
+                    <path d="M6 6l12 12"></path>
+                  </svg>
+                </button>
+              )}
+            </div>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handlePictureChange}
+              accept="image/*"
+              className="hidden"
+            />
+
+            <button
+              type="button"
+              onClick={handlePictureClick}
+              className="text-blue-500 text-sm mt-2 hover:text-blue-600 transition-colors"
+            >
+              {teamPicturePreview ? "تغییر تصویر تیم" : "افزودن تصویر تیم"}
+            </button>
+          </div>
+
 
           <div className="mb-5">
             <label
