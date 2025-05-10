@@ -1,20 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import Layout from "./Layout";
-import TeamMemberCard from "./TeamMemberCard";
+import Layout from "../../Components/Team/Layout";
+import TeamMemberCard from "../../Components/Team/TeamMemberCard";
 // import Pagination from './Pagination';
-import AddMemberModal from "./AddMemberModal";
-import EditTeamModal from "./EditTeamModalProps";
-import DeleteTeamModal from "./DeleteTeamModalProps"; // Import the DeleteTeamModal component
+import AddMemberModal from "../../Components/Team/AddMemberModal";
+import EditTeamModal from "../../Components/Team/EditTeamModal";
+import DeleteTeamModal from "../../Components/Team/DeleteTeamModal"; // Import the DeleteTeamModal component
 import {
   getTeam,
   deleteTeam,
   UpdateProfileTeam,
   DeleteProfileTeam,
 } from "../../API";
-import { User, Project, projects, TeamData, Permission } from "./index";
-
+import {
+  User,
+  Project,
+  projects,
+  TeamData,
+  Permission,
+} from "../../Components/Team/index";
 
 // Define types based on the API response structure
 interface TeamMember {
@@ -141,7 +146,6 @@ const TeamDetailPage: React.FC = () => {
     }
   };
 
-
   // Calculate pagination for members
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
@@ -151,7 +155,6 @@ const TeamDetailPage: React.FC = () => {
 
   // Handle adding a new member to the team
   const handleAddMember = (user: User) => {
-
     if (!teamData) return;
 
     // Create updated user with role
@@ -210,7 +213,6 @@ const TeamDetailPage: React.FC = () => {
 
   // Handle removing a member from the team
   const handleDeleteMember = (userId: number) => {
-
     if (!teamData || !hasPermission("REMOVE_MEMEBER")) return;
 
     const updatedMembers = teamData.members.filter(
@@ -310,13 +312,12 @@ const TeamDetailPage: React.FC = () => {
               </div>
             )}
             <h1 className="text-2xl font-bold text-right">{teamData.name}</h1>
-
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
             {hasPermission("ADD_MEMBER") && (
               <button
                 onClick={() => setIsAddMemberModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
+                className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded flex items-center justify-center"
               >
                 <svg
                   className="w-5 h-5 ml-1"
@@ -337,7 +338,7 @@ const TeamDetailPage: React.FC = () => {
             {hasPermission("EDIT_INFO") && (
               <button
                 onClick={() => setIsEditTeamModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
+                className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded flex items-center justify-center"
               >
                 <svg
                   className="w-5 h-5 ml-1"
@@ -355,28 +356,6 @@ const TeamDetailPage: React.FC = () => {
                 ویرایش تیم
               </button>
             )}
-            {hasPermission("BIDDER") && (
-              <button
-                onClick={() => navigate("/Browsproject")}
-                className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded flex items-center justify-center"
-              >
-                <svg
-                  className="w-5 h-5 ml-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-                مشاهده پروژه‌های موجود
-              </button>
-            )}
-
           </div>
         </div>
 
@@ -393,13 +372,13 @@ const TeamDetailPage: React.FC = () => {
         <div className="mb-6">
           <div className="flex justify-center border-b">
             <button
-              className={`py-2 px-4 md:px-8 ${activeTab === "projects" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-500"}`}
+              className={`py-2 px-4 md:px-8 cursor-pointer ${activeTab === "projects" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-500"}`}
               onClick={() => setActiveTab("projects")}
             >
               پروژه
             </button>
             <button
-              className={`py-2 px-4 md:px-8 ${activeTab === "members" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-500"}`}
+              className={`py-2 px-4 md:px-8 cursor-pointer ${activeTab === "members" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-500"}`}
               onClick={() => setActiveTab("members")}
             >
               اعضاء
@@ -582,8 +561,7 @@ const TeamDetailPage: React.FC = () => {
           {hasPermission("DELETE_TEAM") && (
             <button
               onClick={() => setIsDeleteModalOpen(true)} // Open the delete modal instead of window.confirm
-
-              className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors duration-300"
+              className="mr-4 bg-red-500 hover:bg-red-600 cursor-pointer text-white py-2 px-4 rounded transition-colors duration-300"
             >
               حذف تیم
             </button>
@@ -600,7 +578,6 @@ const TeamDetailPage: React.FC = () => {
             onSubmit={handleAddMember}
             existingMemberIds={teamData.members.map((member) => member.id)}
             teamId={0}
-
           />
 
           <EditTeamModal
@@ -619,7 +596,6 @@ const TeamDetailPage: React.FC = () => {
             teamName={teamData.name}
             isDeleting={isDeleting}
           />
-
         </>
       )}
     </Layout>

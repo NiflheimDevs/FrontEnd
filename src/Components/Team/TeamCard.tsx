@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Team } from "./index";
 import { Link } from "react-router-dom";
 import { Layers } from "lucide-react";
+import { truncateText } from "../Biders/types";
 // import UserPic from "../../assets/User.svg";
 
 interface TeamCardProps {
@@ -15,14 +16,17 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
   return (
     <Link
       to={`/teams/${team.id}`}
-      className="flex md:min-w-[350px] md:w-fit sm:min-w-[350px] sm:w-fit lg:min-w-[350px] lg:w-fit w-full"
+      className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] flex flex-col glowing-card overflow-hidden mx-auto hover:scale-103 duration-400 transition-all h-full"
     >
-      <div className="group relative w-full max-w-md overflow-hidden rounded-xl border-0 bg-gradient-to-br from-blue-600 to-blue-800 p-1 shadow-xl transition-all duration-300 hover:shadow-blue-500/20">
+      <div className="group relative w-full max-w-md overflow-hidden rounded-xl border-0 bg-gradient-to-br p-1 shadow-xl transition-all duration-300 h-full">
         <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-400/20 blur-3xl filter" />
         <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-blue-300/20 blur-3xl filter" />
 
-        <div className="relative rounded-lg bg-blue p-6 backdrop-blur-sm">
-          <div className="mb-6 flex items-start justify-end">
+        <div className="relative rounded-lg bg-blue px-6 py-4 backdrop-blur-sm">
+          <div className="mb-6 flex items-start justify-between">
+            <h2 className="text-2xl font-bold text-white flex p-1">
+              {team.name}
+            </h2>
             <div className="flex h-15 w-15 items-center justify-center rounded-xl bg-white/10 p-2 backdrop-blur-sm">
               {ProfileExists ? (
                 <img
@@ -37,10 +41,9 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
             </div>
           </div>
 
-          <div className="space-y-4 text-right">
-            <h2 className="text-2xl font-bold text-white">{team.name}</h2>
+          <div className="text-right ">
             <p className="text-sm leading-relaxed text-blue-100 mb-4">
-              {team.description}
+              {truncateText(team.description, 50)}
             </p>
           </div>
 
@@ -52,21 +55,18 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
                   className="flex items-center bg-white/10 rounded-lg p-2 backdrop-blur-sm"
                 >
                   <div className="bg-blue-400/30 w-8 h-8 rounded-full flex items-center justify-center ">
-                    <span className="text-white text-sm font-semibold">
-                      {AvatarExists ? (
-
-                        <img
-                          src={member.avatar}
-                          alt="Team Profile"
-                          className="h-7 w-7 rounded-full"
-                          onError={() => SetAvatarExist(false)}
-                        />
-                      ) : (
+                    {AvatarExists ? (
+                      <img
+                        src={member.avatar}
+                        alt="Team Profile"
+                        className="h-7 min-h-7 min-w-7 w-7 rounded-full flex"
+                        onError={() => SetAvatarExist(false)}
+                      />
+                    ) : (
+                      <span className="text-white text-sm text-center font-semibold flex justify-center items-center">
                         member.name.charAt(0)
-                      )}
-
-                    </span>
-                    <span className="text-xs text-blue-100">{member.role}</span>
+                      </span>
+                    )}
                   </div>
                   <div className="flex flex-col items-start mr-2">
                     <span className="text-sm font-medium text-white">
@@ -74,7 +74,6 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
                     </span>
                     <span className="text-xs text-blue-100">{member.role}</span>
                   </div>
-
                 </div>
               ))}
             </div>
