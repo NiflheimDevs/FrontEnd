@@ -66,7 +66,7 @@ const TeamDetailPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const membersPerPage = 5;
+  const membersPerPage = 50;
 
   // Check if user has a specific permission
   const hasPermission = (permission: Permission): boolean => {
