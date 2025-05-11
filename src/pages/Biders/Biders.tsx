@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import UserProfileCard from "../../Components/Biders/UserProfileCard";
 import Header from "../../Components/DashboardComp/Header";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
@@ -19,12 +19,22 @@ const Biders: React.FC = () => {
   const [bidersData, setBidersData] = useState<Bider[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filterVersion, setFilterVersion] = useState(0);
+  const [maxExpectedTime, setmaxExpectedTime] = useState(0);
   const [filters, setFilters] = useState({
     minRating: 0,
     maxPrice: Number.MAX_SAFE_INTEGER,
-    maxDeliveryDays: 30,
+    maxDeliveryDays: 0,
     priceRange: [0, 5000000] as [number, number],
   });
+
+  // Create a ref to track filters
+  const filtersRef = useRef(filters);
+
+  // Update the ref whenever filters change
+  useEffect(() => {
+    filtersRef.current = filters;
+  }, [filters]);
 
   // Fetch biders data using useEffect
   useEffect(() => {
@@ -39,7 +49,24 @@ const Biders: React.FC = () => {
               response.map((item: any) => mapApiDataToProfile(item))
             );
             setBidersData(mappedData);
-            console.log(response);
+
+            const maxTotal = Math.max(
+              ...mappedData.map((bider: Bider) => bider.total),
+              0
+            );
+            const maxExpectedTime = Math.max(
+              ...mappedData.map((bider: Bider) => bider.expected_time),
+              0
+            );
+
+            // Update filters using the current ref value
+            setFilters({
+              ...filtersRef.current,
+              priceRange: [0, maxTotal] as [number, number],
+              maxDeliveryDays: maxExpectedTime,
+            });
+            setFilterVersion(1);
+            setmaxExpectedTime(maxExpectedTime);
           }
         }
       } catch {
@@ -74,6 +101,8 @@ const Biders: React.FC = () => {
 
         {/* Filter Section */}
         <FilterComponent
+          maxDeliveryDays={maxExpectedTime}
+          key={`filter-${filterVersion}`}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           filters={filters}
@@ -93,6 +122,7 @@ const Biders: React.FC = () => {
           ) : filteredBiders.length > 0 ? (
             filteredBiders.map((bider) => (
               <UserProfileCard
+                key={bider.bid_id}
                 bid_id={bider.bid_id}
                 title={bider.title}
                 prePayment={formatPrice(bider.pre_payment)}

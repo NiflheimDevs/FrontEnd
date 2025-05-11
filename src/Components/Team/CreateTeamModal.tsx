@@ -170,7 +170,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
           <h2 className="text-xl font-bold text-white">ساخت تیم جدید</h2>
           <button
             onClick={onClose}
-            className="text-white hover:bg-blue-700 hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
+            className="text-white cursor-pointer hover:bg-blue-700 hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
             disabled={isSubmitting}
           >
             <svg
@@ -330,7 +330,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                     </div>
                     <button
                       onClick={() => removeMember(member.id)}
-                      className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1 rounded-full transition-colors duration-150"
+                      className="text-red-500 hover:text-red-700 cursor-pointer hover:bg-red-50 p-1 rounded-full transition-colors duration-150"
                       type="button"
                       disabled={isSubmitting}
                     >
@@ -358,14 +358,14 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium"
+              className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium"
               disabled={isSubmitting}
             >
               انصراف
             </button>
             <button
               type="submit"
-              className={`bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium ${
+              className={`bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium ${
                 isSubmitting ||
                 !name ||
                 !description ||

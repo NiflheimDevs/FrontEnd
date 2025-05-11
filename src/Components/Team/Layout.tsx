@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Header from "../../Components/DashboardComp/Header";
-import Sidebar from "../../Components/DashboardComp/Sidebar";
+import Header from "../DashboardComp/Header";
+import Sidebar from "../DashboardComp/Sidebar";
 interface LayoutProps {
   children: React.ReactNode;
 }

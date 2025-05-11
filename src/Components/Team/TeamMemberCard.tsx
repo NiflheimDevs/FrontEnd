@@ -92,19 +92,19 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
       <div className="flex items-center">
         <div className="mx-2">
           {editingNickname ? (
-            <div className="flex items-center">
+            <div className="flex items-center relative">
               <input
                 ref={nicknameInputRef}
                 type="text"
                 value={nickname}
                 onChange={handleNicknameChange}
-                className="border border-gray-300 rounded px-2 py-1 text-sm w-24"
+                className="border border-gray-300 rounded pr-2 pl-5 py-1 text-sm w-24"
                 onBlur={saveNickname}
                 onKeyPress={(e) => e.key === "Enter" && saveNickname()}
               />
               <button
                 onClick={saveNickname}
-                className="ml-1 text-blue-500 hover:text-blue-700"
+                className="ml-1 text-blue-500 absolute left-0 hover:text-blue-700 cursor-pointer"
               >
                 <svg
                   className="w-4 h-4"
@@ -123,7 +123,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
             </div>
           ) : (
             <div
-              className={`bg-white border border-blue-500 text-blue-500 text-sm px-3 py-1 rounded-full ${canEditNickname ? "cursor-pointer hover:bg-blue-50" : ""}`}
+              className={`bg-blue-50 border border-blue-200 text-blue-400 px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${canEditNickname ? "cursor-pointer hover:bg-blue-50" : ""}`}
               onClick={() => canEditNickname && setEditingNickname(true)}
             >
               {user.position || "عضو"}
@@ -134,7 +134,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
         {showMenu && (
           <div className="relative" ref={menuRef}>
             <button
-              className="text-gray-500 hover:text-gray-700 p-1"
+              className="text-gray-500 cursor-pointer hover:text-gray-700 p-1"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="گزینه های مدیریت"
             >
@@ -158,19 +158,19 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                 {canEditRole && (
                   <>
                     <button
-                      className="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100"
                       onClick={() => handleRoleChange("مدیر")}
                     >
                       تغییر به مدیر
                     </button>
                     <button
-                      className="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100"
                       onClick={() => handleRoleChange("طراح")}
                     >
                       تغییر به طراح
                     </button>
                     <button
-                      className="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100"
                       onClick={() => handleRoleChange("توسعه دهنده")}
                     >
                       تغییر به توسعه دهنده
@@ -181,7 +181,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 
                 {canEditNickname && !editingNickname && (
                   <button
-                    className="block w-full text-right px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100"
                     onClick={() => setEditingNickname(true)}
                   >
                     ویرایش عنوان
@@ -190,7 +190,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 
                 {canDelete && (
                   <button
-                    className="block w-full text-right px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-red-600 hover:bg-gray-100"
                     onClick={() => onDelete && onDelete(user.id)}
                   >
                     حذف از تیم
