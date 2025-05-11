@@ -54,7 +54,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
     }
   };
   return (
-    <div className="bg-white rounded-lg shadow-md border border-gray-100 w-full p-6 hover:shadow-lg transition-shadow duration-300">
+    <div className="bg-white rounded-lg border-gray-100 w-full p-6 box-shadow-custom duration-300">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Image Section */}
         <div className="flex-shrink-0 flex flex-col items-center md:items-start">
