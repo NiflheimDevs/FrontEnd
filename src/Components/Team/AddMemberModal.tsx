@@ -16,7 +16,7 @@ const sampleUsers: User[] = [
     id: 1,
     name: "علی محمدی",
     email: "ali@example.com",
-    avatar: "/avatars/ali.jpg",
+    avatar: "",
     role: "توسعه دهنده",
     position: "مدیر",
   },
@@ -24,7 +24,7 @@ const sampleUsers: User[] = [
     id: 2,
     name: "سارا احمدی",
     email: "sara@example.com",
-    avatar: "/avatars/sara.jpg",
+    avatar: "",
     role: "طراح",
     position: "مدیر",
   },
@@ -32,7 +32,7 @@ const sampleUsers: User[] = [
     id: 3,
     name: "رضا کریمی",
     email: "reza@example.com",
-    avatar: "/avatars/reza.jpg",
+    avatar: "",
     role: "مدیر محصول",
     position: "مدیر",
   },
@@ -40,7 +40,7 @@ const sampleUsers: User[] = [
     id: 6,
     name: "مریم حسینی",
     email: "maryam@example.com",
-    avatar: "/avatars/maryam.jpg",
+    avatar: "",
     role: "توسعه دهنده",
     position: "مدیر",
   },
@@ -48,7 +48,7 @@ const sampleUsers: User[] = [
     id: 5,
     name: "امیر رضایی",
     email: "amir@example.com",
-    avatar: "/avatars/amir.jpg",
+    avatar: "",
     role: "ادمین",
     position: "مدیر",
   },
@@ -244,7 +244,6 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
                         onClick={() => selectUser(user)}
                         className="flex items-center justify-between p-3 hover:bg-gray-100 cursor-pointer border-b"
                       >
-                        <div className="text-gray-500 text-sm">{user.role}</div>
                         <div className="flex items-center">
                           <div className="mr-2 text-right">
                             <p className="text-sm font-medium">{user.name}</p>
@@ -256,12 +255,9 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
                             src={user.avatar}
                             alt={user.name}
                             className="w-8 h-8 rounded-full"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.src = "/avatar-placeholder.png";
-                            }}
                           />
                         </div>
+                        <div className="text-gray-500 text-sm">{user.role}</div>
                       </div>
                     ))
                   ) : (

@@ -12,6 +12,9 @@ import {
   deleteTeam,
   UpdateProfileTeam,
   DeleteProfileTeam,
+  getTeamRole,
+  updateTeamMemberRole,
+  updateTeamMemberPosition,
 } from "../../API";
 import {
   User,
@@ -172,6 +175,38 @@ const TeamDetailPage: React.FC = () => {
 
     // Here you would also make an API call to update the backend
     // Example: addTeamMember(id, { userId: user.id, role });
+  };
+
+  const handleRoleChange = async (userId: number, newRole: string) => {
+    if (!id || !teamData) return;
+
+    try {
+      // Call API to update the user's role
+      await updateTeamMemberRole({
+        user_id: userId,
+        role: newRole,
+        team_id: parseInt(id),
+      });
+
+      // Update the UI with the new role
+      const updatedMembers = teamData.members.map((member) => {
+        if (member.id === userId) {
+          return { ...member, role: newRole };
+        }
+        return member;
+      });
+
+      const updatedTeam = {
+        ...teamData,
+        members: updatedMembers,
+      };
+
+      setTeamData(updatedTeam);
+    } catch (error) {
+      console.error("Error updating team member role:", error);
+      setError("خطا در به‌روزرسانی نقش عضو تیم");
+      // You could also add a toast notification for the error
+    }
   };
 
   const handleEditTeam = async (
@@ -403,6 +438,7 @@ const TeamDetailPage: React.FC = () => {
                     canDelete={hasPermission("REMOVE_MEMEBER")}
                     canEditRole={hasPermission("EDIT_ROLE")}
                     canEditNickname={hasPermission("EDIT_NICKNAME")}
+                    teamId={id ? parseInt(id) : undefined} // Pass the team ID
                   />
                 ))
               ) : (

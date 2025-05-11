@@ -112,7 +112,7 @@ export const signupSendOTP = async (userData: any) => {
 export const signupVerifyOTP = async (userData: any) => {
   try {
     const response = await apiClient.post("/signup/verify", userData);
-    console.log(response);
+    // console.log(response);
     const accessToken = response.data.access_token;
     const refreshToken = response.data.refresh_token;
     if (accessToken) {
@@ -591,7 +591,7 @@ export const createTeam = async (teamData: any) => {
 
 export const updateTeamInfo = async (teamData: any) => {
   try {
-    console.log(teamData);
+    // console.log(teamData);
     const response = await apiClient.patch("/team", teamData);
 
     return response.data;
@@ -612,15 +612,6 @@ export const getTeam = async (TeamData: any, id: any) => {
 export const deleteTeam = async (id: any) => {
   try {
     const response = await apiClient.delete(`/team/${id}`);
-    return response.data;
-  } catch (error: any) {
-    throw error.response?.data || "خطا در ارسال درخواست!";
-  }
-};
-
-export const getTeamRole = async () => {
-  try {
-    const response = await apiClient.get("/role/team");
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
@@ -658,3 +649,30 @@ export const DeleteProfileTeam = async (id: number) => {
   }
 };
 
+export const getTeamRole = async () => {
+  try {
+    const response = await apiClient.get("/role/team");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const updateTeamMemberRole = async (memberRole: any) => {
+  try {
+    // console.log(memberRole);
+    const response = await apiClient.patch("/team/member/role", memberRole);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+export const updateTeamMemberPosition = async (memberPostion: any) => {
+  try {
+    // console.log(memberRole);
+    const response = await apiClient.patch("/team/member/pos", memberPostion);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
