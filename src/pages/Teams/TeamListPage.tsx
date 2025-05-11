@@ -16,7 +16,7 @@ const TeamListPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const teamsPerPage = 6;
+  const teamsPerPage = 50;
 
   // Fetch teams from API
   useEffect(() => {
