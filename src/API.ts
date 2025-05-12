@@ -676,3 +676,22 @@ export const updateTeamMemberPosition = async (memberPostion: any) => {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
+
+export const DeleteTeamMember = async (memberData: any) => {
+  try {
+    // console.log(memberData);
+    const response = await apiClient.delete("/team/member", memberData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const getSpecificTeamProject = async (id: number) => {
+  try {
+    const response = await apiClient.get(`/team/${id}/project`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
