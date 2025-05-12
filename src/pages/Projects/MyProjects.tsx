@@ -8,9 +8,9 @@ import { FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
 import { SquarePen, Eye } from "lucide-react";
 import { RiAuctionLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import avatar from "@/assets/myproject/avatars.png";
 import { FaTrash } from "react-icons/fa";
 import { getUserProject, deleteProject } from "../../API";
+import { AiOutlineProject } from "react-icons/ai";
 import { useNotification } from "../../Notification/NotificationProvider";
 
 // Define interfaces
@@ -24,6 +24,7 @@ interface Project {
   title: string;
   description: string;
   tags: Tag[];
+  status: number;
 }
 
 // Card animation variants
@@ -162,6 +163,21 @@ const MyProjects = () => {
     setProjectToDelete(null);
   };
 
+  const getStatusText = (statusNumber: number) => {
+    switch (statusNumber) {
+      case 1:
+        return "درانتظار کارجو";
+      case 2:
+        return "انتخاب کارجو";
+      case 3:
+        return "درحال انجام";
+      case 4:
+        return "انجام شده";
+      default:
+        return "نامشخص";
+    }
+  };
+
   const totalPages = Math.ceil(totalProjects / projectsPerPage) || 1;
   const currentProjects = projects;
 
@@ -285,18 +301,21 @@ const MyProjects = () => {
                   >
                     <div className="flex flex-col justify-between flex-grow z-10">
                       <div>
-                        <div className="flex flex-row justify-between">
-                          <p className="text-white text-[13.3px] opacity-70 font-semibold tracking-wider text-right">
-                            مرحله: انتخاب فریلنسر
+                        <div className="flex flex-row justify-between items-center">
+                          <p className="text-white text-[13.3px] opacity-75 font-semibold tracking-wider text-right">
+                            {`مرحله : ${getStatusText(project.status)}`}
                           </p>
-                          <motion.img
-                            src={avatar}
-                            alt="image"
+                          <motion.div
                             initial={{ opacity: 0, scale: 0 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: index * 0.2, duration: 0.5 }}
-                            className="w-[107px] h-[29px] flex"
-                          />
+                            className="flex justify-end"
+                          >
+                            <AiOutlineProject
+                              className="text-gray-100 opacity-75"
+                              size={30}
+                            />
+                          </motion.div>
                         </div>
                         <p className="font-bold text-[22.34px] mt-3 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent truncate">
                           {project.title.length > 20

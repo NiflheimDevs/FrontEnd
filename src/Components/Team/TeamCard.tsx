@@ -23,7 +23,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
         <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-blue-300/20 blur-3xl filter" />
 
         <div className="relative rounded-lg bg-blue px-6 py-4 backdrop-blur-sm">
-          <div className="mb-6 flex items-start justify-between">
+          <div className="mb-6 flex items-center justify-between">
             <h2 className="text-2xl font-bold text-white flex p-1">
               {team.name}
             </h2>

@@ -591,6 +591,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
             {menuOpen && (
               <div
                 className="fixed right-auto transform -translate-y-2 py-2 w-48 bg-white rounded-md shadow-xl z-50 text-right"
+
                 style={{
                   left: menuRef.current
                     ? menuRef.current.getBoundingClientRect().left
@@ -598,6 +599,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                   bottom: menuRef.current
                     ? window.innerHeight -
                       menuRef.current.getBoundingClientRect().top
+
                     : "auto",
                 }}
               >
