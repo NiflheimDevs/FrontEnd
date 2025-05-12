@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
 import Header from "../../Components/DashboardComp/Header";
-import BrowseProject from "../../Components/Brows/BrowsProject";
+import BrowseProject from "../../Components/Browse/BrowseProject";
 
-const BrowLayout: React.FC = () => {
+const BrowseLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -31,4 +31,4 @@ const BrowLayout: React.FC = () => {
   );
 };
 
-export default BrowLayout;
+export default BrowseLayout;
