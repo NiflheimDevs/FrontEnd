@@ -127,7 +127,7 @@ const TeamListPage: React.FC = () => {
             >
               <button
                 type="submit"
-                className="bg-blue-500 text-white p-2 rounded-l-none rounded-r cursor-pointer"
+                className="absolute right-0 top-0 scale-102 bottom-0 bg-blue-600 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-blue-600/50 transition-all duration-400 text-[#FFFFFF] px-4 rounded-r-lg flex items-center cursor-pointer"
               >
                 <svg
                   className="w-5 h-5"
@@ -146,7 +146,7 @@ const TeamListPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="جستجوی تیم ها"
-                className="w-full border border-gray-300 p-2 rounded-l text-right"
+                className="w-full border border-gray-300 rounded-lg py-2 pl-2 pr-14 text-right"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />

@@ -8,6 +8,7 @@ import { useNotification } from "../../Notification/NotificationProvider";
 import { Bider, ProjectData, Team } from "../../Components/Biders/types";
 import ProjectBiderCard from "../../Components/ProjectDetail/ProjectBiderCard";
 import BidModal from "../../Components/ProjectDetail/BidModal";
+import ProjectDetailSkeletonLoading from "../../Components/ProjectDetail/ProjectDetailSkeletonLoading";
 
 const ProjectDetail = () => {
   const { project_id } = useParams();
@@ -155,9 +156,8 @@ const ProjectDetail = () => {
     return (
       <>
         <Header />
-        <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-          <div className="text-gray-800">در حال بارگذاری...</div>
-        </div>
+
+        <ProjectDetailSkeletonLoading />
       </>
     );
   }
@@ -216,23 +216,14 @@ const ProjectDetail = () => {
             </div>
           </div>
           <div className="w-full sm:w-1/2 flex flex-col space-y-4">
-            <div className="flex-1">
-              <h3
-                className={`text-base sm:text-lg font-semibold text-gray-800 text-right ${myBid ? "block" : "hidden"}`}
-              >
-                پیشنهاد من:
-              </h3>
-              <div
-                className={`flex flex-wrap gap-2 justify-start pl-3 mb-4 mt-1 ${myBid ? "block" : "hidden"}`}
-              >
-                <ProjectBiderCard bider={myBid} color={1} />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-blue-400 mb-1 mt-3 text-right">
+            <div className="flex-3/4">
+              <h3 className="text-base sm:text-lg font-semibold text-blue-500 mb-1 mt-3 text-right">
                 پیشنهاد دهندگان:
               </h3>
-              <div className="space-y-3 max-h-74 overflow-y-auto pl-3 custom-scrollbar">
+              <div className="space-y-3 max-h-107 overflow-y-auto pl-3 custom-scrollbar">
                 {biders.map((bider) => (
                   <>
+                    <ProjectBiderCard bider={myBid} color={1} />
                     <ProjectBiderCard bider={bider} color={0} />
                   </>
                 ))}
