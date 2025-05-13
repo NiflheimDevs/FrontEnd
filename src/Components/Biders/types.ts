@@ -19,6 +19,10 @@ export const formatPrice = (price: number) => {
   return new Intl.NumberFormat("fa-IR").format(price);
 };
 
+export const formatPriceString = (price: string) => {
+  return new Intl.NumberFormat("fa-IR").format(parseInt(price,0));
+};
+
 export interface Tag {
   id: number;
   name: string;
