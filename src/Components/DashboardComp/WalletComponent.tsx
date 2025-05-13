@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { Skeleton } from "primereact/skeleton";
 import walletPic from "../../assets/Dashboard/Wallet.svg";
 import { AnimatePresence, motion } from "framer-motion";
-import { formatPriceString } from "../Biders/types";
 import {
   getBalance,
   getTransactions,
@@ -89,36 +88,15 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         "desc",
         "all"
       );
-      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
+      // console.log(response.transactions);
       const formattedTransactions = response.transactions.map(
-        (tx: any, index: number) => {
-          const date = new Date(tx.date);
-          const formattedTime = new Intl.DateTimeFormat('fa-IR', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            timeZone: userTimeZone,
-          }).format(date);
-
-          const formattedDate = new Intl.DateTimeFormat('fa-IR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            timeZone: userTimeZone,
-            calendar: 'persian',
-          }).format(date);
-
-          const formattedDateTime = `${formattedTime} - ${formattedDate}`;
-
-          return {
-            id: tx.id || index,
-            date: formattedDateTime,
-            activity: tx.type === 2 ? "واریز" : "برداشت",
-            description: tx.description || "-",
-            amount: tx.amount,
-          };
-        }
+        (tx: any, index: number) => ({
+          id: tx.id || index,
+          date: tx.date,
+          activity: tx.type === 2 ? "واریز" : "برداشت",
+          description: tx.description || "-",
+          amount: tx.amount,
+        })
       );
 
       setTransactions(formattedTransactions);
@@ -376,7 +354,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
     <>
       {isLoading ? (
         renderSkeleton()
-      ) : (        
+      ) : (
         <div className="flex flex-col md:flex-row w-full justify-between items-start mt-8 gap-4 md:scale-100 sm:scale-100 scale-[85%]">
           <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-4">کیف پول</h2>
@@ -423,7 +401,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 {transactions && transactions.length > 0 ? (
                   transactions.map((transaction) => (
                     <tr key={transaction.id} className="border-b">
-                      <td className="py-2 ">{transaction.date}</td>
+                      <td className="py-2 ltr">{transaction.date}</td>
                       <td className="py-2">{transaction.activity}</td>
                       <td className="py-2">{transaction.description || "-"}</td>
                       <td
@@ -541,19 +519,9 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   </motion.ul>
                 )}
                 <div className="mb-4">
-                  <label htmlFor="amount" className="flex justify-between text-gray-700 mb-2">
-                    <span>
-                    مبلغ واریز (تومان)
-                    </span>
-                    {depositAmount ? (
-                    <span className="text-xs text-gray-500 mt-3 block select-none">
-                     {`${formatPriceString(depositAmount)} تومان`}
-                    </span>
-                    ) : (
-                    <></>
-                    )}
+                  <label htmlFor="amount" className="block text-gray-700 mb-2">
+                    مبلغ (تومان)
                   </label>
-
                   <input
                     type="number"
                     id="amount"
@@ -673,17 +641,9 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 <div className="mb-4">
                   <label
                     htmlFor="withdraw-amount"
-                    className="flex justify-between text-gray-700 mb-2"
+                    className="block text-gray-700 mb-2"
                   >
-                    <span>
-                    مبلغ برداشت (تومان)</span>
-                    {withdrawAmount ? (
-                    <span className="text-xs text-gray-500 mt-3 block select-none">
-                     {`${formatPriceString(withdrawAmount)} تومان`}
-                    </span>
-                    ) : (
-                    <></>
-                    )}
+                    مبلغ برداشت (تومان)
                   </label>
                   <input
                     type="number"
