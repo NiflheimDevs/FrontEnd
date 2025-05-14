@@ -14,6 +14,50 @@ body {
 html {
   direction: rtl;
   unicode-bidi: embed;
+  scrollbar-width: none;
+}
+
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+
+  /* Hide scrollbars on body too */
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* For Firefox scrollable containers */
+.custom-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Remove default spinner arrows from number inputs */
+.no-spinner[type="number"]::-webkit-inner-spin-button,
+.no-spinner[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.no-spinner[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Hide scrollbars but keep scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari, Edge */
 }
 
 .ltr {
@@ -49,31 +93,6 @@ html {
 
 .box-shadow-custom:hover {
   box-shadow: 1px 1px 10px 3px rgba(0, 0, 0, 0.18);
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #e5e7eb !important;
-  border-radius: 4px;
-  margin: 4px 0;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: oklch(80.9% 0.105 251.813) !important;
-  border-radius: 4px;
-  transition: 0.2s ease;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #3b82f6 !important;
-}
-
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: oklch(80.9% 0.105 251.813) #e5e7eb;
 }
 
 .shiny-skeleton {
@@ -252,30 +271,6 @@ body {
   body {
     position: relative;
   }
-}
-
-/* Custom Scrollbar Styles */
-html {
-  scrollbar-width: thin; /* Firefox: Thin scrollbar */
-  scrollbar-color: #e0e0e0 var(--background); /* Light gray thumb, background matches page */
-}
-
-html::-webkit-scrollbar {
-  width: 4px; /* WebKit: Very thin scrollbar */
-  height: 4px; /* For horizontal scrollbars */
-}
-
-html::-webkit-scrollbar-track {
-  background: var(--background); /* Matches page background (#F7F7F7) */
-}
-
-html::-webkit-scrollbar-thumb {
-  background: #e0e0e0; /* Very light gray thumb to match the image */
-  border-radius: 2px; /* Slightly rounded edges */
-}
-
-html::-webkit-scrollbar-thumb:hover {
-  background: #d0d0d0; /* Slightly darker gray on hover for usability */
 }
 
 @keyframes fadeIn {
