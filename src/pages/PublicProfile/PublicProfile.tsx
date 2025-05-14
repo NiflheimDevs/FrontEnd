@@ -23,17 +23,21 @@ const PublicProfile = () => {
   const [localColor, setLocalColor] = useState<Color>(initialColor);
   const [isLoading, setIsLoading] = useState(true);
   const { error: notifyError } = useNotification();
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         if (profile_id) {
-          const apiData = await GetUser(parseInt(profile_id, 0));
-          const apiTeams = await GetUserTeams(parseInt(profile_id, 0));
-          const apiEmployer = await getUserProject(
-            0,
-            1000,
-            parseInt(profile_id, 0)
-          );
+          const userId = parseInt(profile_id, 10);
+          // Check if user ID is 1 or 2
+          if (userId === 1 || userId === 2) {
+            navigate("/error");
+            return;
+          }
+          setIsLoading(true);
+          const apiData = await GetUser(userId);
+          const apiTeams = await GetUserTeams(userId);
+          const apiEmployer = await getUserProject(0, 1000, userId);
           console.log(apiData);
           const mappedProfile = await mapApiDataToProfile(
             apiData,
@@ -45,7 +49,7 @@ const PublicProfile = () => {
       } catch (error: any) {
         const errorData = error;
         if (errorData.tag && errorData.errors?.length > 0) {
-          if (errorData.tag == "NOT_FOUND") {
+          if (errorData.tag === "NOT_FOUND") {
             navigate("/error");
           } else {
             const allErrors = errorData.errors;
@@ -83,7 +87,6 @@ const PublicProfile = () => {
             <span className="shiny-skeleton w-3/4 h-4 rounded mb-1" />
           </div>
         </div>
-
         <div className="w-full md:px-0 h-full px-4 md:w-1/4 min-w-[200px] flex flex-col gap-2 mt-10 animate-pulse">
           <span className="shiny-skeleton w-32 h-6 rounded mb-2 mr-3" />
           <span className="shiny-skeleton w-24 h-4 rounded mb-1 mr-3" />
@@ -93,14 +96,17 @@ const PublicProfile = () => {
       <span className="shiny-skeleton w-32 h-6 rounded mb-2 mx-8" />
       {/* UserStateToggle Skeleton */}
       <div className="flex bg-white rounded-full shadow-sm p-1 border border-gray-200 w-fit mx-auto ">
-          <span className="shiny-skeleton w-24 h-8 rounded-full mx-2" />
-          <span className="shiny-skeleton w-24 h-8 rounded-full mx-2" />
-          <span className="shiny-skeleton w-24 h-8 rounded-full mx-2" />
+        <span className="shiny-skeleton w-24 h-8 rounded-full mx-2" />
+        <span className="shiny-skeleton w-24 h-8 rounded-full mx-2" />
+        <span className="shiny-skeleton w-24 h-8 rounded-full mx-2" />
       </div>
       {/* UserJobExperience Skeleton */}
       <div className="flex flex-col gap-4 px-4 mb-6">
         {[1, 2].map((i) => (
-          <div key={i} className="bg-white p-4 rounded-xl shadow-md border border-gray-100 shiny-skeleton flex flex-col gap-2 mb-2">
+          <div
+            key={i}
+            className="bg-white p-4 rounded-xl shadow-md border border-gray-100 shiny-skeleton flex flex-col gap-2 mb-2"
+          >
             <span className="shiny-skeleton w-24 h-4 rounded mb-1" />
             <span className="shiny-skeleton w-20 h-3 rounded mb-1" />
             <div className="flex gap-2 mt-2">
@@ -110,10 +116,12 @@ const PublicProfile = () => {
           </div>
         ))}
       </div>
-
       <div className="w-full md:px-6 sm:px-6 px-4 flex flex-col gap-6 justify-center">
         {[1, 2].map((i) => (
-          <div key={i} className="bg-white p-4 rounded-xl shadow-md border border-gray-100 shiny-skeleton flex flex-col gap-2 mb-2">
+          <div
+            key={i}
+            className="bg-white p-4 rounded-xl shadow-md border border-gray-100 shiny-skeleton flex flex-col gap-2 mb-2"
+          >
             <span className="shiny-skeleton w-32 h-4 rounded mb-1" />
             <span className="shiny-skeleton w-24 h-3 rounded mb-1" />
             <div className="flex gap-2 mt-2">
@@ -125,6 +133,7 @@ const PublicProfile = () => {
       </div>
     </div>
   );
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="fixed inset-0 bg-gray-100 z-[-1]"></div>
