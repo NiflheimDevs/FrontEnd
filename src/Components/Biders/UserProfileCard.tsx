@@ -1,14 +1,19 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from "react";
+import { TbCreditCardPay } from "react-icons/tb";
+import { RiTeamFill } from "react-icons/ri";
+import { useParams } from "react-router-dom";
+import { AcceptBid } from "../../API";
+import { useNotification } from "../../Notification/NotificationProvider";
+import { errorMapper } from "../../pages/Error/Error";
 
 interface UserProfileCardProps {
-  username: string;
-  rating: number;
-  reviews: number;
-  price: string;
-  currency: string;
+  bid_id: string;
+  title: string;
+  prePayment: string;
+  total: string;
   deliveryDays: number;
   imageUrl: string;
-  skills?: string[];
   description?: string;
 }
 
@@ -17,81 +22,81 @@ const truncateText = (text: string, maxLength: number) => {
 };
 
 const UserProfileCard: React.FC<UserProfileCardProps> = ({
-  username,
-  rating,
-  reviews,
-  price,
-  currency,
+  bid_id,
+  title,
+  prePayment,
+  total,
   deliveryDays,
   imageUrl,
-  skills = [],
-  description = "",
+  description,
 }) => {
+  const { error: notifyError, success: notifySuccess } = useNotification();
+  const [ProfileExists, SetProfileExist] = useState<boolean>(true);
+  const { projectId } = useParams();
+  const handleAccept = async (bid_id: string) => {
+    try {
+      if (projectId) {
+        const APIData = {
+          project_id: parseInt(projectId, 0),
+        };
+        await AcceptBid(bid_id, APIData);
+        notifySuccess("پروژه با موفقیت به کارجو واگذار شد.");
+      }
+    } catch (error: any) {
+      const errorData = error;
+      if (errorData.tag && errorData.errors?.length > 0) {
+        const allErrors = errorData.errors;
+        const errorMessages = allErrors.map((err: any) => errorMapper(err));
+        notifyError(`${errorMessages.join(" ")}`);
+      } else {
+        notifyError(`${errorMapper(errorData)}`);
+      }
+    }
+  };
   return (
-    <div className="bg-white rounded-xl overflow-hidden border border-gray-200 w-full transform transition-all duration-300 box-shadow-custom">
-      <div className="flex flex-col md:flex-row p-6">
-        {/* Left Section - User Image and Basic Info */}
-        <div className="flex-shrink-0 md:ml-6 flex flex-col items-center md:items-start">
-          <div className="relative">
+    <div className="bg-white rounded-lg border-gray-100 w-full p-6 box-shadow-custom duration-300">
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Image Section */}
+        <div className="flex-shrink-0 flex flex-col items-center md:items-start">
+          {ProfileExists ? (
             <img
               src={imageUrl}
-              alt={username}
-              className="w-24 h-24 rounded-full object-cover border-4 border-blue-100 shadow-md"
+              alt={title}
+              className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
+              onError={() => SetProfileExist(false)}
             />
-            <div className="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold">
-              {rating.toFixed(1)}
-            </div>
-          </div>
-          <div className="mt-4 text-center md:text-center">
-            <div className="flex items-center justify-center text-gray-600">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-yellow-500 ml-1"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <span>{reviews} نظر</span>
-            </div>
-          </div>
+          ) : (
+            <RiTeamFill
+              className="text-gray-400 object-cover p-1 rounded-full border-2 border-gray-200"
+              size={80}
+            />
+          )}
         </div>
 
-        {/* Right Section - Detailed Information */}
-        <div className="flex-grow mt-4 md:mt-0">
-          <div className="flex flex-col md:flex-row justify-between items-start">
-            <div className="flex md:w-fit w-full justify-center md:justify-start sm:justify-start flex-col">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center md:text-right">
-                {username}
+        {/* Info Section */}
+        <div className="flex-grow">
+          <div className="flex flex-col md:flex-row justify-between gap-8">
+            <div className="flex flex-col w-full">
+              <h2 className="text-xl font-semibold text-gray-800 text-center md:text-right">
+                {title}
               </h2>
-              {skills.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-3 justify-center md:justify-start">
-                  {skills.slice(0, 2).map((skill, index) => (
-                    <span
-                      key={index}
-                      className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                  {skills.length > 2 ? (
-                    <span
-                      key={-1}
-                      className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
-                    >
-                      {skills.length - 2}+
-                    </span>
-                  ) : (
-                    <></>
-                  )}
-                </div>
+              {description && (
+                <p className="mt-2 text-gray-600 text-sm text-center md:text-right">
+                  {truncateText(description, 150)}
+                </p>
               )}
             </div>
-            <div className="text-center md:text-left w-full md:w-auto mt-4 md:mt-0">
-              <div className="flex items-center justify-center md:justify-start mb-2">
+            <div className="flex flex-col w-full items-center md:items-start space-y-2">
+              <div className="flex items-center">
+                <TbCreditCardPay size={20} className="text-blue-600 ml-2" />
+                <span className="text-gray-700 text-sm">
+                  پیش پرداخت {prePayment} تومان
+                </span>
+              </div>
+              <div className="flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-green-500 ml-2"
+                  className="h-5 w-5 text-green-600 ml-2"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -103,14 +108,14 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
                     d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span className="font-semibold text-gray-700">
-                  {price} {currency}
+                <span className="text-gray-700 text-sm">
+                  مبلغ کل {total} تومان
                 </span>
               </div>
-              <div className="flex items-center justify-center md:justify-start">
+              <div className="flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-blue-500 ml-2"
+                  className="h-5 w-5 text-blue-600 ml-2"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -122,26 +127,22 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span className="font-semibold text-gray-700">
+                <span className="text-gray-700 text-sm">
                   تحویل در {deliveryDays} روز
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Description */}
-          {description && (
-            <div className="mt-4 text-gray-600 text-center md:text-right">
-              <p>{truncateText(description, 200)}</p>
-            </div>
-          )}
-
           {/* Action Buttons */}
-          <div className="mt-6 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 rtl:space-x-reverse">
-            <button className="w-full bg-blue-500 cursor-pointer text-white py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center">
+          <div className="mt-4 flex flex-col md:flex-row gap-3 md:gap-4 md:space-x-reverse">
+            <button
+              className="w-full cursor-pointer bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors flex items-center justify-center text-sm"
+              aria-label="چت با کاربر"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 ml-2"
+                className="h-4 w-4 ml-2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -155,10 +156,14 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
               </svg>
               چت
             </button>
-            <button className="w-full bg-green-500 cursor-pointer text-white py-3 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center">
+            <button
+              onClick={() => handleAccept(bid_id)}
+              className="w-full cursor-pointer bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition-colors flex items-center justify-center text-sm"
+              aria-label="پذیرش پیشنهاد"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 ml-2"
+                className="h-4 w-4 ml-2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

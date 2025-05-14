@@ -481,7 +481,7 @@ const Dashboard = () => {
               داشبورد
             </motion.h2>
             {/* Grid of Previews */}
-            <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-16">
+            <div className="mx-auto max-w-7xl grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-[3vw]">
               {isLoading ? renderSkeletonGrid() : renderContentGrid()}
             </div>
           </div>

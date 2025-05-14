@@ -54,13 +54,13 @@ const UserStateToggle = ({
           ? "blue-500"
           : tab === "jobseeker"
             ? "green-500"
-            : "gray-500", // رنگ متفاوت برای تب تیم‌ها
+            : "gray-500",
       hover:
         tab === "employer"
           ? "blue-600"
           : tab === "jobseeker"
             ? "green-600"
-            : "gray-600", // رنگ hover متفاوت
+            : "gray-600",
     });
   };
 
@@ -69,7 +69,7 @@ const UserStateToggle = ({
       <div className="w-full flex px-4 justify-center mb-6">
         <div className="flex bg-white rounded-full shadow-sm p-1 border border-gray-200">
           <button
-            className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 ${
+            className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 cursor-pointer ${
               activeTab === "employer"
                 ? `border-2 border-${localcolor.color} text-${localcolor.hover} bg-blue-50`
                 : `border-2 border-transparent text-gray-600 hover:bg-gray-100`
@@ -81,7 +81,7 @@ const UserStateToggle = ({
             بخش کارفرما
           </button>
           <button
-            className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 ${
+            className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 cursor-pointer ${
               activeTab === "teams"
                 ? `border-2 border-${localcolor.color} text-${localcolor.hover} bg-blue-50`
                 : `border-2 border-transparent text-gray-600 hover:bg-gray-100`
@@ -93,7 +93,7 @@ const UserStateToggle = ({
             تیم‌های عضو
           </button>
           <button
-            className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 ${
+            className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 cursor-pointer ${
               activeTab === "jobseeker"
                 ? `border-2 border-${localcolor.color} text-${localcolor.hover} bg-blue-50`
                 : `border-2 border-transparent text-gray-600 hover:bg-gray-100`

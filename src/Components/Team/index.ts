@@ -1,23 +1,45 @@
+export type Permission =
+  | "ADD_MEMBER"
+  | "REMOVE_MEMEBER"
+  | "BIDDER"
+  | "EDIT_INFO"
+  | "EDIT_NICKNAME"
+  | "EDIT_ROLE"
+  | "DELETE_TEAM";
+
 // Update index.ts with project interfaces
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   role: string;
   avatar: string;
+  position?: string;
+  username?: string;
 }
+export interface TeamData {
+  id: number;
 
-export interface Team {
-  id: string;
   name: string;
   description: string;
-  memberCount: number;
   members: User[];
-  projects?: Project[]; // Add projects to teams
+  memberCount?: number;
+  createdAt?: string;
+  profileImage?: string;
+  permissions?: Permission[];
+  picture?: string;
 }
-
+export interface Team {
+  id: number;
+  name: string;
+  description: string;
+  profile?: string;
+  members: User[];
+  projects?: Project[];
+  position?: string;
+}
 export interface Project {
-  id: string;
+  id: number;
   title: string;
   description: string;
   status: "در انتظار" | "در حال انجام" | "تکمیل شده" | "لغو شده";
@@ -27,10 +49,9 @@ export interface Project {
   assignedUsers: User[];
 }
 
-// Sample project data for staticData.ts
 export const projects: Project[] = [
   {
-    id: "1",
+    id: 1,
     title: "طراحی وب‌سایت فروشگاهی",
     description:
       "طراحی و توسعه یک فروشگاه آنلاین با قابلیت پرداخت آنلاین و مدیریت موجودی",
@@ -41,7 +62,8 @@ export const projects: Project[] = [
     assignedUsers: [],
   },
   {
-    id: "2",
+    id: 9,
+
     title: "اپلیکیشن موبایل",
     description: "توسعه اپلیکیشن موبایل برای پلتفرم‌های iOS و Android",
     status: "در انتظار",
@@ -51,7 +73,7 @@ export const projects: Project[] = [
     assignedUsers: [],
   },
   {
-    id: "3",
+    id: 3,
     title: "بهینه‌سازی SEO سایت",
     description: "بهبود رتبه سایت در موتورهای جستجو و افزایش ترافیک ارگانیک",
     status: "تکمیل شده",

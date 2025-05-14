@@ -28,7 +28,18 @@ apiClient.interceptors.request.use(
       "/landing/projects",
     ];
 
-    if (token && !publicRoutes.includes(config.url || "")) {
+    // Regex to match dynamic routes like /project/{project_id}/bid
+    const isPublicDynamicRoute = (url: string | undefined): boolean => {
+      if (!url) return false;
+      // Matches /project/{any_number}/bid
+      return /^\/project\/\d+\/bid$/.test(url);
+    };
+
+    if (
+      token &&
+      !publicRoutes.includes(config.url || "") &&
+      !isPublicDynamicRoute(config.url)
+    ) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -101,7 +112,7 @@ export const signupSendOTP = async (userData: any) => {
 export const signupVerifyOTP = async (userData: any) => {
   try {
     const response = await apiClient.post("/signup/verify", userData);
-    console.log(response);
+    // console.log(response);
     const accessToken = response.data.access_token;
     const refreshToken = response.data.refresh_token;
     if (accessToken) {
@@ -468,6 +479,33 @@ export const getBalance = async () => {
   }
 };
 
+export const GetProjectView = async (project_id: string) => {
+  try {
+    const response = await apiClient.get(`/project/${project_id}/view`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت موجودی کیف پول";
+  }
+};
+
+export const AcceptBid = async (bid_id: string, apiData: any) => {
+  try {
+    const response = await apiClient.post(`/bid/${bid_id}/accept`, apiData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت موجودی کیف پول";
+  }
+};
+
+export const GetProjectBid = async (project_id: string) => {
+  try {
+    const response = await apiClient.get(`/project/${project_id}/bid`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت موجودی کیف پول";
+  }
+};
+
 export const getTransactions = async (
   offset: number,
   limit: number,
@@ -525,4 +563,116 @@ export const logout = () => {
   localStorage.removeItem("authToken");
   localStorage.removeItem("refreshToken");
   window.location.href = "/"; // Adjust based on your routing
+};
+
+// teams API
+export const getTeams = async () => {
+  try {
+    const response = await apiClient.get("/team/user/0");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت تیم";
+  }
+};
+
+export const createTeam = async (teamData: any) => {
+  try {
+    const apiTeamData = {
+      title: teamData.name,
+      description: teamData.description,
+      members: teamData.members.map((member: any) => Number(member.id)),
+    };
+    const response = await apiClient.post("/team", apiTeamData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const updateTeamInfo = async (teamData: any) => {
+  try {
+    // console.log(teamData);
+    const response = await apiClient.patch("/team", teamData);
+
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const getTeam = async (TeamData: any, id: any) => {
+  try {
+    const response = await apiClient.get(`/team/${id}`, TeamData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const deleteTeam = async (id: any) => {
+  try {
+    const response = await apiClient.delete(`/team/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const addMember = async (addMemberData: any) => {
+  try {
+    const response = await apiClient.post("/team/member", addMemberData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const UpdateProfileTeam = async (id: number, userData: any) => {
+  try {
+    const response = await apiClient.post(`/team/profile/${id}`, userData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const DeleteProfileTeam = async (id: number) => {
+  try {
+    const response = await apiClient.delete(`/team/profile/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const getTeamRole = async () => {
+  try {
+    const response = await apiClient.get("/role/team");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const updateTeamMemberRole = async (memberRole: any) => {
+  try {
+    // console.log(memberRole);
+    const response = await apiClient.patch("/team/member/role", memberRole);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+export const updateTeamMemberPosition = async (memberPostion: any) => {
+  try {
+    // console.log(memberRole);
+    const response = await apiClient.patch("/team/member/pos", memberPostion);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
 };
