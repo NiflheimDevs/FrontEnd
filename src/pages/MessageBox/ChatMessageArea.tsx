@@ -470,7 +470,7 @@ const ChatMessageArea = () => {
 
         {/* Input */}
         <div className="sticky bottom-0 mt-3 px-5 pb-5">
-          <div className="flex items-center bg-gray-50 rounded-full p-2 shadow-lg">
+          <div className="flex items-center bg-gray-50 rounded-full border-2 border-blue-600 p-2 shadow-lg">
             <input
               type="text"
               placeholder="پیامی بنویسید..."
