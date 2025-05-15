@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice, FormBiderData } from "../Biders/types";
-import BidModalTeams from "./BidModalTeams";
+import BidEditModalTeams from "./BidModalTeams";
 import { ApiTeamResponse } from "../../pages/ProjectDetail/types";
 
-interface BidModalProps {
+interface BidEditModalProps {
   isOpen: boolean;
   onClose: () => void;
   ids: number[];
@@ -17,7 +17,7 @@ interface BidModalProps {
   handleSubmit: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const BidModal: React.FC<BidModalProps> = ({
+const BidEditModal: React.FC<BidEditModalProps> = ({
   isOpen,
   onClose,
   teamData,
@@ -116,7 +116,7 @@ const BidModal: React.FC<BidModalProps> = ({
     }));
   };
 
-  // مدیریت ارسال فرم
+  // مدیریت تغییر فرم
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (validateForm()) {
@@ -171,7 +171,7 @@ const BidModal: React.FC<BidModalProps> = ({
         transition={{ duration: 0.3, ease: "circOut" }}
       >
         <h2 className="text-lg font-semibold text-gray-800 text-right mb-4">
-          ارسال پیشنهاد
+          تغییر پیشنهاد
         </h2>
         <div className="space-y-4">
           {/* Team Selection */}
@@ -210,7 +210,7 @@ const BidModal: React.FC<BidModalProps> = ({
                       (team) => team.isValid && ids.includes(team.team_id)
                     )
                     .map((team) => (
-                      <BidModalTeams
+                      <BidEditModalTeams
                         key={team.team_id}
                         formData={formData}
                         team={team}
@@ -224,7 +224,7 @@ const BidModal: React.FC<BidModalProps> = ({
                       (team) => !team.isValid && ids.includes(team.team_id)
                     )
                     .map((team) => (
-                      <BidModalTeams
+                      <BidEditModalTeams
                         key={team.team_id}
                         formData={formData}
                         team={team}
@@ -236,7 +236,7 @@ const BidModal: React.FC<BidModalProps> = ({
                 </>
               ) : (
                 <label className="flex justify-between text-sm font-medium items-center text-gray-800 bg-gray-200 p-2 rounded-lg text-right mb-2">
-                  هیچ تیمی برای ارسال درخواست یافت نشد.
+                  هیچ تیمی برای تغییر درخواست یافت نشد.
                 </label>
               )}
             </div>
@@ -405,7 +405,7 @@ const BidModal: React.FC<BidModalProps> = ({
                 : "bg-blue-400 hover:bg-blue-500 text-white"
             }`}
           >
-            ارسال
+            تغییر
           </button>
         </div>
       </motion.div>
@@ -413,4 +413,4 @@ const BidModal: React.FC<BidModalProps> = ({
   );
 };
 
-export default BidModal;
+export default BidEditModal;
