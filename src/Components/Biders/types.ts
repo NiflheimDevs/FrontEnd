@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface Bider {
+  teamid: number;
   type: number;
   bid_id: string;
   title: string;
@@ -20,7 +21,7 @@ export const formatPrice = (price: number) => {
 };
 
 export const formatPriceString = (price: string) => {
-  return new Intl.NumberFormat("fa-IR").format(parseInt(price,0));
+  return new Intl.NumberFormat("fa-IR").format(parseInt(price, 0));
 };
 
 export interface Tag {
@@ -81,6 +82,7 @@ export interface FormBiderData {
 
 export const mapApiDataToProfile = async (apiData: any): Promise<Bider> => {
   return {
+    teamid: apiData.team_info.id,
     bid_id: apiData.bid_id,
     title: apiData.team_info?.title,
     description: apiData.team_info?.description,

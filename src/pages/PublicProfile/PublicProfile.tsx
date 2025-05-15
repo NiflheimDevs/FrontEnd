@@ -11,7 +11,7 @@ import {
 } from "../../Components/PublicProfile/types";
 import UserStateToggle from "../../Components/PublicProfile/UserStateToggle";
 import UserJobExperience from "../../Components/PublicProfile/UserJobExperience";
-import { GetUser, getUserProject, GetUserTeams } from "../../API";
+import { GetResume, GetUser, getUserProject, GetUserTeams } from "../../API";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { errorMapper } from "../Error/Error";
@@ -38,11 +38,14 @@ const PublicProfile = () => {
           const apiData = await GetUser(userId);
           const apiTeams = await GetUserTeams(userId);
           const apiEmployer = await getUserProject(0, 1000, userId);
-          console.log(apiData);
+          const apiResume = await GetResume(userId);
+          console.log(apiResume);
           const mappedProfile = await mapApiDataToProfile(
+            profile_id,
             apiData,
             apiEmployer,
-            apiTeams
+            apiTeams,
+            apiResume
           );
           setLocalProfile(mappedProfile);
         }
