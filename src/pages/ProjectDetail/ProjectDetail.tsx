@@ -47,8 +47,6 @@ const ProjectDetail = () => {
         if (project_id) {
           setLoading(true);
           const response = await GetProject(project_id);
-          const teams = await GetTeamsForBidding();
-          setTeams(mapApiData(teams));
           setProjectData(response);
         }
       } catch (error: any) {
@@ -70,6 +68,28 @@ const ProjectDetail = () => {
     };
     fetchProjectData();
   }, [project_id, navigate, notifyError]);
+
+  const fetchProjectData = async () => {
+    try {
+      const teams = await GetTeamsForBidding();
+      setTeams(mapApiData(teams));
+    } catch (error: any) {
+      const errorData = error;
+      if (errorData.tag && errorData.errors?.length > 0) {
+        if (errorData.tag === "NOT_FOUND") {
+          navigate("/error");
+        } else {
+          const allErrors = errorData.errors;
+          const errorMessages = allErrors.map((err: any) => errorMapper(err));
+          notifyError(`${errorMessages.join(" ")}`);
+        }
+      } else {
+        notifyError(`${errorMapper(errorData)}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchProjectBids = async () => {
@@ -239,7 +259,10 @@ const ProjectDetail = () => {
               </div>
               <div className="flex justify-center gap-4">
                 <button
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => {
+                    setIsModalOpen(true);
+                    fetchProjectData();
+                  }}
                   className="bg-blue-400 hover:bg-blue-500 cursor-pointer w-full sm:w-3/4 h-[48px] text-white rounded-lg text-sm shadow-md transition-colors"
                 >
                   ارسال پیشنهاد
