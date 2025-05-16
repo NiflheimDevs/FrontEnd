@@ -47,6 +47,8 @@ const ProjectDetail = () => {
         if (project_id) {
           setLoading(true);
           const response = await GetProject(project_id);
+          const teams = await GetTeamsForBidding();
+          setTeams(mapApiData(teams));
           setProjectData(response);
         }
       } catch (error: any) {
