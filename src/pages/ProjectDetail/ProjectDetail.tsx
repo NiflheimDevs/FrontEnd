@@ -23,6 +23,7 @@ const ProjectDetail = () => {
   const [projectData, setProjectData] = useState<ProjectData | null>(null);
   const [biders, setBiders] = useState<Bider[]>([]);
   const [ids, setids] = useState<number[]>([]);
+  const [Editids, setEditids] = useState<number[]>([]);
   const [teams, setTeams] = useState<ApiTeamResponse>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -116,12 +117,17 @@ const ProjectDetail = () => {
                     !mappedBiders.some((bider) => bider.teamid === id)
                 )
               : [];
+            const listEditOfIds: number[] = bids.ids
+              ? bids.ids.filter((id: number) =>
+                  mappedBiders.some((bider) => bider.teamid === id)
+                )
+              : [];
             setids(listOfIds);
+            setEditids(listEditOfIds);
             setBiders(mappedBiders);
           }
         }
       } catch (error: any) {
-        console.log(error);
         setError(errorMapper(error));
         notifyError(`${errorMapper(error)}`);
       }
@@ -232,9 +238,10 @@ const ProjectDetail = () => {
                 <div className="space-y-3 max-h-107 overflow-y-auto pl-3 custom-scrollbar">
                   <>
                     {biders
-                      .filter((bider) => ids.includes(bider.teamid))
+                      .filter((bider) => Editids.includes(bider.teamid))
                       .map((bider) => (
                         <ProjectBiderCard
+                          setTeams={setTeams}
                           project_id={project_id}
                           teamData={teams}
                           key={bider.teamid}
@@ -244,9 +251,10 @@ const ProjectDetail = () => {
                       ))}
 
                     {biders
-                      .filter((bider) => !ids.includes(bider.teamid))
+                      .filter((bider) => !Editids.includes(bider.teamid))
                       .map((bider) => (
                         <ProjectBiderCard
+                          setTeams={setTeams}
                           project_id={project_id}
                           teamData={teams}
                           key={bider.teamid}

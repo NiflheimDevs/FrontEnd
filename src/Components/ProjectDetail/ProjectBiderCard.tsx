@@ -3,15 +3,17 @@ import { useState } from "react";
 import { Bider, formatPrice, truncateText } from "../Biders/types";
 import { RiTeamFill } from "react-icons/ri";
 import { GrEdit } from "react-icons/gr";
-import { ApiTeamResponse } from "../../pages/ProjectDetail/types";
+import { ApiTeamResponse, mapApiData } from "../../pages/ProjectDetail/types";
 import BidEditModal from "./BidEditModal";
 import { errorMapper } from "../../pages/Error/Error";
 import { useNotification } from "../../Notification/NotificationProvider";
-import { UpdateBid } from "../../API";
+import { GetTeamsForBidding, UpdateBid } from "../../API";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectBiderCardProps {
   bider: Bider;
   color: number;
+  setTeams: React.Dispatch<React.SetStateAction<ApiTeamResponse | undefined>>;
   project_id: string | undefined;
   teamData: ApiTeamResponse | undefined;
 }
@@ -19,12 +21,14 @@ interface ProjectBiderCardProps {
 const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
   bider,
   color,
+  setTeams,
   teamData,
   project_id,
 }) => {
   const [profileExists, setProfileExists] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { error: notifyError, success: notifySuccess } = useNotification();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     team_id: bider.teamid,
     description: "",
@@ -58,6 +62,26 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
       }, 2000);
     } catch (error: any) {
       notifyError(`${errorMapper(error)}`);
+    }
+  };
+
+  const fetchProjectData = async () => {
+    try {
+      const teams = await GetTeamsForBidding();
+      setTeams(mapApiData(teams));
+    } catch (error: any) {
+      const errorData = error;
+      if (errorData.tag && errorData.errors?.length > 0) {
+        if (errorData.tag === "NOT_FOUND") {
+          navigate("/error");
+        } else {
+          const allErrors = errorData.errors;
+          const errorMessages = allErrors.map((err: any) => errorMapper(err));
+          notifyError(`${errorMessages.join(" ")}`);
+        }
+      } else {
+        notifyError(`${errorMapper(errorData)}`);
+      }
     }
   };
 
@@ -107,7 +131,10 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
           {color == 1 ? (
             <button
               className="cursor-pointer"
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                setIsModalOpen(true);
+                fetchProjectData();
+              }}
             >
               <GrEdit size={15} />
             </button>
