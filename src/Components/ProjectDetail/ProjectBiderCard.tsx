@@ -104,12 +104,16 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
         </div>
         <p className="text-white text-xs sm:text-sm text-center font-semibold p-2 items-center justify-center flex gap-2">
           <span>{`${formatPrice(bider.total)} تومان`}</span>
-          <button
-            className="cursor-pointer"
-            onClick={() => setIsModalOpen(true)}
-          >
-            <GrEdit size={15} />
-          </button>
+          {color == 1 ? (
+            <button
+              className="cursor-pointer"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <GrEdit size={15} />
+            </button>
+          ) : (
+            <></>
+          )}
         </p>
       </div>
     </>
