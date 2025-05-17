@@ -84,6 +84,7 @@ const CreateProject: React.FC = () => {
       description: project.description,
       tags: project.tags,
       label: project.label[0],
+      duration: parseInt(project.duration, 0),
     };
 
     try {

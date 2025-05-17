@@ -120,7 +120,7 @@ export default function ProfileForm() {
     const fetchUserData = async () => {
       try {
         const apiData = await GetUser(0);
-        const apiResume = await GetResume();
+        const apiResume = await GetResume(0);
         setResumeName(apiResume ? "resume.pdf" : null);
         const mappedProfile = await mapApiDataToProfile(apiData, apiResume);
         setLocalProfile(mappedProfile);
