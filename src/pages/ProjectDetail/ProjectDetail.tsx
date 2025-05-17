@@ -193,7 +193,7 @@ const ProjectDetail = () => {
       <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
       <div className="items-center bg-[#F7F7F7] flex flex-col overflow-auto h-screen">
         <Header />
-        <main className="flex-1 p-4 sm:p-6 md:mt-2 sm:mt-2 mt-20 flex justify-center h-fit">
+        <main className="flex-1 p-4 sm:p-6 md:mt-2 sm:mt-2 mt-20 flex justify-center h-fit w-full">
           <div className="shadow-xl rounded-2xl bg-white flex flex-col sm:flex-row w-full max-w-7xl mx-auto h-fit sm:h-[600px] gap-6 sm:gap-12 p-4 sm:p-6">
             <div className="w-full sm:w-1/2 flex flex-col space-y-6">
               <div className="flex flex-col space-y-2">
@@ -265,7 +265,7 @@ const ProjectDetail = () => {
                   </>
                 </div>
               </div>
-              <div className="flex justify-center gap-4">
+              <div className="flex justify-center gap-4 pl-2">
                 <button
                   onClick={() => {
                     setIsModalOpen(true);
