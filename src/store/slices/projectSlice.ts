@@ -16,6 +16,7 @@ interface ProjectState {
   loading: boolean;
   error: string | null;
   success: boolean;
+  duration: string;
 }
 
 // Initial state
@@ -28,6 +29,7 @@ const initialState: ProjectState = {
   loading: false,
   error: null,
   success: false,
+  duration: "7",
 };
 
 // Async thunk for creating a project
@@ -39,6 +41,7 @@ export const createProject = createAsyncThunk(
       description: string;
       tags: number[];
       label: number;
+      duration: number;
     },
     { rejectWithValue }
   ) => {
