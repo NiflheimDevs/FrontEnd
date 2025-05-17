@@ -13,6 +13,7 @@ import { useNotification } from "../../Notification/NotificationProvider";
 import { errorMapper } from "../Error/Error";
 import { Skeleton } from "primereact/skeleton";
 import { CgProfile } from "react-icons/cg";
+import { gregorianToPersian } from "../Profile/Profile";
 
 // تعریف تایپ برای داده‌های پروفایل
 interface ProfileData {
@@ -375,7 +376,11 @@ const Dashboard = () => {
                     <tbody>
                       {transactions.map((transaction) => (
                         <tr key={transaction.id} className="border-b">
-                          <td className="py-1 ltr">{transaction.date}</td>
+                          <td className="py-1 ltr">
+                            {gregorianToPersian(
+                              transaction.date?.split("T")[0]
+                            )}
+                          </td>
                           <td className="py-1">{transaction.activity}</td>
                           <td className="py-1">
                             {formatPrice(transaction.amount)}

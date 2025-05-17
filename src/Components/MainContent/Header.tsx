@@ -16,7 +16,7 @@ import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { BiHome, BiHomeAlt2 } from "react-icons/bi";
 
-const Header = ({ showSearch = true }) => {
+const Header = ({ showSearch = false }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const token = localStorage.getItem("authToken");
