@@ -29,7 +29,7 @@ const initialState: ProjectState = {
   loading: false,
   error: null,
   success: false,
-  duration: "7",
+  duration: "",
 };
 
 // Async thunk for creating a project
