@@ -16,6 +16,7 @@ import BidModal from "../../Components/ProjectDetail/BidModal";
 import ProjectDetailSkeletonLoading from "../../Components/ProjectDetail/ProjectDetailSkeletonLoading";
 import { ApiTeamResponse, mapApiData } from "./types";
 import { getStatusText } from "../Projects/MyProjects";
+import { RiTeamFill } from "react-icons/ri";
 
 const ProjectDetail = () => {
   const { project_id } = useParams();
@@ -147,7 +148,6 @@ const ProjectDetail = () => {
   const handleTeamSelect = (team_id: number) => {
     setFormData((prev) => ({ ...prev, team_id }));
   };
-
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
@@ -239,39 +239,58 @@ const ProjectDetail = () => {
             </div>
             <div className="w-full sm:w-1/2 flex flex-col space-y-4">
               <div className="flex-3/4">
-                <h3 className="text-base sm:text-lg font-semibold text-blue-500 mb-1 mt-3 text-right">
+                <h3
+                  className={`text-base sm:text-lg font-semibold ${biders && biders.length > 0 ? "text-blue-500" : "text-gray-400"} mb-1 mt-3 text-right`}
+                >
                   پیشنهاد دهندگان:
                 </h3>
                 <div className="space-y-3 max-h-107 overflow-y-auto pl-3 custom-scrollbar">
-                  <>
-                    {biders
-                      .filter((bider) => Editids.includes(bider.teamid))
-                      .map((bider) => (
-                        <ProjectBiderCard
-                          setTeams={setTeams}
-                          project_id={project_id}
-                          teamData={teams}
-                          key={bider.teamid}
-                          bider={bider}
-                          color={1}
-                          status={projectData.status}
-                        />
-                      ))}
+                  {biders && biders.length > 0 ? (
+                    <>
+                      {biders
+                        .filter((bider) => Editids.includes(bider.teamid))
+                        .map((bider) => (
+                          <ProjectBiderCard
+                            setTeams={setTeams}
+                            project_id={project_id}
+                            teamData={teams}
+                            key={bider.teamid}
+                            bider={bider}
+                            color={1}
+                            status={projectData.status}
+                          />
+                        ))}
 
-                    {biders
-                      .filter((bider) => !Editids.includes(bider.teamid))
-                      .map((bider) => (
-                        <ProjectBiderCard
-                          setTeams={setTeams}
-                          project_id={project_id}
-                          teamData={teams}
-                          key={bider.teamid}
-                          bider={bider}
-                          color={0}
-                          status={projectData.status}
-                        />
-                      ))}
-                  </>
+                      {biders
+                        .filter((bider) => !Editids.includes(bider.teamid))
+                        .map((bider) => (
+                          <ProjectBiderCard
+                            setTeams={setTeams}
+                            project_id={project_id}
+                            teamData={teams}
+                            key={bider.teamid}
+                            bider={bider}
+                            color={0}
+                            status={projectData.status}
+                          />
+                        ))}
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        className={`flex items-center gap-2 w-full justify-between py-3 px-2 rounded-lg shadow-md transition-colors bg-gray-400`}
+                      >
+                        <div className="flex items-center space-x-3 gap-3 space-x-reverse">
+                          <RiTeamFill className="border-gray-200 border-2 text-gray-600 rounded-full w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 p-1" />
+                          <div className="text-right flex justify-center items-center">
+                            <p className="font-semibold text-xs sm:text-sm text-white">
+                              هیچ پیشنهادی برای پروژه درج نشده
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="flex justify-center gap-4 pl-2">

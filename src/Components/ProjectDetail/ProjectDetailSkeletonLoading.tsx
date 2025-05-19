@@ -66,10 +66,10 @@ const ProjectDetailSkeletonLoading: React.FC = () => {
             <Skeleton
               width="35%"
               height="1.5rem"
-              className="shiny-skeleton mb-2 mt-4 text-right rounded-md !bg-blue-500"
+              className="shiny-skeleton mb-2 mt-4 text-right rounded-md !bg-blue-400"
             />
             <div className="space-y-4 max-h-107 overflow-y-auto  custom-scrollbar">
-              <div className="flex items-center gap-3 w-full justify-between py-4 px-3 rounded-xl shadow-lg bg-blue-500 transition-all duration-200 hover:shadow-xl">
+              <div className="flex items-center gap-3 w-full justify-between py-4 px-3 rounded-xl shadow-lg bg-blue-400 transition-all duration-200 hover:shadow-xl">
                 <div className="flex items-center space-x-4 gap-4 space-x-reverse">
                   <Skeleton
                     shape="circle"
@@ -100,7 +100,7 @@ const ProjectDetailSkeletonLoading: React.FC = () => {
               {Array.from({ length: 4 }).map((_, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-3 w-full justify-between py-4 px-3 rounded-xl shadow-lg bg-blue-400 transition-all duration-200 hover:shadow-xl"
+                  className="flex items-center gap-3 w-full justify-between py-4 px-3 rounded-xl shadow-lg bg-blue-300 transition-all duration-200 hover:shadow-xl"
                 >
                   <div className="flex items-center space-x-4 gap-4 space-x-reverse">
                     <Skeleton
