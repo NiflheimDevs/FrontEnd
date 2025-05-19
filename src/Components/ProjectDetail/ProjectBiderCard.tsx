@@ -101,7 +101,7 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
       />
       <div
         className={`flex items-center gap-2 w-full justify-between py-3 px-2 rounded-lg shadow-md transition-colors ${
-          color === 1 ? "bg-blue-500" : "bg-blue-400"
+          color === 1 ? "bg-blue-400" : "bg-blue-300"
         }`}
       >
         <div className="flex items-center space-x-3 gap-3 space-x-reverse">

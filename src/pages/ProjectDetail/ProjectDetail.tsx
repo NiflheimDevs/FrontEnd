@@ -240,7 +240,7 @@ const ProjectDetail = () => {
             <div className="w-full sm:w-1/2 flex flex-col space-y-4">
               <div className="flex-3/4">
                 <h3
-                  className={`text-base sm:text-lg font-semibold ${biders && biders.length > 0 ? "text-blue-500" : "text-gray-400"} mb-1 mt-3 text-right`}
+                  className={`text-base sm:text-lg font-semibold ${biders && biders.length > 0 ? "text-blue-400" : "text-gray-400"} mb-1 mt-3 text-right`}
                 >
                   پیشنهاد دهندگان:
                 </h3>
