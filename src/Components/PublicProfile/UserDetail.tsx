@@ -39,8 +39,8 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
           <span className="text-sm font-medium text-gray-700 font-[vazirmatn]">
             {localprofile.email}
           </span>
-          <div className="flex items-center gap-2 border border-gray-300 bg-gray-100 rounded-lg px-2 py-1">
-            {localprofile.resumeAddress ? (
+          {localprofile.resumeAddress ? (
+            <div className="flex items-center gap-2 border border-gray-300 bg-gray-100 rounded-lg px-2 py-1">
               <a
                 className="flex flex-row gap-1 items-center"
                 href={localprofile.resumeAddress}
@@ -50,10 +50,10 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
                   رزومه کاربر
                 </span>
               </a>
-            ) : (
-              <></>
-            )}
-          </div>
+            </div>
+          ) : (
+            <></>
+          )}
           {localprofile.profile_id != "0" ? (
             <button
               className={`flex items-center cursor-pointer gap-2 px-4 py-2 bg-${localcolor.color} text-white text-sm font-[vazirmatn] rounded-full shadow-md hover:bg-${localcolor.hover} focus:ring-2 focus:ring-${localcolor.color} focus:ring-offset-2 transition-all duration-200`}

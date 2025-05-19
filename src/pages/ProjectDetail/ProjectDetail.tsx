@@ -15,6 +15,8 @@ import ProjectBiderCard from "../../Components/ProjectDetail/ProjectBiderCard";
 import BidModal from "../../Components/ProjectDetail/BidModal";
 import ProjectDetailSkeletonLoading from "../../Components/ProjectDetail/ProjectDetailSkeletonLoading";
 import { ApiTeamResponse, mapApiData } from "./types";
+import { getStatusText } from "../Projects/MyProjects";
+import { RiTeamFill } from "react-icons/ri";
 
 const ProjectDetail = () => {
   const { project_id } = useParams();
@@ -37,9 +39,9 @@ const ProjectDetail = () => {
   const formatDuration = (dateString: string) => {
     const projectDate = new Date(dateString);
     const currentDate = new Date();
-    const diffTime = Math.abs(currentDate.getTime() - projectDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return `${diffDays} روز پیش`;
+    const diffTime = currentDate.getTime() - projectDate.getTime();
+    const diffDays = Math.ceil(Math.abs(diffTime) / (1000 * 60 * 60 * 24));
+    return diffTime < 0 ? `${diffDays} روز بعد` : `${diffDays} روز پیش`;
   };
 
   useEffect(() => {
@@ -79,10 +81,6 @@ const ProjectDetail = () => {
       if (errorData.tag && errorData.errors?.length > 0) {
         if (errorData.tag === "NOT_FOUND") {
           navigate("/error");
-        } else {
-          const allErrors = errorData.errors;
-          const errorMessages = allErrors.map((err: any) => errorMapper(err));
-          notifyError(`${errorMessages.join(" ")}`);
         }
       } else {
         notifyError(`${errorMapper(errorData)}`);
@@ -104,7 +102,7 @@ const ProjectDetail = () => {
                   type: bid.team_info.type,
                   bid_id: bid.bid_id.toString(),
                   title: bid.team_info.title,
-                  pre_payment: 0,
+                  pre_payment: bid.pre_payment,
                   total: bid.total,
                   expected_time: bid.expected_time,
                   profile: bid.team_info.profile,
@@ -150,7 +148,6 @@ const ProjectDetail = () => {
   const handleTeamSelect = (team_id: number) => {
     setFormData((prev) => ({ ...prev, team_id }));
   };
-
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
@@ -200,9 +197,19 @@ const ProjectDetail = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-blue-400 text-right">
                   عنوان پروژه: {projectData.title}
                 </h2>
-                <div className="flex flex-col text-right text-xs sm:text-sm text-gray-500">
-                  <span>{formatDuration(projectData.duration)}</span>
-                  <span>{biders.length} پیشنهاد</span>
+                <div className="flex flex-col w-fit">
+                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-500 gap-2">
+                    <label className="font-semibold">وضعیت پروژه: </label>
+                    <span>{getStatusText(projectData.status)}</span>
+                  </div>
+                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-500 gap-2">
+                    <label className="font-semibold">تعداد پیشنهادها: </label>
+                    <span>{biders.length} پیشنهاد</span>
+                  </div>
+                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-500 gap-2">
+                    <label className="font-semibold">مهلت ارسال پیشنهاد:</label>
+                    <span>{formatDuration(projectData.duration)}</span>
+                  </div>
                 </div>
               </div>
               <div>
@@ -232,37 +239,58 @@ const ProjectDetail = () => {
             </div>
             <div className="w-full sm:w-1/2 flex flex-col space-y-4">
               <div className="flex-3/4">
-                <h3 className="text-base sm:text-lg font-semibold text-blue-500 mb-1 mt-3 text-right">
+                <h3
+                  className={`text-base sm:text-lg font-semibold ${biders && biders.length > 0 ? "text-blue-400" : "text-gray-400"} mb-1 mt-3 text-right`}
+                >
                   پیشنهاد دهندگان:
                 </h3>
                 <div className="space-y-3 max-h-107 overflow-y-auto pl-3 custom-scrollbar">
-                  <>
-                    {biders
-                      .filter((bider) => Editids.includes(bider.teamid))
-                      .map((bider) => (
-                        <ProjectBiderCard
-                          setTeams={setTeams}
-                          project_id={project_id}
-                          teamData={teams}
-                          key={bider.teamid}
-                          bider={bider}
-                          color={1}
-                        />
-                      ))}
+                  {biders && biders.length > 0 ? (
+                    <>
+                      {biders
+                        .filter((bider) => Editids.includes(bider.teamid))
+                        .map((bider) => (
+                          <ProjectBiderCard
+                            setTeams={setTeams}
+                            project_id={project_id}
+                            teamData={teams}
+                            key={bider.teamid}
+                            bider={bider}
+                            color={1}
+                            status={projectData.status}
+                          />
+                        ))}
 
-                    {biders
-                      .filter((bider) => !Editids.includes(bider.teamid))
-                      .map((bider) => (
-                        <ProjectBiderCard
-                          setTeams={setTeams}
-                          project_id={project_id}
-                          teamData={teams}
-                          key={bider.teamid}
-                          bider={bider}
-                          color={0}
-                        />
-                      ))}
-                  </>
+                      {biders
+                        .filter((bider) => !Editids.includes(bider.teamid))
+                        .map((bider) => (
+                          <ProjectBiderCard
+                            setTeams={setTeams}
+                            project_id={project_id}
+                            teamData={teams}
+                            key={bider.teamid}
+                            bider={bider}
+                            color={0}
+                            status={projectData.status}
+                          />
+                        ))}
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        className={`flex items-center gap-2 w-full justify-between py-3 px-2 rounded-lg shadow-md transition-colors bg-gray-400`}
+                      >
+                        <div className="flex items-center space-x-3 gap-3 space-x-reverse">
+                          <RiTeamFill className="border-gray-200 border-2 text-gray-600 rounded-full w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 p-1" />
+                          <div className="text-right flex justify-center items-center">
+                            <p className="font-semibold text-xs sm:text-sm text-white">
+                              هیچ پیشنهادی برای پروژه درج نشده
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="flex justify-center gap-4 pl-2">
@@ -271,7 +299,8 @@ const ProjectDetail = () => {
                     setIsModalOpen(true);
                     fetchProjectData();
                   }}
-                  className="bg-blue-400 hover:bg-blue-500 cursor-pointer w-full sm:w-3/4 h-[48px] text-white rounded-lg text-sm shadow-md transition-colors"
+                  disabled={projectData.status > 1}
+                  className={`bg-blue-400 ${projectData.status > 1 ? "opacity-60" : "cursor-pointer hover:bg-blue-500"} w-full sm:w-3/4 h-[48px] text-white rounded-lg text-sm shadow-md transition-colors`}
                 >
                   ارسال پیشنهاد
                 </button>

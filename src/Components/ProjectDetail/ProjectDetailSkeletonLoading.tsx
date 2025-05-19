@@ -66,41 +66,43 @@ const ProjectDetailSkeletonLoading: React.FC = () => {
             <Skeleton
               width="35%"
               height="1.5rem"
-              className="shiny-skeleton mb-2 mt-4 text-right rounded-md !bg-blue-500"
+              className="shiny-skeleton mb-2 mt-4 text-right rounded-md !bg-blue-400"
             />
             <div className="space-y-4 max-h-107 overflow-y-auto  custom-scrollbar">
-              <div className="flex items-center gap-3 w-full justify-between py-4 px-3 rounded-xl shadow-lg bg-blue-500 transition-all duration-200 hover:shadow-xl">
-                <div className="flex items-center space-x-4 gap-4 space-x-reverse">
-                  <Skeleton
-                    shape="circle"
-                    size="2.5rem"
-                    className="shiny-skeleton border-2 border-gray-200 rounded-full"
-                  />
-                  <div className="text-right">
+              {Array.from({ length: 2 }).map(() => (
+                <div className="flex items-center gap-3 w-full justify-between py-4 px-3 rounded-xl shadow-lg bg-blue-400 transition-all duration-200 hover:shadow-xl">
+                  <div className="flex items-center space-x-4 gap-4 space-x-reverse">
                     <Skeleton
-                      width="6rem"
-                      height="1rem"
-                      className="shiny-skeleton mb-2 rounded-md"
+                      shape="circle"
+                      size="2.5rem"
+                      className="shiny-skeleton border-2 border-gray-200 rounded-full"
                     />
-                    <Skeleton
-                      width="9rem"
-                      height="0.875rem"
-                      className="shiny-skeleton rounded-md"
-                    />
+                    <div className="text-right">
+                      <Skeleton
+                        width="6rem"
+                        height="1rem"
+                        className="shiny-skeleton mb-2 rounded-md"
+                      />
+                      <Skeleton
+                        width="9rem"
+                        height="0.875rem"
+                        className="shiny-skeleton rounded-md"
+                      />
+                    </div>
                   </div>
+                  <Skeleton
+                    width="5rem"
+                    height="1rem"
+                    className="shiny-skeleton rounded-md"
+                  />
                 </div>
-                <Skeleton
-                  width="5rem"
-                  height="1rem"
-                  className="shiny-skeleton rounded-md"
-                />
-              </div>
+              ))}
 
               {/* Bider Cards Skeleton (3 cards) */}
-              {Array.from({ length: 4 }).map((_, index) => (
+              {Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-3 w-full justify-between py-4 px-3 rounded-xl shadow-lg bg-blue-400 transition-all duration-200 hover:shadow-xl"
+                  className="flex items-center gap-3 w-full justify-between py-4 px-3 rounded-xl shadow-lg bg-blue-300 transition-all duration-200 hover:shadow-xl"
                 >
                   <div className="flex items-center space-x-4 gap-4 space-x-reverse">
                     <Skeleton

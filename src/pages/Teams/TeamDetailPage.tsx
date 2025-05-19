@@ -1,26 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Layout from "../../Components/Team/Layout";
 import TeamMemberCard from "../../Components/Team/TeamMemberCard";
-// import Pagination from './Pagination';
 import AddMemberModal from "../../Components/Team/AddMemberModal";
 import EditTeamModal from "../../Components/Team/EditTeamModal";
-import DeleteTeamModal from "../../Components/Team/DeleteTeamModal"; // Import the DeleteTeamModal component
+import DeleteTeamModal from "../../Components/Team/DeleteTeamModal";
 import {
   getTeam,
   deleteTeam,
   UpdateProfileTeam,
   DeleteProfileTeam,
-  // getTeamRole,
+  DeleteTeamMember,
+  GetSpecificTeamProject,
 } from "../../API";
-import {
-  User,
-  Project,
-  projects,
-  TeamData,
-  Permission,
-} from "../../Components/Team/index";
+import { User, TeamData, Permission } from "../../Components/Team/index";
 
 // Define types based on the API response structure
 interface TeamMember {
@@ -50,6 +43,37 @@ interface TeamResponse {
   permissions: string[];
 }
 
+interface ProjectLabel {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+}
+
+interface ProjectTag {
+  id: number;
+  name: string;
+}
+
+interface TeamProject {
+  project_id: number;
+  owner_id: number;
+  title: string;
+  description: string;
+  label: ProjectLabel;
+  selected_bid: number;
+  status: number;
+  tags: ProjectTag[];
+  duration: string;
+  start_time: string;
+  end_time: string;
+}
+
+interface ProjectResponse {
+  projects: TeamProject[];
+  count: number;
+}
+
 const TeamDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -57,24 +81,22 @@ const TeamDetailPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"members" | "projects">("members");
   const [isAddMemberModalOpen, setIsAddMemberModalOpen] = useState(false);
   const [isEditTeamModalOpen, setIsEditTeamModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Add state for delete modal
-  const [isDeleting, setIsDeleting] = useState(false); // Add state for delete loading
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [ProfileExists, SetProfileExist] = useState<boolean>(true);
 
   const [teamData, setTeamData] = useState<TeamData | null>(null);
-  const [teamProjects, setTeamProjects] = useState<Project[]>([]);
+  const [teamProjects, setTeamProjects] = useState<TeamProject[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const membersPerPage = 50;
 
-  // Check if user has a specific permission
   const hasPermission = (permission: Permission): boolean => {
     if (!teamData) return false;
     return (teamData.permissions ?? []).includes(permission);
   };
 
-  // Fetch team data from API when component mounts
   useEffect(() => {
     const fetchTeamData = async () => {
       if (!id) return;
@@ -83,18 +105,16 @@ const TeamDetailPage: React.FC = () => {
         setIsLoading(true);
         const response: TeamResponse = await getTeam({}, id);
 
-        // Transform API response to match our component's expected format
         const transformedData: TeamData = {
           id: response.team_info.id,
           name: response.team_info.title,
           description: response.team_info.description,
           members: response.members.map((member: TeamMember) => ({
             id: member.member_info.userid,
-
             name: `${member.member_info.firstname} ${member.member_info.lastname}`,
             username: member.member_info.username,
-            email: "", // Not provided in API response
-            avatar: member.profile || "", // Using profile as avatar
+            email: "",
+            avatar: member.profile || "",
             role: member.role,
             position: member.member_info.position || "عضو",
           })),
@@ -106,15 +126,18 @@ const TeamDetailPage: React.FC = () => {
 
         setTeamData(transformedData);
 
-        // Fetch team projects (still using static data for now)
-        // You'll need to replace this with an API call later
-        const teamProjectsList = projects.filter(
-          (project) => project.teamId === id
-        );
-        setTeamProjects(teamProjectsList);
+        try {
+          const projectResponse: ProjectResponse =
+            await GetSpecificTeamProject(id);
+          setTeamProjects(projectResponse?.projects || []); // Fallback to empty array if projects is null/undefined
+        } catch (projectErr: any) {
+          console.error("Error fetching team projects:", projectErr);
+          setTeamProjects([]); // Set to empty array on error
+          setError(projectErr.message || "خطا در دریافت پروژه‌های تیم");
+        }
       } catch (err: any) {
-        console.error("Error fetching team data:", err);
-        setError(err.message || "خطا در دریافت اطلاعات تیم");
+        console.error("Error fetching data:", err);
+        setError(err.message || "خطا در دریافت اطلاعات");
       } finally {
         setIsLoading(false);
       }
@@ -123,45 +146,31 @@ const TeamDetailPage: React.FC = () => {
     fetchTeamData();
   }, [id]);
 
-  // Handle team deletion
   const handleDeleteTeam = async () => {
     if (!id || !teamData) return;
 
     try {
       setIsDeleting(true);
-      await deleteTeam(id); // Call your API function to delete the team
-
-      // Navigate back to teams page after successful deletion
+      await deleteTeam(id);
       navigate("/teams");
-
-      // You could also add a toast notification here if you're using a notification library
-      // toast.success("تیم با موفقیت حذف شد");
     } catch (err: any) {
       console.error("Error deleting team:", err);
       setError(err.message || "خطا در حذف تیم");
-      // You could also add a toast notification for the error
-      // toast.error("خطا در حذف تیم");
     } finally {
       setIsDeleting(false);
       setIsDeleteModalOpen(false);
     }
   };
 
-  // Calculate pagination for members
   const indexOfLastMember = currentPage * membersPerPage;
   const indexOfFirstMember = indexOfLastMember - membersPerPage;
   const currentMembers =
     teamData?.members.slice(indexOfFirstMember, indexOfLastMember) || [];
-  // const totalPages = Math.ceil((teamData?.members.length || 0) / membersPerPage);
 
-  // Handle adding a new member to the team
   const handleAddMember = (user: User) => {
     if (!teamData) return;
 
-    // Create updated user with role
     const updatedUser = { ...user };
-
-    // Update team data with new member
     const updatedTeam = {
       ...teamData,
       members: [...teamData.members, updatedUser],
@@ -170,68 +179,22 @@ const TeamDetailPage: React.FC = () => {
 
     setTeamData(updatedTeam);
     setIsAddMemberModalOpen(false);
-
-    // Here you would also make an API call to update the backend
-    // Example: addTeamMember(id, { userId: user.id, role });
   };
-
-  // const handleRoleChange = async (userId: number, newRole: string) => {
-  //   if (!id || !teamData) return;
-
-  //   try {
-  //     // Call API to update the user's role
-  //     await updateTeamMemberRole({
-  //       user_id: userId,
-  //       role: newRole,
-  //       team_id: parseInt(id),
-  //     });
-
-  //     // Update the UI with the new role
-  //     const updatedMembers = teamData.members.map((member) => {
-  //       if (member.id === userId) {
-  //         return { ...member, role: newRole };
-  //       }
-  //       return member;
-  //     });
-
-  //     const updatedTeam = {
-  //       ...teamData,
-  //       members: updatedMembers,
-  //     };
-
-  //     setTeamData(updatedTeam);
-  //   } catch (error) {
-  //     console.error("Error updating team member role:", error);
-  //     setError("خطا در به‌روزرسانی نقش عضو تیم");
-  //     // You could also add a toast notification for the error
-  //   }
-  // };
 
   const handleEditTeam = async (
     updatedTeam: TeamData,
     teamPictureFile: File | null
   ): Promise<void> => {
     try {
-      // First update the basic team info
-      // Here you would call your API to update the team info
-      // Example: await updateTeam(id, { title: updatedTeam.name, description: updatedTeam.description });
-
-      // Handle profile picture update
       if (teamPictureFile) {
-        // Upload new profile picture
         const formData = new FormData();
         formData.append("file", teamPictureFile);
-
         const result = await UpdateProfileTeam(updatedTeam.id, formData);
-        // Update the picture URL in the updatedTeam object
         updatedTeam.picture = result?.profile || updatedTeam.picture;
       } else if (updatedTeam.picture === null) {
-        // && team.picture !== null
-        // Delete profile picture if it was removed
         await DeleteProfileTeam(updatedTeam.id);
       }
 
-      // Update the local state with the updated team
       setTeamData({
         ...updatedTeam,
         permissions: teamData?.permissions || [],
@@ -240,64 +203,66 @@ const TeamDetailPage: React.FC = () => {
       setIsEditTeamModalOpen(false);
     } catch (error) {
       console.error("Error updating team:", error);
-      // Handle error (maybe show an error message)
     }
   };
 
-  // Handle removing a member from the team
-  const handleDeleteMember = (userId: number) => {
+  const handleDeleteMember = async (userId: number) => {
     if (!teamData || !hasPermission("REMOVE_MEMEBER")) return;
 
-    const updatedMembers = teamData.members.filter(
-      (member) => member.id !== userId
-    );
-
-    const updatedTeam = {
-      ...teamData,
-      members: updatedMembers,
-      memberCount: updatedMembers.length,
-    };
-
-    setTeamData(updatedTeam);
-
-    // Here you would also make an API call to update the backend
-    // Example: removeTeamMember(id, userId);
+    try {
+      setIsDeleting(true);
+      const UserData = {
+        team_id: id ? parseInt(id) : 0,
+        members: [userId],
+      };
+      await DeleteTeamMember(UserData);
+      const updatedMembers = teamData.members.filter(
+        (member) => member.id !== userId
+      );
+      const updatedTeam = {
+        ...teamData,
+        members: updatedMembers,
+        memberCount: updatedMembers.length,
+      };
+      setTeamData(updatedTeam);
+    } catch (error: any) {
+      console.error("Error deleting team member:", error);
+      setError(error.response?.data || "خطا در حذف عضو تیم");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
-  // Navigate to team projects
   const navigateToTeamProjects = () => {
     navigate(`/Browsproject`);
   };
 
-  // Get project status badge color
-  const getStatusBadgeColor = (status: any) => {
-    switch (status) {
-      case "completed":
-        return "bg-green-100 text-green-800";
-      case "in_progress":
-        return "bg-blue-100 text-blue-800";
-      case "planned":
-        return "bg-yellow-100 text-yellow-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
+  // const getStatusBadgeColor = (status: number) => {
+  //   switch (status) {
+  //     case 3:
+  //       return "bg-blue-100 text-blue-800";
+  //     case 1:
+  //       return "bg-green-100 text-green-800";
+  //     case 2:
+  //       return "bg-yellow-100 text-yellow-800";
+  //     default:
+  //       return "bg-gray-100 text-gray-800";
+  //   }
+  // };
 
-  // Get formatted status text
-  const getStatusText = (status: any) => {
-    switch (status) {
-      case "completed":
-        return "تکمیل شده";
-      case "in_progress":
-        return "در حال انجام";
-      case "planned":
-        return "برنامه‌ریزی شده";
-      default:
-        return status;
-    }
-  };
+  // const getStatusText = (status: number) => {
+  //   switch (status) {
+  //     case 3:
+  //       return "در حال انجام";
+  //     case 1:
+  //       return "تکمیل شده";
+  //     case 2:
+  //       return "برنامه‌ریزی شده";
+  //     default:
+  //       return "نامشخص";
+  //   }
+  // };
 
-  // Show loading state
   if (isLoading) {
     return (
       <Layout>
@@ -308,7 +273,6 @@ const TeamDetailPage: React.FC = () => {
     );
   }
 
-  // Show error state
   if (error || !teamData) {
     return (
       <Layout>
@@ -331,16 +295,16 @@ const TeamDetailPage: React.FC = () => {
     <Layout>
       <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
-          <div className="flex items-center gap-3 ">
+          <div className="flex items-center gap-3">
             {ProfileExists ? (
               <img
                 src={teamData.profileImage}
                 alt={teamData.name}
-                className="w-12 h-12 rounded-full object-cover border-2 border-blue-500  order-first md:order-first"
+                className="w-12 h-12 rounded-full object-cover border-2 border-blue-500 order-first md:order-first"
                 onError={() => SetProfileExist(false)}
               />
             ) : (
-              <div className="w-12 h-12 items-center justify-center flex bg-blue-400/30 text-xl font-semibold rounded-full object-cover border-2 border-blue-500  order-first md:order-first">
+              <div className="w-12 h-12 items-center justify-center flex bg-blue-400/30 text-xl font-semibold rounded-full object-cover border-2 border-blue-500 order-first md:order-first">
                 {teamData.name.charAt(0)}
               </div>
             )}
@@ -350,7 +314,7 @@ const TeamDetailPage: React.FC = () => {
             {hasPermission("ADD_MEMBER") && (
               <button
                 onClick={() => setIsAddMemberModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded flex items-center justify-center"
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
               >
                 <svg
                   className="w-5 h-5 ml-1"
@@ -371,7 +335,7 @@ const TeamDetailPage: React.FC = () => {
             {hasPermission("EDIT_INFO") && (
               <button
                 onClick={() => setIsEditTeamModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded flex items-center justify-center"
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
               >
                 <svg
                   className="w-5 h-5 ml-1"
@@ -425,7 +389,6 @@ const TeamDetailPage: React.FC = () => {
             <p className="text-gray-600 text-right mb-6">
               مدیریت تیم و تقسیم نقش ها بین کاربران
             </p>
-
             <div className="border rounded-lg overflow-hidden">
               {currentMembers.length > 0 ? (
                 currentMembers.map((member: User) => (
@@ -436,7 +399,7 @@ const TeamDetailPage: React.FC = () => {
                     canDelete={hasPermission("REMOVE_MEMEBER")}
                     canEditRole={hasPermission("EDIT_ROLE")}
                     canEditNickname={hasPermission("EDIT_NICKNAME")}
-                    teamId={id ? parseInt(id) : undefined} // Pass the team ID
+                    teamId={id ? parseInt(id) : undefined}
                   />
                 ))
               ) : (
@@ -445,14 +408,6 @@ const TeamDetailPage: React.FC = () => {
                 </div>
               )}
             </div>
-
-            {/* {teamData.members.length > membersPerPage && (
-              <Pagination 
-                currentPage={currentPage} 
-                totalPages={totalPages} 
-                onPageChange={setCurrentPage}
-              />
-            )} */}
           </div>
         )}
 
@@ -462,7 +417,6 @@ const TeamDetailPage: React.FC = () => {
             <p className="text-gray-600 text-right mb-6">
               پروژه های در حال انجام و اتمام شده
             </p>
-
             <div className="border rounded-lg overflow-hidden">
               {teamProjects.length > 0 ? (
                 <div>
@@ -480,64 +434,42 @@ const TeamDetailPage: React.FC = () => {
                             scope="col"
                             className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
                           >
-                            وضعیت
+                            توضیحات
                           </th>
                           <th
                             scope="col"
                             className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
                           >
-                            تاریخ شروع
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                          >
-                            تاریخ پایان
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                          >
-                            عملیات
+                            تگ‌ها
                           </th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {teamProjects.map((project: any) => (
-                          <tr key={project.id} className="hover:bg-gray-50">
+                        {teamProjects.map((project: TeamProject) => (
+                          <tr
+                            key={project.project_id}
+                            className="hover:bg-gray-50"
+                          >
                             <td className="px-6 py-4 whitespace-nowrap text-right">
                               <div className="text-sm font-medium text-gray-900">
-                                {project.name}
+                                {project.title}
                               </div>
-                              <div className="text-sm text-gray-500">
-                                {project.description &&
-                                  project.description.substring(0, 60)}
-                                {project.description &&
-                                project.description.length > 60
-                                  ? "..."
-                                  : ""}
-                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
+                              {project.description.substring(0, 60)}
+                              {project.description.length > 60 ? "..." : ""}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <span
-                                className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeColor(project.status)}`}
-                              >
-                                {getStatusText(project.status)}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
-                              {/* {project.startDate} */} 6/12
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
-                              {/* {project.endDate || "-"} */} 12/6
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                              <Link
-                                to={`/detail/${project.id}`}
-                                className="text-blue-600 hover:text-blue-900 ml-4"
-                              >
-                                مشاهده
-                              </Link>
+                              <div className="flex flex-wrap gap-1 justify-end">
+                                {project.tags.slice(0, 3).map((tag) => (
+                                  <span
+                                    key={tag.id}
+                                    className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800"
+                                  >
+                                    {tag.name}
+                                  </span>
+                                ))}
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -570,6 +502,7 @@ const TeamDetailPage: React.FC = () => {
                   </p>
                 </div>
               )}
+
               <div className="text-center p-4">
                 {teamProjects.length > 0 && (
                   <button
@@ -591,47 +524,42 @@ const TeamDetailPage: React.FC = () => {
           >
             بازگشت به صفحه تیم
           </Link>
-
           {hasPermission("DELETE_TEAM") && (
             <button
-              onClick={() => setIsDeleteModalOpen(true)} // Open the delete modal instead of window.confirm
-              className="mr-4 bg-red-500 hover:bg-red-600 cursor-pointer text-white py-2 px-4 rounded transition-colors duration-300"
+              onClick={() => setIsDeleteModalOpen(true)}
+              className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors duration-300"
             >
               حذف تیم
             </button>
           )}
         </div>
+
+        {teamData && (
+          <>
+            <AddMemberModal
+              isOpen={isAddMemberModalOpen}
+              onClose={() => setIsAddMemberModalOpen(false)}
+              onSubmit={handleAddMember}
+              existingMemberIds={teamData.members.map((member) => member.id)}
+              teamId={0}
+            />
+            <EditTeamModal
+              isOpen={isEditTeamModalOpen}
+              onClose={() => setIsEditTeamModalOpen(false)}
+              onSubmit={handleEditTeam}
+              team={teamData}
+            />
+            <DeleteTeamModal
+              isOpen={isDeleteModalOpen}
+              onClose={() => setIsDeleteModalOpen(false)}
+              onConfirm={() => handleDeleteTeam()}
+              teamId={teamData.id.toString()}
+              teamName={teamData.name}
+              isDeleting={isDeleting}
+            />
+          </>
+        )}
       </div>
-
-      {/* Add the modals */}
-      {teamData && (
-        <>
-          <AddMemberModal
-            isOpen={isAddMemberModalOpen}
-            onClose={() => setIsAddMemberModalOpen(false)}
-            onSubmit={handleAddMember}
-            existingMemberIds={teamData.members.map((member) => member.id)}
-            teamId={0}
-          />
-
-          <EditTeamModal
-            isOpen={isEditTeamModalOpen}
-            onClose={() => setIsEditTeamModalOpen(false)}
-            onSubmit={handleEditTeam}
-            team={teamData}
-          />
-
-          {/* Add the DeleteTeamModal */}
-          <DeleteTeamModal
-            isOpen={isDeleteModalOpen}
-            onClose={() => setIsDeleteModalOpen(false)}
-            onConfirm={() => handleDeleteTeam()}
-            teamId={teamData.id.toString()}
-            teamName={teamData.name}
-            isDeleting={isDeleting}
-          />
-        </>
-      )}
     </Layout>
   );
 };
