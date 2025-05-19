@@ -47,6 +47,7 @@ export interface ProjectData {
   last_name: string;
   username: string;
   duration: string;
+  status: number;
 }
 
 export interface Team {
