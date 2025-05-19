@@ -130,8 +130,8 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
             </div>
           </div>
         </div>
-        <p className="text-white text-[12px] md:text-xs lg:text-xs text-center font-semibold p-2 items-center justify-center flex gap-2">
-          <div className="flex flex-col whitespace-nowrap">
+        <p className="text-white text-[12px] md:text-xs lg:text-xs text-center font-semibold p-2 items-center justify-center flex gap-3">
+          <div className="flex flex-col whitespace-nowrap gap-1">
             <span>{`${formatPrice(bider.total)} تومان`}</span>
             <span>{`${formatPrice(bider.pre_payment)} تومان`}</span>
           </div>

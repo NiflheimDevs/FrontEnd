@@ -194,7 +194,7 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
           </div>
 
           {/* Owner Section */}
-          <div className="flex items-center gap-3 border-2 rounded-xl px-3 py-2 shadow-sm">
+          <div className="flex items-center gap-3 border-2 rounded-3xl box-shadow-custom px-3 py-2">
             {OwnerProfileExists ? (
               <img
                 src={data.owner.profile}
