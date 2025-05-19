@@ -102,7 +102,7 @@ const ProjectDetail = () => {
                   type: bid.team_info.type,
                   bid_id: bid.bid_id.toString(),
                   title: bid.team_info.title,
-                  pre_payment: 0,
+                  pre_payment: bid.pre_payment,
                   total: bid.total,
                   expected_time: bid.expected_time,
                   profile: bid.team_info.profile,
