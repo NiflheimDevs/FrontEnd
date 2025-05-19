@@ -16,6 +16,7 @@ interface ProjectBiderCardProps {
   setTeams: React.Dispatch<React.SetStateAction<ApiTeamResponse | undefined>>;
   project_id: string | undefined;
   teamData: ApiTeamResponse | undefined;
+  status: number;
 }
 
 const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
@@ -24,6 +25,7 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
   setTeams,
   teamData,
   project_id,
+  status,
 }) => {
   const [profileExists, setProfileExists] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -130,11 +132,12 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
           <span>{`${formatPrice(bider.total)} تومان`}</span>
           {color == 1 ? (
             <button
-              className="cursor-pointer"
+              className={`${status > 1 ? "hidden" : "cursor-pointer block"}`}
               onClick={() => {
                 setIsModalOpen(true);
                 fetchProjectData();
               }}
+              disabled={status > 1}
             >
               <GrEdit size={15} />
             </button>

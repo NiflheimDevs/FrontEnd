@@ -15,6 +15,7 @@ import ProjectBiderCard from "../../Components/ProjectDetail/ProjectBiderCard";
 import BidModal from "../../Components/ProjectDetail/BidModal";
 import ProjectDetailSkeletonLoading from "../../Components/ProjectDetail/ProjectDetailSkeletonLoading";
 import { ApiTeamResponse, mapApiData } from "./types";
+import { getStatusText } from "../Projects/MyProjects";
 
 const ProjectDetail = () => {
   const { project_id } = useParams();
@@ -39,7 +40,7 @@ const ProjectDetail = () => {
     const currentDate = new Date();
     const diffTime = Math.abs(currentDate.getTime() - projectDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return `${diffDays} روز پیش`;
+    return diffDays > 0 ? `${diffDays} روز بعد` : `${diffDays} روز پیش`;
   };
 
   useEffect(() => {
@@ -79,10 +80,6 @@ const ProjectDetail = () => {
       if (errorData.tag && errorData.errors?.length > 0) {
         if (errorData.tag === "NOT_FOUND") {
           navigate("/error");
-        } else {
-          const allErrors = errorData.errors;
-          const errorMessages = allErrors.map((err: any) => errorMapper(err));
-          notifyError(`${errorMessages.join(" ")}`);
         }
       } else {
         notifyError(`${errorMapper(errorData)}`);
@@ -200,9 +197,19 @@ const ProjectDetail = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-blue-400 text-right">
                   عنوان پروژه: {projectData.title}
                 </h2>
-                <div className="flex flex-col text-right text-xs sm:text-sm text-gray-500">
-                  <span>{formatDuration(projectData.duration)}</span>
-                  <span>{biders.length} پیشنهاد</span>
+                <div className="flex flex-col w-fit">
+                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-500 gap-2">
+                    <label className="font-semibold">وضعیت پروژه: </label>
+                    <span>{getStatusText(projectData.status)}</span>
+                  </div>
+                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-500 gap-2">
+                    <label className="font-semibold">تعداد پیشنهادها: </label>
+                    <span>{biders.length} پیشنهاد</span>
+                  </div>
+                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-500 gap-2">
+                    <label className="font-semibold">مهلت ارسال پیشنهاد:</label>
+                    <span>{formatDuration(projectData.duration)}</span>
+                  </div>
                 </div>
               </div>
               <div>
@@ -247,6 +254,7 @@ const ProjectDetail = () => {
                           key={bider.teamid}
                           bider={bider}
                           color={1}
+                          status={projectData.status}
                         />
                       ))}
 
@@ -260,6 +268,7 @@ const ProjectDetail = () => {
                           key={bider.teamid}
                           bider={bider}
                           color={0}
+                          status={projectData.status}
                         />
                       ))}
                   </>
@@ -271,7 +280,8 @@ const ProjectDetail = () => {
                     setIsModalOpen(true);
                     fetchProjectData();
                   }}
-                  className="bg-blue-400 hover:bg-blue-500 cursor-pointer w-full sm:w-3/4 h-[48px] text-white rounded-lg text-sm shadow-md transition-colors"
+                  disabled={projectData.status > 1}
+                  className={`bg-blue-400 ${projectData.status > 1 ? "opacity-60" : "cursor-pointer hover:bg-blue-500"} w-full sm:w-3/4 h-[48px] text-white rounded-lg text-sm shadow-md transition-colors`}
                 >
                   ارسال پیشنهاد
                 </button>
