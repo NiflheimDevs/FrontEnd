@@ -67,6 +67,21 @@ const backdropVariants = {
   exit: { opacity: 0, transition: { duration: 0.3 } },
 };
 
+export const getStatusText = (statusNumber: number) => {
+  switch (statusNumber) {
+    case 1:
+      return "درانتظار کارجو";
+    case 2:
+      return "انتخاب کارجو";
+    case 3:
+      return "درحال انجام";
+    case 4:
+      return "انجام شده";
+    default:
+      return "نامشخص";
+  }
+};
+
 const MyProjects = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -161,21 +176,6 @@ const MyProjects = () => {
   const cancelDelete = () => {
     setShowModal(false);
     setProjectToDelete(null);
-  };
-
-  const getStatusText = (statusNumber: number) => {
-    switch (statusNumber) {
-      case 1:
-        return "درانتظار کارجو";
-      case 2:
-        return "انتخاب کارجو";
-      case 3:
-        return "درحال انجام";
-      case 4:
-        return "انجام شده";
-      default:
-        return "نامشخص";
-    }
   };
 
   const totalPages = Math.ceil(totalProjects / projectsPerPage) || 1;
@@ -349,8 +349,8 @@ const MyProjects = () => {
                     <div className="flex flex-row justify-between gap-2 px-1 absolute bottom-[15px] left-[15px] z-10 w-16 flex-wrap">
                       <Link to={`/biders/${project.project_id}`}>
                         <motion.button
-                          className={`bg-transparent h-fit transition-all duration-300 ${project.status > 2 ? "opacity-70 cursor-default" : "cursor-pointer hover:scale-[115%]"}`}
-                          disabled={project.status > 2}
+                          className={`bg-transparent h-fit transition-all duration-300 ${project.status != 2 ? "opacity-70 cursor-default" : "cursor-pointer hover:scale-[115%]"}`}
+                          disabled={project.status != 2}
                         >
                           <RiAuctionLine color="white" size={23} />
                         </motion.button>

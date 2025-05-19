@@ -235,9 +235,7 @@ const BidEditModal: React.FC<BidEditModalProps> = ({
                     ))}
                 </>
               ) : (
-                <label className="flex justify-between text-sm font-medium items-center text-gray-800 bg-gray-200 p-2 rounded-lg text-right mb-2">
-                  هیچ تیمی برای تغییر درخواست یافت نشد.
-                </label>
+                <></>
               )}
             </div>
           </div>

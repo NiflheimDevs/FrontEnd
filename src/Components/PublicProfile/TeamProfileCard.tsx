@@ -178,12 +178,6 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
                     onError={() => SetProfileExist(false)}
                     onClick={() => openModal(data.profile)}
                   />
-                  <span
-                    className={clsx(
-                      "absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white",
-                      `bg-${localcolor.color}`
-                    )}
-                  ></span>
                 </>
               ) : (
                 <RiTeamFill className="text-gray-400" size={40} />
@@ -257,18 +251,18 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
       {/* Improved Image Modal */}
       {isModalOpen && selectedImage && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 transition-opacity duration-300"
+          className="fixed inset-0 backdrop-blur-xs bg-opacity-80 flex items-center justify-center z-50 transition-opacity duration-300"
           onClick={closeModal}
           role="dialog"
           aria-labelledby="modal-title"
           aria-modal="true"
         >
           <div
-            className="relative w-11/12 max-w-md sm:max-w-lg md:max-w-xl transform transition-transform duration-300 scale-100 animate-fadeIn"
+            className="relative w-fit py-2 px-4 transform transition-transform duration-300 scale-100 animate-fadeIn"
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute cursor-pointer top-[-2rem] right-[-2rem] text-gray-200 hover:text-white bg-gray-800 rounded-full p-2 shadow-md transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              className="absolute cursor-pointer top-[1rem] right-[1.5rem] text-gray-200 hover:text-white bg-gray-800 rounded-full p-2 shadow-md md:scale-100 sm:scale-95 scale-90 transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-400"
               onClick={closeModal}
               aria-label="بستن تصویر"
             >
