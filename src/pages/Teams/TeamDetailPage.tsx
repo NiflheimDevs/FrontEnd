@@ -250,18 +250,18 @@ const TeamDetailPage: React.FC = () => {
   //   }
   // };
 
-  // const getStatusText = (status: number) => {
-  //   switch (status) {
-  //     case 3:
-  //       return "در حال انجام";
-  //     case 1:
-  //       return "تکمیل شده";
-  //     case 2:
-  //       return "برنامه‌ریزی شده";
-  //     default:
-  //       return "نامشخص";
-  //   }
-  // };
+  const getStatusText = (status: number) => {
+    switch (status) {
+      case 3:
+        return "در حال انجام";
+      case 1:
+        return "تکمیل شده";
+      case 2:
+        return "برنامه‌ریزی شده";
+      default:
+        return "نامشخص";
+    }
+  };
 
   if (isLoading) {
     return (
@@ -389,7 +389,7 @@ const TeamDetailPage: React.FC = () => {
             <p className="text-gray-600 text-right mb-6">
               مدیریت تیم و تقسیم نقش ها بین کاربران
             </p>
-            <div className="border rounded-lg overflow-hidden">
+            <div className="border rounded-lg">
               {currentMembers.length > 0 ? (
                 currentMembers.map((member: User) => (
                   <TeamMemberCard
@@ -424,23 +424,23 @@ const TeamDetailPage: React.FC = () => {
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                          >
+                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                             نام پروژه
                           </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                          >
+                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                             توضیحات
                           </th>
-                          <th
-                            scope="col"
-                            className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                          >
+                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                             تگ‌ها
+                          </th>
+                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            زمان شروع
+                          </th>
+                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            زمان پایان
+                          </th>
+                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            وضعیت
                           </th>
                         </tr>
                       </thead>
@@ -470,6 +470,21 @@ const TeamDetailPage: React.FC = () => {
                                   </span>
                                 ))}
                               </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-600">
+                              {new Date(project.start_time).toLocaleDateString(
+                                "fa-IR"
+                              )}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-600">
+                              {project.end_time === "0001-01-01T00:00:00Z"
+                                ? "نامشخص"
+                                : new Date(project.end_time).toLocaleDateString(
+                                    "fa-IR"
+                                  )}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-semibold text-blue-600">
+                              {getStatusText(project.status)}
                             </td>
                           </tr>
                         ))}
