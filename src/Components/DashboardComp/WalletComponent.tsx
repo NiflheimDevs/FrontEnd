@@ -244,7 +244,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       <button
         key={1}
         onClick={() => goToPage(1)}
-        className={`hidden md:block px-4 py-2 mx-1 rounded-lg transition-all duration-300 font-medium ${
+        className={`cursor-pointer hidden md:block px-4 py-2 mx-1 rounded-lg transition-all duration-300 font-medium ${
           currentPage === 1
             ? "bg-blue-600 text-white shadow-md"
             : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -274,7 +274,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         <button
           key={i}
           onClick={() => goToPage(i)}
-          className={`hidden md:block px-4 py-2 mx-1 rounded-lg transition-all duration-300 font-medium ${
+          className={`cursor-pointer hidden md:block px-4 py-2 mx-1 rounded-lg transition-all duration-300 font-medium ${
             currentPage === i
               ? "bg-blue-600 text-white shadow-md"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -297,7 +297,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       <button
         key={totalPages}
         onClick={() => goToPage(totalPages)}
-        className={`hidden md:block px-4 py-2 mx-1 rounded-lg transition-all duration-300 font-medium ${
+        className={`cursor-pointer hidden md:block px-4 py-2 mx-1 rounded-lg transition-all duration-300 font-medium ${
           currentPage === totalPages
             ? "bg-blue-600 text-white shadow-md"
             : "bg-gray-100 text-gray-700 hover:bg-gray-200"
