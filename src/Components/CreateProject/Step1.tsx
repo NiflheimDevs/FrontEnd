@@ -103,11 +103,11 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
     : 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:bg-gray-900">
       <div>
         <label
           htmlFor="name"
-          className="block mb-2 text-gray-700 font-semibold"
+          className="block mb-2 text-gray-700 font-semibold dark:text-gray-300"
         >
           عنوان پروژه
         </label>
@@ -116,7 +116,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
           id="name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 dark:border-gray-600 dark:focus:ring-blue-400"
           placeholder="عنوان پروژه را وارد کنید"
         />
         <AnimatePresence>
@@ -127,7 +127,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4 }}
-              className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+              className="text-red-500 text-sm text-right mt-1 font-[vazirmatn] dark:text-red-400"
             >
               <li>{errors.name}</li>
             </motion.ul>
@@ -138,20 +138,20 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
       <div>
         <label
           htmlFor="description"
-          className="block mb-2 text-gray-700 font-semibold"
+          className="block mb-2 text-gray-700 font-semibold dark:text-gray-300"
         >
           توضیحات پروژه
         </label>
-        <div className="relative">
+        <div className="relative dark:bg-gray-900">
           <textarea
             id="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full p-3 border min-h-[100px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none"
+            className="w-full p-3 border min-h-[100px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none dark:border-gray-600 dark:focus:ring-blue-400"
             rows={4}
             placeholder="توضیحات کامل پروژه را وارد کنید"
           />
-          <div className="flex flex-row relative">
+          <div className="flex flex-row relative dark:bg-gray-900">
             <AnimatePresence>
               {errors.description && (
                 <motion.ul
@@ -160,22 +160,22 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4 }}
-                  className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+                  className="text-red-500 text-sm text-right mt-1 font-[vazirmatn] dark:text-red-400"
                 >
                   <li>{errors.description}</li>
                 </motion.ul>
               )}
             </AnimatePresence>
-            <div className="flex text-sm absolute left-0 text-gray-500 mt-1 text-left">
+            <div className="flex text-sm absolute left-0 text-gray-500 mt-1 text-left dark:text-gray-400">
               {wordCount} / {MAX_DESCRIPTION_WORDS} کلمه
             </div>
           </div>
         </div>
       </div>
-      <div className="flex justify-between mt-6">
+      <div className="flex justify-between mt-6 dark:bg-gray-900">
         <button
           onClick={() => navigate('/dashboard')}
-          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer"
+          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
         >
           بازگشت به داشبورد
         </button>

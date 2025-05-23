@@ -15,6 +15,8 @@ import { GetProfile } from "../../API";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { BiHome, BiHomeAlt2 } from "react-icons/bi";
+import { MdOutlineWbSunny } from "react-icons/md";
+import { IoMdMoon } from "react-icons/io";
 
 const Header = ({ showSearch = true }) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -25,6 +27,11 @@ const Header = ({ showSearch = true }) => {
   const [hoverDashboard, setHoverDashboard] = useState<boolean>(false);
   const [hoverHome, setHoverHome] = useState<boolean>(false);
   const location = useLocation();
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check localStorage for dark mode preference
+    const savedMode = localStorage.getItem('darkMode');
+    return savedMode === 'true'; // Return true if dark mode was previously enabled
+  });
 
   const fetchProfile = async () => {
     try {
@@ -78,9 +85,24 @@ const Header = ({ showSearch = true }) => {
     };
   }, [isModalOpen]);
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => {
+      const newMode = !prevMode;
+      // Save the new preference to localStorage
+      localStorage.setItem('darkMode', newMode.toString());
+      // Toggle the dark class on the document element
+      if (newMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      return newMode;
+    });
+  };
+
   return (
     <>
-      <header className="shadow w-full fixed md:relative sm:relative top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
+      <header className={`shadow w-full fixed md:relative sm:relative top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center dark:bg-[#2A2A2A] `}>
         {/* Left Section: Logo and Title */}
         <div className="flex items-center gap-3">
           <Link to="/">
@@ -114,6 +136,14 @@ const Header = ({ showSearch = true }) => {
         {/* Right Section: Conditional Rendering */}
         {token && !error401 ? (
           <div className="flex w-fit h-fit items-center md:gap-5 sm:gap-5 gap-[3vw]">
+          {/* Dark Mode Toggle Button */}
+          <button onClick={toggleDarkMode} className="w-fit h-fit cursor-pointer hover:scale-110">
+            {isDarkMode ? (
+              <MdOutlineWbSunny className="icon" color="#FFD700" size={26} />
+            ) : (
+              <IoMdMoon className="icon" color="#4B5563" size={26} />
+            )}
+          </button>
             {showSearch && (
               <button
                 className="w-fit h-fit md:hidden sm:hidden flex cursor-pointer hover:scale-115 hover:animate-shake"
@@ -258,6 +288,14 @@ const Header = ({ showSearch = true }) => {
                 />
               </button>
             )}
+            {/* Dark Mode Toggle Button */}
+            <button onClick={toggleDarkMode} className="w-fit h-fit cursor-pointer hover:scale-110">
+              {isDarkMode ? (
+                <MdOutlineWbSunny className="icon" color="#FFD700" size={26} />
+              ) : (
+                <IoMdMoon className="icon" color="#4B5563" size={26} />
+              )}
+            </button>
             <Link to="/auth">
               <button
                 className="border cursor-pointer p-4 rounded-full h-[28px] w-fit bg-[#EDEDED] flex items-center justify-center gap-2 transition-all duration-400 hover:bg-[#D6D6D6] hover:shadow-lg hover:scale-105"

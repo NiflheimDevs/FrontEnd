@@ -393,9 +393,9 @@ const TeamDetailPage: React.FC = () => {
         </div>
 
         <div className="text-right mb-8">
-          <p className="text-gray-700">{teamData.description || " "}</p>
+          <p className="text-gray-700 pointer-events-none">{teamData.description || " "}</p>
           {teamData.createdAt && (
-            <p className="text-gray-500 text-sm mt-2">
+            <p className="text-gray-500 text-sm mt-2 pointer-events-none">
               تاریخ ایجاد:{" "}
               {new Date(teamData.createdAt).toLocaleDateString("fa-IR")}
             </p>
@@ -421,8 +421,8 @@ const TeamDetailPage: React.FC = () => {
 
         {activeTab === "members" && (
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-right mb-4">اعضای تیم</h2>
-            <p className="text-gray-600 text-right mb-6">
+            <h2 className="text-xl font-bold text-right mb-4 pointer-events-none">اعضای تیم</h2>
+            <p className="text-gray-600 text-right mb-6 pointer-events-none">
               مدیریت تیم و تقسیم نقش ها بین کاربران
             </p>
 

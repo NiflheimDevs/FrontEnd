@@ -156,21 +156,21 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 bg-opacity-60 dark:bg-opacity-80 flex items-center justify-center z-50 p-4 backdrop-blur-xs">
       <div
         ref={modalRef}
-        className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn"
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn"
         style={{
           boxShadow:
             "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
           direction: "rtl",
         }}
       >
-        <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600">
-          <h2 className="text-xl font-bold text-white">ساخت تیم جدید</h2>
+        <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-700 dark:to-blue-800">
+          <h2 className="text-xl font-bold text-white dark:text-gray-200">ساخت تیم جدید</h2>
           <button
             onClick={onClose}
-            className="text-white cursor-pointer hover:bg-blue-700 hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
+            className="text-white dark:text-gray-300 cursor-pointer hover:bg-blue-700 dark:hover:bg-blue-800 hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
             disabled={isSubmitting}
           >
             <svg
@@ -193,7 +193,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
           <div className="mb-5">
             <label
               htmlFor="name"
-              className="block text-gray-700 text-right mb-2 font-medium"
+              className="block text-gray-700 dark:text-gray-300 text-right mb-2 font-medium"
             >
               نام تیم
             </label>
@@ -202,7 +202,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full border border-gray-300 dark:border-gray-600 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200"
               placeholder="نام تیم را وارد کنید"
               required
               disabled={isSubmitting}
@@ -212,7 +212,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
           <div className="mb-5">
             <label
               htmlFor="description"
-              className="block text-gray-700 text-right mb-2 font-medium"
+              className="block text-gray-700 dark:text-gray-300 text-right mb-2 font-medium"
             >
               توضیحات
             </label>
@@ -220,7 +220,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full border border-gray-300 dark:border-gray-600 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200"
               placeholder="توضیحات تیم را وارد کنید"
               rows={3}
               required
@@ -229,7 +229,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
           </div>
 
           <div className="mb-5">
-            <label className="block text-gray-700 text-right mb-2 font-medium">
+            <label className="block text-gray-700 dark:text-gray-300 text-right mb-2 font-medium">
               اعضای تیم
             </label>
             <div className="relative" ref={searchRef}>
@@ -241,7 +241,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                   setIsSearching(true);
                 }}
                 onClick={() => setIsSearching(true)}
-                className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full border border-gray-300 dark:border-gray-600 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200"
                 placeholder="جستجوی کاربران..."
                 disabled={isSubmitting}
               />
@@ -264,19 +264,19 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
               </div>
 
               {isSearching && !isSubmitting && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto animate-fadeIn">
+                <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-auto animate-fadeIn">
                   {filteredUsers.length > 0 ? (
                     filteredUsers.map((user) => (
                       <div
                         key={user.id}
                         onClick={() => addMember(user)}
-                        className="flex items-center justify-between p-3 hover:bg-blue-50 cursor-pointer border-b transition-colors duration-150"
+                        className="flex items-center justify-between p-3 hover:bg-blue-50 dark:hover:bg-blue-900 cursor-pointer border-b transition-colors duration-150"
                       >
-                        <div className="text-gray-500 text-sm">{user.role}</div>
+                        <div className="text-gray-500 dark:text-gray-400 text-sm">{user.role}</div>
                         <div className="flex items-center">
                           <div className="mr-3 text-right">
                             <p className="text-sm font-medium">{user.name}</p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               {user.email}
                             </p>
                           </div>

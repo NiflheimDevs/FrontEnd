@@ -14,6 +14,8 @@ import { CgProfile } from "react-icons/cg";
 import { BiHome, BiHomeAlt2 } from "react-icons/bi";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { LuLayoutDashboard } from "react-icons/lu";
+import { MdOutlineWbSunny } from "react-icons/md";
+import { IoMdMoon } from "react-icons/io";
 
 export default function Header({ toggleSidebar }: any) {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -22,6 +24,13 @@ export default function Header({ toggleSidebar }: any) {
   const [hoverDashboard, setHoverDashboard] = useState<boolean>(false);
   const [hoverHome, setHoverHome] = useState<boolean>(false);
   const location = useLocation();
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Check localStorage for dark mode preference
+    const savedMode = localStorage.getItem('darkMode');
+
+    return savedMode === 'true'; // Return true if dark mode was previously enabled
+    
+  });
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -70,9 +79,24 @@ export default function Header({ toggleSidebar }: any) {
     };
   }, [isModalOpen]);
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(prevMode => {
+      const newMode = !prevMode;
+      // Save the new preference to localStorage
+      localStorage.setItem('darkMode', newMode.toString());
+      // Toggle the dark class on the document element
+      if (newMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      return newMode;
+    });
+  };
+
   return (
     <>
-      <header className="shadow fixed top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center">
+      <header className="shadow fixed top-0 left-0 right-0 z-50 bg-white p-4 flex justify-between items-center dark:bg-[#2A2A2A]">
         {/* Left Section: Hamburger Menu and Logo */}
         <div className="flex items-center gap-3">
           {/* Hamburger Menu Button */}
@@ -122,7 +146,14 @@ export default function Header({ toggleSidebar }: any) {
               tabIndex={-1}
             />
           </button>
-
+          {/* Dark Mode Toggle Button */}
+          <button onClick={toggleDarkMode} className="w-fit h-fit cursor-pointer hover:scale-110">
+            {isDarkMode ? (
+              <MdOutlineWbSunny className="icon" color="#FFD700" size={26} />
+            ) : (
+              <IoMdMoon className="icon" color="#4B5563" size={26} />
+            )}
+          </button>
           <div
             className={`flex justify-center items-center rounded-lg transition-all duration-300 hover:bg-gray-100 pb-1 pt-1.25 px-1`}
           >

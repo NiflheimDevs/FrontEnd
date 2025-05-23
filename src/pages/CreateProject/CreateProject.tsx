@@ -106,26 +106,26 @@ const CreateProject: React.FC = () => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
-      <div className="container mx-auto md:pr-8 sm:pr-8 pr-0 py-8 mt-15 lg:max-w-4xl">
+      <div className="fixed inset-0 bg-[#F7F7F7] dark:bg-gray-900 z-[-1]"></div>
+      <div className="container mx-auto md:pr-8 sm:pr-8 pr-0 py-8 mt-15 lg:max-w-4xl dark:bg-gray-800">
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <Header toggleSidebar={toggleSidebar} />
         {/* Progress Indicator */}
-        <div className="flex justify-center md:mb-12 mb-0 space-x-5 lg:space-x-8 transition-all duration-400 md:scale-100 sm:scale-[90%] scale-[85%]">
+        <div className="flex justify-center md:mb-12 mb-0 space-x-5 lg:space-x-8 transition-all duration-400 md:scale-100 sm:scale-[90%] scale-[85%] dark:bg-gray-900">
           {StepIcons.map((step, index) => (
             <div
               key={index}
-              className={`flex flex-col items-center transition-all duration-400 
+              className={`flex flex-col items-center transition-all duration-400 dark:bg-gray-900
                 ${currentStep === index + 1 ? "scale-110" : "opacity-60"}
               `}
             >
               <step.icon
-                className={`text-3xl mb-2 
+                className={`text-3xl mb-2 dark:text-gray-100
                   ${currentStep === index + 1 ? "text-blue-600" : "text-gray-400"}
                 `}
               />
               <span
-                className={`text-sm font-medium 
+                className={`text-sm font-medium dark:text-gray-300
                   ${currentStep === index + 1 ? "text-blue-600" : "text-gray-500"}
                 `}
               >
@@ -136,7 +136,7 @@ const CreateProject: React.FC = () => {
         </div>
 
         {/* Step Components */}
-        <div className="bg-white rounded-xl shadow-lg p-8 transition-all duration-400 md:scale-100 sm:scale-[90%] scale-[85%]">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 transition-all duration-400 md:scale-100 sm:scale-[90%] scale-[85%]">
           {currentStep === 1 && <Step1 formData={project} onNext={nextStep} />}
 
           {currentStep === 2 && (
