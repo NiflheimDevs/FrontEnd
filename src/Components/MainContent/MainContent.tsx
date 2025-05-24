@@ -168,7 +168,7 @@ const MainContent = () => {
     <main className="flex flex-col items-center w-full">
       {/* Hero Section */}
       <section
-        className="w-full flex flex-col justify-center items-center px-2 text-white text-center bg-cover bg-center"
+        className="w-full flex flex-col justify-center items-center px-2 text-white text-center bg-cover bg-center "
         style={{ ...heroStyle, backgroundImage: `url(${bg})` }}
       >
         <h1 className="sm:text-[46px] md:text-[56px] text-[36px] duration-300 transition-all ease-in-out font-extrabold drop-shadow-lg">
@@ -179,9 +179,9 @@ const MainContent = () => {
           <input
             type="text"
             placeholder="جستجو"
-            className="w-full py-4 pr-14 pl-6 rounded-full bg-gray-300 hover:bg-gray-200 text-black box-shadow-custom focus:outline-none duration-300 transition-all ease-in-out"
+            className="w-full py-4 pr-14 pl-6 rounded-full bg-gray-300 hover:bg-gray-200 text-black box-shadow-custom focus:outline-none duration-300 transition-all ease-in-out dark:bg-[#1A1814] dark:hover:bg-[#1A1814] dark:text-white"
           />
-          <button className="absolute right-13 top-1/2 -translate-y-1/2 text-gray-600">
+          <button className="absolute right-13 top-1/2 -translate-y-1/2 text-gray-600 dark:text-[#B4AA9C]">
             <Search size={24} />
           </button>
         </div>
@@ -228,7 +228,7 @@ const MainContent = () => {
             {categories.map((cat, idx) => (
               <SwiperSlide
                 key={idx}
-                className="bg-[#F7F7F7] rounded-xl box-shadow-custom duration-300 ease-in-out transition-all"
+                className="bg-[#F7F7F7] rounded-xl box-shadow-custom duration-300 ease-in-out transition-all "
               >
                 <div className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center group">
                   <img
@@ -260,7 +260,7 @@ const MainContent = () => {
       {/* Project Cards */}
       <section className="w-full py-12 rounded-3xl">
         <div className="flex justify-between items-center px-6 max-w-7xl mx-auto mb-6">
-          <h2 className="md:text-2xl sm:text-2xl text-[18px] font-bold text-[#333] duration-300 ease-in-out transition-all">
+          <h2 className="md:text-2xl sm:text-2xl text-[18px] font-bold text-[#333] duration-300 ease-in-out transition-all dark:text-[#CCC]">
             جدیدترین پروژه‌ها
           </h2>
           <Link
@@ -284,14 +284,14 @@ const MainContent = () => {
                 <Link
                   to={`/detail/${card.project_id}`}
                   key={card.project_id}
-                  className="bg-[#F7F7F7] rounded-xl box-shadow-custom flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px]"
+                  className="bg-[#F7F7F7] rounded-xl box-shadow-custom flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px] dark:bg-[#080808]"
                 >
                   <div className="w-full px-2 pt-2">{card.image}</div>
                   <div className="p-4 pb-9">
                     <h4 className="text-[18px] text-right font-medium">
                       {card.projectname}
                     </h4>
-                    <p className="text-sm text-right mt-2 text-gray-600">
+                    <p className="text-sm text-right mt-2 text-gray-600 dark:text-[#B4AA9C]">
                       {truncateText(card.description, 200)}
                     </p>
                   </div>

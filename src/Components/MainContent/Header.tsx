@@ -157,7 +157,7 @@ const Header = ({ showSearch = true }) => {
               </button>
             )}
             <div
-              className={`flex justify-center items-center rounded-lg transition-all duration-300 hover:bg-gray-100 pb-1 pt-1.25 px-1`}
+              className={`flex justify-center items-center rounded-lg transition-all duration-300 hover:bg-gray-100 pb-1 pt-1.25 px-1 dark:hover:bg-[#0C0B09]`}
             >
               <button className="w-fit h-fit cursor-pointer hover:scale-110 hover:animate-shake">
                 <FaRegBell className="icon" color={"#74767E"} size={26} />
@@ -182,7 +182,7 @@ const Header = ({ showSearch = true }) => {
             <Link
               to="/"
               className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
-                isActive("/") ? "active glow" : "hover:bg-gray-100 p-1"
+                isActive("/") ? "active glow" : "hover:bg-gray-100 p-1 dark:hover:bg-[#0C0B09]"
               }`}
               onMouseEnter={() => {
                 setHoverHome(true);
@@ -213,7 +213,7 @@ const Header = ({ showSearch = true }) => {
             <Link
               to="/dashboard"
               className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
-                isActive("/dashboard") ? "active glow" : "hover:bg-gray-100 p-1"
+                isActive("/dashboard") ? "active glow" : "hover:bg-gray-100 p-1 dark:hover:bg-[#0C0B09]"
               }`}
               onMouseEnter={() => {
                 setHoverDashboard(true);
@@ -250,7 +250,7 @@ const Header = ({ showSearch = true }) => {
               className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
                 isActive("/profile/0")
                   ? "active glow"
-                  : "hover:bg-gray-100 hover:scale-110 p-1"
+                  : "hover:bg-gray-100 hover:scale-110 p-1 dark:hover:bg-[#0C0B09]"
               }`}
             >
               <button className="relative duration-400 cursor-pointer">

@@ -140,9 +140,9 @@ export default function Sidebar({
   return (
     <aside
       ref={sidebarRef}
-      className={`fixed top-19 right-0 md:rounded-tl-3xl sm:rounded-tl-3xl h-[calc(100vh-76px)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 ease-in-out z-50 will-change-[width] 
+      className={`fixed top-19 right-0 md:rounded-tl-3xl sm:rounded-tl-3xl h-[calc(100vh-76px)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 ease-in-out z-50 will-change-[width] dark:bg-[#1a1919]
         ${isSidebarOpen ? "w-48" : "w-20"} sm:w-20 sm:hover:w-48 w-full group flex flex-col
-        ${isSidebarOpen ? "block" : "hidden"} sm:block dark:bg-[#0C0B0B]`}
+        ${isSidebarOpen ? "block" : "hidden"} sm:block`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -179,7 +179,7 @@ export default function Sidebar({
                 isActive("/myprojects") ||
                 isActive("/myprojects/active") ||
                 isActive("/myprojects/completed")
-                  ? "font-bold text-black bg-blue-200 "
+                  ? "font-bold text-black bg-blue-200 dark:bg-[#2b496d]"
                   : "text-gray-800"
               }`}
             >
@@ -204,21 +204,21 @@ export default function Sidebar({
                   isTextVisible
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
-                } text-gray-800`}
+                } text-gray-800 dark:text-[#F5F5F5] `}
               />
             </button>
 
             {isProjectsOpen && isTextVisible && (
-              <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out">
+              <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out dark:bg-[#565149]">
                 <Link
                   to="/myprojects"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg dark:text-[#F5F5F5] dark:hover:bg-[#565149]"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg dark:text-[#F5F5F5] dark:hover:bg-[#8e8c8c]"
                 >
                   پروژه‌های من
                 </Link>
                 <Link
                   to="/createproject"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg dark:text-[#F5F5F5] dark:hover:bg-[#565149]"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-300 hover:rounded-lg dark:text-[#F5F5F5] dark:hover:bg-[#8e8c8c]"
                 >
                   ساخت پروژه
                 </Link>
@@ -230,7 +230,7 @@ export default function Sidebar({
             to="/wallet"
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out dark:hover:bg-[#565149] ${
               isActive("/wallet")
-                ? "font-bold text-black bg-blue-200"
+                ? "font-bold text-black bg-blue-200 dark:bg-[#2b496d]"
                 : "text-gray-800" 
               }
               dark:text-[#F5F5F5]`}
@@ -246,7 +246,7 @@ export default function Sidebar({
               کیف پول
             </span>
             {isActive("/wallet") && (
-              <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
+              <div className="absolute left-0 w-1 h-full bg-blue-400 dark:bg-[#4270a9]"></div>
             )}
           </Link>
 
@@ -257,13 +257,13 @@ export default function Sidebar({
                 isActive("/profile") ||
                 isActive("/profile/edit") ||
                 isActive("/changepass")
-                  ? "font-bold text-black bg-blue-200"
+                  ? "font-bold text-black bg-blue-200 dark:bg-[#2b496d]"
                   : "text-gray-800"
               }`}
             >
               <img src={profile} alt="Profile" className={`w-6 h-6 ${isDarkMode ? 'filter invert' : ''}`} />
               <span
-                className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
+                className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform]  ${
                   isTextVisible
                     ? "opacity-100 translate-x-0"
                     : "opacity-0 translate-x-4"
@@ -288,10 +288,10 @@ export default function Sidebar({
             </button>
 
             {isProfileOpen && isTextVisible && (
-              <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out dark:hover:bg-[#565149] ">
+              <div className="absolute right-0 mt-2 w-full bg-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out dark:bg-[#565149]">
                 <Link
                   to="/profile"
-                  className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg ${
+                  className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg dark:hover:bg-[#8e8c8c] ${
                     isActive("/profile")
                       ? "font-bold text-black bg-blue-200"
                       : "text-gray-800"
@@ -302,11 +302,11 @@ export default function Sidebar({
                 </Link>
                 <Link
                   to="/changepass"
-                  className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg  dark:hover:bg-[#565149] ${
+                  className={`block px-4 py-2 hover:bg-gray-300 hover:rounded-lg  dark:hover:bg-[#8e8c8c] ${
                     isActive("/changepass")
                       ? "font-bold text-black bg-blue-200"
                       : "text-gray-800"
-                  }`}
+                  } dark:text-[#F5F5F5]`}
                 >
                   تغییر رمز
                 </Link>
@@ -318,7 +318,7 @@ export default function Sidebar({
             to="/chat"
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out dark:hover:bg-[#565149] ${
               isActive("/chat")
-                ? "font-bold text-black bg-blue-200"
+                ? "font-bold text-black bg-blue-200 dark:bg-[#2b496d]"
                 : "text-gray-800"
             }
             dark:text-[#F5F5F5]`}
@@ -334,7 +334,7 @@ export default function Sidebar({
               پیام‌ها
             </span>
             {isActive("/chat") && (
-              <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
+              <div className="absolute left-0 w-1 h-full bg-blue-400 dark:bg-[#4270a9]"></div>
             )}
           </Link>
 
@@ -342,7 +342,7 @@ export default function Sidebar({
             to="/teams"
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-300 dark:hover:bg-[#565149] ${
               isActive("/teams")
-                ? "font-bold text-black bg-blue-200"
+                ? "font-bold text-black bg-blue-200 dark:bg-[#2b496d]"
                 : "text-gray-800"
             }
             dark:text-[#F5F5F5]`}
@@ -358,7 +358,7 @@ export default function Sidebar({
               تیم‌ها
             </span>
             {isActive("/teams") && (
-              <div className="absolute left-0 w-1 h-full bg-blue-400"></div>
+              <div className="absolute left-0 w-1 h-full bg-blue-400 dark:bg-[#4270a9]"></div>
             )}
           </Link>
 
@@ -384,7 +384,7 @@ export default function Sidebar({
         <div className="w-full static lg:block md:block sm:block hidden">
           <button
             onClick={handleLogout}
-            className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer dark:hover:bg-[#1A1814]"
+            className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer dark:hover:bg-[#565149]"
           >
             <img src={exit} alt="exit" className={`w-6 h-6 ${isDarkMode ? 'filter invert' : ''}`} />
             <span

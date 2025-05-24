@@ -19,11 +19,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
     <Link
       to={`/detail/${project.project_id}`}
-      className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 text-right block"
+      className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 text-right block dark:bg-black dark:border-[#1A1814]"
     >
       <h2 className="text-blue-600 font-bold text-md">{project.title}</h2>
       <p
-        className="text-gray-600 text-sm mt-2 leading-relaxed line-clamp-2"
+        className="text-gray-600 text-sm mt-2 leading-relaxed line-clamp-2 dark:text-[#B4AA9C]"
         style={{
           display: "-webkit-box",
           WebkitLineClamp: 2,
@@ -35,7 +35,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       >
         {project.description}
       </p>
-      <div className="flex flex-col mt-3 text-sm text-gray-700">
+      <div className="flex flex-col mt-3 text-sm text-gray-700 dark:text-[#C8BEAE]">
         <div className="flex items-center gap-1">
           <svg
             className="w-4 h-4"
@@ -73,7 +73,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         {project.tags?.map((tag, i) => (
           <span
             key={i}
-            className="bg-white border border-[#3E79DE] text-[#3E79DE] text-xs font-semibold px-3 py-1 rounded-full"
+            className="bg-white border border-[#3E79DE] text-[#3E79DE] text-xs font-semibold px-3 py-1 rounded-full dark:bg-black "
           >
             {tag}
           </span>
