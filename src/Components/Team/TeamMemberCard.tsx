@@ -1,10 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User } from "./index";
-import {
-  updateTeamMemberRole,
-  updateTeamMemberPosition,
-  DeleteTeamMember,
-} from "../../API"; // Import the API functions
+import { updateTeamMemberRole, updateTeamMemberPosition } from "../../API"; // Import the API functions
 
 interface TeamMemberCardProps {
   user: User;
@@ -171,35 +167,6 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
     }
   };
 
-  // New function to handle member deletion
-  const handleDeleteMember = async () => {
-    if (!teamId || !user.id) {
-      console.error("Team ID or User ID is missing");
-      return;
-    }
-
-    try {
-      setIsDeleting(true);
-
-      // Call the API to delete the team member
-      await DeleteTeamMember({
-        team_id: teamId,
-        members: [user.id],
-      });
-
-      // If there's an onDelete callback, call it
-      if (onDelete) {
-        onDelete(user.id);
-      }
-    } catch (error) {
-      console.error("Error deleting team member:", error);
-      // Handle error (e.g., show an error message)
-    } finally {
-      setIsDeleting(false);
-      setMenuOpen(false);
-    }
-  };
-
   const showMenu = canDelete || canEditRole || canEditNickname;
 
   return (
@@ -283,7 +250,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
               className="text-gray-500 cursor-pointer hover:text-gray-700 p-1"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="گزینه های مدیریت"
-              disabled={isUpdatingRole || isUpdatingPosition || isDeleting}
+              disabled={isUpdatingRole || isUpdatingPosition}
             >
               <svg
                 className="h-5 w-5"
@@ -311,9 +278,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                         key={role}
                         className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100"
                         onClick={() => handleRoleChange(role)}
-                        disabled={
-                          isUpdatingRole || isUpdatingPosition || isDeleting
-                        }
+                        disabled={isUpdatingRole || isUpdatingPosition}
                       >
                         تغییر به {getRoleDisplayName(role)}
                       </button>
@@ -325,7 +290,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                   <button
                     className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100"
                     onClick={() => setEditingNickname(true)}
-                    disabled={isUpdatingPosition || isDeleting}
+                    disabled={isUpdatingPosition}
                   >
                     ویرایش عنوان
                   </button>
@@ -334,10 +299,8 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                 {canDelete && (
                   <button
                     className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-red-600 hover:bg-gray-100"
-                    onClick={handleDeleteMember}
-                    disabled={
-                      isUpdatingRole || isUpdatingPosition || isDeleting
-                    }
+                    onClick={() => onDelete && onDelete(user.id)}
+                    disabled={isUpdatingRole || isUpdatingPosition}
                   >
                     حذف از تیم
                   </button>

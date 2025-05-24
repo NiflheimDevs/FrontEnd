@@ -73,8 +73,8 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   const filteredUsers = mockUsers.filter(
     (user) =>
       !selectedMembers.find((member) => member.id === user.id) &&
-      (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    //  ||user.email.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   useEffect(() => {

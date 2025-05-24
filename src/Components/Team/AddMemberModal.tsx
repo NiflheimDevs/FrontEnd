@@ -75,8 +75,8 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
   const availableUsers = sampleUsers.filter(
     (user) =>
       !existingMemberIds.includes(user.id) &&
-      (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    //  ||user.email.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   // Handle click outside to close modal
