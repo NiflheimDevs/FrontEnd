@@ -108,7 +108,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
       <div>
         <label
           htmlFor="name"
-          className="block mb-2 text-gray-700 font-semibold"
+          className="block mb-2 text-gray-700 font-semibold dark:text-[#C8BEAE]"
         >
           عنوان پروژه
         </label>
@@ -139,7 +139,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
       <div>
         <label
           htmlFor="description"
-          className="block mb-2 text-gray-700 font-semibold"
+          className="block mb-2 text-gray-700 font-semibold dark:text-[#C8BEAE]"
         >
           توضیحات پروژه
         </label>
@@ -174,7 +174,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
       <div className="flex justify-between mt-4">
         <button
           onClick={() => navigate("/dashboard")}
-          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer"
+          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer dark:bg-[#1E2126] dark:text-[#E0D6C8]"
         >
           بازگشت به داشبورد
         </button>

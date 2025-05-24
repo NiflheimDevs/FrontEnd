@@ -213,8 +213,8 @@ const EditProject: React.FC = () => {
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <Header toggleSidebar={toggleSidebar} />
 
-      <div className="bg-white rounded-xl shadow-lg p-6 lg:p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+      <div className="bg-white rounded-xl shadow-lg p-6 lg:p-8 dark:bg-gray-800">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center dark:text-[#E0D6C8]">
           ویرایش پروژه
         </h1>
 

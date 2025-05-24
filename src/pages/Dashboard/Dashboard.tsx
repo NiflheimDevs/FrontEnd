@@ -194,7 +194,7 @@ const Dashboard = () => {
           className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
         >
           <Link to="/chat" className="block">
-            <div className="bg-[#F7F7F7] rounded-lg dark:bg-[#080808]">
+            <div className="bg-[#F7F7F7] rounded-lg dark:bg-gray-800">
               <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900 dark:bg-[#E0D6C8] dark:border-[#EEE7D8]">
                 <div className="bg-gradient-to-br min-h-73 from-[#71C2F4] to-[#3444c2] rounded-md p-4 overflow-hidden dark:from-[#232946] dark:to-[#121629]">
                   <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center dark:text-[#E0D6C8]">
@@ -270,7 +270,7 @@ const Dashboard = () => {
           className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
         >
           <Link to="/profile" className="block cursor-pointer">
-            <div className="bg-[#F7F7F7] rounded-lg dark:bg-[#080808]">
+            <div className="bg-[#F7F7F7] rounded-lg dark:bg-gray-800">
               <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900 dark:bg-[#E0D6C8] dark:border-[#EEE7D8]">
                 <div className="bg-white min-h-73 rounded-md p-4 overflow-hidden dark:bg-[#202020]">
                   <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center dark:text-[#E0D6C8]">
@@ -353,7 +353,7 @@ const Dashboard = () => {
           className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
         >
           <Link to="/wallet" className="block">
-            <div className="bg-[#F7F7F7] rounded-lg dark:bg-[#080808]">
+            <div className="bg-[#F7F7F7] rounded-lg dark:bg-gray-800">
               <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900 dark:bg-[#E0D6C8] dark:border-[#EEE7D8]">
                 <div className="bg-white min-h-73 rounded-md p-4 overflow-hidden dark:bg-[#202020]">
                   <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center dark:text-[#E0D6C8]">
@@ -415,7 +415,7 @@ const Dashboard = () => {
           className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
         >
           <Link to="/changepass" className="block">
-            <div className="bg-[#F7F7F7] rounded-lg dark:bg-[#080808]">
+            <div className="bg-[#F7F7F7] rounded-lg dark:bg-gray-800">
               <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900 dark:bg-[#E0D6C8] dark:border-[#EEE7D8]">
                 <div className="bg-gradient-to-br min-h-73 from-[#3444c2] to-[#71C2F4] rounded-md p-4 overflow-hidden dark:from-[#232946] dark:to-[#121629]">
                   <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center dark:text-[#E0D6C8]">
@@ -472,7 +472,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="fixed inset-0 bg-[#F7F7F7] z-[-1] dark:bg-[#080808]"></div>
-      <div className="flex w-full bg-[#F7F7F7] dark:bg-[#080808]" dir="rtl">
+      <div className="flex w-full bg-[#F7F7F7] dark:bg-gray-800" dir="rtl">
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <main className="flex-1 flex flex-col pt-16 w-full md:pr-24 sm:pr-24 pr-0">
           <Header toggleSidebar={toggleSidebar} />
