@@ -51,8 +51,11 @@ export interface Projects {
 }
 
 export interface Profile {
+  profile_id: string;
   firstName: string;
   lastName: string;
+  email: string;
+  resumeAddress: string;
   bio: string;
   skills?: Skill[];
   workExperience?: WorkExperience[];
@@ -77,13 +80,18 @@ export const initialColor: Color = {
 };
 
 export const mapApiDataToProfile = async (
+  profile_id: string,
   apiData: any,
   apiEmployer: any,
-  apiTeams: any
+  apiTeams: any,
+  apiResume: any
 ): Promise<Profile> => {
   return {
+    profile_id: profile_id,
     firstName: apiData.info?.firstname || initialProfile.firstName,
     lastName: apiData.info?.lastname || initialProfile.lastName,
+    email: apiData.info?.email || initialProfile.email,
+    resumeAddress: apiResume || initialProfile.resumeAddress,
     bio: apiData.info?.bio || initialProfile.bio,
     join_Date:
       englishToPersianNumber(
@@ -162,8 +170,11 @@ export const mapApiDataToProfile = async (
 };
 
 export const initialProfile: Profile = {
+  profile_id: "0",
   firstName: "",
   lastName: "",
+  email: "",
+  resumeAddress: "",
   bio: "",
   skills: [],
   teams: [],

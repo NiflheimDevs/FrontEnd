@@ -2,6 +2,7 @@ import { Image, Send, Calendar } from "lucide-react";
 import { Color, Profile } from "./types";
 import UserCareerDetail from "./UserCareerDetail";
 import { useState } from "react";
+import { Download } from "lucide-react";
 
 interface UserDetailProps {
   localprofile: Profile;
@@ -28,19 +29,41 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
             <Image className="text-gray-400" size={48} />
           )}
         </div>
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-2">
           <div className="flex items-center gap-2">
             <Calendar size={20} className="text-gray-600" />
             <span className="text-sm font-medium text-gray-700 font-[vazirmatn]">
               {localprofile.join_Date}
             </span>
           </div>
-          <button
-            className={`flex items-center cursor-pointer gap-2 px-4 py-2 bg-${localcolor.color} text-white text-sm font-[vazirmatn] rounded-full shadow-md hover:bg-${localcolor.hover} focus:ring-2 focus:ring-${localcolor.color} focus:ring-offset-2 transition-all duration-200`}
-          >
-            <Send size={18} />
-            ارسال پیام
-          </button>
+          <span className="text-sm font-medium text-gray-700 font-[vazirmatn]">
+            {localprofile.email}
+          </span>
+          {localprofile.resumeAddress ? (
+            <div className="flex items-center gap-2 border border-gray-300 bg-gray-100 rounded-lg px-2 py-1">
+              <a
+                className="flex flex-row gap-1 items-center"
+                href={localprofile.resumeAddress}
+              >
+                <Download color="#364153" size={17} />
+                <span className="text-sm text-gray-700 pointer-events-none">
+                  رزومه کاربر
+                </span>
+              </a>
+            </div>
+          ) : (
+            <></>
+          )}
+          {localprofile.profile_id != "0" ? (
+            <button
+              className={`flex items-center cursor-pointer gap-2 px-4 py-2 bg-${localcolor.color} text-white text-sm font-[vazirmatn] rounded-full shadow-md hover:bg-${localcolor.hover} focus:ring-2 focus:ring-${localcolor.color} focus:ring-offset-2 transition-all duration-200`}
+            >
+              <Send size={18} />
+              ارسال پیام
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
 

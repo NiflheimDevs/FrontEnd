@@ -39,7 +39,7 @@ interface ProjectCard {
 
 const MainContent = () => {
   const heroStyle = {
-    height: `calc(100vh - 76px)`,
+    height: `calc(100vh)`,
     minHeight: `450px`,
   };
   const categoriesRef = useRef<HTMLDivElement | null>(null);
@@ -264,7 +264,7 @@ const MainContent = () => {
             جدیدترین پروژه‌ها
           </h2>
           <Link
-            to="/Browsproject"
+            to="/Browseproject"
             className="bg-blue-600 text-white md:px-6 sm:px-6 px-4 py-2 rounded-full hover:bg-blue-700 duration-300 ease-in-out transition-all text-sm font-medium"
           >
             مشاهده همه
@@ -287,18 +287,13 @@ const MainContent = () => {
                   className="bg-[#F7F7F7] rounded-xl box-shadow-custom flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px]"
                 >
                   <div className="w-full px-2 pt-2">{card.image}</div>
-                  <div className="p-4 pb-9">
-                    <h4 className="text-[18px] text-right font-medium">
+                  <div className="p-4 pb-9 flex flex-col">
+                    <h4 className="text-[18px] text-right font-medium flex flex-wrap">
                       {card.projectname}
                     </h4>
-                    <p className="text-sm text-right mt-2 text-gray-600">
+                    <p className="text-sm text-right mt-2 text-gray-600 flex flex-wrap">
                       {truncateText(card.description, 200)}
                     </p>
-                  </div>
-                  <div className="text-right p-4">
-                    {/* <p className="text-lg font-bold text-blue-600">
-                          {card.price}
-                        </p> */}
                   </div>
                 </Link>
               ))}
@@ -316,14 +311,14 @@ const MainContent = () => {
                   <SwiperSlide key={card.project_id}>
                     <Link
                       to={`/detail/${card.project_id}`}
-                      className="bg-[#F7F7F7] flex flex-col relative min-w-[350px]"
+                      className="bg-[#F7F7F7] flex flex-col relative"
                     >
                       <div className="w-full px-2 pt-2">{card.image}</div>
-                      <div className="p-4 pb-2">
-                        <h4 className="text-[18px] text-right font-medium">
+                      <div className="p-4 pb-2 flex flex-col">
+                        <h4 className="text-[18px] text-right font-medium flex flex-wrap">
                           {card.projectname}
                         </h4>
-                        <p className="text-sm text-right text-gray-600 mt-2">
+                        <p className="text-sm text-right text-gray-600 mt-2 flex flex-wrap">
                           {truncateText(card.description, 200)}
                         </p>
                       </div>

@@ -225,7 +225,7 @@ const FilterComponent: React.FC<FilterProps> = ({
               label="حداقل امتیاز"
             />
             <CustomSlider
-              min={1}
+              min={0}
               max={maxDeliveryDays}
               step={1}
               value={tempFilters.maxDeliveryDays}

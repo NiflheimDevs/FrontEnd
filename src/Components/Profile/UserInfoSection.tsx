@@ -610,7 +610,6 @@ export default function UserInfoSection({
         <div className="flex flex-col sm:flex-row gap-2">
           <label className="font-semibold mt-2 text-gray-600 w-24 text-right flex gap-1">
             <span>نام</span>
-            <span className="text-red-400">*</span>
           </label>
           <input
             type="text"
@@ -624,7 +623,6 @@ export default function UserInfoSection({
         <div className="flex flex-col sm:flex-row gap-2">
           <label className="font-semibold mt-2 flex text-gray-600 w-24 text-right gap-1">
             <span>نام خانوادگی</span>
-            <span className="text-red-400">*</span>
           </label>
           <input
             type="text"

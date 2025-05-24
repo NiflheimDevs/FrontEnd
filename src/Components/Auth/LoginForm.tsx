@@ -9,7 +9,6 @@ import { errorMapper } from "../../pages/Error/Error";
 import Eye from "../../assets/Eye.svg";
 import Eye_Off from "../../assets/Eye_off.svg";
 import User from "../../assets/User.svg";
-import { AnimatePresence, motion } from "framer-motion";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -17,8 +16,6 @@ const LoginForm = () => {
   const [showPassword1, setShowPassword1] = useState(false);
   const [Password, setPassword] = useState("");
   const [Identifier, setIdentifier] = useState("");
-  const [identifierErrors, setIdentifierErrors] = useState<string[]>([]);
-  const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
 
   const handleLogin = async () => {
     try {
@@ -40,50 +37,12 @@ const LoginForm = () => {
     }
   };
 
-  const validateIdentifier = (value: string): string[] => {
-    const errors: string[] = [];
-    if (!value) {
-      return errors;
-    }
-    if (value.length < 2) {
-      errors.push("نام کاربری یا تلفن باید حداقل 2 کاراکتر باشد");
-    }
-    if (value.length > 32) {
-      errors.push("نام کاربری یا تلفن نمی‌تواند بیشتر از 32 کاراکتر باشد");
-    }
-    return errors;
-  };
-
-  const validatePassword = (value: string): string[] => {
-    const errors: string[] = [];
-    if (!value) {
-      return errors;
-    }
-    if (value.length < 8) {
-      errors.push("رمز عبور باید حداقل 8 کاراکتر باشد");
-    }
-    if (!/\d/.test(value)) {
-      errors.push("رمز عبور باید شامل حداقل یک عدد باشد");
-    }
-    if (!/[A-Z]/.test(value)) {
-      errors.push("رمز عبور باید شامل حداقل یک حرف بزرگ باشد");
-    }
-    if (!/[a-z]/.test(value)) {
-      errors.push("رمز عبور باید شامل حداقل یک حرف کوچک باشد");
-    }
-    return errors;
-  };
-
   const handleChangeIdentifier = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setIdentifier(value);
-    setIdentifierErrors(validateIdentifier(value));
+    setIdentifier(e.target.value);
   };
 
   const handleChangePass = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setPassword(value);
-    setPasswordErrors(validatePassword(value));
+    setPassword(e.target.value);
   };
 
   return (
@@ -98,40 +57,6 @@ const LoginForm = () => {
         ورود
       </div>
       <div className="w-full rounded-2xl h-0.75 bg-blue-500 mx-auto mt-2 mb-3"></div>
-      <div className="mb-2">
-        <AnimatePresence>
-          {identifierErrors.length > 0 && (
-            <motion.ul
-              key="identifier-errors"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4 }}
-              className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
-            >
-              {identifierErrors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </motion.ul>
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {passwordErrors.length > 0 && (
-            <motion.ul
-              key="password-errors"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4 }}
-              className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
-            >
-              {passwordErrors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </motion.ul>
-          )}
-        </AnimatePresence>
-      </div>
 
       <div className="relative w-full">
         <input
@@ -139,13 +64,7 @@ const LoginForm = () => {
           placeholder="نام کاربری / تلفن‌همراه"
           value={Identifier}
           onChange={handleChangeIdentifier}
-          className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn] ${
-            identifierErrors.length > 0
-              ? "focus:ring-3 ring-red-500"
-              : Identifier
-                ? "focus:ring-3 ring-green-500"
-                : "focus:ring-3 ring-gray-300"
-          }`}
+          className="w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         />
         <img
           src={User}
@@ -160,13 +79,7 @@ const LoginForm = () => {
           placeholder="رمز عبور"
           value={Password}
           onChange={handleChangePass}
-          className={`w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn] ${
-            passwordErrors.length > 0
-              ? "focus:ring-3 ring-red-500"
-              : Password
-                ? "focus:ring-3 ring-green-500"
-                : "focus:ring-3 ring-gray-300"
-          }`}
+          className="w-full bg-[#E5E5E5] py-1.75 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none focus:bg-white hover:bg-white transition duration-200 ease-in-out rounded-[18px] my-2 placeholder-black text-right text-[20px] text-black font-[vazirmatn]"
         />
         <button
           type="button"
@@ -193,20 +106,10 @@ const LoginForm = () => {
 
       <button
         className={`w-full transition duration-200 ease-in-out rounded-[20px] mt-3 bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${
-          identifierErrors.length > 0 ||
-          passwordErrors.length > 0 ||
-          !Identifier ||
-          !Password
-            ? "opacity-60"
-            : "hover:bg-blue-600 cursor-pointer"
+          !Identifier || !Password ? "opacity-60" : "hover:bg-blue-600 cursor-pointer"
         }`}
         type="submit"
-        disabled={
-          identifierErrors.length > 0 ||
-          passwordErrors.length > 0 ||
-          !Identifier ||
-          !Password
-        }
+        disabled={!Identifier || !Password}
       >
         <p className="text-white font-[vazirmatn] font-extralight" tabIndex={0}>
           تایید و ادامه

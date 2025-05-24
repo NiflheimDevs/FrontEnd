@@ -28,18 +28,7 @@ apiClient.interceptors.request.use(
       "/landing/projects",
     ];
 
-    // Regex to match dynamic routes like /project/{project_id}/bid
-    const isPublicDynamicRoute = (url: string | undefined): boolean => {
-      if (!url) return false;
-      // Matches /project/{any_number}/bid
-      return /^\/project\/\d+\/bid$/.test(url);
-    };
-
-    if (
-      token &&
-      !publicRoutes.includes(config.url || "") &&
-      !isPublicDynamicRoute(config.url)
-    ) {
+    if (token && !publicRoutes.includes(config.url || "")) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
@@ -112,7 +101,7 @@ export const signupSendOTP = async (userData: any) => {
 export const signupVerifyOTP = async (userData: any) => {
   try {
     const response = await apiClient.post("/signup/verify", userData);
-    // console.log(response);
+
     const accessToken = response.data.access_token;
     const refreshToken = response.data.refresh_token;
     if (accessToken) {
@@ -194,6 +183,15 @@ export const GetUser = async (id: number) => {
   }
 };
 
+export const GetTeamsForBidding = async () => {
+  try {
+    const response = await apiClient.get(`/team/bidding`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const GetUserTeams = async (id: number) => {
   try {
     const response = await apiClient.get(`/team/user/${id}`);
@@ -261,9 +259,9 @@ export const GetProfile = async () => {
   }
 };
 
-export const GetResume = async () => {
+export const GetResume = async (id: number) => {
   try {
-    const response = await apiClient.get("/user/resume");
+    const response = await apiClient.get(`/user/resume/${id}`);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
@@ -484,7 +482,7 @@ export const GetProjectView = async (project_id: string) => {
     const response = await apiClient.get(`/project/${project_id}/view`);
     return response.data;
   } catch (error: any) {
-    throw error.response?.data || "خطا در دریافت موجودی کیف پول";
+    throw error.response?.data || "خطا در دریافت اطلاعات";
   }
 };
 
@@ -493,7 +491,7 @@ export const AcceptBid = async (bid_id: string, apiData: any) => {
     const response = await apiClient.post(`/bid/${bid_id}/accept`, apiData);
     return response.data;
   } catch (error: any) {
-    throw error.response?.data || "خطا در دریافت موجودی کیف پول";
+    throw error.response?.data || "خطا در تایید درخواست";
   }
 };
 
@@ -502,7 +500,25 @@ export const GetProjectBid = async (project_id: string) => {
     const response = await apiClient.get(`/project/${project_id}/bid`);
     return response.data;
   } catch (error: any) {
-    throw error.response?.data || "خطا در دریافت موجودی کیف پول";
+    throw error.response?.data || "خطا در دریافت اطلاعات";
+  }
+};
+
+export const PutBid = async (apiData: any) => {
+  try {
+    const response = await apiClient.post(`/bid`, apiData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست";
+  }
+};
+
+export const UpdateBid = async (apiData: any, id: string) => {
+  try {
+    const response = await apiClient.put(`/bid/${id}`, apiData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست";
   }
 };
 
@@ -677,19 +693,20 @@ export const updateTeamMemberPosition = async (memberPostion: any) => {
   }
 };
 
-export const DeleteTeamMember = async (memberData: any) => {
+export const DeleteTeamMember = async (UserData: any) => {
   try {
-    // console.log(memberData);
-    const response = await apiClient.delete("/team/member", memberData);
+    // console.log(memberRole);
+    const response = await apiClient.delete("/team/member", { data: UserData });
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-export const getSpecificTeamProject = async (id: number) => {
+export const GetSpecificTeamProject = async (id: any) => {
   try {
     const response = await apiClient.get(`/team/${id}/project`);
+    console.log(response);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";

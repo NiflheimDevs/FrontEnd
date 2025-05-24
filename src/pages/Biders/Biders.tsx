@@ -11,6 +11,7 @@ import {
   mapApiDataToProfile,
 } from "../../Components/Biders/types";
 import { useParams } from "react-router-dom";
+import BiderSkeletonLoading from "../../Components/Biders/BiderSkeletonLoading";
 
 const Biders: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,7 +26,7 @@ const Biders: React.FC = () => {
     minRating: 0,
     maxPrice: Number.MAX_SAFE_INTEGER,
     maxDeliveryDays: 0,
-    priceRange: [0, 5000000] as [number, number],
+    priceRange: [0, 0] as [number, number],
   });
 
   // Create a ref to track filters
@@ -98,46 +99,47 @@ const Biders: React.FC = () => {
       {/* Main Content */}
       <div className="container mx-auto px-4 py-20 max-w-[90rem] md:pr-24 sm:pr-24">
         <Header toggleSidebar={toggleSidebar} />
+        {loading ? (
+          <BiderSkeletonLoading />
+        ) : (
+          <>
+            {/* Filter Section */}
+            <FilterComponent
+              maxDeliveryDays={maxExpectedTime}
+              key={`filter-${filterVersion}`}
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              filters={filters}
+              setFilters={setFilters}
+            />
 
-        {/* Filter Section */}
-        <FilterComponent
-          maxDeliveryDays={maxExpectedTime}
-          key={`filter-${filterVersion}`}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          filters={filters}
-          setFilters={setFilters}
-        />
-
-        {/* Biders List */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {loading ? (
-            <div className="text-center bg-white shadow-md rounded-lg p-8 col-span-full">
-              <p className="text-gray-600 text-xl">در حال بارگذاری...</p>
+            {/* Biders List */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {error ? (
+                <div className="text-center bg-white shadow-md rounded-lg p-8 col-span-full">
+                  <p className="text-red-600 text-xl">{error}</p>
+                </div>
+              ) : filteredBiders.length > 0 ? (
+                filteredBiders.map((bider) => (
+                  <UserProfileCard
+                    key={bider.bid_id}
+                    bid_id={bider.bid_id}
+                    title={bider.title}
+                    prePayment={formatPrice(bider.pre_payment)}
+                    total={formatPrice(bider.total)}
+                    deliveryDays={bider.expected_time}
+                    imageUrl={bider.profile}
+                    description={bider.description}
+                  />
+                ))
+              ) : (
+                <div className="text-center bg-white shadow-md rounded-lg p-8 col-span-full">
+                  <p className="text-gray-600 text-xl">هیچ کارجویی یافت نشد.</p>
+                </div>
+              )}
             </div>
-          ) : error ? (
-            <div className="text-center bg-white shadow-md rounded-lg p-8 col-span-full">
-              <p className="text-red-600 text-xl">{error}</p>
-            </div>
-          ) : filteredBiders.length > 0 ? (
-            filteredBiders.map((bider) => (
-              <UserProfileCard
-                key={bider.bid_id}
-                bid_id={bider.bid_id}
-                title={bider.title}
-                prePayment={formatPrice(bider.pre_payment)}
-                total={formatPrice(bider.total)}
-                deliveryDays={bider.expected_time}
-                imageUrl={bider.profile}
-                description={bider.description}
-              />
-            ))
-          ) : (
-            <div className="text-center bg-white shadow-md rounded-lg p-8 col-span-full">
-              <p className="text-gray-600 text-xl">هیچ کارجویی یافت نشد.</p>
-            </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
     </div>
   );

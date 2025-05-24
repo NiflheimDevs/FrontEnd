@@ -350,26 +350,6 @@ export default function Sidebar({
             )}
           </Link>
 
-          <div className="w-full relative lg:hidden md:hidden sm:hidden block">
-            <button
-              onClick={handleLogout}
-              className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer"
-            >
-              <img src={exit} alt="exit" className="w-6 h-6" />
-              <span
-                className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
-                  isTextVisible
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 translate-x-4"
-                } text-gray-800 cursor-pointer`}
-              >
-                خروج
-              </span>
-            </button>
-          </div>
-        </div>
-
-        <div className="w-full static lg:block md:block sm:block hidden">
           <button
             onClick={handleLogout}
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer"

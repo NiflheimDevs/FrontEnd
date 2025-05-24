@@ -27,11 +27,6 @@ interface SearchResult {
 }
 
 // Animation variants
-const chatListVariants = {
-  hidden: { opacity: 0, x: 50 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-};
-
 const messageVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
@@ -321,13 +316,10 @@ const ChatMessageArea = () => {
       dir="rtl"
     >
       {/* Chat List */}
-      <motion.div
+      <div
         className={`w-full md:w-[35%] h-full bg-gradient-to-b from-gray-100 to-gray-300 rounded-2xl p-5 flex flex-col transition-all duration-400 ${
           isChatOpen ? "hidden md:flex" : "flex"
         }`}
-        variants={chatListVariants}
-        initial="hidden"
-        animate="visible"
       >
         {/* Search */}
         <div className="relative mb-4">
@@ -416,7 +408,7 @@ const ChatMessageArea = () => {
             ))
           )}
         </div>
-      </motion.div>
+      </div>
 
       {/* Chat Window */}
       <div
@@ -454,8 +446,8 @@ const ChatMessageArea = () => {
                   animate="visible"
                   className={`max-w-[70%] mb-4 p-3 rounded-2xl text-sm leading-relaxed shadow-md transition-all duration-300 ${
                     message.type === "received"
-                      ? "bg-white text-gray-800 ml-auto rounded-tr-none"
-                      : "bg-[#2466d7] text-white mr-auto rounded-tl-none"
+                      ? "bg-white text-gray-800 mr-auto rounded-tl-none"
+                      : "bg-[#2466d7] text-white ml-auto rounded-tr-none"
                   }`}
                 >
                   <p className="break-all">{message.text}</p>
@@ -478,7 +470,7 @@ const ChatMessageArea = () => {
 
         {/* Input */}
         <div className="sticky bottom-0 mt-3 px-5 pb-5">
-          <div className="flex items-center bg-gray-50 rounded-full p-2 shadow-lg">
+          <div className="flex items-center bg-gray-50 rounded-full border-2 border-blue-600 p-2 shadow-lg">
             <input
               type="text"
               placeholder="پیامی بنویسید..."

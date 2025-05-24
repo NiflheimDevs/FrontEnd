@@ -7,6 +7,33 @@ import CreateTeamModal from "../../Components/Team/CreateTeamModal";
 import { Team, User } from "../../Components/Team/index";
 import { getTeams, createTeam } from "../../API";
 
+const LoadingSkeleton = () => (
+  <div className="mt-12 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-2 w-full max-w-[1400px] mx-auto">
+    {Array.from({ length: 4 }).map((_, index) => (
+      <div
+        key={`loading-${index}`}
+        className="relative !bg-gradient-to-br !from-[#5189CA] !to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-fit min-h-[285px] flex flex-col p-6 glowing-card overflow-hidden mx-auto animate-pulse shiny-skeleton"
+      >
+        <div className="flex flex-col justify-between flex-grow z-10">
+          <div>
+            <div className="flex flex-row justify-between gap-1">
+              <div className="w-30 h-10 bg-white/50 rounded-full mb-4 animate-shine mt-4"></div>
+              <div className="w-[70px] h-[70px] bg-white/50 rounded-full mb-4 animate-shine"></div>
+            </div>
+            <div className="w-3/4 h-6 bg-white/70 rounded-full mt-3 mb-3 animate-shine"></div>
+            <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
+            <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
+          </div>
+          <div className="flex flex-wrap w-3/4 gap-2 mt-3">
+            <div className="w-30 h-10 bg-white/30 rounded-full animate-shine"></div>
+            {/* <div className="w-16 h-6 bg-white/30 rounded-full animate-shine"></div> */}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 const TeamListPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -127,7 +154,7 @@ const TeamListPage: React.FC = () => {
             >
               <button
                 type="submit"
-                className="bg-blue-500 text-white p-2 rounded-l-none rounded-r cursor-pointer"
+                className="absolute right-0 top-0 scale-102 bottom-0 bg-blue-600 hover:backdrop-blur-sm hover:shadow-lg hover:shadow-blue-600/50 transition-all duration-400 text-[#FFFFFF] px-4 rounded-r-lg flex items-center cursor-pointer"
               >
                 <svg
                   className="w-5 h-5"
@@ -146,7 +173,7 @@ const TeamListPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="جستجوی تیم ها"
-                className="w-full border border-gray-300 p-2 rounded-l text-right"
+                className="w-full border border-gray-300 rounded-lg py-2 pl-2 pr-14 text-right"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -160,11 +187,7 @@ const TeamListPage: React.FC = () => {
           </button>
         </div>
 
-        {isLoading ? (
-          <div className="col-span-full text-center py-10">
-            <p className="text-lg text-gray-600">در حال بارگذاری تیم‌ها...</p>
-          </div>
-        ) : error ? (
+        {isLoading ? <LoadingSkeleton /> : error ? (
           <div className="col-span-full text-center py-10">
             <p className="text-lg text-red-600">{error}</p>
             <button

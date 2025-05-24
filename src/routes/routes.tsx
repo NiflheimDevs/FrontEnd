@@ -31,7 +31,7 @@ import ProjectDetail from "../pages/ProjectDetail/ProjectDetail";
 
 import TeamListPage from "../pages/Teams/TeamListPage";
 import TeamDetailPage from "../pages/Teams/TeamDetailPage";
-import BrowLayout from "../pages/Brows/BrowLayout";
+import BrowseLayout from "../pages/Browse/BrowseLayout";
 
 // Utility function to check if user is authenticated
 const isAuthenticated = () => {
@@ -79,7 +79,8 @@ export const publicRoutes = [
     ),
   },
   { path: "/Resetpass", element: <ChangePasswordonForget /> },
-  { path: "/Browsproject", element: <BrowLayout /> }, // Assuming this is the correct path for the BrowseProject component
+  { path: "/Browseproject", element: <BrowseLayout /> },
+  { path: "/detail/:project_id", element: <ProjectDetail /> },
 ];
 
 // Private routes (require authentication)
@@ -95,7 +96,6 @@ export const privateRoutes = [
   { path: "/ChangePass", element: <ChangePasswordManually /> },
   { path: "/project-created", element: <ProjectCreationConfirmation /> },
   { path: "/edit-project/:projectId", element: <EditProject /> },
-  { path: "/detail/:project_id", element: <ProjectDetail /> },
   { path: "/teams", element: <TeamListPage /> },
   { path: "/teams/:id", element: <TeamDetailPage /> },
 ];
