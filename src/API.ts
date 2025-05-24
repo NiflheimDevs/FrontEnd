@@ -101,7 +101,7 @@ export const signupSendOTP = async (userData: any) => {
 export const signupVerifyOTP = async (userData: any) => {
   try {
     const response = await apiClient.post("/signup/verify", userData);
-    
+
     const accessToken = response.data.access_token;
     const refreshToken = response.data.refresh_token;
     if (accessToken) {
@@ -698,15 +698,12 @@ export const DeleteTeamMember = async (UserData: any) => {
     // console.log(memberRole);
     const response = await apiClient.delete("/team/member", { data: UserData });
     return response.data;
-
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
 
-
-
-export const GetSpecificTeamProject = async (id:any) => {
+export const GetSpecificTeamProject = async (id: any) => {
   try {
     const response = await apiClient.get(`/team/${id}/project`);
     console.log(response);
