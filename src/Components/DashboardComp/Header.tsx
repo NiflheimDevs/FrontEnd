@@ -255,7 +255,7 @@ export default function Header({ toggleSidebar }: any) {
                 : "hover:bg-gray-100 dark:hover:bg-gray-600 p-1 hover:scale-110"
             }`}
           >
-            <button className="relative transition-transform">
+            <button className="relative transition-transform cursor-pointer">
               {profilePicture ? (
                 <img
                   src={profilePicture}

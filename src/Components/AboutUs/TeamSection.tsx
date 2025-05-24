@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
-import { motion } from "framer-motion";
 
 import kia from "../../assets/aboutus/kia2.jpg";
 import sob from "../../assets/aboutus/sob.jpg";
@@ -48,8 +48,7 @@ const people = [
     id: 5,
     name: "امیر محمد",
     image: mmd,
-    description:
-      "طراح UI/UX با چشمی تیز برای جزئیات Figma، بینی بزرگ و کار زیاد.",
+    description: "طراح UI/UX با چشمی تیز برای جزئیات Figma، کار زیاد.",
     instagram: "https://www.instagram.com/amir_m_4163/",
     linkedin: "https://www.linkedin.com/in/amir-mohammad-mohammadi-b593b8312/",
   },
@@ -64,39 +63,27 @@ const people = [
   },
 ];
 
-const TeamMemberCard = ({
-  person,
-  alignRight,
-}: {
-  person: any;
-  alignRight: boolean;
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
-    className={`w-full max-w-md p-5 bg-[#e5e5e5] rounded-xl shadow-md flex flex-col items-center space-y-3
-      ${alignRight ? "ml-auto" : "mr-auto"}
-    `}
-  >
+const TeamMemberCard = ({ person }: { person: any }) => (
+  <div className="w-full max-w-sm p-6 bg-white dark:bg-gray-700 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-600 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
     <img
       src={person.image}
       alt={`تصویر ${person.name}`}
-      className="w-24 h-24 rounded-full border-2 border-gray-300 hover:border-blue-600 transition-all"
+      className="w-32 h-32 rounded-full mx-auto border-4 border-gray-200 dark:border-gray-600 object-cover transition-all duration-300 hover:border-blue-500 dark:hover:border-blue-400"
     />
-    <h3 className="text-lg font-semibold bg-blue-600 text-transparent bg-clip-text">
+    <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-4 text-center">
       {person.name}
     </h3>
-    <p className="text-sm text-gray-700 text-center">{person.description}</p>
-    <div className="flex gap-3">
+    <p className="text-base text-gray-700 dark:text-gray-300 mt-2 text-center leading-relaxed">
+      {person.description}
+    </p>
+    <div className="flex justify-center gap-4 mt-4">
       <a
         href={person.instagram}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`Instagram ${person.name}`}
       >
-        <FaInstagram className="text-pink-500 hover:text-pink-700 text-xl" />
+        <FaInstagram className="text-pink-500 dark:text-pink-400 text-2xl hover:text-pink-700 dark:hover:text-pink-600 hover:scale-110 transition-all duration-200" />
       </a>
       <a
         href={person.linkedin}
@@ -104,30 +91,21 @@ const TeamMemberCard = ({
         rel="noopener noreferrer"
         aria-label={`LinkedIn ${person.name}`}
       >
-        <FaLinkedin className="text-blue-500 hover:text-blue-700 text-xl" />
+        <FaLinkedin className="text-blue-500 dark:text-blue-400 text-2xl hover:text-blue-700 dark:hover:text-blue-600 hover:scale-110 transition-all duration-200" />
       </a>
     </div>
-  </motion.div>
+  </div>
 );
 
 const TeamSection: React.FC = () => {
   return (
-    <section className="py-16 flex flex-col items-center bg-transparent">
-      <motion.h2
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-4xl font-bold text-gray-900 mb-10"
-      >
+    <section className="py-16 bg-gray-100 dark:bg-gray-800 flex flex-col items-center">
+      <h2 className="text-5xl font-bold text-gray-900 dark:text-gray-200 mb-12 text-center">
         تیم ما
-      </motion.h2>
-      <div className="flex flex-col gap-8 w-full px-4 max-w-5xl">
-        {people.map((person, index) => (
-          <TeamMemberCard
-            key={person.id}
-            person={person}
-            alignRight={index % 2 === 0}
-          />
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full px-4 max-w-7xl">
+        {people.map((person) => (
+          <TeamMemberCard key={person.id} person={person} />
         ))}
       </div>
     </section>

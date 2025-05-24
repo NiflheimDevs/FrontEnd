@@ -34,7 +34,7 @@ const Footer = () => {
     return () => observer.disconnect();
   }, []);
   return (
-    <div className="ltr flex flex-col items-center justify-center w-full h-fit relative bg-white dark:bg-gray-800">
+    <div className="ltr flex flex-col items-center justify-center w-full h-fit relative">
       <img
         src={isDarkMode ? footerDarksvg : footersvg}
         className="w-full h-full z-0 relative"
@@ -48,7 +48,7 @@ const Footer = () => {
           گامی به سوی آینده
         </h2>
 
-        <div className="flex md:mt-[11%] sm:mt-[110px] mt-[45px] flex-col bg-gray-900 dark:bg-gray-700">
+        <div className="flex md:mt-[11%] sm:mt-[110px] mt-[45px] flex-col bg-[#1B1B1B] dark:bg-gray-700">
           <div className="gap-[14vw] px-[50px] w-full md:h-[100px] sm:h-fit h-fit flex inset-0 mt-[5px] z-1 md:flex-row sm:flex-row flex-col justify-center items-end flex-wrap">
             <ReviewCard
               title="پلتفرم عالی برای فریلنسرها و کارفرماها"
@@ -73,12 +73,12 @@ const Footer = () => {
               className="md:flex sm:flex hidden"
             />
           </div>
-          <div className="flex gap-[2vw] h-fit bg-gray-900 dark:bg-gray-700 px-[40px] w-full inset-0 md:mt-[70px] sm:mt-[70px] mt-[40px] z-1 flex-row flex-wrap-reverse md:justify-center sm:justify-end justify-center items-center">
-            <div className="flex bg-gray-900 dark:bg-gray-700 flex-col md:w-[160px] sm:w-[210px] w-[500px] items-center">
+          <div className="flex gap-[2vw] h-fit bg-[#1B1B1B] dark:bg-gray-700 px-[40px] w-full inset-0 md:mt-[70px] sm:mt-[70px] mt-[40px] z-1 flex-row flex-wrap-reverse md:justify-center sm:justify-end justify-center items-center">
+            <div className="flex bg-[#1B1B1B] dark:bg-gray-700 flex-col md:w-[160px] sm:w-[210px] w-[500px] items-center">
               <p className="font-inter text-[20px] sm:text-[26px] md:text-[24px] md:flex sm:flex hidden font-bold leading-[29.05px] tracking-[0%] text-white dark:text-gray-200">
                 شبکه های اجتماعی
               </p>
-              <div className="flex bg-gray-900 dark:bg-gray-700 flex-row mt-[7px] md:gap-[10px] sm:gap-[20px] gap-[40px]">
+              <div className="flex bg-[#1B1B1B] dark:bg-gray-700 flex-row mt-[7px] md:gap-[10px] sm:gap-[20px] gap-[40px]">
                 <a href="#">
                   <img
                     src={Telegram}
@@ -109,8 +109,8 @@ const Footer = () => {
               <SvgBox svgName={samandehi} />
               <SvgBox svgName={e_namad} />
             </div>
-            <div className="flex bg-gray-900 dark:bg-gray-700 justify-center items-center gap-[6vh] md:ml-[40px] sm:ml-[40px] ml-[0px] my-[30px]">
-              <div className="flex flex-wrap md:flex-row sm:flex-row flex-row bg-gray-900 dark:bg-gray-700 md:gap-[5.2vw] sm:gap-[5vw] gap-[12vw] max-w-[900px] md:w-fit sm:w-fit w-[400px] justify-center items-center">
+            <div className="flex bg-[#1B1B1B] dark:bg-gray-700 justify-center items-center gap-[6vh] md:ml-[40px] sm:ml-[40px] ml-[0px] my-[30px]">
+              <div className="flex flex-wrap md:flex-row sm:flex-row flex-row bg-[#1B1B1B] dark:bg-gray-700 md:gap-[5.2vw] sm:gap-[5vw] gap-[12vw] max-w-[900px] md:w-fit sm:w-fit w-[400px] justify-center items-center">
                 <a href="/rules">
                   <TextComponent>قوانین و مقررات</TextComponent>
                 </a>
@@ -126,8 +126,8 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="flex h-fit w-[95%] bg-gray-900 dark:bg-gray-700 inset-0 mt-[30px] z-1 opacity-[0.7] flex-col self-center justify-center border border-gray-300 dark:border-gray-600" />
-          <div className="flex h-fit w-[95%] bg-gray-900 dark:bg-gray-700 inset-0 my-[20px] z-1 flex-col self-center justify-center">
+          <div className="flex h-fit w-[95%] bg-[#1B1B1B] dark:bg-gray-700 inset-0 mt-[30px] z-1 opacity-[0.7] flex-col self-center justify-center border border-gray-300 dark:border-gray-600" />
+          <div className="flex h-fit w-[95%] bg-[#1B1B1B] dark:bg-gray-700 inset-0 my-[20px] z-1 flex-col self-center justify-center">
             <p className="font-vazirmatn text-[16px] opacity-[0.7] font-normal leading-[25px] tracking-[0%] text-center text-white dark:text-gray-200">
               © تمام حقوق برای این سایت محفوظ است
             </p>
@@ -165,7 +165,7 @@ const ReviewCard = ({ className = "", title, description, starCount }: any) => {
 
 const SvgBox = ({ svgName }: any) => {
   return (
-    <div className="md:w-[148px] md:h-[150px] sm:w-[105px] sm:h-[104px] w-[78px] h-[74px] flex bg-gray-900 dark:bg-gray-700 items-center justify-center">
+    <div className="md:w-[148px] md:h-[150px] sm:w-[105px] sm:h-[104px] w-[78px] h-[74px] flex bg-[#1B1B1B] dark:bg-gray-700 items-center justify-center">
       <img
         src={svgName}
         className="md:w-[121px] md:h-[132px] sm:w-[86px] sm:h-[94px] w-[71px] h-[70px] border-none cursor-pointer"

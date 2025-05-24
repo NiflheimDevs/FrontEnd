@@ -50,73 +50,75 @@ export default function FAQ() {
   };
 
   return (
-
-    <div className="flex flex-col h-screen bg-[#F7F7F7]">
+    <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800">
       {/* Header */}
       <Header showSearch={false} />
       <motion.main
-        className="flex-grow "
+        className="flex-grow"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
-      {/* Main Content */}
-      <main className="flex-grow flex flex-col items-center px-4 py-16 bg-[#F7F7F7]">
-        <div className="w-full max-w-3xl">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-10 mt-10">
-            سوالات متداول فریلنسرها و کارفرماها
-          </h2>
+        {/* Main Content */}
+        <main className="flex-grow flex flex-col items-center px-4 py-16 bg-gray-100 dark:bg-gray-800">
+          <div className="w-full max-w-3xl">
+            <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-200 mb-10 mt-10">
+              سوالات متداول فریلنسرها و کارفرماها
+            </h2>
 
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                onClick={() => toggleFAQ(index)}
-                className={`rounded-2xl border bg-white p-5 shadow-sm cursor-pointer transition-all duration-500 hover:shadow-md ${
-                  openIndex === index ? "border-blue-500 bg-blue-50" : ""
-                }`}
-              >
-                <div className="flex justify-between items-center">
-                  <p className="font-semibold text-gray-800 text-base md:text-lg">
-                    {faq.question}
-                  </p>
-                  <ChevronDown
-                    className={`transition-transform duration-500 ${
-                      openIndex === index ? "rotate-180 text-blue-500" : ""
-                    }`}
-                    size={20}
-                  />
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <div
+                  key={index}
+                  onClick={() => toggleFAQ(index)}
+                  className={`rounded-2xl border bg-white dark:bg-gray-700 p-5 shadow-sm cursor-pointer transition-all duration-500 hover:shadow-md ${
+                    openIndex === index
+                      ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/50"
+                      : "border-gray-200 dark:border-gray-600"
+                  }`}
+                >
+                  <div className="flex justify-between items-center">
+                    <p className="font-semibold text-gray-800 dark:text-gray-200 text-base md:text-lg">
+                      {faq.question}
+                    </p>
+                    <ChevronDown
+                      className={`transition-transform duration-500 ${
+                        openIndex === index
+                          ? "rotate-180 text-blue-500 dark:text-blue-400"
+                          : "text-gray-600 dark:text-gray-300"
+                      }`}
+                    />
+                  </div>
+
+                  <AnimatePresence>
+                    {openIndex === index && (
+                      <motion.div
+                        key="content"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="text-gray-700 dark:text-gray-300 mt-3 leading-relaxed text-sm md:text-base">
+                          {faq.answer}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
+              ))}
+            </div>
 
-                <AnimatePresence>
-                  {openIndex === index && (
-                    <motion.div
-                      key="content"
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="text-gray-700 mt-3 leading-relaxed text-sm md:text-base">
-                        {faq.answer}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
+            <p className="text-sm mt-12 text-gray-600 dark:text-gray-300 text-center font-medium mb-4">
+              سوالی دارید که اینجا نیست؟ با ما در تماس باشید 😊
+            </p>
           </div>
-
-          <p className="text-sm mt-12 text-gray-600 text-center font-medium mb-4">
-            سوالی دارید که اینجا نیست؟ با ما در تماس باشید 😊
-          </p>
-        </div>
-      </main>
+        </main>
       </motion.main>
-      <div className="bg-[#F7F7F7]">
-      <Footer />
+      <div className="bg-gray-100 dark:bg-gray-800">
+        <Footer />
       </div>
     </div>
   );
