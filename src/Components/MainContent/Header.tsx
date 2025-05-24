@@ -180,7 +180,7 @@ const Header = ({ showSearch = false }) => {
               to="/"
               className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
                 isActive("/")
-                  ? "bg-blue-100 dark:bg-blue-800/50 glow"
+                  ? "glow"
                   : "hover:bg-gray-100 dark:hover:bg-gray-600 p-1"
               }`}
               onMouseEnter={() => setHoverHome(true)}
@@ -212,7 +212,7 @@ const Header = ({ showSearch = false }) => {
               to="/dashboard"
               className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
                 isActive("/dashboard")
-                  ? "bg-blue-100 dark:bg-blue-800/50 glow"
+                  ? "glow"
                   : "hover:bg-gray-100 dark:hover:bg-gray-600 p-1"
               }`}
               onMouseEnter={() => setHoverDashboard(true)}
@@ -244,7 +244,7 @@ const Header = ({ showSearch = false }) => {
               to="/profile/0"
               className={`flex justify-center items-center rounded-lg transition-all duration-300 ${
                 isActive("/profile/0")
-                  ? "bg-blue-100 dark:bg-blue-800/50 glow"
+                  ? "glow"
                   : "hover:bg-gray-100 dark:hover:bg-gray-600 p-1 hover:scale-110"
               }`}
             >

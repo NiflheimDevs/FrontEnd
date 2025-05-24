@@ -11,7 +11,9 @@ const HomePage = () => {
 
         <MainContent />
 
-        <Footer />
+        <div className="bg-white dark:bg-gray-800">
+          <Footer />
+        </div>
       </div>
     </>
   );
