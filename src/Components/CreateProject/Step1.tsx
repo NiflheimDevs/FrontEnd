@@ -9,6 +9,7 @@ interface Step1Props {
     name: string;
     description: string;
     files: File | null;
+    duration: string;
   };
   onNext: () => void;
 }
@@ -42,6 +43,14 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
       }
     }
 
+    if (id === "duration") {
+      if (!value || parseInt(value, -1) == -1) {
+        newErrors.duration = "زمان انتظار برای کارجو به شکل صحیح وارد نشده";
+      } else {
+        delete newErrors.duration;
+      }
+    }
+
     setErrors(newErrors);
     const isValid = Object.keys(newErrors).length === 0;
     setIsFormValid(isValid);
@@ -59,6 +68,10 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
 
     if (!formData.description || descriptionWords.length < 20) {
       newErrors.description = "توضیحات پروژه باید حداقل 20 کلمه باشد";
+    }
+
+    if (!formData.duration) {
+      newErrors.duration = "زمان انتظار برای کارجو به شکل صحیح وارد نشده";
     }
 
     if (descriptionWords.length > MAX_DESCRIPTION_WORDS) {
@@ -103,7 +116,8 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
     : 0;
 
   return (
-    <div className="space-y-6 dark:bg-gray-900">
+
+    <form className="space-y-6 dark:bg-gray-900">
       <div>
         <label
           htmlFor="name"
@@ -172,9 +186,45 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-between mt-6 dark:bg-gray-900">
+      <div>
+        <label
+          htmlFor="duration"
+          className="block mb-2 text-gray-700 font-semibold"
+        >
+          زمان انتظار برای کارجو (روز):
+        </label>
+        <div className="relative">
+          <input
+            id="duration"
+            value={formData.duration}
+            onChange={handleChange}
+            className="w-full p-3 border no-spinner border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+            type="number"
+            placeholder="زمان انتظار برای کارجو را وارد کنید"
+          />
+          <div className="flex flex-row relative">
+            <AnimatePresence>
+              {errors.duration && (
+                <motion.ul
+                  key="duration-errors"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
+                  className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+                >
+                  <li>{errors.duration}</li>
+                </motion.ul>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex justify-between mt-6">
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate("/dashboard")}
+          type="button"
           className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
         >
           بازگشت به داشبورد
@@ -182,6 +232,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
         <button
           onClick={handleNext}
           disabled={!isFormValid}
+          type="submit"
           className={`px-6 py-2 rounded-md transition-colors flex items-center cursor-pointer ${
             isFormValid
               ? "bg-blue-500 text-white hover:bg-blue-600"
@@ -191,7 +242,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
           مرحله بعد
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

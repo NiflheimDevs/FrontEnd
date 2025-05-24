@@ -9,7 +9,7 @@ import messages from "@/assets/Dashboard/Message.svg";
 import teams from "@/assets/Dashboard/Teams.svg";
 import exit from "@/assets/Dashboard/DoorOpen.svg";
 import { logout } from "../../API";
-import { text } from "stream/consumers";
+// import { text } from "stream/consumers";
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -28,7 +28,7 @@ export default function Sidebar({
 
   const projectsDropdownRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
+  const [isDarkMode] = useState(() => {
     // Check localStorage for dark mode preference
     const savedMode = localStorage.getItem('darkMode');
     return savedMode === 'true'; // Return true if dark mode was previously enabled
@@ -361,7 +361,6 @@ export default function Sidebar({
               <div className="absolute left-0 w-1 h-full bg-blue-400 dark:bg-[#4270a9]"></div>
             )}
           </Link>
-
           <div className="w-full relative lg:hidden md:hidden sm:hidden block">
             <button
               onClick={handleLogout}

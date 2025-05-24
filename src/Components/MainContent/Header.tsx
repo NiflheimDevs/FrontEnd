@@ -18,7 +18,7 @@ import { BiHome, BiHomeAlt2 } from "react-icons/bi";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { IoMdMoon } from "react-icons/io";
 
-const Header = ({ showSearch = true }) => {
+const Header = ({ showSearch = false }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const token = localStorage.getItem("authToken");

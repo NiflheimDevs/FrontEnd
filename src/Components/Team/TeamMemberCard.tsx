@@ -25,6 +25,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   const [nickname, setNickname] = useState(user.position || "عضو");
   const [isUpdatingRole, setIsUpdatingRole] = useState(false);
   const [isUpdatingPosition, setIsUpdatingPosition] = useState(false);
+  const [openUpward, setOpenUpward] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
 
@@ -63,18 +64,39 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   };
 
   useEffect(() => {
-    // Close menu when clicking outside
-    function handleClickOutside(event: MouseEvent) {
+    const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setMenuOpen(false);
       }
-    }
+    };
+
+    const handleScroll = () => {
+      setMenuOpen(false);
+    };
 
     document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll, true);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll, true);
     };
-  }, [menuRef]);
+  }, []);
+
+  useEffect(() => {
+    if (menuOpen && menuRef.current) {
+      const rect = menuRef.current.getBoundingClientRect();
+      const menuHeight = 300; // approximate height
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+
+      if (spaceBelow < menuHeight && spaceAbove > menuHeight) {
+        setOpenUpward(true);
+      } else {
+        setOpenUpward(false);
+      }
+    }
+  }, [menuOpen]);
 
   useEffect(() => {
     // Focus the input when editing nickname
@@ -223,7 +245,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
           )}
         </div>
         {showMenu && (
-          <div className="relative" ref={menuRef}>
+          <div className="relative inline-block text-left" ref={menuRef}>
             <button
               className="text-gray-500 cursor-pointer hover:text-gray-700 p-1"
               onClick={() => setMenuOpen(!menuOpen)}
@@ -247,18 +269,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 
             {menuOpen && (
               <div
-                className="fixed right-auto transform -translate-y-2 py-2 w-48 bg-white rounded-md shadow-xl z-50 text-right"
-
-                style={{
-                  left: menuRef.current
-                    ? menuRef.current.getBoundingClientRect().left
-                    : "auto",
-                  bottom: menuRef.current
-                    ? window.innerHeight -
-                      menuRef.current.getBoundingClientRect().top
-
-                    : "auto",
-                }}
+                className={`absolute left-0 ${openUpward ? "bottom-full mb-2" : "top-full mt-2"} w-48 bg-white rounded-md shadow-xl z-50 text-right`}
               >
                 {canEditRole && (
                   <>
