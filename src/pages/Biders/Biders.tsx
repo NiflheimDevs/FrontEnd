@@ -73,7 +73,7 @@ const Biders: React.FC = () => {
       } catch {
         setError("خطا در دریافت اطلاعات کارجویان.");
       } finally {
-        setLoading(true);
+        setLoading(false);
       }
     };
 
