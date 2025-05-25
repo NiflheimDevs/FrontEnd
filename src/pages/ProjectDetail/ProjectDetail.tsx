@@ -17,6 +17,7 @@ import ProjectDetailSkeletonLoading from "../../Components/ProjectDetail/Project
 import { ApiTeamResponse, mapApiData } from "./types";
 import { getStatusText } from "../Projects/MyProjects";
 import { RiTeamFill } from "react-icons/ri";
+import { motion } from "framer-motion";
 
 const ProjectDetail = () => {
   const { project_id } = useParams();
@@ -24,12 +25,12 @@ const ProjectDetail = () => {
   const navigate = useNavigate();
   const [projectData, setProjectData] = useState<ProjectData | null>(null);
   const [biders, setBiders] = useState<Bider[]>([]);
-  const [ids, setids] = useState<number[]>([]);
-  const [Editids, setEditids] = useState<number[]>([]);
+  const [ids, setIds] = useState<number[]>([]);
+  const [editIds, setEditIds] = useState<number[]>([]);
   const [teams, setTeams] = useState<ApiTeamResponse>();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     team_id: 0,
     description: "",
@@ -72,7 +73,7 @@ const ProjectDetail = () => {
     fetchProjectData();
   }, [project_id, navigate, notifyError]);
 
-  const fetchProjectData = async () => {
+  const fetchTeamsData = async () => {
     try {
       const teams = await GetTeamsForBidding();
       setTeams(mapApiData(teams));
@@ -96,7 +97,6 @@ const ProjectDetail = () => {
         if (project_id) {
           const bids = await GetProjectBid(project_id);
           if (bids) {
-            console.log(bids);
             const mappedBiders: Bider[] = bids.bids
               ? bids.bids.map((bid: any) => ({
                   teamid: bid.team_info.id,
@@ -121,8 +121,8 @@ const ProjectDetail = () => {
                   mappedBiders.some((bider) => bider.teamid === id)
                 )
               : [];
-            setids(listOfIds);
-            setEditids(listEditOfIds);
+            setIds(listOfIds);
+            setEditIds(listEditOfIds);
             setBiders(mappedBiders);
           }
         }
@@ -146,9 +146,11 @@ const ProjectDetail = () => {
           : value,
     }));
   };
+
   const handleTeamSelect = (team_id: number) => {
     setFormData((prev) => ({ ...prev, team_id }));
   };
+
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
@@ -166,9 +168,11 @@ const ProjectDetail = () => {
   if (loading) {
     return (
       <>
-        <Header />
-
-        <ProjectDetailSkeletonLoading />
+        <div className="fixed inset-0 bg-gray-100 dark:bg-gray-800 z-[-1]"></div>
+        <div className="items-center bg-gray-100 dark:bg-gray-800 flex flex-col min-h-screen">
+          <Header />
+          <ProjectDetailSkeletonLoading />
+        </div>
       </>
     );
   }
@@ -177,8 +181,8 @@ const ProjectDetail = () => {
     return (
       <>
         <Header />
-        <div className="min-h-screen bg-[#F7F7F7] flex flex-col items-center justify-center">
-          <div className="text-red-500">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-800 flex flex-col items-center justify-center">
+          <div className="text-red-500 dark:text-red-400 text-sm font-medium">
             {error || "اطلاعات پروژه یافت نشد."}
           </div>
         </div>
@@ -188,41 +192,46 @@ const ProjectDetail = () => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
-      <div className="items-center bg-[#F7F7F7] flex flex-col h-screen">
+      <div className="fixed inset-0 bg-gray-100 dark:bg-gray-800 z-[-1]"></div>
+      <div className="items-center bg-gray-100 dark:bg-gray-800 flex flex-col min-h-screen">
         <Header />
-        <main className="flex-1 p-4 sm:p-6 md:mt-2 sm:mt-2 mt-20 flex justify-center h-fit w-full">
-          <div className="shadow-xl rounded-2xl bg-white flex flex-col sm:flex-row w-full max-w-7xl mx-auto h-fit sm:h-[600px] gap-6 sm:gap-12 p-4 sm:p-6">
+        <main className="flex-1 p-4 sm:p-6 md:mt-2 sm:mt-2 mt-20 flex justify-center w-full bg-gray-100 dark:bg-gray-800">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="shadow-lg rounded-2xl bg-white dark:bg-gray-700 flex flex-col sm:flex-row w-full max-w-7xl mx-auto h-fit sm:h-[600px] gap-6 sm:gap-12 p-4 sm:p-6"
+          >
             <div className="w-full sm:w-1/2 flex flex-col space-y-6">
               <div className="flex flex-col space-y-2">
-                <h2 className="text-xl sm:text-2xl font-bold text-blue-400 text-right">
+                <h2 className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400 text-right">
                   عنوان پروژه: {projectData.title}
                 </h2>
                 <div className="flex flex-col w-fit">
-                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-500 gap-2">
+                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 gap-2">
                     <label className="font-semibold">وضعیت پروژه: </label>
                     <span>{getStatusText(projectData.status)}</span>
                   </div>
-                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-500 gap-2">
+                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 gap-2">
                     <label className="font-semibold">تعداد پیشنهادها: </label>
                     <span>{biders.length} پیشنهاد</span>
                   </div>
-                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-500 gap-2">
+                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 gap-2">
                     <label className="font-semibold">مهلت ارسال پیشنهاد:</label>
                     <span>{formatDuration(projectData.duration)}</span>
                   </div>
                 </div>
               </div>
               <div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 text-right">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2 text-right">
                   توضیحات پروژه:
                 </h3>
-                <p className="text-gray-600 text-xs sm:text-sm leading-relaxed text-right">
+                <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm leading-relaxed text-right">
                   {projectData.description}
                 </p>
               </div>
               <div>
-                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 text-right">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2 text-right">
                   مهارت‌های مورد نیاز:
                 </h3>
                 <div className="flex flex-wrap gap-2 justify-start">
@@ -230,7 +239,7 @@ const ProjectDetail = () => {
                     projectData.tags.map((tag) => (
                       <span
                         key={tag.id}
-                        className="bg-blue-50 border border-blue-200 text-blue-400 px-2 sm:px-3 py-1 rounded-full text-xs font-medium"
+                        className="bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 text-blue-600 dark:text-blue-400 px-2 sm:px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ease-in-out hover:bg-blue-200 dark:hover:bg-blue-800/50"
                       >
                         {tag.name}
                       </span>
@@ -241,7 +250,7 @@ const ProjectDetail = () => {
             <div className="w-full sm:w-1/2 flex flex-col space-y-4">
               <div className="flex-3/4">
                 <h3
-                  className={`text-base sm:text-lg font-semibold ${biders && biders.length > 0 ? "text-blue-400" : "text-gray-400"} mb-1 mt-3 text-right`}
+                  className={`text-base sm:text-lg font-semibold ${biders && biders.length > 0 ? "text-blue-600 dark:text-blue-400" : "text-gray-400 dark:text-gray-500"} mb-1 mt-3 text-right`}
                 >
                   پیشنهاد دهندگان:
                 </h3>
@@ -249,7 +258,7 @@ const ProjectDetail = () => {
                   {biders && biders.length > 0 ? (
                     <>
                       {biders
-                        .filter((bider) => Editids.includes(bider.teamid))
+                        .filter((bider) => editIds.includes(bider.teamid))
                         .map((bider) => (
                           <ProjectBiderCard
                             setTeams={setTeams}
@@ -261,9 +270,8 @@ const ProjectDetail = () => {
                             status={projectData.status}
                           />
                         ))}
-
                       {biders
-                        .filter((bider) => !Editids.includes(bider.teamid))
+                        .filter((bider) => !editIds.includes(bider.teamid))
                         .map((bider) => (
                           <ProjectBiderCard
                             setTeams={setTeams}
@@ -277,20 +285,21 @@ const ProjectDetail = () => {
                         ))}
                     </>
                   ) : (
-                    <>
-                      <div
-                        className={`flex items-center gap-2 w-full justify-between py-3 px-2 rounded-lg shadow-md transition-colors bg-gray-400`}
-                      >
-                        <div className="flex items-center space-x-3 gap-3 space-x-reverse">
-                          <RiTeamFill className="border-gray-200 border-2 text-gray-600 rounded-full w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 p-1" />
-                          <div className="text-right flex justify-center items-center">
-                            <p className="font-semibold text-xs sm:text-sm text-white">
-                              هیچ پیشنهادی برای پروژه درج نشده
-                            </p>
-                          </div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex items-center gap-2 w-full justify-between py-3 px-2 rounded-lg shadow-md transition-all duration-300 ease-in-out bg-gray-100 dark:bg-gray-700"
+                    >
+                      <div className="flex items-center space-x-3 gap-3 space-x-reverse">
+                        <RiTeamFill className="border-gray-200 dark:border-gray-600 border-2 text-gray-600 dark:text-gray-300 rounded-full w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 p-1" />
+                        <div className="text-right flex justify-center items-center">
+                          <p className="font-semibold text-xs sm:text-sm text-gray-800 dark:text-gray-200">
+                            هیچ پیشنهادی برای پروژه درج نشده
+                          </p>
                         </div>
                       </div>
-                    </>
+                    </motion.div>
                   )}
                 </div>
               </div>
@@ -298,24 +307,23 @@ const ProjectDetail = () => {
                 <button
                   onClick={() => {
                     setIsModalOpen(true);
-                    fetchProjectData();
+                    fetchTeamsData();
                   }}
                   disabled={projectData.status > 1}
-                  className={`bg-blue-400 ${projectData.status > 1 ? "opacity-60" : "cursor-pointer hover:bg-blue-500"} w-full sm:w-3/4 h-[48px] text-white rounded-lg text-sm shadow-md transition-colors`}
+                  className={`bg-blue-600 dark:bg-blue-500 ${projectData.status > 1 ? "opacity-60 dark:opacity-50 cursor-not-allowed" : "hover:bg-blue-500 dark:hover:bg-blue-400 cursor-pointer"} w-full sm:w-3/4 h-[48px] text-white dark:text-gray-200 rounded-lg text-sm shadow-md transition-all duration-300 ease-in-out`}
                 >
                   ارسال پیشنهاد
                 </button>
                 <button
                   onClick={() => navigate(-1)}
-                  className="bg-gray-400 hover:bg-[#F7F7F7]0 cursor-pointer w-full sm:w-1/4 h-[48px] rounded-lg text-white text-sm shadow-md transition-colors"
+                  className="bg-gray-400 dark:bg-gray-600 hover:bg-gray-500 dark:hover:bg-gray-500 cursor-pointer w-full sm:w-1/4 h-[48px] rounded-lg text-white dark:text-gray-200 text-sm shadow-md transition-all duration-300 ease-in-out"
                 >
                   بازگشت
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
         </main>
-
         <BidModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}

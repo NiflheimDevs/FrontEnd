@@ -19,11 +19,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
     <Link
       to={`/detail/${project.project_id}`}
-      className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 text-right block dark:bg-black dark:border-[#1A1814]"
+      className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-600 text-right block"
     >
-      <h2 className="text-blue-600 font-bold text-md">{project.title}</h2>
+      <h2 className="text-blue-600 dark:text-blue-400 font-bold text-lg">
+        {project.title}
+      </h2>
       <p
-        className="text-gray-600 text-sm mt-2 leading-relaxed line-clamp-2 dark:text-[#B4AA9C]"
+        className="text-gray-600 dark:text-gray-300 text-sm mt-2 leading-relaxed line-clamp-2"
         style={{
           display: "-webkit-box",
           WebkitLineClamp: 2,
@@ -35,10 +37,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       >
         {project.description}
       </p>
-      <div className="flex flex-col mt-3 text-sm text-gray-700 dark:text-[#C8BEAE]">
+      <div className="flex flex-col mt-3 text-sm text-gray-700 dark:text-gray-300">
         <div className="flex items-center gap-1">
           <svg
-            className="w-4 h-4"
+            className="w-4 h-4 text-gray-500 dark:text-gray-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -54,7 +56,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         </div>
         <div className="flex items-center gap-1">
           <svg
-            className="w-4 h-4"
+            className="w-4 h-4 text-gray-500 dark:text-gray-400"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -69,20 +71,25 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           <span>{project.views} پیشنهاد</span>
         </div>
       </div>
-      <div className="flex flex-wrap gap-2 mt-4">
-        {project.tags?.map((tag, i) => (
-          <span
-            key={i}
-            className="bg-white border border-[#3E79DE] text-[#3E79DE] text-xs font-semibold px-3 py-1 rounded-full dark:bg-black "
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-      <div className="flex justify-end mt-4" onClick={(e) => e.stopPropagation()}>
-        <button className="px-2 py-1 rounded-xl text-sm border border-[#3E79DE] text-[#3E79DE] hover:bg-[#3E79DE] hover:text-white transition duration-300 cursor-pointer">
-          ارسال پیشنهاد
-        </button>
+      <div className="flex md:flex-row lg:flex-row sm:flex-row flex-col justify-between items-start">
+        <div className="flex flex-row flex-wrap gap-2 mt-4 items-center">
+          {project.tags?.map((tag, i) => (
+            <span
+              key={i}
+              className="bg-gray-100 dark:bg-gray-800 border border-blue-500 dark:border-blue-400 text-blue-500 dark:text-blue-400 text-xs font-semibold px-3 py-1 rounded-full"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <div
+          className="flex mt-4 px-0 md:px-2 lg:px-2 sm:px-2 md:w-fit lg:w-fit sm:w-fit w-full justify-end"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button className="flex justify-center items-center px-4 py-2 rounded-xl h-fit whitespace-nowrap text-sm border-2 bg-blue-500 border-blue-500 dark:bg-blue-600 dark:border-blue-600 text-white dark:text-gray-100 hover:bg-blue-600 hover:border-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 hover:text-white dark:hover:text-gray-200 transition duration-300 cursor-pointer">
+            ارسال پیشنهاد
+          </button>
+        </div>
       </div>
     </Link>
   );

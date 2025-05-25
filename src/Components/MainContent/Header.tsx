@@ -305,7 +305,7 @@ const Header = ({ showSearch = false }) => {
             </button>
             <Link to="/auth">
               <button
-                className="border cursor-pointer p-4 rounded-full h-7 w-fit bg-gray-200 dark:bg-gray-600 flex items-center justify-center gap-2 transition-all duration-300 hover:bg-gray-300 dark:hover:bg-gray-500 hover:shadow-lg hover:scale-105 text-gray-900 dark:text-gray-200"
+                className="cursor-pointer p-4 rounded-full h-7 w-fit bg-gray-200 dark:bg-gray-600 flex items-center justify-center gap-2 transition-all duration-300 hover:bg-gray-300 dark:hover:bg-gray-500 hover:shadow-lg hover:scale-105 text-gray-900 dark:text-gray-200"
                 aria-label="Login"
               >
                 <IoMdPerson aria-hidden="true" />
