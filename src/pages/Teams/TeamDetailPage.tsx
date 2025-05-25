@@ -451,9 +451,11 @@ const TeamDetailPage: React.FC = () => {
                             className="hover:bg-gray-50"
                           >
                             <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <div className="text-sm font-medium text-gray-900">
-                                {project.title}
-                              </div>
+                              <Link to={`/detail/${project.project_id}`}>
+                                <div className="text-sm font-medium text-gray-900 hover:text-blue-600">
+                                  {project.title}
+                                </div>
+                              </Link>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
                               {project.description.substring(0, 60)}
@@ -464,7 +466,7 @@ const TeamDetailPage: React.FC = () => {
                                 {project.tags.slice(0, 3).map((tag) => (
                                   <span
                                     key={tag.id}
-                                    className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800"
+                                    className="px-2 py-1 text-xs rounded-full bg-blue-50 border border-blue-200 text-blue-400"
                                   >
                                     {tag.name}
                                   </span>
@@ -478,7 +480,7 @@ const TeamDetailPage: React.FC = () => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-600">
                               {project.end_time === "0001-01-01T00:00:00Z"
-                                ? "نامشخص"
+                                ? "..."
                                 : new Date(project.end_time).toLocaleDateString(
                                     "fa-IR"
                                   )}
@@ -492,9 +494,9 @@ const TeamDetailPage: React.FC = () => {
                     </table>
                   </div>
                   <div className="text-center p-4">
-                    <p className="text-gray-600">
+                    {/* <p className="text-gray-600">
                       {teamProjects.length} پروژه برای این تیم موجود است
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               ) : (
@@ -518,7 +520,7 @@ const TeamDetailPage: React.FC = () => {
                 </div>
               )}
 
-              <div className="text-center p-4">
+              {/* <div className="text-center p-4">
                 {teamProjects.length > 0 && (
                   <button
                     onClick={navigateToTeamProjects}
@@ -527,7 +529,7 @@ const TeamDetailPage: React.FC = () => {
                     مشاهده همه پروژه ها
                   </button>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         )}
