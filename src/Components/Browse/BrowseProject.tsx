@@ -88,7 +88,7 @@ const BrowseProject: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-full py-6 px-4 font-vazirmatn">
+    <div className="flex flex-col w-full py-6 px-4 sm:mt-0 mt-15">
       <SearchBar />
       <div className="relative flex justify-center gap-8 mb-6 flex-wrap">
         <FilterDropdown

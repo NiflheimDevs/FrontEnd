@@ -25,6 +25,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   const [nickname, setNickname] = useState(user.position || "عضو");
   const [isUpdatingRole, setIsUpdatingRole] = useState(false);
   const [isUpdatingPosition, setIsUpdatingPosition] = useState(false);
+  const [openUpward, setOpenUpward] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
 
@@ -81,6 +82,21 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
       window.removeEventListener("scroll", handleScroll, true);
     };
   }, []);
+
+  useEffect(() => {
+    if (menuOpen && menuRef.current) {
+      const rect = menuRef.current.getBoundingClientRect();
+      const menuHeight = 300; // approximate height
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+
+      if (spaceBelow < menuHeight && spaceAbove > menuHeight) {
+        setOpenUpward(true);
+      } else {
+        setOpenUpward(false);
+      }
+    }
+  }, [menuOpen]);
 
   useEffect(() => {
     // Focus the input when editing nickname
@@ -252,7 +268,9 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
             </button>
 
             {menuOpen && (
-              <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-md shadow-xl z-50 text-right">
+              <div
+                className={`absolute left-0 ${openUpward ? "bottom-full mb-2" : "top-full mt-2"} w-48 bg-white rounded-md shadow-xl z-50 text-right`}
+              >
                 {canEditRole && (
                   <>
                     {availableRoles.map((role) => (
