@@ -96,6 +96,7 @@ const ProjectDetail = () => {
         if (project_id) {
           const bids = await GetProjectBid(project_id);
           if (bids) {
+            console.log(bids);
             const mappedBiders: Bider[] = bids.bids
               ? bids.bids.map((bid: any) => ({
                   teamid: bid.team_info.id,
@@ -106,7 +107,7 @@ const ProjectDetail = () => {
                   total: bid.total,
                   expected_time: bid.expected_time,
                   profile: bid.team_info.profile,
-                  description: bid.team_info.description,
+                  description: bid.description,
                 }))
               : [];
             const listOfIds: number[] = bids.ids
