@@ -233,9 +233,9 @@ const TeamDetailPage: React.FC = () => {
     }
   };
 
-  const navigateToTeamProjects = () => {
-    navigate(`/Browsproject`);
-  };
+  // const navigateToTeamProjects = () => {
+  //   navigate(`/Browsproject`);
+  // };
 
   // const getStatusBadgeColor = (status: number) => {
   //   switch (status) {
