@@ -282,7 +282,7 @@ export default function UserInfoSection({
         <div className="flex flex-col items-center">
           <div
             {...getRootProps()}
-            className="w-32 h-32 md:w-36 md:h-36 border-2 border-blue-500 rounded-full flex items-center justify-center overflow-hidden bg-gray-200 relative cursor-pointer"
+            className="w-32 h-32 md:w-36 md:h-36 border-2 border-blue-500 dark:border-blue-600 rounded-full flex items-center justify-center overflow-hidden bg-gray-200 dark:bg-gray-400 relative cursor-pointer"
             tabIndex={1}
           >
             <input {...getInputProps()} />
@@ -325,7 +325,9 @@ export default function UserInfoSection({
               <Image className="text-gray-500" size={46} />
             )}
           </div>
-          <span className="mt-2 font-semibold text-gray-600">پروفایل</span>
+          <span className="mt-2 font-semibold text-gray-600 dark:text-gray-300">
+            پروفایل
+          </span>
         </div>
       </div>
 
@@ -358,7 +360,7 @@ export default function UserInfoSection({
                 لغو
               </button>
               <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                className="px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white rounded-lg"
                 onClick={handleCropConfirm}
                 tabIndex={4}
               >
@@ -371,7 +373,7 @@ export default function UserInfoSection({
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row gap-2">
-          <label className="font-semibold mt-2 text-gray-600 w-24 text-right">
+          <label className="font-semibold mt-2 text-gray-600 dark:text-gray-300 w-24 text-right">
             نام کاربری
           </label>
           <input
@@ -382,13 +384,13 @@ export default function UserInfoSection({
               setLocalProfile((prev) => ({ ...prev, username: value }));
               setChangedUsername(value !== profileFromRedux.username);
             }}
-            className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
+            className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right dark:border-gray-500 [direction:rtl]"
             tabIndex={5}
           />
           <button
-            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
+            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] dark:bg-blue-600 py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
               changedUsername
-                ? "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
+                ? "hover:bg-blue-600 focus:bg-blue-600  dark:hover:bg-blue-700 dark:focus:bg-blue-700 focus:shadow-lg cursor-pointer"
                 : "opacity-60"
             }`}
             onClick={async () => {
@@ -430,7 +432,7 @@ export default function UserInfoSection({
           </button>
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
-          <label className="font-semibold mt-2 text-gray-600 w-24 text-right">
+          <label className="font-semibold mt-2 text-gray-600 dark:text-gray-300 w-24 text-right">
             ایمیل
           </label>
           <div className="relative w-full sm:flex-1">
@@ -443,7 +445,7 @@ export default function UserInfoSection({
                 setChangedEmail(value !== profileFromRedux.email);
               }}
               placeholder="example@gmail.com"
-              className="w-full py-2 pr-2 pl-20 border-2 rounded-lg text-right [direction:rtl]"
+              className="w-full py-2 pr-2 pl-20 border-2 rounded-lg text-right dark:border-gray-500 [direction:rtl]"
               tabIndex={7}
             />
             <span
@@ -455,9 +457,9 @@ export default function UserInfoSection({
             </span>
           </div>
           <button
-            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
+            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] dark:bg-blue-600 py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
               changedEmail
-                ? "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
+                ? "hover:bg-blue-600 focus:bg-blue-600 dark:hover:bg-blue-700 dark:focus:bg-blue-700 focus:shadow-lg cursor-pointer"
                 : "opacity-60"
             }`}
             onClick={async () => {
@@ -499,7 +501,7 @@ export default function UserInfoSection({
           </button>
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
-          <label className="font-semibold mt-2 text-gray-600 w-24 text-right">
+          <label className="font-semibold mt-2 text-gray-600 dark:text-gray-300 w-24 text-right">
             شماره تماس
           </label>
           <input
@@ -516,15 +518,15 @@ export default function UserInfoSection({
               }
             }}
             placeholder="*********09"
-            className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
+            className="w-full sm:flex-1 p-2 border-2 dark:border-gray-500 rounded-lg text-right [direction:rtl]"
             maxLength={11}
             tabIndex={9}
           />
           <button
-            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
+            className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] dark:bg-blue-600 py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
               !changedPhone || (showOtpSection && timeLeft > 0)
                 ? "opacity-60"
-                : "hover:bg-blue-600 focus:bg-blue-600 focus:shadow-lg cursor-pointer"
+                : "hover:bg-blue-600 focus:bg-blue-600 dark:hover:bg-blue-700 dark:focus:bg-blue-700 focus:shadow-lg cursor-pointer"
             }`}
             tabIndex={10}
             disabled={!changedPhone || (showOtpSection && timeLeft > 0)}
@@ -608,7 +610,7 @@ export default function UserInfoSection({
         />
 
         <div className="flex flex-col sm:flex-row gap-2">
-          <label className="font-semibold mt-2 text-gray-600 w-24 text-right flex gap-1">
+          <label className="font-semibold mt-2 text-gray-600 w-24 text-right dark:text-gray-300 flex gap-1">
             <span>نام</span>
           </label>
           <input
@@ -616,12 +618,12 @@ export default function UserInfoSection({
             value={localProfile.firstName}
             placeholder="نام خود را وارد کنید"
             onChange={(e) => handleInputChange("firstName", e.target.value)}
-            className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
+            className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl] dark:border-gray-500"
             tabIndex={11}
           />
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
-          <label className="font-semibold mt-2 flex text-gray-600 w-24 text-right gap-1">
+          <label className="font-semibold mt-2 flex text-gray-600 w-24 text-right gap-1 dark:text-gray-300">
             <span>نام خانوادگی</span>
           </label>
           <input
@@ -629,19 +631,19 @@ export default function UserInfoSection({
             value={localProfile.lastName}
             placeholder="نام خانوادگی خود را وارد کنید"
             onChange={(e) => handleInputChange("lastName", e.target.value)}
-            className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl]"
+            className="w-full sm:flex-1 p-2 border-2 rounded-lg text-right [direction:rtl] dark:border-gray-500"
             tabIndex={12}
           />
         </div>
         <div className="flex flex-col sm:flex-row gap-2">
-          <label className="font-semibold mt-2 text-gray-600 w-24 text-right">
+          <label className="font-semibold mt-2 text-gray-600 w-24 text-right dark:text-gray-300">
             بیوگرافی
           </label>
           <textarea
             value={localProfile.bio}
             placeholder="درباره خودت بنویس..."
             onChange={(e) => handleInputChange("bio", e.target.value)}
-            className="w-full sm:flex-1 p-2 min-h-[100px] border-2 rounded-lg text-right [direction:rtl]"
+            className="w-full sm:flex-1 p-2 min-h-[100px] border-2 rounded-lg text-right [direction:rtl] dark:border-gray-500"
             tabIndex={13}
           />
         </div>

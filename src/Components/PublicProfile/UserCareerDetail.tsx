@@ -40,7 +40,7 @@ const UserCareerDetail = ({
   };
 
   return (
-    <div className="w-full p-4 flex flex-col gap-1 bg-white box-shadow-custom rounded-2xl transition-all duration-300">
+    <div className="w-full p-4 flex flex-col gap-1 bg-white dark:bg-gray-600 border dark:border-gray-600 box-shadow-custom rounded-2xl transition-all duration-300">
       <div className="flex flex-row justify-between">
         <div>
           <label className="text-lg font-bold text-[#FFD700] font-[vazirmatn]">
@@ -77,11 +77,11 @@ const UserCareerDetail = ({
               aria-label={`مهارت: ${tag.name}، سطح ${tag.level}`}
             >
               <div
-                className="bg-gray-400 relative h-10 w-full max-w-md rounded-full box-shadow-custom transition-all overflow-hidden"
+                className="bg-gray-400 dark:bg-gray-500 relative h-10 w-full max-w-md rounded-full box-shadow-custom transition-all overflow-hidden"
                 dir="ltr"
               >
                 <div
-                  className={`bg-${localcolor.color} h-full rounded-full absolute top-0 left-0 transition-all duration-500 ease-out`}
+                  className={`bg-${localcolor.color} dark:bg-${localcolor.darkcolor} h-full rounded-full absolute top-0 left-0 transition-all duration-500 ease-out`}
                   style={{ width: `${tag.level * 25}%` }}
                   aria-hidden="true"
                 ></div>
@@ -107,15 +107,15 @@ const UserCareerDetail = ({
             disabled={currentPage === 1}
             className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 ${
               currentPage === 1
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : `bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover}`
+                ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-300 dark:text-gray-500"
+                : `bg-${localcolor.color} dark:bg-${localcolor.darkcolor} text-white cursor-pointer hover:bg-${localcolor.hover} dark:hover:bg-${localcolor.darkhover}`
             }`}
             aria-label="صفحه قبلی"
           >
             قبلی
           </button>
           <button
-            className={`px-4 py-2 rounded-full transition-all duration-200 bg-${localcolor.color} hover:bg-${localcolor.hover}`}
+            className={`px-4 py-2 rounded-full transition-all duration-200 bg-${localcolor.color} dark:bg-${localcolor.darkcolor} hover:bg-${localcolor.hover} dark:hover:bg-${localcolor.darkhover}`}
           >
             <span className="text-sm font-[vazirmatn] text-white">
               {currentPage}
@@ -126,8 +126,8 @@ const UserCareerDetail = ({
             disabled={currentPage === totalPages}
             className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 ${
               currentPage === totalPages
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : `bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover}`
+                ? "bg-gray-200 text-gray-400 dark:bg-gray-300 dark:text-gray-500 cursor-not-allowed"
+                : `bg-${localcolor.color} dark:bg-${localcolor.darkcolor} text-white cursor-pointer hover:bg-${localcolor.hover} dark:hover:bg-${localcolor.darkhover}`
             }`}
             aria-label="صفحه بعدی"
           >

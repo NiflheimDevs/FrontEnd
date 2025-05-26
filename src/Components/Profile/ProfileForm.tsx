@@ -292,11 +292,13 @@ export default function ProfileForm() {
         renderSkeleton()
       ) : (
         <>
-          <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
-          <section className="p-4 md:p-6 lg:p-8 bg-[#F7F7F7]">
-            <h2 className="text-2xl font-bold mb-4 text-center">حساب کاربری</h2>
-            <div className="bg-white p-4 md:p-6 lg:p-8 rounded-lg shadow-md max-w-4xl mx-auto relative">
-              <div className="border-t border-gray-300 w-full mb-6"></div>
+          <div className="fixed inset-0 bg-[#F7F7F7] dark:bg-gray-800 z-[-1]"></div>
+          <section className="p-4 md:p-6 lg:p-8 bg-[#F7F7F7] dark:bg-gray-800">
+            <h2 className="text-2xl font-bold mb-4 text-center dark:text-gray-300 text-gray-600">
+              حساب کاربری
+            </h2>
+            <div className="bg-white dark:bg-gray-700 p-4 md:p-6 lg:p-8 rounded-lg shadow-md max-w-4xl mx-auto relative">
+              <div className="border-t border-gray-300 dark:border-gray-500 w-full mb-6"></div>
 
               <UserInfoSection
                 localProfile={localProfile}
@@ -337,7 +339,7 @@ export default function ProfileForm() {
 
                 <div className="flex flex-col items-end">
                   <button
-                    className="w-46 flex justify-center items-center gap-2 transition-all duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 focus:shadow-lg"
+                    className="w-46 flex justify-center items-center gap-2 transition-all duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#3E79DE] dark:bg-blue-600 py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 dark:hover:bg-blue-700 dark:focus:bg-blue-700 focus:shadow-lg"
                     onClick={handleSubmit}
                     disabled={loading}
                     tabIndex={submitTabIndex}

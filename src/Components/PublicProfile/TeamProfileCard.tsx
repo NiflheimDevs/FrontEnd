@@ -160,7 +160,7 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
 
   return (
     <>
-      <div className="w-full p-6 flex flex-col gap-5 rounded-2xl box-shadow-custom duration-200 bg-white">
+      <div className="w-full p-6 flex flex-col gap-5 rounded-2xl box-shadow-custom duration-200 bg-white dark:bg-gray-600 border dark:border-gray-600">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           {/* Team Section */}
@@ -173,7 +173,7 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
                     alt="پروفایل تیم"
                     className={clsx(
                       "w-full h-full rounded-full object-cover border-2 shadow-sm cursor-pointer",
-                      `border-${localcolor.color}/30`
+                      `border-${localcolor.color}/30 dark:border-${localcolor.darkcolor}/30`
                     )}
                     onError={() => SetProfileExist(false)}
                     onClick={() => openModal(data.profile)}
@@ -184,10 +184,10 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
               )}
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-900 font-[vazirmatn]">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-300 font-[vazirmatn]">
                 {data.title}
               </h3>
-              <p className="text-sm text-gray-500 font-[vazirmatn]">
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-[vazirmatn]">
                 {data.position || ""}
               </p>
             </div>
@@ -207,15 +207,15 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
               <CgProfile className="text-gray-400" size={36} />
             )}
             <div className="text-center">
-              <p className="text-sm font-semibold text-gray-800 font-[vazirmatn]">
+              <p className="text-sm font-semibold text-gray-800 dark:text-gray-300 font-[vazirmatn]">
                 {data.owner.member_info.firstname}{" "}
                 {data.owner.member_info.lastname}
               </p>
-              <div className="flex items-center justify-start gap-2 text-xs text-gray-500 font-[vazirmatn]">
+              <div className="flex items-center justify-start gap-2 text-xs text-gray-500 dark:text-gray-400 font-[vazirmatn]">
                 <span
                   className={clsx(
                     "w-2 h-2 rounded-full",
-                    `bg-${localcolor.color}`
+                    `bg-${localcolor.color} dark:bg-${localcolor.darkcolor}`
                   )}
                 ></span>
                 <span>{data.owner.member_info.position || "مالک"}</span>
@@ -226,7 +226,7 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
 
         {/* Description & CTA */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-600 font-[vazirmatn] sm:text-right text-center sm:w-3/5">
+          <p className="text-sm text-gray-600 dark:text-gray-400 font-[vazirmatn] sm:text-right text-center sm:w-3/5">
             {data.description}
           </p>
           <Link
@@ -236,9 +236,9 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
           >
             <button
               className={clsx(
-                `bg-${localcolor.color}`,
-                `hover:bg-${localcolor.hover}`,
-                `focus:ring-${localcolor.color}`,
+                `bg-${localcolor.color} dark:bg-${localcolor.darkcolor}`,
+                `hover:bg-${localcolor.hover} dark:hover:bg-${localcolor.darkhover}`,
+                `focus:ring-${localcolor.color} dark:focus:ring-${localcolor.darkcolor}`,
                 "text-white text-sm cursor-pointer px-5 py-2 rounded-full shadow-md transition-all duration-200 focus:ring-2 focus:ring-offset-2"
               )}
             >

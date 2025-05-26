@@ -312,12 +312,12 @@ const MainContent = () => {
                 pagination={{ clickable: true }}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
                 modules={[Pagination, Autoplay]}
-                className="mySwiper rounded-xl shadow-lg"
+                className="mySwiper rounded-xl shadow-lg bg-gray-100 dark:bg-gray-700 "
               >
                 {projectCards.map((card) => (
                   <SwiperSlide
                     key={card.project_id}
-                    className="bg-gray-100 dark:bg-gray-700 rounded-xl shadow-lg"
+                    className="rounded-xl h-full"
                   >
                     <Link
                       to={`/detail/${card.project_id}`}
@@ -331,6 +331,7 @@ const MainContent = () => {
                         <p className="text-sm text-right text-gray-600 dark:text-gray-300 mt-2 flex flex-wrap">
                           {truncateText(card.description, 200)}
                         </p>
+                        <p className="my-4"></p>
                       </div>
                     </Link>
                   </SwiperSlide>
