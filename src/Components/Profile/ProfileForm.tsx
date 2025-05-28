@@ -203,7 +203,7 @@ export default function ProfileForm() {
 
       if (profilePictureFile) {
         LocalProfile.append("file", profilePictureFile);
-        if (localProfile.resume) {
+        if (localProfile.newResume == 2 && localProfile.resume) {
           LocalResume.append("file", localProfile.resume);
           await Promise.all([
             PutUser(userData),
@@ -212,17 +212,24 @@ export default function ProfileForm() {
             UpdateProfile(LocalProfile),
             UpdateResume(LocalResume),
           ]);
-        } else {
+        } else if (localProfile.newResume == 1) {
           await Promise.all([
             PutUser(userData),
             PutTag(tagData),
             PutCareer(careerData),
             UpdateProfile(LocalProfile),
             DeleteResume(),
+          ]);
+        } else {
+          await Promise.all([
+            PutUser(userData),
+            PutTag(tagData),
+            PutCareer(careerData),
+            UpdateProfile(LocalProfile),
           ]);
         }
       } else if (localProfile.high_profile) {
-        if (localProfile.resume) {
+        if (localProfile.newResume == 2 && localProfile.resume) {
           LocalResume.append("file", localProfile.resume);
           await Promise.all([
             PutUser(userData),
@@ -230,12 +237,18 @@ export default function ProfileForm() {
             PutCareer(careerData),
             UpdateResume(LocalResume),
           ]);
-        } else {
+        } else if (localProfile.newResume == 1) {
           await Promise.all([
             PutUser(userData),
             PutTag(tagData),
             PutCareer(careerData),
             DeleteResume(),
+          ]);
+        } else {
+          await Promise.all([
+            PutUser(userData),
+            PutTag(tagData),
+            PutCareer(careerData),
           ]);
         }
       } else {

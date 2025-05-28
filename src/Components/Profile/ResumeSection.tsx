@@ -32,7 +32,7 @@ export default function ResumeSection({
         return;
       }
       setResumeName(file.name);
-      setLocalProfile((prev) => ({ ...prev, resume: file }));
+      setLocalProfile((prev) => ({ ...prev, resume: file, newResume: 2 }));
       notifySuccess("رزومه با موفقیت آپلود شد");
     } else {
       notifyError("هیچ فایلی انتخاب نشد");
@@ -41,8 +41,12 @@ export default function ResumeSection({
 
   const handleRemoveResume = () => {
     setResumeName(null);
-    setLocalProfile((prev) => ({ ...prev, resume: null }));
-    setLocalProfile((prev) => ({ ...prev, resumeAddress: null }));
+    setLocalProfile((prev) => ({
+      ...prev,
+      resume: null,
+      newResume: 1,
+      resumeAddress: null,
+    }));
     notifySuccess("رزومه با موفقیت حذف شد");
   };
 
