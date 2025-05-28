@@ -1,19 +1,16 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
 import Header from "../../Components/DashboardComp/Header";
-import ChatMessageArea from "../../Components/ChatMessageArea/ChatMessageArea";
-// import { Skeleton } from 'primereact/skeleton';
-// import { Search } from "lucide-react";
+import ChatMessageArea from "../MessageBox/ChatMessageArea";
 
 export default function Profile() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate an API call or data fetching
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000); // Simulating a 2-second delay
+    }, 2000);
   }, []);
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -23,7 +20,6 @@ export default function Profile() {
       className="flex flex-col md:flex-row mt-6 mb-3 p-3 md:p-5 w-full max-w-[1080px] h-full mx-auto bg-[#e0e0e0] rounded-2xl"
       dir="rtl"
     >
-      {/* Chat List */}
       <div className="w-full md:w-[340px] h-full md:h-full bg-[#e0e0e0] md:rounded-tr-2xl md:rounded-br-2xl px-5 flex flex-col">
         <div className="flex-1 space-y-2">
           {[...Array(7)].map((_, index) => (
@@ -40,7 +36,6 @@ export default function Profile() {
           ))}
         </div>
       </div>
-      {/* Chat Window */}
       <div className="md:flex hidden flex-col flex-1 min-h-0 mt-4 md:mt-0 md:ml-3 shiny-skeleton rounded-2xl shadow-md ">
         {" "}
       </div>
