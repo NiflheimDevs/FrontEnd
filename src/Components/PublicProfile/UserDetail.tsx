@@ -3,6 +3,7 @@ import { Color, Profile } from "./types";
 import UserCareerDetail from "./UserCareerDetail";
 import { useState } from "react";
 import { Download } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface UserDetailProps {
   localprofile: Profile;
@@ -91,6 +92,35 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
             <p className="text-lg md:text-xl w-fit text-gray-400 pointer-events-none box-shadow-custom rounded-4xl py-1 px-2 font-[vazirmatn] leading-relaxed">
               بیوگرافی کاربر ثبت نشده است
             </p>
+          )}
+          {localprofile.profile_id == "0" ? (
+            <Link
+              to="/profile"
+              className="md:justify-start justify-center flex"
+            >
+              <button
+                className={`px-4 py-2 w-fit h-fit gap-2 whitespace-nowrap text-sm font-[vazirmatn] flex justify-center items-center flex-row rounded-full transition-all duration-200 bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover} dark:bg-${localcolor.darkcolor} dark:hover:bg-${localcolor.darkhover}`}
+                aria-label="صفحه بعدی"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6 21.5H3v-3.5L15.232 5.232z"
+                  />
+                </svg>
+                <span>ویرایش پروفایل</span>
+              </button>
+            </Link>
+          ) : (
+            <></>
           )}
         </div>
       </div>
