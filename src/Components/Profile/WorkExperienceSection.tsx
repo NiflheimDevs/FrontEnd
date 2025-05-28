@@ -420,7 +420,7 @@ export default function WorkExperienceSection({
                           )}
                         </AnimatePresence>
                       </div>
-                      <div className="flex flex-wrap mt-2 min-h-[40px] p-2 rounded-lg bg-gray-100 dark:border-gray-500 dark:bg-gray-700 dark:border-2 gap-2">
+                      <div className="flex flex-wrap mt-2 min-h-[40px] py-2 rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-0 gap-2">
                         <AnimatePresence>
                           {exp.skills.length > 0 ? (
                             exp.skills.map((skill: Skill) => (
@@ -480,7 +480,7 @@ export default function WorkExperienceSection({
         </AnimatePresence>
         <button
           onClick={handleAddWorkExperience}
-          className="mt-2 bg-[#3E79DE] text-white py-2 px-4 rounded-[20px] shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 dark:hover:bg-blue-700 dark:focus:bg-blue-700 dark:bg-blue-600 focus:shadow-lg cursor-pointer"
+          className="mb-2 bg-[#3E79DE] text-white py-2 px-4 rounded-[20px] shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 dark:hover:bg-blue-700 dark:focus:bg-blue-700 dark:bg-blue-600 focus:shadow-lg cursor-pointer"
           tabIndex={tabIndexStart + localProfile.workExperiences.length * 10}
         >
           + افزودن سابقه کاری

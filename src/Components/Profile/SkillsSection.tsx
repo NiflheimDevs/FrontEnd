@@ -191,7 +191,7 @@ export default function SkillsSection({
                     onChange={(e) =>
                       handleProficiencyChange(skill.name, e.target.value)
                     }
-                    className={`px-3 py-1 border-2 rounded-lg text-right [direction:rtl] bg-white dark:bg-gray-700 dark:border-gray-500 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-blue-400 ${
+                    className={`px-3 py-1 border-2 rounded-lg text-right [direction:rtl] bg-white dark:bg-[#364159] dark:border-gray-500 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-blue-400 ${
                       validationErrors.skills?.includes(skill.name)
                         ? "text-red-500"
                         : "text-gray-400"
