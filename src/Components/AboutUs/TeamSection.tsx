@@ -1,4 +1,3 @@
-import React from "react";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -64,39 +63,31 @@ const people = [
   },
 ];
 
-const TeamMemberCard = ({
-  person,
-  alignRight,
-}: {
-  person: any;
-  alignRight: boolean;
-}) => (
+const TeamMemberCard = ({ person }:any) => (
   <motion.div
-    initial={{ opacity: 0, y: 30 }}
+    initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5 }}
-    className={`w-full max-w-md p-5 bg-[#e5e5e5] rounded-xl shadow-md flex flex-col items-center space-y-3
-      ${alignRight ? "ml-auto" : "mr-auto"}
-    `}
+    className="p-4 bg-[#e5e5e5] rounded-xl shadow-md flex flex-col items-center space-y-2 w-full hover:scale-105 transform duration-300"
   >
     <img
       src={person.image}
       alt={`تصویر ${person.name}`}
-      className="w-24 h-24 rounded-full border-2 border-gray-300 hover:border-blue-600 transition-all"
+      className="w-20 h-20 rounded-full border-2 border-gray-300 hover:border-blue-600 transition-all"
     />
     <h3 className="text-lg font-semibold bg-blue-600 text-transparent bg-clip-text">
       {person.name}
     </h3>
     <p className="text-sm text-gray-700 text-center">{person.description}</p>
-    <div className="flex gap-3">
+    <div className="flex gap-2">
       <a
         href={person.instagram}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`Instagram ${person.name}`}
       >
-        <FaInstagram className="text-pink-500 hover:text-pink-700 text-xl" />
+        <FaInstagram className="text-pink-500 hover:text-pink-700 text-lg" />
       </a>
       <a
         href={person.linkedin}
@@ -104,30 +95,26 @@ const TeamMemberCard = ({
         rel="noopener noreferrer"
         aria-label={`LinkedIn ${person.name}`}
       >
-        <FaLinkedin className="text-blue-500 hover:text-blue-700 text-xl" />
+        <FaLinkedin className="text-blue-500 hover:text-blue-700 text-lg" />
       </a>
     </div>
   </motion.div>
 );
 
-const TeamSection: React.FC = () => {
+const TeamSection = () => {
   return (
-    <section className="py-16 flex flex-col items-center bg-transparent">
+    <section className="py-12 bg-transparent">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-4xl font-bold text-gray-900 mb-10"
+        className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center"
       >
         تیم ما
       </motion.h2>
-      <div className="flex flex-col gap-8 w-full px-4 max-w-5xl">
-        {people.map((person, index) => (
-          <TeamMemberCard
-            key={person.id}
-            person={person}
-            alignRight={index % 2 === 0}
-          />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto px-4 ">
+        {people.map((person) => (
+          <TeamMemberCard key={person.id} person={person} />
         ))}
       </div>
     </section>

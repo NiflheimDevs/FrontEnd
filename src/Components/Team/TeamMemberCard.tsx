@@ -29,7 +29,6 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   const menuRef = useRef<HTMLDivElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
 
-  // Available roles from the API
   const availableRoles = [
     "TEAM_OWNER",
     "TEAM_ADMIN",
@@ -38,7 +37,6 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
     "TEAM_NEWBIE",
   ];
 
-  // Function to get a readable role name for display
   const getRoleDisplayName = (role: string) => {
     switch (role) {
       case "TEAM_OWNER":
@@ -46,11 +44,11 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
       case "TEAM_ADMIN":
         return "مدیر تیم";
       case "TEAM_CRAWLER":
-        return "جمع آور";
+        return "جستو‌جوگر";
       case "TEAM_MAINTAINER":
-        return "نگهدارنده";
+        return "پشتیبان تیم";
       case "TEAM_NEWBIE":
-        return "عضو جدید";
+        return "نوآموز";
       default:
         return role;
     }
