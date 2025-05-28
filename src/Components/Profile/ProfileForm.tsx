@@ -35,59 +35,59 @@ import {
 import { errorMapper } from "../../pages/Error/Error";
 
 const renderSkeleton = () => (
-  <div className="animate-pulse justify-center items-center">
-    <div className="flex flex-col md:w-2/3 sm:w-full w-9/10 space-y-4 p-6 bg-white rounded-lg shadow-md justify-center items-center mx-auto mt-10">
+  <div className="justify-center items-center">
+    <div className="flex flex-col md:w-2/3 sm:w-full w-9/10 space-y-4 p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md justify-center items-center mx-auto mt-10">
       <div className="flex flex-col items-center">
         <Skeleton
           width="160px"
           height="160px"
-          className="shiny-skeleton full border rounded-full border-gray-300"
+          className="shiny-skeleton full border rounded-full border-gray-300 dark:!border-gray-600 dark:!bg-gray-600"
         />
         <Skeleton
           width="200px"
           height="30px"
-          className="shiny-skeleton mt-4 bg-gray-200 rounded-2xl"
+          className="shiny-skeleton mt-4 bg-gray-200 rounded-2xl dark:!bg-gray-600"
         />
       </div>
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
     </div>
   </div>
@@ -125,7 +125,6 @@ export default function ProfileForm() {
         const mappedProfile = await mapApiDataToProfile(apiData, apiResume);
         setLocalProfile(mappedProfile);
         dispatch(setProfile(mappedProfile));
-        setIsLoading(false);
       } catch (err: any) {
         setError(err.message || "خطا در بارگذاری اطلاعات کاربر");
         notifyError(err.message || "خطا در بارگذاری اطلاعات کاربر");
