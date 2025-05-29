@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Layout from "../../Components/Team/Layout";
@@ -282,7 +283,7 @@ const TeamDetailPage: React.FC = () => {
           </h2>
           <Link
             to="/teams"
-            className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded"
+            className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded-lg"
           >
             بازگشت به صفحه تیم
           </Link>
@@ -314,7 +315,7 @@ const TeamDetailPage: React.FC = () => {
             {hasPermission("ADD_MEMBER") && (
               <button
                 onClick={() => setIsAddMemberModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
+                className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded-lg flex items-center justify-center"
               >
                 <svg
                   className="w-5 h-5 ml-1"
@@ -335,7 +336,7 @@ const TeamDetailPage: React.FC = () => {
             {hasPermission("EDIT_INFO") && (
               <button
                 onClick={() => setIsEditTeamModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
+                className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded-lg flex items-center justify-center"
               >
                 <svg
                   className="w-5 h-5 ml-1"
@@ -537,14 +538,14 @@ const TeamDetailPage: React.FC = () => {
         <div className="mt-8 text-center">
           <Link
             to="/teams"
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded transition-colors duration-300"
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg transition-colors cursor-pointer duration-300"
           >
             بازگشت به صفحه تیم
           </Link>
           {hasPermission("DELETE_TEAM") && (
             <button
               onClick={() => setIsDeleteModalOpen(true)}
-              className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors duration-300"
+              className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg cursor-pointer transition-colors duration-300"
             >
               حذف تیم
             </button>
