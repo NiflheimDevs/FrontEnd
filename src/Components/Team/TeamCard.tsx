@@ -64,7 +64,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
                       />
                     ) : (
                       <span className="text-white text-sm text-center font-semibold flex justify-center items-center">
-                        member.name.charAt(0)
+                        {member.name.charAt(0)}
                       </span>
                     )}
                   </div>

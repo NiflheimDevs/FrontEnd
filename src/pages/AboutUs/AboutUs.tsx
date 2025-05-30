@@ -8,6 +8,7 @@ import Footer from "../../Components/Footer/Footer";
 const AboutUs: React.FC = () => {
   return (
     <div className="h-screen flex flex-col bg-gray-100 dark:bg-gray-800 overflow-auto">
+
       {/* Header */}
       <Header showSearch={false} />
 

@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import { motion } from "framer-motion";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 
 import kia from "../../assets/aboutus/kia2.jpg";
@@ -9,7 +8,16 @@ import parsa from "../../assets/aboutus/parsa.jpg";
 import mmd from "../../assets/aboutus/mmd.jpg";
 import ali from "../../assets/aboutus/ali.jpg";
 
-const people = [
+interface Person {
+  id: number;
+  name: string;
+  image: string;
+  description: string;
+  instagram: string;
+  linkedin: string;
+}
+
+const people: Person[] = [
   {
     id: 1,
     name: "کیارش",
@@ -63,12 +71,22 @@ const people = [
   },
 ];
 
-const TeamMemberCard = ({ person }: { person: any }) => (
-  <div className="w-full max-w-sm p-6 bg-white dark:bg-gray-700 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-600 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+interface TeamMemberCardProps {
+  person: Person;
+}
+
+const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ person }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+    className="p-4 bg-[#e5e5e5] dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-xl shadow-md flex flex-col items-center space-y-2 w-full hover:scale-105 transform duration-300"
+  >
     <img
       src={person.image}
       alt={`تصویر ${person.name}`}
-      className="w-32 h-32 rounded-full mx-auto border-4 border-gray-200 dark:border-gray-600 object-cover transition-all duration-300 hover:border-blue-500 dark:hover:border-blue-400"
+      className="w-20 h-20 rounded-full border-2 border-gray-300 dark:border-gray-600 hover:border-blue-600 dark:hover:border-blue-400 transition-all"
     />
     <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-4 text-center">
       {person.name}
@@ -82,28 +100,35 @@ const TeamMemberCard = ({ person }: { person: any }) => (
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`Instagram ${person.name}`}
+        className="hover:scale-110 transition-all duration-200"
       >
-        <FaInstagram className="text-pink-500 dark:text-pink-400 text-2xl hover:text-pink-700 dark:hover:text-pink-600 hover:scale-110 transition-all duration-200" />
+        <FaInstagram className="text-pink-500 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-600 text-lg" />
       </a>
       <a
         href={person.linkedin}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`LinkedIn ${person.name}`}
+        className="hover:scale-110 transition-all duration-200"
       >
-        <FaLinkedin className="text-blue-500 dark:text-blue-400 text-2xl hover:text-blue-700 dark:hover:text-blue-600 hover:scale-110 transition-all duration-200" />
+        <FaLinkedin className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-600 text-lg" />
       </a>
     </div>
-  </div>
+  </motion.div>
 );
 
 const TeamSection: React.FC = () => {
   return (
-    <section className="py-16 bg-gray-100 dark:bg-gray-800 flex flex-col items-center">
-      <h2 className="text-5xl font-bold text-gray-900 dark:text-gray-200 mb-12 text-center">
+    <section className="py-12 bg-transparent">
+      <motion.h2
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center"
+      >
         تیم ما
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full px-4 max-w-7xl">
+      </motion.h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto px-4">
         {people.map((person) => (
           <TeamMemberCard key={person.id} person={person} />
         ))}

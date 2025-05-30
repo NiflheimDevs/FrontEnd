@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User } from "./index";
+import {
+  CreateTeamSearchSelectedMemberCard,
+  TeamFilterSearchMemberCard,
+} from "./TeamSearchMemberCard";
 
 interface CreateTeamModalProps {
   isOpen: boolean;
@@ -18,7 +22,7 @@ const mockUsers: User[] = [
     name: "شما",
     email: "your.email@example.com",
     role: "مدیر",
-    avatar: "/avatar-placeholder.png",
+    avatar: "hhhhhhhhhh",
     position: "",
   },
   {
@@ -26,7 +30,7 @@ const mockUsers: User[] = [
     name: "رضا احمدی",
     email: "reza.ahmadi@example.com",
     role: "توسعه دهنده",
-    avatar: "/avatar-placeholder.png",
+    avatar: "hhhhhhhhhh",
     position: "",
   },
   {
@@ -34,7 +38,7 @@ const mockUsers: User[] = [
     name: "سارا محمدی",
     email: "sara.mohammadi@example.com",
     role: "طراح",
-    avatar: "/avatar-placeholder.png",
+    avatar: "hhhhhhhhhh",
     position: "",
   },
   {
@@ -42,7 +46,7 @@ const mockUsers: User[] = [
     name: "امیر حسینی",
     email: "amir.hosseini@example.com",
     role: "مدیر محصول",
-    avatar: "/avatar-placeholder.png",
+    avatar: "hhhhhhhhhh",
     position: "",
   },
   {
@@ -50,7 +54,7 @@ const mockUsers: User[] = [
     name: "نازنین کریمی",
     email: "nazanin.karimi@example.com",
     role: "بازاریاب",
-    avatar: "/avatar-placeholder.png",
+    avatar: "hhhhhhhhhh",
     position: "",
   },
 ];
@@ -73,8 +77,8 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   const filteredUsers = mockUsers.filter(
     (user) =>
       !selectedMembers.find((member) => member.id === user.id) &&
-      (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    //  ||user.email.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   useEffect(() => {
@@ -267,30 +271,10 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                 <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-auto animate-fadeIn">
                   {filteredUsers.length > 0 ? (
                     filteredUsers.map((user) => (
-                      <div
-                        key={user.id}
-                        onClick={() => addMember(user)}
-                        className="flex items-center justify-between p-3 hover:bg-blue-50 dark:hover:bg-blue-900 cursor-pointer border-b transition-colors duration-150"
-                      >
-                        <div className="text-gray-500 dark:text-gray-400 text-sm">{user.role}</div>
-                        <div className="flex items-center">
-                          <div className="mr-3 text-right">
-                            <p className="text-sm font-medium">{user.name}</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {user.email}
-                            </p>
-                          </div>
-                          <img
-                            src={user.avatar}
-                            alt={user.name}
-                            className="w-10 h-10 rounded-full border-2 border-gray-200"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.src = "/avatar-placeholder.png";
-                            }}
-                          />
-                        </div>
-                      </div>
+                      <TeamFilterSearchMemberCard
+                        user={user}
+                        addMember={addMember}
+                      />
                     ))
                   ) : (
                     <div className="p-4 text-center text-gray-500">
@@ -309,46 +293,11 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
               </h3>
               <div className="border rounded-lg overflow-hidden bg-gray-50">
                 {selectedMembers.map((member) => (
-                  <div
-                    key={member.id}
-                    className="flex items-center justify-between p-3 border-b last:border-b-0 hover:bg-gray-100 transition-colors duration-150"
-                  >
-                    <div className="flex items-center">
-                      <img
-                        src={member.avatar}
-                        alt={member.name}
-                        className="w-10 h-10 rounded-full border-2 border-blue-200"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = "/avatar-placeholder.png";
-                        }}
-                      />
-                      <div className="mr-3 text-right">
-                        <p className="text-sm font-medium">{member.name}</p>
-                        <p className="text-xs text-gray-500">{member.role}</p>
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => removeMember(member.id)}
-                      className="text-red-500 hover:text-red-700 cursor-pointer hover:bg-red-50 p-1 rounded-full transition-colors duration-150"
-                      type="button"
-                      disabled={isSubmitting}
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </div>
+                  <CreateTeamSearchSelectedMemberCard
+                    user={member}
+                    isSubmitting={isSubmitting}
+                    removeMember={removeMember}
+                  />
                 ))}
               </div>
             </div>

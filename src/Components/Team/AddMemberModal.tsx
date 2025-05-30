@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User } from "./index";
 import { addMember } from "../../API";
+import TeamSearchMemberCard, {
+  TeamSearchSelectedMemberCard,
+} from "./TeamSearchMemberCard";
 
 interface AddMemberModalProps {
   isOpen: boolean;
@@ -16,7 +19,7 @@ const sampleUsers: User[] = [
     id: 1,
     name: "علی محمدی",
     email: "ali@example.com",
-    avatar: "",
+    avatar: "hhhhhhhhhh",
     role: "توسعه دهنده",
     position: "مدیر",
   },
@@ -24,7 +27,7 @@ const sampleUsers: User[] = [
     id: 2,
     name: "سارا احمدی",
     email: "sara@example.com",
-    avatar: "",
+    avatar: "hhhhhhhhhh",
     role: "طراح",
     position: "مدیر",
   },
@@ -32,7 +35,7 @@ const sampleUsers: User[] = [
     id: 3,
     name: "رضا کریمی",
     email: "reza@example.com",
-    avatar: "",
+    avatar: "hhhhhhhhhh",
     role: "مدیر محصول",
     position: "مدیر",
   },
@@ -40,7 +43,7 @@ const sampleUsers: User[] = [
     id: 6,
     name: "مریم حسینی",
     email: "maryam@example.com",
-    avatar: "",
+    avatar: "hhhhhhhhhh",
     role: "توسعه دهنده",
     position: "مدیر",
   },
@@ -48,7 +51,7 @@ const sampleUsers: User[] = [
     id: 5,
     name: "امیر رضایی",
     email: "amir@example.com",
-    avatar: "",
+    avatar: "hhhhhhhhhh",
     role: "ادمین",
     position: "مدیر",
   },
@@ -75,8 +78,8 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
   const availableUsers = sampleUsers.filter(
     (user) =>
       !existingMemberIds.includes(user.id) &&
-      (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    //  ||user.email.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   // Handle click outside to close modal
@@ -236,29 +239,13 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
               />
 
               {isSearching && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                <div className="z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
                   {availableUsers.length > 0 ? (
                     availableUsers.map((user) => (
-                      <div
-                        key={user.id}
-                        onClick={() => selectUser(user)}
-                        className="flex items-center justify-between p-3 hover:bg-gray-100 cursor-pointer border-b"
-                      >
-                        <div className="flex items-center">
-                          <div className="mr-2 text-right">
-                            <p className="text-sm font-medium">{user.name}</p>
-                            <p className="text-xs text-gray-500">
-                              {user.email}
-                            </p>
-                          </div>
-                          <img
-                            src={user.avatar}
-                            alt={user.name}
-                            className="w-8 h-8 rounded-full"
-                          />
-                        </div>
-                        <div className="text-gray-500 text-sm">{user.role}</div>
-                      </div>
+                      <TeamSearchMemberCard
+                        user={user}
+                        selectUser={selectUser}
+                      />
                     ))
                   ) : (
                     <div className="p-3 text-center text-gray-500">
@@ -270,29 +257,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
             </div>
           </div>
 
-          {selectedUser && (
-            <div className="mb-5 p-4 bg-gray-50 rounded-lg">
-              <h3 className="text-gray-700 text-right mb-2 font-medium">
-                کاربر انتخاب شده:
-              </h3>
-              <div className="flex items-center justify-end">
-                <div className="mr-3 text-right">
-                  <p className="font-medium">{selectedUser.name}</p>
-                  <p className="text-sm text-gray-500">{selectedUser.email}</p>
-                  <p className="text-sm text-gray-600">{selectedUser.role}</p>
-                </div>
-                <img
-                  src={selectedUser.avatar}
-                  alt={selectedUser.name}
-                  className="w-10 h-10 rounded-full"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/avatar-placeholder.png";
-                  }}
-                />
-              </div>
-            </div>
-          )}
+          {selectedUser && <TeamSearchSelectedMemberCard user={selectedUser} />}
 
           <div className="flex justify-between mt-8">
             <button

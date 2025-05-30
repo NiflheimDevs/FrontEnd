@@ -85,6 +85,9 @@ export const refreshAccessToken = async () => {
     }
     return newAccessToken;
   } catch (error: any) {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
+    window.location.href = "/auth";
     throw error.response?.data || "خطا در تمدید توکن!";
   }
 };
@@ -101,7 +104,7 @@ export const signupSendOTP = async (userData: any) => {
 export const signupVerifyOTP = async (userData: any) => {
   try {
     const response = await apiClient.post("/signup/verify", userData);
-    
+
     const accessToken = response.data.access_token;
     const refreshToken = response.data.refresh_token;
     if (accessToken) {
@@ -698,7 +701,16 @@ export const DeleteTeamMember = async (UserData: any) => {
     // console.log(memberRole);
     const response = await apiClient.delete("/team/member", { data: UserData });
     return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
 
+export const GetSpecificTeamProject = async (id: any) => {
+  try {
+    const response = await apiClient.get(`/team/${id}/project`);
+    console.log(response);
+    return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
@@ -706,12 +718,21 @@ export const DeleteTeamMember = async (UserData: any) => {
 
 
 
-export const GetSpecificTeamProject = async (id:any) => {
+export const getChats = async () => {
   try {
-    const response = await apiClient.get(`/team/${id}/project`);
-    console.log(response);
+    const response = await apiClient.get("/chat");
+    console.log(response)
     return response.data;
   } catch (error: any) {
-    throw error.response?.data || "خطا در ارسال درخواست!";
+    throw error.response?.data || "خطا در دریافت لیست چت‌ها";
+  }
+};
+
+export const getRoomMessages = async (chatId: string) => {
+  try {
+    const response = await apiClient.get(`/chat/${chatId}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت پیام‌ها";
   }
 };

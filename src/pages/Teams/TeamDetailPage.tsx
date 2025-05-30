@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Layout from "../../Components/Team/Layout";
@@ -233,9 +234,9 @@ const TeamDetailPage: React.FC = () => {
     }
   };
 
-  const navigateToTeamProjects = () => {
-    navigate(`/Browsproject`);
-  };
+  // const navigateToTeamProjects = () => {
+  //   navigate(`/Browsproject`);
+  // };
 
   // const getStatusBadgeColor = (status: number) => {
   //   switch (status) {
@@ -282,7 +283,7 @@ const TeamDetailPage: React.FC = () => {
           </h2>
           <Link
             to="/teams"
-            className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded"
+            className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded-lg"
           >
             بازگشت به صفحه تیم
           </Link>
@@ -314,7 +315,7 @@ const TeamDetailPage: React.FC = () => {
             {hasPermission("ADD_MEMBER") && (
               <button
                 onClick={() => setIsAddMemberModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
+                className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded-lg flex items-center justify-center"
               >
                 <svg
                   className="w-5 h-5 ml-1"
@@ -335,7 +336,7 @@ const TeamDetailPage: React.FC = () => {
             {hasPermission("EDIT_INFO") && (
               <button
                 onClick={() => setIsEditTeamModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex items-center justify-center"
+                className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded-lg flex items-center justify-center"
               >
                 <svg
                   className="w-5 h-5 ml-1"
@@ -451,9 +452,11 @@ const TeamDetailPage: React.FC = () => {
                             className="hover:bg-gray-50"
                           >
                             <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <div className="text-sm font-medium text-gray-900">
-                                {project.title}
-                              </div>
+                              <Link to={`/detail/${project.project_id}`}>
+                                <div className="text-sm font-medium text-gray-900 hover:text-blue-600">
+                                  {project.title}
+                                </div>
+                              </Link>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
                               {project.description.substring(0, 60)}
@@ -464,7 +467,7 @@ const TeamDetailPage: React.FC = () => {
                                 {project.tags.slice(0, 3).map((tag) => (
                                   <span
                                     key={tag.id}
-                                    className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800"
+                                    className="px-2 py-1 text-xs rounded-full bg-blue-50 border border-blue-200 text-blue-400"
                                   >
                                     {tag.name}
                                   </span>
@@ -478,7 +481,7 @@ const TeamDetailPage: React.FC = () => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-600">
                               {project.end_time === "0001-01-01T00:00:00Z"
-                                ? "نامشخص"
+                                ? "..."
                                 : new Date(project.end_time).toLocaleDateString(
                                     "fa-IR"
                                   )}
@@ -492,9 +495,9 @@ const TeamDetailPage: React.FC = () => {
                     </table>
                   </div>
                   <div className="text-center p-4">
-                    <p className="text-gray-600">
+                    {/* <p className="text-gray-600">
                       {teamProjects.length} پروژه برای این تیم موجود است
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               ) : (
@@ -518,7 +521,7 @@ const TeamDetailPage: React.FC = () => {
                 </div>
               )}
 
-              <div className="text-center p-4">
+              {/* <div className="text-center p-4">
                 {teamProjects.length > 0 && (
                   <button
                     onClick={navigateToTeamProjects}
@@ -527,7 +530,7 @@ const TeamDetailPage: React.FC = () => {
                     مشاهده همه پروژه ها
                   </button>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -535,14 +538,14 @@ const TeamDetailPage: React.FC = () => {
         <div className="mt-8 text-center">
           <Link
             to="/teams"
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded transition-colors duration-300"
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg transition-colors cursor-pointer duration-300"
           >
             بازگشت به صفحه تیم
           </Link>
           {hasPermission("DELETE_TEAM") && (
             <button
               onClick={() => setIsDeleteModalOpen(true)}
-              className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition-colors duration-300"
+              className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg cursor-pointer transition-colors duration-300"
             >
               حذف تیم
             </button>
