@@ -61,17 +61,6 @@ const cardVariants = {
   },
 };
 
-// const skeletonVariants = {
-//   shimmer: {
-//     backgroundPosition: ["-100% center", "100% center"],
-//     transition: {
-//       duration: 1.2,
-//       ease: "linear",
-//       repeat: Infinity,
-//     },
-//   },
-// };
-
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [balance, setBalance] = useState<number>(0);
@@ -167,12 +156,16 @@ const Dashboard = () => {
       <motion.div key={index} custom={index} initial="hidden" animate="visible">
         <div>
           <div className="rounded-lg p-4 flex items-center flex-col md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out">
-            <Skeleton className="relative border-8 border-gray-300 z-10 w-full p-4 rounded-lg max-w-[490px] min-h-[300px] justify-center items-center flex flex-col gap-2 mx-auto overflow-hidden shiny-skeleton" />
-            <Skeleton width="1.5rem" height="1.5rem" className="bg-gray-300" />
+            <Skeleton className="relative border-8 border-gray-300 dark:border-gray-600 z-10 w-full p-4 rounded-lg max-w-[490px] min-h-[300px] justify-center items-center flex flex-col gap-2 mx-auto overflow-hidden shiny-skeleton" />
+            <Skeleton
+              width="1.5rem"
+              height="1.5rem"
+              className="bg-gray-300 dark:bg-gray-600"
+            />
             <Skeleton
               width="8rem"
               height="1rem"
-              className="rounded-md bg-gray-300"
+              className="rounded-md bg-gray-300 dark:bg-gray-600"
             />
           </div>
         </div>
@@ -194,10 +187,10 @@ const Dashboard = () => {
           className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
         >
           <Link to="/chat" className="block">
-            <div className="bg-[#F7F7F7] rounded-lg dark:bg-gray-800">
-              <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900 dark:bg-[#E0D6C8] dark:border-[#EEE7D8]">
-                <div className="bg-gradient-to-br min-h-73 from-[#71C2F4] to-[#3444c2] rounded-md p-4 overflow-hidden dark:from-[#232946] dark:to-[#121629]">
-                  <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center dark:text-[#E0D6C8]">
+            <div className="bg-[#F7F7F7] dark:bg-gray-800 rounded-lg">
+              <div className="bg-gray-800 dark:bg-gray-700 rounded-lg p-3 border-b-4 border-gray-900 dark:border-gray-600">
+                <div className="bg-gradient-to-br min-h-73 from-[#71C2F4] to-[#3444c2] dark:from-[#3b82f6] dark:to-[#1e3a8a] rounded-md p-4 overflow-hidden">
+                  <h3 className="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 flex items-center">
                     <span className="mr-2">📩</span> پیام‌ها
                   </h3>
                   <div className="flex flex-col">
@@ -206,24 +199,24 @@ const Dashboard = () => {
                         <input
                           type="text"
                           placeholder="جستجو"
-                          className="border border-gray-500 py-1 pr-8 pl-2 rounded-sm w-full text-right bg-[#D9D9D9]/20 placeholder-black text-sm dark:border-[#948D7F] dark:bg-[#121629] dark:placeholder-[#948D7F]"
+                          className="border border-gray-500 dark:border-gray-400 py-1 pr-8 pl-2 rounded-sm w-full text-right bg-[#D9D9D9]/20 dark:bg-gray-800/50 placeholder-gray-800 dark:placeholder-gray-300 text-sm"
                           disabled
                         />
                         <Search
                           size={14}
-                          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-[#948D7F]"
+                          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-300"
                         />
                       </div>
                       {chatList.slice(0, 1).map((chat) => (
                         <div
                           key={chat.id}
-                          className="md:flex sm:flex hidden items-center border-none bg-white/30 p-2 justify-end rounded-sm dark:bg-black/30"
+                          className="md:flex sm:flex hidden items-center border-none bg-white/30 dark:bg-gray-800/30 p-2 justify-end rounded-sm"
                         >
                           <div className="flex-1 text-right">
-                            <p className="text-sm font-medium text-gray-800 dark:text-[#E0D6C8]">
+                            <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
                               {chat.name}
                             </p>
-                            <p className="text-xs text-gray-600 dark:text-[#B4AA9C]">
+                            <p className="text-xs text-gray-600 dark:text-gray-400">
                               {chat.lastMessage}
                             </p>
                           </div>
@@ -231,21 +224,21 @@ const Dashboard = () => {
                       ))}
                     </div>
                     <div className="flex flex-col bg-transparent p-2 rounded-sm">
-                      <div className="flex w-full h-8 border-none items-center bg-white/50 rounded-t-sm p-2 dark:bg-black/50">
+                      <div className="flex w-full h-8 border-none items-center bg-white/50 dark:bg-gray-800/50 rounded-t-sm p-2">
                         <img
                           src={ProfileDefault}
                           alt="Profile"
                           className="w-5 h-5 rounded-full ml-2"
                         />
-                        <h4 className="text-sm font-semibold text-gray-800 dark:text-[#E0D6C8]">
+                        <h4 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
                           {chatList[0].name}
                         </h4>
                       </div>
-                      <div className="flex-1 p-2 bg-[#1a2a44] rounded-b-sm dark:bg-[#E5D5BB]">
-                        <div className="max-w-[70%] mb-2 p-2 rounded-lg text-xs bg-gray-200 text-gray-800 ml-auto rounded-tr-none dark:bg-[#1A1814] dark:text-[#E0D6C8]">
+                      <div className="flex-1 p-2 bg-[#1a2a44] dark:bg-[#2d3748] rounded-b-sm">
+                        <div className="max-w-[70%] mb-2 p-2 rounded-lg text-xs bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 ml-auto rounded-tr-none">
                           سلام! چطور می‌توانم به شما کمک کنم؟
                         </div>
-                        <div className="max-w-[70%] p-2 rounded-lg text-xs bg-blue-600 text-white mr-auto rounded-tl-none dark:bg-[#DA9C14] dark:text-black">
+                        <div className="max-w-[70%] p-2 rounded-lg text-xs bg-blue-600 dark:bg-blue-500 text-white dark:text-white mr-auto rounded-tl-none">
                           نیاز به کمک در پروژه‌ام دارم
                         </div>
                       </div>
@@ -254,8 +247,8 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="flex flex-col items-center">
-                <div className="w-6 h-6 bg-gray-700 dark:bg-[#C8BEAE]"></div>
-                <div className="w-32 h-4 bg-gray-800 rounded-md shadow-md dark:bg-[#E0D6C8]"></div>
+                <div className="w-6 h-6 bg-gray-700 dark:bg-gray-500"></div>
+                <div className="w-32 h-4 bg-gray-800 dark:bg-gray-600 rounded-md shadow-md"></div>
               </div>
             </div>
           </Link>
@@ -270,10 +263,10 @@ const Dashboard = () => {
           className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
         >
           <Link to="/profile" className="block cursor-pointer">
-            <div className="bg-[#F7F7F7] rounded-lg dark:bg-gray-800">
-              <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900 dark:bg-[#E0D6C8] dark:border-[#EEE7D8]">
-                <div className="bg-white min-h-73 rounded-md p-4 overflow-hidden dark:bg-[#202020]">
-                  <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center dark:text-[#E0D6C8]">
+            <div className="bg-[#F7F7F7] dark:bg-gray-800 rounded-lg">
+              <div className="bg-gray-800 dark:bg-gray-700 rounded-lg p-3 border-b-4 border-gray-900 dark:border-gray-600">
+                <div className="bg-white dark:bg-[#2d3748] min-h-73 rounded-md p-4 overflow-hidden">
+                  <h3 className="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 flex items-center">
                     <span className="mr-2">👤</span> پروفایل
                   </h3>
                   <div className="flex flex-col items-center space-y-1">
@@ -281,53 +274,56 @@ const Dashboard = () => {
                       <img
                         src={profileData.low_profile}
                         alt="Profile"
-                        className="w-16 h-16 border-2 border-blue-500 rounded-full flex items-center justify-center bg-gray-200 dark:bg-[#1A1814]"
+                        className="w-16 h-16 border-2 border-blue-500 dark:border-blue-400 rounded-full flex items-center justify-center bg-gray-200 dark:bg-gray-700"
                         onError={() => SetProfileExist(false)}
                       />
                     ) : (
-                      <CgProfile className="text-gray-400 dark:text-[#635C50]" size={46} />
+                      <CgProfile
+                        className="text-gray-400 dark:text-gray-300"
+                        size={46}
+                      />
                     )}
                     <div className="text-center flex flex-col pt-2">
-                      <p className="text-sm ltr text-gray-800 dark:text-[#E0D6C8]">
+                      <p className="text-sm ltr text-gray-800 dark:text-gray-200">
                         {profileData.username}
                       </p>
-                      <p className="text-sm ltr text-gray-800 dark:text-[#E0D6C8]">
+                      <p className="text-sm ltr text-gray-800 dark:text-gray-200">
                         {profileData.phonenumber}
                       </p>
                       <div className="flex flex-col gap-1">
                         <div className="flex text-sm flex-row gap-2 pt-4 cursor-pointer">
-                          <label className="mt-2 text-gray-600 w-24 text-right dark:text-[#B4AA9C]">
+                          <label className="mt-2 text-gray-600 dark:text-gray-400 w-24 text-right">
                             نام
                           </label>
                           <input
                             type="text"
                             placeholder="نام"
                             value={profileData.firstName}
-                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl] cursor-pointer dark:text-[#B4AA9C] dark:bg-[#1A1814]"
+                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 text-right [direction:rtl] cursor-pointer"
                             disabled
                           />
                         </div>
                         <div className="flex flex-row text-sm gap-2 cursor-pointer">
-                          <label className="mt-2 text-gray-600 w-24 text-right dark:text-[#B4AA9C]">
+                          <label className="mt-2 text-gray-600 dark:text-gray-400 w-24 text-right">
                             نام خانوادگی
                           </label>
                           <input
                             type="text"
                             placeholder="نام خانوادگی"
                             value={profileData.lastName}
-                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl] cursor-pointer dark:text-[#B4AA9C] dark:bg-[#1A1814]"
+                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 text-right [direction:rtl] cursor-pointer"
                             disabled
                           />
                         </div>
                         <div className="flex flex-row text-sm gap-2">
-                          <label className="mt-2 text-gray-600 w-24 text-right cursor-pointer dark:text-[#B4AA9C]">
+                          <label className="mt-2 text-gray-600 dark:text-gray-400 w-24 text-right cursor-pointer">
                             ایمیل
                           </label>
                           <input
                             type="text"
                             placeholder="ایمیل"
                             value={profileData.email}
-                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 bg-gray-200 text-right [direction:rtl] cursor-pointer dark:text-[#B4AA9C] dark:bg-[#1A1814]"
+                            className="w-full sm:flex-1 p-2 rounded-lg text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 text-right [direction:rtl] cursor-pointer"
                             disabled
                           />
                         </div>
@@ -337,8 +333,8 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="flex flex-col items-center">
-              <div className="w-6 h-6 bg-gray-700 dark:bg-[#C8BEAE]"></div>
-              <div className="w-32 h-4 bg-gray-800 rounded-md shadow-md dark:bg-[#E0D6C8]"></div>
+                <div className="w-6 h-6 bg-gray-700 dark:bg-gray-500"></div>
+                <div className="w-32 h-4 bg-gray-800 dark:bg-gray-600 rounded-md shadow-md"></div>
               </div>
             </div>
           </Link>
@@ -353,21 +349,23 @@ const Dashboard = () => {
           className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
         >
           <Link to="/wallet" className="block">
-            <div className="bg-[#F7F7F7] rounded-lg dark:bg-gray-800">
-              <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900 dark:bg-[#E0D6C8] dark:border-[#EEE7D8]">
-                <div className="bg-white min-h-73 rounded-md p-4 overflow-hidden dark:bg-[#202020]">
-                  <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center dark:text-[#E0D6C8]">
+            <div className="bg-[#F7F7F7] dark:bg-gray-800 rounded-lg">
+              <div className="bg-gray-800 dark:bg-gray-700 rounded-lg p-3 border-b-4 border-gray-900 dark:border-gray-600">
+                <div className="bg-white dark:bg-[#2d3748] min-h-73 rounded-md p-4 overflow-hidden">
+                  <h3 className="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 flex items-center">
                     <span className="mr-2">💰</span> کیف پول
                   </h3>
                   <div className="text-center mb-3">
-                    <p className="text-xl font-bold text-gray-800 dark:text-[#E0D6C8]">
+                    <p className="text-xl font-bold text-gray-800 dark:text-gray-200">
                       {formatPrice(balance)}
                     </p>
-                    <p className="text-xs text-gray-600 dark:text-[#B4AA9C]">تومان</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      تومان
+                    </p>
                   </div>
-                  <table className="w-full text-center text-xs text-gray-800 dark:text-[#E0D6C8]">
+                  <table className="w-full text-center text-xs text-gray-800 dark:text-gray-200">
                     <thead>
-                      <tr className="border-b">
+                      <tr className="border-b border-gray-300 dark:border-gray-600">
                         <th className="text-sm font-semibold py-1">تاریخ</th>
                         <th className="text-sm font-semibold py-1">فعالیت</th>
                         <th className="text-sm font-semibold py-1">مقدار</th>
@@ -375,7 +373,10 @@ const Dashboard = () => {
                     </thead>
                     <tbody>
                       {transactions.map((transaction) => (
-                        <tr key={transaction.id} className="border-b">
+                        <tr
+                          key={transaction.id}
+                          className="border-b border-gray-300 dark:border-gray-600"
+                        >
                           <td className="py-1 ltr">
                             {gregorianToPersian(
                               transaction.date?.split("T")[0]
@@ -393,14 +394,14 @@ const Dashboard = () => {
                     <img
                       src={walletPic}
                       alt="Illustration"
-                      className="w-22 h-22" // issueeeee
+                      className="w-22 h-22"
                     />
                   </div>
                 </div>
               </div>
               <div className="flex flex-col items-center">
-              <div className="w-6 h-6 bg-gray-700 dark:bg-[#C8BEAE]"></div>
-              <div className="w-32 h-4 bg-gray-800 rounded-md shadow-md dark:bg-[#E0D6C8]"></div>
+                <div className="w-6 h-6 bg-gray-700 dark:bg-gray-500"></div>
+                <div className="w-32 h-4 bg-gray-800 dark:bg-gray-600 rounded-md shadow-md"></div>
               </div>
             </div>
           </Link>
@@ -415,36 +416,36 @@ const Dashboard = () => {
           className="relative z-10 w-full max-w-[490px] mx-auto md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out md:hover:scale-103 sm:hover:scale-93 hover:scale-91 cursor-pointer overflow-hidden"
         >
           <Link to="/changepass" className="block">
-            <div className="bg-[#F7F7F7] rounded-lg dark:bg-gray-800">
-              <div className="bg-gray-800 rounded-lg p-3 border-b-4 border-gray-900 dark:bg-[#E0D6C8] dark:border-[#EEE7D8]">
-                <div className="bg-gradient-to-br min-h-73 from-[#3444c2] to-[#71C2F4] rounded-md p-4 overflow-hidden dark:from-[#232946] dark:to-[#121629]">
-                  <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center dark:text-[#E0D6C8]">
+            <div className="bg-[#F7F7F7] dark:bg-gray-800 rounded-lg">
+              <div className="bg-gray-800 dark:bg-gray-700 rounded-lg p-3 border-b-4 border-gray-900 dark:border-gray-600">
+                <div className="bg-gradient-to-br min-h-73 from-[#3444c2] to-[#71C2F4] dark:from-[#1e3a8a] dark:to-[#3b82f6] rounded-md p-4 overflow-hidden">
+                  <h3 className="text-lg font-bold mb-3 text-gray-800 dark:text-gray-200 flex items-center">
                     <span className="mr-2">🔒</span> تغییر رمز
                   </h3>
                   <div className="flex flex-col items-center">
                     <div className="text-center mb-3">
-                      <p className="text-sm font-semibold text-[#D9D9D9] dark:text-[#E0D6C8]">
+                      <p className="text-sm font-semibold text-[#D9D9D9] dark:text-gray-200">
                         رمز جدیدت رو وارد کن
                       </p>
-                      <div className="w-1/2 h-0.5 bg-blue-400 mx-auto mt-1 dark:bg-[#9F5A05]"></div>
+                      <div className="w-1/2 h-0.5 bg-blue-400 dark:bg-blue-300 mx-auto mt-1"></div>
                     </div>
                     <div className="w-full space-y-2">
                       <input
                         type="password"
                         placeholder="رمز عبور قدیمی"
-                        className="border border-gray-500 w-full bg-[#E5E5E5] py-1 px-3 rounded-md text-right text-xs placeholder-black dark:border-[#948D7F] dark:bg-[#121629] dark:placeholder-[#948D7F]"
+                        className="border border-gray-500 dark:border-gray-400 w-full bg-[#E5E5E5] dark:bg-gray-800 py-1 px-3 rounded-md text-right text-xs placeholder-gray-800 dark:placeholder-gray-300"
                         disabled
                       />
                       <input
                         type="password"
                         placeholder="رمز عبور"
-                        className="border border-gray-500 w-full bg-[#E5E5E5] py-1 px-3 rounded-md text-right text-xs placeholder-black dark:border-[#948D7F] dark:bg-[#121629] dark:placeholder-[#948D7F]"
+                        className="border border-gray-500 dark:border-gray-400 w-full bg-[#E5E5E5] dark:bg-gray-800 py-1 px-3 rounded-md text-right text-xs placeholder-gray-800 dark:placeholder-gray-300"
                         disabled
                       />
                       <input
                         type="password"
                         placeholder="تکرار رمز عبور"
-                        className="border border-gray-500 w-full bg-[#E5E5E5] py-1 px-3 rounded-md text-right text-xs placeholder-black dark:border-[#948D7F] dark:bg-[#121629] dark:placeholder-[#948D7F]"
+                        className="border border-gray-500 dark:border-gray-400 w-full bg-[#E5E5E5] dark:bg-gray-800 py-1 px-3 rounded-md text-right text-xs placeholder-gray-800 dark:placeholder-gray-300"
                         disabled
                       />
                     </div>
@@ -459,8 +460,8 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="flex flex-col items-center">
-              <div className="w-6 h-6 bg-gray-700 dark:bg-[#C8BEAE]"></div>
-              <div className="w-32 h-4 bg-gray-800 rounded-md shadow-md dark:bg-[#E0D6C8]"></div>
+                <div className="w-6 h-6 bg-gray-700 dark:bg-gray-500"></div>
+                <div className="w-32 h-4 bg-gray-800 dark:bg-gray-600 rounded-md shadow-md"></div>
               </div>
             </div>
           </Link>
@@ -471,7 +472,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-[#F7F7F7] z-[-1] dark:bg-[#080808]"></div>
+      <div className="fixed inset-0 bg-[#F7F7F7] dark:bg-gray-800 z-[-1]"></div>
       <div className="flex w-full bg-[#F7F7F7] dark:bg-gray-800" dir="rtl">
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <main className="flex-1 flex flex-col pt-16 w-full md:pr-24 sm:pr-24 pr-0">
@@ -481,7 +482,7 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-4xl font-bold mb-10 text-center text-gray-800 dark:text-[#E0D6C8]"
+              className="text-4xl font-bold mb-10 text-center text-gray-800 dark:text-gray-200"
             >
               داشبورد
             </motion.h2>
