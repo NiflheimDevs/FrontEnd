@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User } from "./index";
 import { addMember } from "../../API";
-import TeamSearchMemberCard, {
+import {
   TeamSearchSelectedMemberCard,
+  TeamSearchMemberCard,
 } from "./TeamSearchMemberCard";
 
 interface AddMemberModalProps {
