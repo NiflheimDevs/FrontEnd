@@ -250,7 +250,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
                 disabled={isSubmitting}
               />
 
-              <div className="absolute left-3 top-3 text-gray-400">
+              <div className="absolute left-3 top-4 text-gray-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-5 w-5"
