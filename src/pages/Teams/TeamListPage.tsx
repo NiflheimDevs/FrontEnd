@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useCallback } from "react";
 import Layout from "../../Components/Team/Layout";
 import TeamCard from "../../Components/Team/TeamCard";
@@ -81,7 +82,7 @@ const EmptyState = React.memo<{ onCreateTeam: () => void }>(
           <button
             onClick={onCreateTeam}
             type="button"
-            className="flex-1 group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 active:scale-95"
+            className="flex-1 group relative overflow-hidden cursor-pointer bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 active:scale-95"
           >
             <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
             <div className="relative flex items-center justify-center gap-2">
@@ -300,9 +301,9 @@ const TeamListPage: React.FC = () => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-gray-50 z-[-1]" />
+      <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]" />
       <Layout>
-        <div className="flex flex-row sm:flex-row md:flex-row justify-between items-center mb-6 gap-4 bg-gray-50">
+        <div className="flex flex-row sm:flex-row md:flex-row justify-between items-center mb-6 gap-4 bg-[#F7F7F7]">
           {/* <div className="w-full md:max-w-md order-2 relative">
             <form
               onSubmit={handleSearch}
