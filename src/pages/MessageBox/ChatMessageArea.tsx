@@ -11,7 +11,7 @@ interface Chat {
 }
 
 interface Message {
-  // id: string;
+  id: string;
   text: string;
   type: "sent" | "received";
   timestamp: string;
@@ -56,11 +56,13 @@ const ChatMessageArea = () => {
             setMessages([]);
             return;
           }
-          const formatted = msgs.map((m: any) => ({
+          const formatted = msgs.map((m: any, index: number) => ({
+            id: `${m.SendTime}-${index}`, // simple fallback unique ID
             text: m.Content,
             timestamp: m.SendTime,
             type: (m.Type === 1 ? "sent" : "received") as "sent" | "received",
           }));
+
           setMessages(formatted);
           //2 below lines to make the first one set and ready to send message
           setIsChatOpen(true); //added with no ui not sure if works
@@ -81,12 +83,12 @@ const ChatMessageArea = () => {
         setMessages([]);
         return;
       }
-      const formatted = msgs.map((m: any) => ({
+      const formatted = msgs.map((m: any, index: number) => ({
+        id: `${m.SendTime}-${index}`, // simple fallback unique ID
         text: m.Content,
         timestamp: m.SendTime,
         type: (m.Type === 1 ? "sent" : "received") as "sent" | "received",
       }));
-
       setSelectedChat(chat);
       setMessages(formatted);
       setIsChatOpen(true);
@@ -207,7 +209,7 @@ const ChatMessageArea = () => {
             {messages.length > 0 ? (
               messages.map((message) => (
                 <motion.div
-                  // key={message.id}
+                  key={message.id}
                   variants={messageVariants}
                   initial="hidden"
                   animate="visible"
