@@ -11,7 +11,7 @@ interface Chat {
 }
 
 interface Message {
-  // id: string;
+  id: string;
   text: string;
   type: "sent" | "received";
   timestamp: string;
@@ -39,6 +39,10 @@ const ChatMessageArea = () => {
     const loadChats = async () => {
       try {
         const data = await getChats();
+        if (!data || !Array.isArray(data)) {
+          setChatList([]);
+          return;
+        }
         const chats: Chat[] = data.map((item: any) => ({
           id: String(item["room_id"]),
           user_id: String(item["user_id"]),
@@ -48,13 +52,21 @@ const ChatMessageArea = () => {
         if (chats.length > 0) {
           setSelectedChat(chats[0]);
           const msgs = await getRoomMessages(chats[0].id);
-          const formatted = msgs.map((m: any) => ({
-            // id: m.ID,
+          if (!msgs || !Array.isArray(msgs)) {
+            setMessages([]);
+            return;
+          }
+          const formatted = msgs.map((m: any, index: number) => ({
+            id: `${m.SendTime}-${index}`, // simple fallback unique ID
             text: m.Content,
             timestamp: m.SendTime,
-            type: m.Type === 1 ? "sent" : "received",
+            type: (m.Type === 1 ? "sent" : "received") as "sent" | "received",
           }));
+
           setMessages(formatted);
+          //2 below lines to make the first one set and ready to send message
+          setIsChatOpen(true); //added with no ui not sure if works
+          setupWebSocket(chats[0].id); //added with no ui not sure if works
         }
       } catch (error) {
         console.error("Error fetching chat list:", error);
@@ -66,11 +78,16 @@ const ChatMessageArea = () => {
   const handleChatSelect = async (chat: Chat) => {
     try {
       const msgs = await getRoomMessages(chat.id);
-      const formatted = msgs.map((m: any) => ({
-        // id: m.ID,
+      if (!msgs || !Array.isArray(msgs)) {
+        console.error("Messages data is not an array or is null", msgs);
+        setMessages([]);
+        return;
+      }
+      const formatted = msgs.map((m: any, index: number) => ({
+        id: `${m.SendTime}-${index}`, // simple fallback unique ID
         text: m.Content,
         timestamp: m.SendTime,
-        type: m.Type === 1 ? "sent" : "received", // Adjust this logic
+        type: (m.Type === 1 ? "sent" : "received") as "sent" | "received",
       }));
       setSelectedChat(chat);
       setMessages(formatted);
@@ -192,7 +209,7 @@ const ChatMessageArea = () => {
             {messages.length > 0 ? (
               messages.map((message) => (
                 <motion.div
-                  // key={message.id}
+                  key={message.id}
                   variants={messageVariants}
                   initial="hidden"
                   animate="visible"
