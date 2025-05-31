@@ -22,37 +22,40 @@ interface CreateTeamSearchSelectedMemberCardProps {
   isSubmitting: boolean;
 }
 
-const TeamSearchMemberCard: React.FC<TeamSearchMemberCardProps> = ({
+export const TeamSearchMemberCard: React.FC<TeamSearchMemberCardProps> = ({
   user,
   selectUser,
 }) => {
-  const [ProfileExists, SetProfileExist] = useState(true);
+  const [profileExists, setProfileExists] = useState(true);
   return (
     <div
       key={user.id}
       onClick={() => selectUser(user)}
-      className="flex items-center justify-between p-3 hover:bg-gray-100 cursor-pointer border-b"
+      className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 bg-white hover:bg-gray-50 cursor-pointer border-b border-gray-200 rounded-lg transition-colors duration-200 w-full max-w-2xl mx-auto"
     >
-      <div className="flex items-center">
-        {ProfileExists && user.avatar ? (
+      <div className="flex items-center w-full sm:w-auto">
+        {profileExists && user.avatar ? (
           <img
             src={user.avatar}
-            className="w-8 h-8 rounded-full"
-            onError={() => SetProfileExist(false)}
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-blue-200"
+            onError={() => setProfileExists(false)}
+            alt={`${user.name}'s avatar`}
           />
         ) : (
           <CgProfile
-            color="#707070"
-            className="w-8 h-8 rounded-full m-0.5"
+            color="#6b7280"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full p-1 bg-gray-100"
             tabIndex={-1}
           />
         )}
-        <div className="mr-2 text-right">
-          <p className="text-sm font-medium">{user.name}</p>
-          <p className="text-xs text-gray-500">{user.email}</p>
+        <div className="mr-3 text-right flex-1">
+          <p className="text-sm font-semibold text-gray-900">{user.name}</p>
+          <p className="text-xs text-gray-600 mt-1">{user.email}</p>
         </div>
       </div>
-      <div className="text-gray-500 text-sm">{user.role}</div>
+      <div className="text-sm bg-blue-50 border border-blue-200 text-blue-400 font-medium px-2 py-1 rounded-md mt-2 sm:mt-0 w-full sm:w-auto text-center sm:text-left">
+        {user.role}
+      </div>
     </div>
   );
 };
@@ -60,32 +63,37 @@ const TeamSearchMemberCard: React.FC<TeamSearchMemberCardProps> = ({
 export const TeamFilterSearchMemberCard: React.FC<
   TeamFilterSearchMemberCardProps
 > = ({ user, addMember }) => {
-  const [ProfileExists, SetProfileExist] = useState(true);
+  const [profileExists, setProfileExists] = useState(true);
   return (
     <div
       key={user.id}
       onClick={() => addMember(user)}
-      className="flex items-center justify-between p-3 hover:bg-blue-50 cursor-pointer border-b transition-colors duration-150"
+      className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 sm:p-2 bg-white hover:bg-blue-50 cursor-pointer border-b border-gray-200 rounded-lg transition-colors duration-200 w-full max-w-2xl mx-auto custom-scrollbar"
     >
-      <div className="text-gray-500 text-sm">{user.role}</div>
-      <div className="flex items-center">
-        <div className="mr-3 text-right">
-          <p className="text-sm font-medium">{user.name}</p>
-          <p className="text-xs text-gray-500">{user.email}</p>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg transition-colors duration-200 w-full max-w-2xl mx-auto pl-1">
+        <div className="flex items-center w-full sm:w-auto">
+          {profileExists && user.avatar ? (
+            <img
+              src={user.avatar}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-blue-200"
+              onError={() => setProfileExists(false)}
+              alt={`${user.name}'s avatar`}
+            />
+          ) : (
+            <CgProfile
+              color="#6b7280"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full p-1"
+              tabIndex={-1}
+            />
+          )}
+          <div className="mr-0 sm:mr-4 text-right flex-1 pointer-events-none">
+            <p className="text-sm font-semibold text-gray-900">{user.name}</p>
+            <p className="text-xs text-gray-600 mt-1">{user.email}</p>
+          </div>
         </div>
-        {ProfileExists && user.avatar ? (
-          <img
-            src={user.avatar}
-            className="w-10 h-10 rounded-full border-2 border-gray-200"
-            onError={() => SetProfileExist(false)}
-          />
-        ) : (
-          <CgProfile
-            color="#707070"
-            className="w-10 h-10 rounded-full border-2 border-gray-200 m-0.5"
-            tabIndex={-1}
-          />
-        )}
+        <div className="text-sm bg-blue-50 border  pointer-events-none border-blue-200 text-blue-400 font-medium px-2 py-1 rounded-md w-full sm:w-auto text-center sm:text-left mb-2 sm:mb-0">
+          {user.role}
+        </div>
       </div>
     </div>
   );
@@ -94,30 +102,35 @@ export const TeamFilterSearchMemberCard: React.FC<
 export const TeamSearchSelectedMemberCard: React.FC<
   TeamSearchSelectedMemberCardProps
 > = ({ user }) => {
-  const [ProfileExists, SetProfileExist] = useState(true);
+  const [profileExists, setProfileExists] = useState(true);
   return (
-    <div className="mb-5 p-4 rounded-lg">
-      <h3 className="text-gray-700 text-right mb-2 font-medium">
+    <div className="mb-6 p-3 sm:p-5 bg-white rounded-xl shadow-md transition-shadow duration-300 w-full max-w-2xl mx-auto">
+      <h3 className="text-gray-800 text-right mb-3 sm:mb-4 font-semibold text-base sm:text-lg">
         کاربر انتخاب شده:
       </h3>
-      <div className="flex items-center justify-start bg-gray-50 rounded-lg">
-        {ProfileExists && user.avatar ? (
-          <img
-            src={user.avatar}
-            className="w-10 h-10 rounded-full"
-            onError={() => SetProfileExist(false)}
-          />
-        ) : (
-          <CgProfile
-            color="#707070"
-            className="w-10 h-10 rounded-full m-0.5"
-            tabIndex={-1}
-          />
-        )}
-        <div className="mr-3 text-right">
-          <p className="font-medium">{user.name}</p>
-          <p className="text-sm text-gray-500">{user.email}</p>
-          <p className="text-sm text-gray-600">{user.role}</p>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-1 px-1.5 bg-white border-blue-50 border-2 rounded-lg transition-colors duration-200 w-full max-w-2xl mx-auto">
+        <div className="flex items-center w-full sm:w-auto">
+          {profileExists && user.avatar ? (
+            <img
+              src={user.avatar}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-blue-200"
+              onError={() => setProfileExists(false)}
+              alt={`${user.name}'s avatar`}
+            />
+          ) : (
+            <CgProfile
+              color="#6b7280"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full p-1"
+              tabIndex={-1}
+            />
+          )}
+          <div className="mr-0 sm:mr-4 text-right flex-1 pointer-events-none">
+            <p className="text-sm font-semibold text-gray-900">{user.name}</p>
+            <p className="text-xs text-gray-600 mt-1">{user.email}</p>
+          </div>
+        </div>
+        <div className="text-sm bg-blue-50 border  pointer-events-none border-blue-200 text-blue-400 font-medium px-2 py-1 rounded-md w-full sm:w-auto text-center sm:text-left mb-2 sm:mb-0">
+          {user.role}
         </div>
       </div>
     </div>
@@ -127,53 +140,65 @@ export const TeamSearchSelectedMemberCard: React.FC<
 export const CreateTeamSearchSelectedMemberCard: React.FC<
   CreateTeamSearchSelectedMemberCardProps
 > = ({ user, removeMember, isSubmitting }) => {
-  const [ProfileExists, SetProfileExist] = useState(true);
+  const [profileExists, setProfileExists] = useState(true);
   return (
     <div
       key={user.id}
-      className="flex items-center justify-between p-3 border-b last:border-b-0 hover:bg-gray-100 transition-colors duration-150"
+      className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 w-full max-w-2xl mx-auto"
     >
-      <div className="flex items-center">
-        {ProfileExists && user.avatar ? (
-          <img
-            src={user.avatar}
-            className="w-10 h-10 rounded-full border-2 border-blue-200"
-            onError={() => SetProfileExist(false)}
-          />
-        ) : (
-          <CgProfile
-            color="#707070"
-            className="w-10 h-10 rounded-full border-2 border-blue-200 m-0.5"
-            tabIndex={-1}
-          />
-        )}
-        <div className="mr-3 text-right">
-          <p className="text-sm font-medium">{user.name}</p>
-          <p className="text-xs text-gray-500">{user.role}</p>
+      <div className="flex flex-row items-center justify-between py-1 px-1.5 bg-white border-2 border-blue-50 rounded-lg transition-colors duration-200 w-full">
+        <div className="flex items-center w-fit">
+          <div className="flex items-center w-full sm:w-auto">
+            {profileExists && user.avatar ? (
+              <img
+                src={user.avatar}
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-blue-200"
+                onError={() => setProfileExists(false)}
+                alt={`${user.name}'s avatar`}
+              />
+            ) : (
+              <CgProfile
+                color="#6b7280"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full p-1"
+                tabIndex={-1}
+              />
+            )}
+            <div className="mr-4 text-right flex-1 pointer-events-none">
+              <p className="text-sm font-semibold text-gray-900">{user.name}</p>
+              <p className="text-xs text-gray-600 mt-1">{user.email}</p>
+              <div className="text-sm bg-blue-50 border mt-1 flex w-fit  pointer-events-none border-blue-200 text-blue-400 font-medium px-2 py-1 rounded-md text-center sm:text-left mb-2 sm:mb-0">
+                {user.role}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <button
-        onClick={() => removeMember(user.id)}
-        className="text-red-500 hover:text-red-700 cursor-pointer hover:bg-red-50 p-1 rounded-full transition-colors duration-150"
-        type="button"
-        disabled={isSubmitting}
-      >
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+        <button
+          onClick={() => removeMember(user.id)}
+          className={`p-2 rounded-full transition-colors duration-200 w-10 sm:w-12 ${
+            isSubmitting
+              ? "text-gray-400 cursor-not-allowed bg-gray-100"
+              : "text-red-500 hover:text-red-700 hover:bg-red-100"
+          }`}
+          type="button"
+          disabled={isSubmitting}
+          aria-label={`Remove ${user.name}`}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
+          <svg
+            className="w-5 h-5 sm:w-6 sm:h-6 mx-auto"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 };
-
-export default TeamSearchMemberCard;
