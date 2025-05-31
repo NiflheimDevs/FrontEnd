@@ -156,7 +156,7 @@ const Dashboard = () => {
       <motion.div key={index} custom={index} initial="hidden" animate="visible">
         <div>
           <div className="rounded-lg p-4 flex items-center flex-col md:scale-100 sm:scale-90 scale-88 transition-transform duration-400 ease-out">
-            <Skeleton className="relative border-8 border-gray-300 dark:border-gray-600 z-10 w-full p-4 rounded-lg max-w-[490px] min-h-[300px] justify-center items-center flex flex-col gap-2 mx-auto overflow-hidden shiny-skeleton" />
+            <Skeleton className="relative border-8 border-gray-300 dark:!bg-gray-700 dark:border-gray-600 z-10 w-full p-4 rounded-lg max-w-[490px] min-h-[300px] justify-center items-center flex flex-col gap-2 mx-auto overflow-hidden shiny-skeleton" />
             <Skeleton
               width="1.5rem"
               height="1.5rem"
