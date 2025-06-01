@@ -168,7 +168,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
   const showMenu = canDelete || canEditRole || canEditNickname;
 
   return (
-    <div className="flex items-center justify-between py-3 px-4 border-b hover:bg-gray-50">
+    <div className="flex items-center justify-between py-3 px-4 border-b hover:bg-gray-50 dark:hover:bg-gray-800">
       <div className="flex items-center justify-center space-x-2 space-x-reverse">
         {AvatarExists ? (
           <img
@@ -180,7 +180,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
           />
         ) : user.username ? (
           <div
-            className="h-8 w-8 min-h-8 min-w-8 rounded-full bg-blue-500 flex items-center justify-center text-white cursor-pointer"
+            className="h-8 w-8 min-h-8 min-w-8 rounded-full bg-blue-500 flex items-center justify-center text-white cursor-pointer dark:bg-blue-700 dark:text-blue-100"
             onClick={navigateToProfile}
           >
             {user.username.charAt(0)}
@@ -190,12 +190,12 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
         )}
         <div className="mr-3">
           <p
-            className="text-gray-900 font-medium cursor-pointer hover:text-blue-600"
+            className="text-gray-900 font-medium cursor-pointer hover:text-blue-600 dark:text-gray-100 dark:hover:text-blue-400"
             onClick={navigateToProfile}
           >
             {user.username}
           </p>
-          <p className="text-gray-500 text-sm">{user.name || "عضو"}</p>
+          <p className="text-gray-500 text-sm dark:text-gray-400">{user.name || "عضو"}</p>
         </div>
       </div>
 
@@ -208,14 +208,14 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
                 type="text"
                 value={nickname}
                 onChange={handleNicknameChange}
-                className="border border-gray-300 rounded pr-2 pl-5 py-1 text-sm w-24"
+                className="border border-gray-300 rounded pr-2 pl-5 py-1 text-sm w-24 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700"
                 onBlur={saveNickname}
                 onKeyPress={(e) => e.key === "Enter" && saveNickname()}
                 disabled={isUpdatingPosition}
               />
               <button
                 onClick={saveNickname}
-                className="ml-1 text-blue-500 absolute left-0 hover:text-blue-700 cursor-pointer"
+                className="ml-1 text-blue-500 absolute left-0 hover:text-blue-700 cursor-pointer dark:text-blue-400 dark:hover:text-blue-300"
                 disabled={isUpdatingPosition}
               >
                 <svg
@@ -235,7 +235,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
             </div>
           ) : (
             <div
-              className={`bg-blue-50 border border-blue-200 text-blue-400 px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${canEditNickname ? "cursor-pointer hover:bg-blue-50" : ""}`}
+              className={`bg-blue-50 border border-blue-200 text-blue-400 px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${canEditNickname ? "cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900" : ""} dark:bg-blue-900 dark:border-blue-700 dark:text-blue-300`}
               onClick={() => canEditNickname && setEditingNickname(true)}
             >
               {user.position || "عضو"}
@@ -245,7 +245,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
         {showMenu && (
           <div className="relative inline-block text-left" ref={menuRef}>
             <button
-              className="text-gray-500 cursor-pointer hover:text-gray-700 p-1"
+              className="text-gray-500 cursor-pointer hover:text-gray-700 p-1 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="گزینه های مدیریت"
               disabled={isUpdatingRole || isUpdatingPosition}
@@ -267,26 +267,26 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 
             {menuOpen && (
               <div
-                className={`absolute left-0 ${openUpward ? "bottom-full mb-2" : "top-full mt-2"} w-48 bg-white rounded-md shadow-xl z-50 text-right`}
+                className={`absolute left-0 ${openUpward ? "bottom-full mb-2" : "top-full mt-2"} w-48 bg-white rounded-md shadow-xl z-50 text-right dark:bg-gray-900`}
               >
                 {canEditRole && (
                   <>
                     {availableRoles.map((role) => (
                       <button
                         key={role}
-                        className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100"
+                        className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
                         onClick={() => handleRoleChange(role)}
                         disabled={isUpdatingRole || isUpdatingPosition}
                       >
                         تغییر به {getRoleDisplayName(role)}
                       </button>
                     ))}
-                    <div className="border-t border-gray-100 my-1"></div>
+                    <div className="border-t border-gray-100 my-1 dark:border-gray-700"></div>
                   </>
                 )}
                 {canEditNickname && !editingNickname && (
                   <button
-                    className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100"
+                    className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
                     onClick={() => setEditingNickname(true)}
                     disabled={isUpdatingPosition}
                   >
@@ -296,7 +296,7 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 
                 {canDelete && (
                   <button
-                    className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-red-600 hover:bg-gray-100"
+                    className="block w-full text-right px-4 py-2 text-sm cursor-pointer text-red-600 hover:bg-gray-100 dark:text-red-400 dark:hover:bg-gray-800"
                     onClick={() => onDelete && onDelete(user.id)}
                     disabled={isUpdatingRole || isUpdatingPosition}
                   >

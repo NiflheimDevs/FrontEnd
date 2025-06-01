@@ -63,49 +63,38 @@ import React from 'react';
 
 const Sections: React.FC = () => {
   return (
-
-    <div className="text-center py-8 sm:py-12 bg-transparent text-gray-800 dir-rtl dark:text-gray-200">
+    <div className="text-center py-8 sm:py-12 bg-transparent text-gray-800 dark:text-gray-100 dir-rtl">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
         {/* First Section */}
         <section
           id="first-section"
-          className="p-4 sm:p-6 bg-[#e5e5e5] shadow-xl rounded-xl dark:bg-gray-700"
+          className="p-4 sm:p-6 bg-[#e5e5e5] dark:bg-gray-900 shadow-xl rounded-xl"
         >
           <div className="text-center space-y-4 sm:space-y-6">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-800">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-800 dark:text-gray-100">
               بیشتر درباره ما بدانید
             </h2>
-            <div className="p-4 border rounded-lg transition-all duration-500 flex justify-center items-center h-32 sm:h-40 max-h-96 dark:bg-gray-600 dark:border-gray-500">
-              <p className="text-gray-800 dark:text-gray-300 font-bold text-base sm:text-lg md:text-xl leading-relaxed">
-
+            <div className="p-4 border border-gray-300 dark:border-gray-700 rounded-lg transition-all duration-500 flex justify-center items-center h-32 sm:h-40 max-h-96 bg-white dark:bg-gray-800">
+              <p className="text-gray-800 dark:text-gray-100 font-bold text-base sm:text-lg md:text-xl leading-relaxed">
                 ما یک پلتفرم معکوس برای فریلنسری ایجاد کرده‌ایم که در آن
                 کارفرماها درخواست‌های خود را ثبت می‌کنند و فریلنسرها برای انجام
                 کار پیشنهاد قیمت می‌دهند.
               </p>
             </div>
           </div>
-
-          <div className="flex justify-center">
-            <img
-              src={aboutus}
-              alt="Freelancers working"
-              className="rounded-lg shadow-md w-full max-w-[400px] hover:scale-[103%] transition-transform"
-            />
-          </div>
-
         </section>
 
         {/* Second Section */}
         <section
           id="second-section"
-          className="p-4 sm:p-6 bg-[#e5e5e5] shadow-xl rounded-xl dark:bg-gray-700"
+          className="p-4 sm:p-6 bg-[#e5e5e5] dark:bg-gray-900 shadow-xl rounded-xl"
         >
           <div className="text-center space-y-4 sm:space-y-6">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-800 dark:text-gray-100">
               اهداف ما
             </h2>
-            <div className="p-4 border rounded-lg transition-all duration-500 flex justify-center items-center h-32 sm:h-40 max-h-96">
-              <p className="text-gray-800 dark:text-gray-300 font-bold text-base sm:text-lg md:text-xl leading-relaxed">
+            <div className="p-4 border border-gray-300 dark:border-gray-700 rounded-lg transition-all duration-500 flex justify-center items-center h-32 sm:h-40 max-h-96 bg-white dark:bg-gray-800">
+              <p className="text-gray-800 dark:text-gray-100 font-bold text-base sm:text-lg md:text-xl leading-relaxed">
                 هدف ما فراهم کردن محیطی رقابتی و کارآمد برای فریلنسرها و
                 کارفرمایان است. ما به دنبال افزایش شفافیت در فرآیند استخدام،
                 کاهش هزینه‌ها، و ایجاد فرصت‌های برابر هستیم.
@@ -119,3 +108,7 @@ const Sections: React.FC = () => {
 };
 
 export default Sections;
+
+
+
+

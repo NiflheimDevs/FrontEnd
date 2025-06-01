@@ -180,19 +180,19 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
     <div className="fixed inset-0 bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-xs">
       <div
         ref={modalRef}
-        className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn"
+        className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn dark:bg-gray-900"
         style={{
           boxShadow:
             "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
           direction: "rtl",
         }}
       >
-        <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600">
+        <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-800 dark:to-blue-900">
           <h2 className="text-xl font-bold text-white">افزودن عضو به تیم</h2>
 
           <button
             onClick={onClose}
-            className="text-white hover:bg-blue-700 cursor-pointer hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
+            className="text-white hover:bg-blue-700 dark:hover:bg-blue-800 cursor-pointer hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
             disabled={loading}
           >
             <svg
@@ -213,13 +213,13 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
 
         <form onSubmit={handleSubmit} className="p-6">
           {error && (
-            <div className="mb-5 p-3 bg-red-100 text-red-700 rounded-lg text-right animate-fadeIn">
+            <div className="mb-5 p-3 bg-red-100 text-red-700 rounded-lg text-right animate-fadeIn dark:bg-red-900 dark:text-red-300">
               {error}
             </div>
           )}
 
           <div className="mb-5">
-            <label className="block text-gray-700 text-right mb-2 font-medium">
+            <label className="block text-gray-700 text-right mb-2 font-medium dark:text-gray-200">
               کاربر
             </label>
 
@@ -233,14 +233,14 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
                   setIsSearching(true);
                 }}
                 onClick={() => setIsSearching(true)}
-                className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
                 placeholder="جستجوی کاربران..."
                 required
                 disabled={loading}
               />
 
               {isSearching && (
-                <div className="z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                <div className="z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto dark:bg-gray-800 dark:border-gray-700">
                   {availableUsers.length > 0 ? (
                     availableUsers.map((user) => (
                       <TeamSearchMemberCard
@@ -249,7 +249,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
                       />
                     ))
                   ) : (
-                    <div className="p-3 text-center text-gray-500">
+                    <div className="p-3 text-center text-gray-500 dark:text-gray-300">
                       کاربری یافت نشد
                     </div>
                   )}
@@ -264,14 +264,14 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium"
+              className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
               disabled={loading}
             >
               انصراف
             </button>
             <button
               type="submit"
-              className={`bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium ${
+              className={`bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium dark:bg-blue-700 dark:hover:bg-blue-800 ${
                 loading || !selectedUser ? "opacity-70 cursor-not-allowed" : ""
               }`}
               disabled={!selectedUser || loading}
