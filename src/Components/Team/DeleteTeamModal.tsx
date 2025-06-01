@@ -76,7 +76,7 @@ const DeleteTeamModal: React.FC<DeleteTeamModalProps> = ({
                     viewBox="0 0 24 24"
                   >
                     <circle
-                      className="opacity-25"
+                      className="opacity-25 "
                       cx="12"
                       cy="12"
                       r="10"

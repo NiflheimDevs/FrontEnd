@@ -307,7 +307,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium"
+              className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
               disabled={isSubmitting}
             >
               انصراف

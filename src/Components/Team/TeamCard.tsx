@@ -16,14 +16,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ team }) => {
   return (
     <Link
       to={`/teams/${team.id}`}
-      className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] flex flex-col glowing-card overflow-hidden mx-auto hover:scale-103 duration-400 transition-all h-full dark:from-[#1C2B48] dark:to-[#0B1226]  hover:shadow-[0px_0px_20px_rgba(81,137,202,0.8)]"
-      // style={{
-      //   hover: {
-      //     scale: 1.01,
-      //     boxShadow: "0px 0px 20px rgba(81, 137, 202, 0.8)",
-      //     transition: { duration: 0.2 }
-      //   }
-      // }}
+      className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] flex flex-col glowing-card overflow-hidden mx-auto hover:scale-103 duration-400 transition-all h-full dark:from-[#1C2B48] dark:to-[#0B1226] glowing-shadow hover:shadow-[0px_0px_20px_rgba(81,137,202,0.8)]"
     >
       <div className="group relative w-full max-w-md overflow-hidden rounded-xl border-0 bg-white/10 dark:bg-white/5 bg-gradient-to-br p-1 shadow-xl transition-all duration-300 h-full">
         <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-blue-400/20 blur-3xl filter dark:bg-blue-400/10" />

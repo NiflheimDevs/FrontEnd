@@ -473,7 +473,7 @@ export default function WorkExperienceSection({
               );
             })
           ) : (
-            <p className="text-gray-400 text-sm bg-gray-100 rounded-lg p-2">
+            <p className="text-gray-400 text-sm bg-gray-100 rounded-lg p-2 dark:bg-gray-500 dark:text-gray-300 border border-gray-200 dark:border-gray-500">
               سابقه کاری اضافه نشده
             </p>
           )}

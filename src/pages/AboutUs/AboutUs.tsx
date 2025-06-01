@@ -9,12 +9,12 @@ import Footer from "../../Components/Footer/Footer";
 
 const AboutUs: React.FC = () => {
   return (
-    <div className="flex flex-col bg-white dark:bg-gray-950">
+    <div className="flex flex-col bg-white dark:bg-gray-800">
       {/* Header */}
       <Header showSearch={false} />
 
       {/* Intro Banner */}
-      <section className="w-full py-4 px-4 bg-gray-50 dark:bg-gray-900">
+      <section className="w-full py-4 px-4 bg-gray-50 dark:bg-gray-900/50">
         <div className="flex items-center gap-3 max-w-5xl mx-auto">
           <div className="w-6 h-6 bg-gradient-to-b from-blue-800 to-blue-400 dark:from-blue-900 dark:to-blue-700 rounded-md transition-transform hover:scale-110" />
           <div className="text-xl font-bold text-gray-900 dark:text-gray-100">درباره بیدلنسر</div>

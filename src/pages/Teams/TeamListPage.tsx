@@ -136,15 +136,15 @@ const LoadingSkeleton = React.memo(() => (
         <div className="flex flex-col justify-between flex-grow z-10">
           <div>
             <div className="flex flex-row justify-between gap-1">
-              <div className="w-30 h-10 bg-white/50 rounded-full mb-4 mt-4" />
-              <div className="w-[70px] h-[70px] bg-white/50 rounded-full mb-4" />
+              <div className="w-30 h-10 bg-white/50 rounded-full mb-4 mt-4 shiny-skeleton dark:bg-gray-700" />
+              <div className="w-[70px] h-[70px] bg-white/50 rounded-full mb-4 shiny-skeleton dark:bg-gray-700" />
             </div>
-            <div className="w-3/4 h-6 bg-white/70 rounded-full mt-3 mb-3" />
-            <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2" />
-            <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2" />
+            <div className="w-3/4 h-6 bg-white/70 rounded-full mt-3 mb-3 shiny-skeleton dark:bg-gray-700" />
+            <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2 shiny-skeleton dark:bg-gray-700" />
+            <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2 shiny-skeleton dark:bg-gray-700" />
           </div>
           <div className="flex flex-wrap w-3/4 gap-2 mt-3">
-            <div className="w-30 h-10 bg-white/30 rounded-full" />
+            <div className="w-30 h-10 bg-white/30 rounded-full shiny-skeleton dark:bg-gray-700" />
           </div>
         </div>
       </div>

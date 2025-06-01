@@ -100,6 +100,9 @@ body::-webkit-scrollbar,
   overflow: hidden;
   background: #e0e0e0;
 }
+.dark .shiny-skeleton {
+  background: #444950;
+}
 
 .shiny-skeleton::after {
   content: '';
@@ -115,6 +118,14 @@ body::-webkit-scrollbar,
   );
   animation: shine 1.2s ease-in-out infinite; 
   transform: translateX(-100%);
+}
+.dark .shiny-skeleton::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    transparent 100%
+  );
 }
 
 @keyframes shine {

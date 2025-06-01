@@ -15,7 +15,7 @@ import {
   GetSpecificTeamProject,
 } from "../../API";
 import { User, TeamData, Permission } from "../../Components/Team/index";
-
+import { Skeleton } from "primereact/skeleton";
 // Define types based on the API response structure
 interface TeamMember {
   member_info: {
@@ -251,9 +251,55 @@ const TeamDetailPage: React.FC = () => {
   if (isLoading) {
     return (
       <Layout>
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 dark:border-blue-400"></div>
-        </div>
+          <div className="dark:bg-gray-800">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6 dark:bg-gray-800 dark:shadow-blue-900/30 animate-pulse">
+              {/* Header: Avatar + Name + Buttons */}
+              <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+                <div className="flex items-center gap-3">
+                  <Skeleton shape="circle" size="3rem" className="shiny-skeleton bg-gray-200 dark:bg-gray-700 border-2 border-blue-500 dark:border-blue-400" />
+                  <Skeleton width="10rem" height="2.25rem" className="shiny-skeleton rounded-lg bg-gray-200 dark:bg-gray-700" />
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Skeleton width="8rem" height="2.5rem" className="shiny-skeleton rounded-lg bg-blue-500 dark:bg-blue-900" />
+                  <Skeleton width="8rem" height="2.5rem" className="shiny-skeleton rounded-lg bg-blue-500 dark:bg-blue-900" />
+                </div>
+              </div>
+              {/* Description and Created At */}
+              <div className="text-right mb-8">
+                <Skeleton width="50%" height="1.5rem" className="shiny-skeleton mb-2 rounded bg-gray-200 dark:bg-gray-700" />
+                <Skeleton width="8rem" height="1rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
+              </div>
+              {/* Tabs */}
+              <div className="mb-6">
+                <div className="flex justify-center border-b border-gray-200 dark:border-gray-600 gap-2">
+                  <Skeleton width="6rem" height="2rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
+                  <Skeleton width="6rem" height="2rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
+                </div>
+              </div>
+              {/* Members/Projects Table Skeleton */}
+              <div className="mb-6">
+                <Skeleton width="10rem" height="1rem" className="shiny-skeleton mb-4 rounded bg-gray-200 dark:bg-gray-700" />
+                <Skeleton width="14rem" height="0.5rem" className="shiny-skeleton mb-6 rounded bg-gray-200 dark:bg-gray-700" />
+                <div className="border rounded-lg bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600">
+                  {/* Simulate 3 member/project rows */}
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="flex items-center gap-4 px-4 py-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+                      <Skeleton shape="circle" size="2.5rem" className="shiny-skeleton bg-gray-200 dark:bg-gray-700" />
+                      <Skeleton width="8rem" height="1.25rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
+                      <Skeleton width="5rem" height="1rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
+                      <Skeleton width="4rem" height="1rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
+                      <Skeleton width="3rem" height="1rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Action Buttons */}
+              <div className="mt-8 text-center flex justify-center gap-4">
+                <Skeleton width="10rem" height="2.5rem" className="shiny-skeleton rounded-lg bg-gray-200 dark:bg-gray-800" />
+                <Skeleton width="8rem" height="2.5rem" className="shiny-skeleton rounded-lg bg-red-500 dark:bg-red-900" />
+              </div>
+            </div>
+          </div>
       </Layout>
     );
   }
