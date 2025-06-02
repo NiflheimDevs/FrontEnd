@@ -117,7 +117,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
           id="name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+          className="w-full p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
           placeholder="عنوان پروژه را وارد کنید"
         />
         <AnimatePresence>
@@ -148,7 +148,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
             id="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full p-3 border min-h-[100px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none"
+            className="w-full p-3 border min-h-[100px] dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none"
             rows={4}
             placeholder="توضیحات کامل پروژه را وارد کنید"
           />

@@ -79,10 +79,6 @@ const Step2: React.FC<Step2Props> = ({
       newErrors.tags = "حداقل یک تگ را انتخاب کنید";
     }
 
-    if (!selectedLabel) {
-      newErrors.label = "یک برچسب را انتخاب کنید";
-    }
-
     setErrors(newErrors);
     const isValid = Object.keys(newErrors).length === 0;
     setIsFormValid(isValid);
