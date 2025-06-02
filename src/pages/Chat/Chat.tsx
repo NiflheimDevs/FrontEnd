@@ -44,12 +44,11 @@ export default function Profile() {
 
   return (
     <>
-      <div className="fixed inset-0 bg-white dark:bg-gray-950 z-[-1]"></div>
-      <div className="flex min-h-screen w-full bg-gray-100 dark:bg-gray-950">
+      <div className="fixed inset-0 bg-white dark:bg-gray-800 z-[-1]"></div>
+      <div className="flex min-h-screen w-full bg-gray-100 dark:bg-gray-800">
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <main className="flex-1 flex flex-col pt-16 md:pr-24 sm:pr-24 md:pl-0 px-4">
           <Header toggleSidebar={toggleSidebar} />
-
           {isLoading ? renderSkeleton() : <ChatMessageArea />}
         </main>
       </div>
