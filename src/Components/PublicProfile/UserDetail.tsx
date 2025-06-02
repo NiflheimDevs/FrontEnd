@@ -17,7 +17,7 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
       {/* Profile Image and Actions */}
       <div className="flex flex-col items-center gap-4 w-full md:w-1/4 min-w-[160px]">
         <div
-          className={`relative flex justify-center items-center w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-${localcolor.color} dark:border-${localcolor.darkcolor} overflow-hidden bg-gray-100 shadow-md transition-transform duration-300 hover:scale-105`}
+          className={`relative flex justify-center items-center w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-${localcolor.color} dark:border-${localcolor.darkcolor} overflow-hidden bg-gray-100 dark:bg-gray-400 shadow-md transition-transform duration-300 hover:scale-105`}
         >
           {profileExists ? (
             <img
@@ -27,7 +27,7 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
               onError={() => setprofileExists(false)}
             />
           ) : (
-            <Image className="text-gray-400" size={48} />
+            <Image className="text-gray-500" size={48} />
           )}
         </div>
         <div className="flex flex-col items-center gap-2">
