@@ -28,11 +28,27 @@ export default function Sidebar({
 
   const projectsDropdownRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
-  const [isDarkMode] = useState(() => {
-    // Check localStorage for dark mode preference
-    const savedMode = localStorage.getItem('darkMode');
-    return savedMode === 'true'; // Return true if dark mode was previously enabled
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem("darkMode") === "true";
   });
+
+  useEffect(() => {
+    const handleDarkModeChange = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+
+    // Listen for changes in dark mode
+    const observer = new MutationObserver(handleDarkModeChange);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    // Initial check
+    handleDarkModeChange();
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -140,7 +156,7 @@ export default function Sidebar({
   return (
     <aside
       ref={sidebarRef}
-      className={`fixed top-19 right-0 md:rounded-tl-3xl sm:rounded-tl-3xl h-[calc(100vh-76px)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 ease-in-out z-50 will-change-[width] dark:bg-[#1a1919]
+      className={`fixed top-19 right-0 md:rounded-tl-3xl sm:rounded-tl-3xl h-[calc(100vh-76px)] bg-[#D4D4D4] p-5 shadow-sm transition-all duration-400 ease-in-out z-50 will-change-[width] dark:bg-gray-900
         ${isSidebarOpen ? "w-48" : "w-20"} sm:w-20 sm:hover:w-48 w-full group flex flex-col
         ${isSidebarOpen ? "block" : "hidden"} sm:block`}
       onMouseEnter={handleMouseEnter}
@@ -157,7 +173,11 @@ export default function Sidebar({
             }
             `}
           >
-            <img src={dashboard} alt="Dashboard" className={`w-6 h-6 ${isDarkMode ? 'filter invert' : ''}`} />
+            <img
+              src={dashboard}
+              alt="Dashboard"
+              className={`w-6 h-6 ${isDarkMode ? "filter invert" : ""}`}
+            />
             <span
               className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                 isTextVisible
@@ -183,7 +203,11 @@ export default function Sidebar({
                   : "text-gray-800"
               }`}
             >
-              <img src={projects} alt="Projects" className={`w-6 h-6 ${isDarkMode ? 'filter invert' : ''}`} />
+              <img
+                src={projects}
+                alt="Projects"
+                className={`w-6 h-6 ${isDarkMode ? "filter invert" : ""}`}
+              />
               <span
                 className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                   isTextVisible
@@ -231,11 +255,15 @@ export default function Sidebar({
             className={`relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out dark:hover:bg-[#565149] ${
               isActive("/wallet")
                 ? "font-bold text-black bg-blue-200 dark:bg-[#2b496d]"
-                : "text-gray-800" 
-              }
+                : "text-gray-800"
+            }
               dark:text-[#F5F5F5]`}
           >
-            <img src={Wallet} alt="Wallet" className={`w-6 h-6 ${isDarkMode ? 'filter invert' : ''}`} />
+            <img
+              src={Wallet}
+              alt="Wallet"
+              className={`w-6 h-6 ${isDarkMode ? "filter invert" : ""}`}
+            />
             <span
               className={`absolute right-14 transition-all duration-200 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
                 isTextVisible
@@ -261,7 +289,11 @@ export default function Sidebar({
                   : "text-gray-800"
               }`}
             >
-              <img src={profile} alt="Profile" className={`w-6 h-6 ${isDarkMode ? 'filter invert' : ''}`} />
+              <img
+                src={profile}
+                alt="Profile"
+                className={`w-6 h-6 ${isDarkMode ? "filter invert" : ""}`}
+              />
               <span
                 className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform]  ${
                   isTextVisible
@@ -323,7 +355,11 @@ export default function Sidebar({
             }
             dark:text-[#F5F5F5]`}
           >
-            <img src={messages} alt="chat" className={`w-6 h-6 ${isDarkMode ? 'filter invert' : ''}`} />
+            <img
+              src={messages}
+              alt="chat"
+              className={`w-6 h-6 ${isDarkMode ? "filter invert" : ""}`}
+            />
             <span
               className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                 isTextVisible
@@ -347,7 +383,11 @@ export default function Sidebar({
             }
             dark:text-[#F5F5F5]`}
           >
-            <img src={teams} alt="teams" className={`w-6 h-6 ${isDarkMode ? 'filter invert' : ''}`} />
+            <img
+              src={teams}
+              alt="teams"
+              className={`w-6 h-6 ${isDarkMode ? "filter invert" : ""}`}
+            />
             <span
               className={`absolute right-14 transition-all duration-200 whitespace-nowrap ease-in-out will-change-[opacity,transform] ${
                 isTextVisible
@@ -366,7 +406,11 @@ export default function Sidebar({
               onClick={handleLogout}
               className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer"
             >
-              <img src={exit} alt="exit" className={`w-6 h-6 ${isDarkMode ? 'filter invert' : ''}`} />
+              <img
+                src={exit}
+                alt="exit"
+                className={`w-6 h-6 ${isDarkMode ? "filter invert" : ""}`}
+              />
               <span
                 className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                   isTextVisible
@@ -385,7 +429,11 @@ export default function Sidebar({
             onClick={handleLogout}
             className="relative flex items-center w-full p-2 rounded hover:bg-gray-200 transition-all duration-400 ease-in-out cursor-pointer dark:hover:bg-[#565149]"
           >
-            <img src={exit} alt="exit" className={`w-6 h-6 ${isDarkMode ? 'filter invert' : ''}`} />
+            <img
+              src={exit}
+              alt="exit"
+              className={`w-6 h-6 ${isDarkMode ? "filter invert" : ""}`}
+            />
             <span
               className={`absolute right-14 transition-all duration-200 ease-in-out will-change-[opacity,transform] ${
                 isTextVisible
