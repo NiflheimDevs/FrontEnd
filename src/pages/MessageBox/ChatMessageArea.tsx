@@ -141,7 +141,7 @@ const ChatMessageArea = () => {
     >
       {/* Chat List */}
       <div
-        className={`w-full md:w-[35%] h-full bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-5 flex flex-col transition-all duration-400 ${isChatOpen ? "hidden md:flex" : "flex"}`}
+        className={`w-full md:w-[35%] h-full bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-900 dark:to-gray-700 rounded-2xl p-5 flex flex-col transition-all duration-400 ${isChatOpen ? "hidden md:flex" : "flex"}`}
       >
         <div className="space-y-3 flex-1">
           {chatList.map((chat) => (
@@ -157,7 +157,9 @@ const ChatMessageArea = () => {
                 className="w-10 h-10 min-w-10 min-h-10 rounded-full mx-3"
               />
               <div className="flex-1 text-right">
-                <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{chat.name}</p>
+                <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
+                  {chat.name}
+                </p>
               </div>
             </motion.div>
           ))}
@@ -169,7 +171,7 @@ const ChatMessageArea = () => {
         className={`flex flex-col flex-1 min-h-0 mt-4 md:mt-0 md:ml-3 ${isChatOpen ? "flex" : "hidden md:flex"}`}
       >
         {/* Header */}
-        <div className="flex w-full h-[75px] bg-[#2466d7] text-white items-center rounded-t-2xl shadow-md dark:bg-blue-800">
+        <div className="flex w-full h-[75px] bg-blue-700 text-white items-center rounded-t-2xl shadow-md dark:bg-blue-900">
           <button
             onClick={() => setIsChatOpen(false)}
             className="md:hidden text-white hover:text-gray-200 transition-colors duration-300 mr-2"
