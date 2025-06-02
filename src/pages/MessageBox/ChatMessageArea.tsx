@@ -13,8 +13,9 @@ interface Chat {
 interface Message {
   id: string;
   text: string;
-  type: "sent" | "received";
+  user_id: string;
   timestamp: string;
+  type: "sent" | "received";
 }
 
 const messageVariants = {
@@ -30,6 +31,8 @@ const ChatMessageArea = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const wsRef = useRef<WebSocket | null>(null);
+
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -51,16 +54,20 @@ const ChatMessageArea = () => {
         setChatList(chats);
         if (chats.length > 0) {
           setSelectedChat(chats[0]);
+          setSelectedUserId(chats[0].user_id);
           const msgs = await getRoomMessages(chats[0].id);
           if (!msgs || !Array.isArray(msgs)) {
             setMessages([]);
             return;
           }
           const formatted = msgs.map((m: any, index: number) => ({
-            id: `${m.SendTime}-${index}`, // simple fallback unique ID
+            id: `${m.SendTime}-${index}`,
             text: m.Content,
+            user_id: String(m.SenderID),
             timestamp: m.SendTime,
-            type: (m.Type === 1 ? "sent" : "received") as "sent" | "received",
+            type: (String(m.SenderID) === chats[0].user_id
+              ? "received"
+              : "sent") as "received" | "sent",
           }));
 
           setMessages(formatted);
@@ -77,6 +84,8 @@ const ChatMessageArea = () => {
 
   const handleChatSelect = async (chat: Chat) => {
     try {
+      setSelectedChat(chat);
+      setSelectedUserId(chat.user_id);
       const msgs = await getRoomMessages(chat.id);
       if (!msgs || !Array.isArray(msgs)) {
         console.error("Messages data is not an array or is null", msgs);
@@ -84,12 +93,14 @@ const ChatMessageArea = () => {
         return;
       }
       const formatted = msgs.map((m: any, index: number) => ({
-        id: `${m.SendTime}-${index}`, // simple fallback unique ID
+        id: `${m.SendTime}-${index}`,
         text: m.Content,
+        user_id: String(m.SenderID),
         timestamp: m.SendTime,
-        type: (m.Type === 1 ? "sent" : "received") as "sent" | "received",
+        type: (String(m.SenderID) === chat.user_id ? "received" : "sent") as
+          | "received"
+          | "sent",
       }));
-      setSelectedChat(chat);
       setMessages(formatted);
       setIsChatOpen(true);
       setupWebSocket(chat.id);
@@ -116,6 +127,7 @@ const ChatMessageArea = () => {
           {
             id: String(Date.now()),
             text: data.content,
+            user_id: selectedUserId || "",
             timestamp: new Date().toISOString(),
             type: "received",
           },
@@ -143,6 +155,7 @@ const ChatMessageArea = () => {
       {
         id: String(Date.now()),
         text: newMessage,
+        user_id: selectedUserId || "",
         timestamp: new Date().toISOString(),
         type: "sent",
       },
