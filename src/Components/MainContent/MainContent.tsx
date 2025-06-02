@@ -4,6 +4,7 @@ import { BsArrowLeft, BsCashCoin } from "react-icons/bs";
 import { FaChartColumn, FaPeopleGroup, FaMedal } from "react-icons/fa6";
 import { Search } from "lucide-react";
 import bg from "../../assets/Main/bg.png";
+import bgDark from "../../assets/Main/bgDark.png";
 import sourcecode from "../../assets/Main/source-code.png";
 import design from "../../assets/Main/design.png";
 import graphreport from "../../assets/Main/graph-report.png";
@@ -150,6 +151,28 @@ const MainContent = () => {
     },
   ];
 
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem("darkMode") === "true";
+  });
+
+  useEffect(() => {
+    const handleDarkModeChange = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+
+    // Listen for changes in dark mode
+    const observer = new MutationObserver(handleDarkModeChange);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    // Initial check
+    handleDarkModeChange();
+
+    return () => observer.disconnect();
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const freelancersPerPage = 3;
   const indexOfLastFreelancer = currentPage * freelancersPerPage;
@@ -169,7 +192,10 @@ const MainContent = () => {
       {/* Hero Section */}
       <section
         className="w-full flex flex-col justify-center items-center px-2 text-white text-center bg-cover bg-center"
-        style={{ ...heroStyle, backgroundImage: `url(${bg})` }}
+        style={{
+          ...heroStyle,
+          backgroundImage: `url(${isDarkMode ? bgDark : bg})`,
+        }}
       >
         <h1 className="sm:text-[46px] md:text-[56px] text-[36px] duration-300 transition-all ease-in-out font-extrabold drop-shadow-lg">
           <span className="flex justify-center">کارفرما و فریلنسر</span>
