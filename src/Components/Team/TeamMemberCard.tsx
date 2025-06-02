@@ -56,9 +56,8 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
 
   // Function to navigate to user profile
   const navigateToProfile = () => {
-    if (user.id) {
-      window.location.href = `https://bidlancer.ir/profile/${user.id}`;
-    }
+    const profileUrl = `/profile/${user.id}`;
+    window.location.href = profileUrl;
   };
 
   useEffect(() => {

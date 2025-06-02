@@ -230,7 +230,7 @@ const TeamProfileCard = ({ data, localcolor }: TeamProfileCardProps) => {
             {data.description}
           </p>
           <Link
-            to={`/team/${data.id}`}
+            to={`/teams/${data.id}`}
             aria-label={`نمایش جزئیات تیم: ${data.title}`}
             className="w-full sm:w-auto flex justify-center sm:justify-end"
           >
