@@ -39,7 +39,27 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
 
   const depositModalRef = useRef<HTMLDivElement>(null);
   const withdrawModalRef = useRef<HTMLDivElement>(null);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem("darkMode") === "true";
+  });
 
+  useEffect(() => {
+    const handleDarkModeChange = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+
+    // Listen for changes in dark mode
+    const observer = new MutationObserver(handleDarkModeChange);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    // Initial check
+    handleDarkModeChange();
+
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -214,7 +234,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
     pageNumbers.push(
       <span
         key="current-page"
-        className="flex px-4 py-2 mx-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md font-medium md:hidden"
+        className="flex px-4 py-2 mx-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md font-medium md:hidden dark:from-blue-500 dark:to-blue-600"
       >
         {currentPage}
       </span>
@@ -227,11 +247,11 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
           <button
             key={i}
             onClick={() => goToPage(i)}
-            className={`cursor-pointer hidden md:flex px-4 py-2 mx-1 ${
+            className={`cursor-pointer hidden md:flex px-4 py-2 mx-1 rounded-md transition-all duration-300 font-medium ${
               currentPage === i
-                ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
-                : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50"
-            } rounded-md transition-all duration-300 font-medium`}
+                ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg dark:from-blue-500 dark:to-blue-600"
+                : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+            }`}
           >
             {i}
           </button>
@@ -244,10 +264,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       <button
         key={1}
         onClick={() => goToPage(1)}
-        className={`cursor-pointer hidden md:block px-4 py-2 mx-1 rounded-lg transition-all duration-300 font-medium ${
+        className={`cursor-pointer hidden md:block px-4 py-2 mx-1 rounded-md transition-all duration-300 font-medium ${
           currentPage === 1
-            ? "bg-blue-600 text-white shadow-md"
-            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg dark:from-blue-500 dark:to-blue-600"
+            : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
         }`}
       >
         1
@@ -258,7 +278,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       pageNumbers.push(
         <span
           key="start-ellipsis"
-          className="px-2 text-gray-500 hidden md:block"
+          className="px-2 text-gray-500 dark:text-gray-300 hidden md:block"
         >
           ...
         </span>
@@ -274,10 +294,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         <button
           key={i}
           onClick={() => goToPage(i)}
-          className={`cursor-pointer hidden md:block px-4 py-2 mx-1 rounded-lg transition-all duration-300 font-medium ${
+          className={`cursor-pointer hidden md:block px-4 py-2 mx-1 rounded-md transition-all duration-300 font-medium ${
             currentPage === i
-              ? "bg-blue-600 text-white shadow-md"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg dark:from-blue-500 dark:to-blue-600"
+              : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
           }`}
         >
           {i}
@@ -287,7 +307,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
 
     if (currentPage < totalPages - 2) {
       pageNumbers.push(
-        <span key="end-ellipsis" className="px-2 text-gray-500 hidden md:block">
+        <span
+          key="end-ellipsis"
+          className="px-2 text-gray-500 dark:text-gray-300 hidden md:block"
+        >
           ...
         </span>
       );
@@ -297,10 +320,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
       <button
         key={totalPages}
         onClick={() => goToPage(totalPages)}
-        className={`cursor-pointer hidden md:block px-4 py-2 mx-1 rounded-lg transition-all duration-300 font-medium ${
+        className={`cursor-pointer hidden md:block px-4 py-2 mx-1 rounded-md transition-all duration-300 font-medium ${
           currentPage === totalPages
-            ? "bg-blue-600 text-white shadow-md"
-            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg dark:from-blue-500 dark:to-blue-600"
+            : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
         }`}
       >
         {totalPages}
@@ -313,47 +336,63 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
   const renderSkeleton = () => (
     <div className="animate-pulse container mx-auto px-4">
       <div className="flex flex-col md:flex-row gap-6 mt-8">
-        <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
+        <div className="w-full md:w-1/3 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
           <Skeleton
             width="100%"
             height="24px"
-            className="shiny-skeleton mb-4"
+            className="shiny-skeleton mb-4 dark:!bg-gray-800"
           />
           <div className="text-center mb-4">
             <Skeleton
               width="50%"
               height="32px"
-              className="shiny-skeleton mb-2 mx-auto"
+              className="shiny-skeleton mb-2 mx-auto dark:!bg-gray-700"
             />
             <Skeleton
               width="30%"
               height="16px"
-              className="shiny-skeleton mx-auto"
+              className="shiny-skeleton mx-auto dark:!bg-gray-700"
             />
           </div>
           <div className="flex justify-between gap-4">
-            <Skeleton width="45%" height="32px" className="shiny-skeleton" />
-            <Skeleton width="45%" height="32px" className="shiny-skeleton" />
+            <Skeleton
+              width="45%"
+              height="32px"
+              className="shiny-skeleton dark:!bg-gray-800"
+            />
+            <Skeleton
+              width="45%"
+              height="32px"
+              className="shiny-skeleton dark:!bg-gray-800"
+            />
           </div>
         </div>
-        <div className="w-full md:w-2/3 bg-white p-6 rounded-lg shadow-md">
+        <div className="w-full md:w-2/3 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
           <Skeleton
             width="100%"
             height="160px"
-            className="shiny-skeleton mb-4"
+            className="shiny-skeleton mb-4 dark:!bg-gray-800"
           />
-          <table className="w-full text-center shiny-skeleton"></table>
+          <table className="w-full text-center shiny-skeleton dark:!bg-gray-800"></table>
           <div className="flex justify-center items-center mt-6 gap-2">
-            <Skeleton width="64px" height="32px" className="shiny-skeleton" />
+            <Skeleton
+              width="64px"
+              height="32px"
+              className="shiny-skeleton dark:!bg-gray-800"
+            />
             {Array.from({ length: 3 }).map((_, index) => (
               <Skeleton
                 key={index}
                 width="32px"
                 height="32px"
-                className="shiny-skeleton mx-1"
+                className="shiny-skeleton mx-1 dark:!bg-gray-800"
               />
             ))}
-            <Skeleton width="64px" height="32px" className="shiny-skeleton" />
+            <Skeleton
+              width="64px"
+              height="32px"
+              className="shiny-skeleton dark:!bg-gray-800"
+            />
           </div>
         </div>
       </div>
@@ -366,44 +405,46 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
         renderSkeleton()
       ) : (
         <div className="flex flex-col md:flex-row w-full justify-between items-start mt-8 gap-4 md:scale-100 sm:scale-100 scale-[85%]">
-          <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-4">کیف پول</h2>
+          <div className="w-full md:w-1/3 bg-white dark:bg-gray-700  p-6 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">
+              کیف پول
+            </h2>
             <div className="text-center mb-4">
-              <p className="text-2xl font-bold">
+              <p className="text-2xl font-bold text-gray-800 dark:text-white">
                 {(balance || 0).toLocaleString()}
               </p>
-              <p>تومان</p>
+              <p className="text-gray-600 dark:text-gray-300">تومان</p>
             </div>
             <div className="flex justify-between">
               <button
                 onClick={() => setIsDepositModalOpen(true)}
-                className="cursor-pointer bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition-all duration-300"
+                className="cursor-pointer bg-gray-300 dark:bg-blue-600 text-gray-800 dark:text-white px-4 py-2 rounded hover:bg-gray-400 dark:hover:bg-blue-700 transition-all duration-300"
               >
                 <span>واریز</span>
               </button>
               <button
                 onClick={() => setIsWithdrawModalOpen(true)}
-                className="cursor-pointer bg-gray-300 px-4 py-2 rounded hover:bg-gray-400 transition-all duration-300"
+                className="cursor-pointer bg-gray-300 dark:bg-blue-600 text-gray-800 dark:text-white px-4 py-2 rounded hover:bg-gray-400 dark:hover:bg-blue-700 transition-all duration-300"
               >
                 <span>برداشت</span>
               </button>
             </div>
           </div>
-          <div className="w-full md:w-2/3 bg-white p-6 rounded-lg shadow-md">
+          <div className="w-full md:w-2/3 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
             <div className="overflow-x-auto">
               <table className="w-full text-center text-xs sm:text-sm">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="py-2 px-2 text-[15px] font-semibold text-gray-800">
+                  <tr className="border-b border-gray-200 dark:border-gray-600">
+                    <th className="py-2 px-2 text-[15px] font-semibold text-gray-800 dark:text-white">
                       تاریخ
                     </th>
-                    <th className="py-2 px-2 text-[15px] font-semibold text-gray-800">
+                    <th className="py-2 px-2 text-[15px] font-semibold text-gray-800 dark:text-white">
                       فعالیت
                     </th>
-                    <th className="py-2 px-2 text-[15px] font-semibold text-gray-800">
+                    <th className="py-2 px-2 text-[15px] font-semibold text-gray-800 dark:text-white">
                       توضیحات
                     </th>
-                    <th className="py-2 px-2 text-[15px] font-semibold text-gray-800">
+                    <th className="py-2 px-2 text-[15px] font-semibold text-gray-800 dark:text-white">
                       مبلغ
                     </th>
                   </tr>
@@ -413,22 +454,22 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                     transactions.map((transaction) => (
                       <tr
                         key={transaction.id}
-                        className="border-b border-gray-100"
+                        className="border-b border-gray-100 dark:border-gray-600"
                       >
-                        <td className="py-2 px-2 text-[15px] text-gray-600">
+                        <td className="py-2 px-2 text-[15px] text-gray-600 dark:text-gray-300">
                           {transaction.date}
                         </td>
-                        <td className="py-2 px-2 text-[15px] text-gray-600">
+                        <td className="py-2 px-2 text-[15px] text-gray-600 dark:text-gray-300">
                           {transaction.activity}
                         </td>
-                        <td className="py-2 px-2 text-[15px] text-gray-600">
+                        <td className="py-2 px-2 text-[15px] text-gray-600 dark:text-gray-300">
                           {transaction.description || "-"}
                         </td>
                         <td
                           className={`py-2 px-2 ${
                             transaction.activity === "واریز"
-                              ? "text-green-600"
-                              : "text-red-600"
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-red-600 dark:text-red-400"
                           }`}
                         >
                           {transaction.amount?.toLocaleString() || "0"}
@@ -437,7 +478,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={4} className="py-4 text-gray-500">
+                      <td
+                        colSpan={4}
+                        className="py-4 text-gray-500 dark:text-gray-300"
+                      >
                         تراکنشی یافت نشد
                       </td>
                     </tr>
@@ -449,11 +493,11 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
               <button
                 onClick={goToPreviousPage}
                 disabled={currentPage === 1}
-                className={`cursor-pointer flex px-4 py-2 rounded-md ${
+                className={`cursor-pointer flex px-4 py-2 rounded-md transition-all duration-300 font-medium ${
                   currentPage === 1
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50"
-                } transition-all duration-300 font-medium`}
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
+                    : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                }`}
               >
                 قبلی
               </button>
@@ -461,11 +505,11 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
               <button
                 onClick={goToNextPage}
                 disabled={currentPage === totalPages}
-                className={`cursor-pointer flex px-4 py-2 rounded-md ${
+                className={`cursor-pointer flex px-4 py-2 rounded-md transition-all duration-300 font-medium ${
                   currentPage === totalPages
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50"
-                } transition-all duration-300 font-medium`}
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
+                    : "bg-white border border-gray-300 text-gray-600 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                }`}
               >
                 بعدی
               </button>
@@ -480,22 +524,22 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
             <Skeleton
               width="250px"
               height="100px"
-              className="shiny-skeleton full border border-gray-300"
+              className="shiny-skeleton full border border-gray-300 dark:border-gray-600 dark:!bg-gray-800"
             />
             <Skeleton
               width="200px"
               height="20px"
-              className="shiny-skeleton mt-2 bg-gray-200 rounded"
+              className="shiny-skeleton mt-2 bg-gray-200 dark:!bg-gray-700 rounded"
             />
           </div>
         ) : (
           <>
             <img
               src={walletPic}
-              className="md:scale-120 sm:scale-110 duration-500 ease-in-out transition-all"
+              className={`md:scale-120 sm:scale-110 duration-500 ease-in-out transition-all ${isDarkMode ? "filter invert" : ""}`}
               alt="Illustration"
             />
-            <p className="md:mt-4 pb-4 md:scale-120 sm:scale-110 duration-500 ease-in-out transition-all text-gray-600">
+            <p className="md:mt-4 pb-4 md:scale-120 sm:scale-110 duration-500 ease-in-out transition-all text-gray-600 dark:text-gray-300">
               شروع همیشه انگیزه دهنده است
             </p>
           </>
@@ -508,18 +552,18 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
           <form className="fixed inset-0 bg-black/20 flex justify-center items-center z-50 px-4">
             <motion.div
               ref={depositModalRef}
-              className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
+              className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg w-full max-w-md"
               initial={{ scale: 1, y: 50, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 1, y: 50, opacity: 0 }}
+              exit={{ scale: 1, y: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "circOut" }}
             >
-              <h2 className="text-xl font-bold mb-4 text-gray-800">
+              <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
                 واریز به کیف پول
               </h2>
               {errors.length > 0 && (
                 <motion.ul
-                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+                  className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-100 px-4 py-3 rounded mb-4"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -539,10 +583,10 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 </motion.ul>
               )}
               <div className="mb-4">
-                <label className="flex justify-between text-gray-700 mb-2">
+                <label className="flex justify-between text-gray-700 dark:text-gray-300 mb-2">
                   <span className="font-medium">مبلغ واریز (تومان)</span>
                   {depositAmount && (
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
                       {`${formatPriceString(depositAmount)} تومان`}
                     </span>
                   )}
@@ -555,22 +599,22 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                     setDepositAmount(e.target.value);
                     validateAmount(e.target.value);
                   }}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 transition-all ${
+                  className={`w-full no-spinner px-3 py-2 border rounded-md focus:outline-none focus:ring-2 transition-all ${
                     depositAmount && parseFloat(depositAmount) > 10_000_000
-                      ? "border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:ring-blue-500"
-                  }`}
+                      ? "border-red-500 focus:ring-red-500 dark:border-red-500 dark:focus:ring-red-500"
+                      : "border-gray-300 focus:ring-blue-500 dark:border-gray-600 dark:focus:ring-blue-500"
+                  } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-300`}
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700 mb-2 font-medium">
+                <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
                   توضیحات (اختیاری)
                 </label>
                 <textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-3 py-2 border min-h-[100px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border min-h-[100px] border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-300"
                   rows={3}
                 />
               </div>
@@ -581,7 +625,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                     setIsDepositModalOpen(false);
                     setErrors([]);
                   }}
-                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-all"
+                  className="px-4 py-2 bg-gray-300 dark:bg-gray-800 cursor-pointer text-gray-800 dark:text-gray-300 rounded-md hover:bg-gray-400 dark:hover:bg-gray-600 transition-all"
                 >
                   انصراف
                 </button>
@@ -600,8 +644,8 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                     depositAmount &&
                     (parseFloat(depositAmount) > 10_000_000 ||
                       errors.length > 0)
-                      ? "bg-blue-300 text-white cursor-not-allowed"
-                      : "bg-blue-500 text-white hover:bg-blue-600"
+                      ? "bg-blue-300 text-white cursor-not-allowed dark:bg-blue-300"
+                      : "bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 cursor-pointer"
                   }`}
                 >
                   واریز
@@ -618,18 +662,18 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
           <form className="fixed inset-0 bg-black/20 flex justify-center items-center z-50 px-4">
             <motion.div
               ref={withdrawModalRef}
-              className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md"
+              className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-lg w-full max-w-md"
               initial={{ scale: 1, y: 50, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 1, y: 50, opacity: 0 }}
+              exit={{ scale: 1, y: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "circOut" }}
             >
-              <h2 className="text-xl font-bold mb-4 text-gray-800">
+              <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">
                 برداشت از کیف پول
               </h2>
               {errors.length > 0 && (
                 <motion.ul
-                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+                  className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-100 px-4 py-3 rounded mb-4"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -649,18 +693,18 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                 </motion.ul>
               )}
               <div className="mb-2">
-                <label className="block text-gray-700 mb-1 font-medium">
+                <label className="block text-gray-700 dark:text-gray-300 mb-1 font-medium">
                   موجودی فعلی
                 </label>
-                <p className="font-semibold text-lg text-gray-900">
+                <p className="font-semibold text-lg text-gray-900 dark:text-white">
                   {balance?.toLocaleString() || "0"} تومان
                 </p>
               </div>
               <div className="mb-4">
-                <label className="flex justify-between text-gray-700 mb-2">
+                <label className="flex justify-between text-gray-700 dark:text-gray-300 mb-2">
                   <span className="font-medium">مبلغ برداشت (تومان)</span>
                   {withdrawAmount && (
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
                       {`${formatPriceString(withdrawAmount)} تومان`}
                     </span>
                   )}
@@ -673,18 +717,18 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                     setWithdrawAmount(e.target.value);
                     validateAmount(e.target.value, true);
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 no-spinner border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-300"
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700 mb-2 font-medium">
+                <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
                   توضیحات (اختیاری)
                 </label>
                 <textarea
                   id="withdraw-description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-3 py-2 border min-h-[100px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border min-h-[100px] border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-300"
                   rows={3}
                 />
               </div>
@@ -695,7 +739,7 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                     setIsWithdrawModalOpen(false);
                     setErrors([]);
                   }}
-                  className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-all"
+                  className="px-4 py-2 bg-gray-300 dark:bg-gray-800 cursor-pointer text-gray-800 dark:text-gray-300 rounded-md hover:bg-gray-400 dark:hover:bg-gray-600 transition-all"
                 >
                   انصراف
                 </button>
@@ -708,8 +752,8 @@ const WalletComponent = ({ isLoading, setIsLoading }: WalletComponentProps) => {
                   disabled={errors.length > 0}
                   className={`px-4 py-2 rounded-md transition-all ${
                     errors.length > 0
-                      ? "bg-blue-300 text-white cursor-not-allowed"
-                      : "bg-blue-500 text-white hover:bg-blue-600"
+                      ? "bg-blue-300 text-white cursor-not-allowed dark:bg-blue-300"
+                      : "bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 cursor-pointer"
                   }`}
                 >
                   برداشت

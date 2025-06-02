@@ -32,7 +32,7 @@ export default function ResumeSection({
         return;
       }
       setResumeName(file.name);
-      setLocalProfile((prev) => ({ ...prev, resume: file }));
+      setLocalProfile((prev) => ({ ...prev, resume: file, newResume: 2 }));
       notifySuccess("رزومه با موفقیت آپلود شد");
     } else {
       notifyError("هیچ فایلی انتخاب نشد");
@@ -41,18 +41,22 @@ export default function ResumeSection({
 
   const handleRemoveResume = () => {
     setResumeName(null);
-    setLocalProfile((prev) => ({ ...prev, resume: null }));
-    setLocalProfile((prev) => ({ ...prev, resumeAddress: null }));
+    setLocalProfile((prev) => ({
+      ...prev,
+      resume: null,
+      newResume: 1,
+      resumeAddress: null,
+    }));
     notifySuccess("رزومه با موفقیت حذف شد");
   };
 
   return (
     <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-      <label className="font-semibold mt-2 text-gray-600 w-24 text-right">
+      <label className="font-semibold mt-2 text-gray-600 dark:text-gray-300  w-24 text-right">
         آپلود رزومه
       </label>
       <div className="flex items-center gap-3 w-full sm:w-auto">
-        <label className="relative cursor-pointer bg-[#3E79DE] py-2.5 text-white px-5 rounded-[20px] flex items-center gap-2 transition-all duration-200 ease-in-out hover:bg-blue-600 hover:shadow-lg shadow-[0_4px_10px_rgba(0,0,0,0.2)] has-[:focus]:bg-blue-600 has-[:focus]:shadow-lg">
+        <label className="relative cursor-pointer bg-[#3E79DE] dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:bg-blue-700 py-2.5 text-white px-5 rounded-[20px] flex items-center gap-2 transition-all duration-200 ease-in-out hover:bg-blue-600 hover:shadow-lg shadow-[0_4px_10px_rgba(0,0,0,0.2)] has-[:focus]:bg-blue-600 has-[:focus]:shadow-lg">
           <Upload size={18} />
           <span>انتخاب رزومه</span>
           <input
@@ -64,7 +68,7 @@ export default function ResumeSection({
           />
         </label>
         {resumeName && (
-          <div className="flex items-center gap-2 border border-gray-300 bg-gray-100 rounded-lg px-2 py-1">
+          <div className="flex items-center gap-2 border border-gray-300 bg-gray-100 rounded-lg px-2 py-1 dark:bg-gray-300 dark:border-gray-400">
             {localProfile.resumeAddress ? (
               <a
                 className="flex flex-row gap-1 items-center"

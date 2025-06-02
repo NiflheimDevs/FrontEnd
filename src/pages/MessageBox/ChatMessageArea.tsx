@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -11,7 +12,7 @@ interface Chat {
 }
 
 interface Message {
-  // id: string;
+  id: string;
   text: string;
   type: "sent" | "received";
   timestamp: string;
@@ -39,6 +40,10 @@ const ChatMessageArea = () => {
     const loadChats = async () => {
       try {
         const data = await getChats();
+        if (!data || !Array.isArray(data)) {
+          setChatList([]);
+          return;
+        }
         const chats: Chat[] = data.map((item: any) => ({
           id: String(item["room_id"]),
           user_id: String(item["user_id"]),
@@ -48,13 +53,21 @@ const ChatMessageArea = () => {
         if (chats.length > 0) {
           setSelectedChat(chats[0]);
           const msgs = await getRoomMessages(chats[0].id);
-          const formatted = msgs.map((m: any) => ({
-            // id: m.ID,
+          if (!msgs || !Array.isArray(msgs)) {
+            setMessages([]);
+            return;
+          }
+          const formatted = msgs.map((m: any, index: number) => ({
+            id: `${m.SendTime}-${index}`, // simple fallback unique ID
             text: m.Content,
             timestamp: m.SendTime,
-            type: m.Type === 1 ? "sent" : "received",
+            type: (m.Type === 1 ? "sent" : "received") as "sent" | "received",
           }));
+
           setMessages(formatted);
+          //2 below lines to make the first one set and ready to send message
+          setIsChatOpen(true); //added with no ui not sure if works
+          setupWebSocket(chats[0].id); //added with no ui not sure if works
         }
       } catch (error) {
         console.error("Error fetching chat list:", error);
@@ -66,11 +79,16 @@ const ChatMessageArea = () => {
   const handleChatSelect = async (chat: Chat) => {
     try {
       const msgs = await getRoomMessages(chat.id);
-      const formatted = msgs.map((m: any) => ({
-        // id: m.ID,
+      if (!msgs || !Array.isArray(msgs)) {
+        console.error("Messages data is not an array or is null", msgs);
+        setMessages([]);
+        return;
+      }
+      const formatted = msgs.map((m: any, index: number) => ({
+        id: `${m.SendTime}-${index}`, // simple fallback unique ID
         text: m.Content,
         timestamp: m.SendTime,
-        type: m.Type === 1 ? "sent" : "received", // Adjust this logic
+        type: (m.Type === 1 ? "sent" : "received") as "sent" | "received",
       }));
       setSelectedChat(chat);
       setMessages(formatted);
@@ -136,19 +154,19 @@ const ChatMessageArea = () => {
 
   return (
     <div
-      className="flex flex-col md:flex-row mt-6 p-3 md:p-5 w-full max-w-[1080px] h-[85vh] gap-4 mx-auto rounded-2xl shadow-2xl bg-white"
+      className="flex flex-col md:flex-row mt-6 p-3 md:p-5 w-full max-w-[1080px] h-[85vh] gap-4 mx-auto rounded-2xl shadow-2xl bg-white dark:bg-gray-900"
       dir="rtl"
     >
       {/* Chat List */}
       <div
-        className={`w-full md:w-[35%] h-full bg-gradient-to-b from-gray-100 to-gray-300 rounded-2xl p-5 flex flex-col transition-all duration-400 ${isChatOpen ? "hidden md:flex" : "flex"}`}
+        className={`w-full md:w-[35%] h-full bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-900 dark:to-gray-700 rounded-2xl p-5 flex flex-col transition-all duration-400 ${isChatOpen ? "hidden md:flex" : "flex"}`}
       >
         <div className="space-y-3 flex-1">
           {chatList.map((chat) => (
             <motion.div
               key={chat.id}
               onClick={() => handleChatSelect(chat)}
-              className={`flex items-center py-3 px-4 cursor-pointer rounded-xl transition-all overflow-x-hidden duration-300 ${selectedChat?.id === chat.id ? "bg-blue-50 shadow-md" : "bg-white hover:bg-blue-50"}`}
+              className={`flex items-center py-3 px-4 cursor-pointer rounded-xl transition-all overflow-x-hidden duration-300 ${selectedChat?.id === chat.id ? "bg-blue-50 dark:bg-blue-800/40 shadow-md" : "bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-800/30"}`}
               whileHover={{ scale: 1.02 }}
             >
               <img
@@ -157,7 +175,9 @@ const ChatMessageArea = () => {
                 className="w-10 h-10 min-w-10 min-h-10 rounded-full mx-3"
               />
               <div className="flex-1 text-right">
-                <p className="text-sm font-medium text-gray-800">{chat.name}</p>
+                <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
+                  {chat.name}
+                </p>
               </div>
             </motion.div>
           ))}
@@ -169,7 +189,7 @@ const ChatMessageArea = () => {
         className={`flex flex-col flex-1 min-h-0 mt-4 md:mt-0 md:ml-3 ${isChatOpen ? "flex" : "hidden md:flex"}`}
       >
         {/* Header */}
-        <div className="flex w-full h-[75px] bg-[#2466d7] text-white items-center rounded-t-2xl shadow-md">
+        <div className="flex w-full h-[75px] bg-blue-700 text-white items-center rounded-t-2xl shadow-md dark:bg-blue-900">
           <button
             onClick={() => setIsChatOpen(false)}
             className="md:hidden text-white hover:text-gray-200 transition-colors duration-300 mr-2"
@@ -187,23 +207,23 @@ const ChatMessageArea = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex flex-col w-full flex-1 p-5 bg-gray-200 rounded-b-2xl overflow-y-auto">
+        <div className="flex flex-col w-full flex-1 p-5 bg-gray-200 dark:bg-gray-800 rounded-b-2xl overflow-y-auto">
           <AnimatePresence>
             {messages.length > 0 ? (
               messages.map((message) => (
                 <motion.div
-                  // key={message.id}
+                  key={message.id}
                   variants={messageVariants}
                   initial="hidden"
                   animate="visible"
                   className={`max-w-[70%] mb-4 p-3 rounded-2xl text-sm leading-relaxed shadow-md transition-all duration-300 ${
                     message.type === "received"
-                      ? "bg-white text-gray-800 mr-auto rounded-tl-none"
-                      : "bg-[#2466d7] text-white ml-auto rounded-tr-none"
+                      ? "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 mr-auto rounded-tl-none"
+                      : "bg-[#2466d7] dark:bg-blue-700 text-white ml-auto rounded-tr-none"
                   }`}
                 >
                   <p className="break-all">{message.text}</p>
-                  <p className="text-xs text-gray-400 mt-1 text-right">
+                  <p className="text-xs text-gray-400 dark:text-gray-300 mt-1 text-right">
                     {new Date(message.timestamp).toLocaleTimeString("fa-IR", {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -212,7 +232,7 @@ const ChatMessageArea = () => {
                 </motion.div>
               ))
             ) : (
-              <p className="text-center text-gray-500 text-sm mt-10">
+              <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-10">
                 هنوز پیامی وجود ندارد
               </p>
             )}
@@ -222,20 +242,20 @@ const ChatMessageArea = () => {
 
         {/* Input */}
         <div className="sticky bottom-0 mt-3 px-5 pb-5">
-          <div className="flex items-center bg-gray-50 rounded-full border-2 border-blue-600 p-2 shadow-lg">
+          <div className="flex items-center bg-gray-50 dark:bg-gray-800 rounded-full border-2 border-blue-600 dark:border-blue-700 p-2 shadow-lg">
             <input
               type="text"
               placeholder="پیامی بنویسید..."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              className="flex-1 border-none outline-none text-sm px-4 bg-transparent placeholder-gray-500 text-black transition-all duration-300"
+              className="flex-1 border-none outline-none text-sm px-4 bg-transparent placeholder-gray-500 dark:placeholder-gray-400 text-black dark:text-gray-100 transition-all duration-300"
             />
             <motion.button
               onClick={handleSendMessage}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="cursor-pointer bg-blue-600 text-white rounded-full p-2 hover:shadow-lg transition-all duration-300"
+              className="cursor-pointer bg-blue-600 dark:bg-blue-700 text-white rounded-full p-2 hover:shadow-lg transition-all duration-300"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

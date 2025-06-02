@@ -35,6 +35,7 @@ export interface Profile {
   skillProficiency: { [key: string]: string };
   workExperiences: WorkExperience[];
   resume: File | null;
+  newResume: number;
   resumeAddress?: string | null;
   high_profile?: string;
   low_profile?: string;
@@ -47,6 +48,7 @@ export const initialProfile: Profile = {
   firstName: "",
   lastName: "",
   is_verified: false,
+  newResume: 0,
   email: "",
   bio: "",
   skills: [],
@@ -120,7 +122,8 @@ export const mapApiDataToProfile = async (
         }))
       : [],
 
-    resume: apiresume || initialProfile.resume,
+    resume: initialProfile.resume,
+    newResume: initialProfile.newResume,
     resumeAddress: apiresume,
     low_profile: apiData.info?.low_profile || initialProfile.low_profile,
     high_profile: apiData.info?.high_profile || initialProfile.high_profile,

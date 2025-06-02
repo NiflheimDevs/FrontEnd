@@ -721,7 +721,7 @@ export const GetSpecificTeamProject = async (id: any) => {
 export const getChats = async () => {
   try {
     const response = await apiClient.get("/chat");
-    console.log(response)
+    console.log(response.data)
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در دریافت لیست چت‌ها";
