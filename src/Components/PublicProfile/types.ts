@@ -72,11 +72,15 @@ export interface Profile {
 export interface Color {
   color: string;
   hover: string;
+  darkcolor: string;
+  darkhover: string;
 }
 
 export const initialColor: Color = {
   color: "blue-500",
   hover: "blue-600",
+  darkcolor: "blue-700",
+  darkhover: "blue-800",
 };
 
 export const mapApiDataToProfile = async (

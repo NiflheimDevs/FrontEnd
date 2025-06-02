@@ -4,6 +4,7 @@ import { BsArrowLeft, BsCashCoin } from "react-icons/bs";
 import { FaChartColumn, FaPeopleGroup, FaMedal } from "react-icons/fa6";
 import { Search } from "lucide-react";
 import bg from "../../assets/Main/bg.png";
+import bgDark from "../../assets/Main/bgDark.png";
 import sourcecode from "../../assets/Main/source-code.png";
 import design from "../../assets/Main/design.png";
 import graphreport from "../../assets/Main/graph-report.png";
@@ -150,6 +151,28 @@ const MainContent = () => {
     },
   ];
 
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem("darkMode") === "true";
+  });
+
+  useEffect(() => {
+    const handleDarkModeChange = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+
+    // Listen for changes in dark mode
+    const observer = new MutationObserver(handleDarkModeChange);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    // Initial check
+    handleDarkModeChange();
+
+    return () => observer.disconnect();
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const freelancersPerPage = 3;
   const indexOfLastFreelancer = currentPage * freelancersPerPage;
@@ -165,11 +188,14 @@ const MainContent = () => {
   };
 
   return (
-    <main className="flex flex-col items-center w-full">
+    <main className="flex flex-col items-center w-full bg-white dark:bg-gray-800">
       {/* Hero Section */}
       <section
         className="w-full flex flex-col justify-center items-center px-2 text-white text-center bg-cover bg-center"
-        style={{ ...heroStyle, backgroundImage: `url(${bg})` }}
+        style={{
+          ...heroStyle,
+          backgroundImage: `url(${isDarkMode ? bgDark : bg})`,
+        }}
       >
         <h1 className="sm:text-[46px] md:text-[56px] text-[36px] duration-300 transition-all ease-in-out font-extrabold drop-shadow-lg">
           <span className="flex justify-center">کارفرما و فریلنسر</span>
@@ -179,16 +205,19 @@ const MainContent = () => {
           <input
             type="text"
             placeholder="جستجو"
-            className="w-full py-4 pr-14 pl-6 rounded-full bg-gray-300 hover:bg-gray-200 text-black box-shadow-custom focus:outline-none duration-300 transition-all ease-in-out"
+            className="w-full py-4 pr-14 pl-6 rounded-full bg-gray-300 hover:bg-gray-200 text-black dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-gray-200 dark:placeholder-gray-300 focus:outline-none duration-300 transition-all ease-in-out"
           />
-          <button className="absolute right-13 top-1/2 -translate-y-1/2 text-gray-600">
+          <button className="absolute right-13 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-200">
             <Search size={24} />
           </button>
         </div>
       </section>
 
       {/* Categories */}
-      <section ref={categoriesRef} className="w-full py-12 rounded-3xl mt-12">
+      <section
+        ref={categoriesRef}
+        className="w-full py-12 rounded-3xl mt-12 bg-white dark:bg-gray-800"
+      >
         <div className="hidden md:flex sm:flex flex-row flex-wrap justify-center gap-8 px-6 mx-auto">
           {categories.map((cat, idx) => (
             <div
@@ -223,12 +252,12 @@ const MainContent = () => {
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[Pagination, Autoplay]}
-            className="mySwiper rounded-xl box-shadow-custom"
+            className="mySwiper rounded-xl shadow-lg"
           >
             {categories.map((cat, idx) => (
               <SwiperSlide
                 key={idx}
-                className="bg-[#F7F7F7] rounded-xl box-shadow-custom duration-300 ease-in-out transition-all"
+                className="bg-gray-100 dark:bg-gray-700 rounded-xl shadow-lg duration-300 ease-in-out transition-all"
               >
                 <div className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center group">
                   <img
@@ -258,25 +287,29 @@ const MainContent = () => {
       </section>
 
       {/* Project Cards */}
-      <section className="w-full py-12 rounded-3xl">
+      <section className="w-full py-12 rounded-3xl bg-white dark:bg-gray-800">
         <div className="flex justify-between items-center px-6 max-w-7xl mx-auto mb-6">
-          <h2 className="md:text-2xl sm:text-2xl text-[18px] font-bold text-[#333] duration-300 ease-in-out transition-all">
+          <h2 className="md:text-2xl sm:text-2xl text-[18px] font-bold text-gray-800 dark:text-gray-200">
             جدیدترین پروژه‌ها
           </h2>
           <Link
             to="/Browseproject"
-            className="bg-blue-600 text-white md:px-6 sm:px-6 px-4 py-2 rounded-full hover:bg-blue-700 duration-300 ease-in-out transition-all text-sm font-medium"
+            className="bg-blue-600 text-white md:px-6 sm:px-6 px-4 py-2 rounded-full hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400 duration-300 ease-in-out transition-all text-sm font-medium"
           >
             مشاهده همه
           </Link>
         </div>
 
         {loading ? (
-          <p className="text-center">در حال بارگذاری...</p>
+          <p className="text-center text-gray-600 dark:text-gray-300">
+            در حال بارگذاری...
+          </p>
         ) : error ? (
-          <p className="text-center text-red-500">{error}</p>
+          <p className="text-center text-red-500 dark:text-red-400">{error}</p>
         ) : projectCards.length === 0 ? (
-          <p className="text-center">هیچ پروژه‌ای یافت نشد</p>
+          <p className="text-center text-gray-600 dark:text-gray-300">
+            هیچ پروژه‌ای یافت نشد
+          </p>
         ) : (
           <>
             <div className="md:flex sm:flex hidden flex-wrap justify-center gap-8 px-6 max-w-7xl mx-auto">
@@ -284,14 +317,14 @@ const MainContent = () => {
                 <Link
                   to={`/detail/${card.project_id}`}
                   key={card.project_id}
-                  className="bg-[#F7F7F7] rounded-xl box-shadow-custom flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px]"
+                  className="bg-gray-100 dark:bg-gray-700 rounded-xl shadow-lg flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px] transition-all duration-300"
                 >
                   <div className="w-full px-2 pt-2">{card.image}</div>
                   <div className="p-4 pb-9 flex flex-col">
-                    <h4 className="text-[18px] text-right font-medium flex flex-wrap">
+                    <h4 className="text-[18px] text-right font-medium flex flex-wrap text-gray-800 dark:text-gray-200">
                       {card.projectname}
                     </h4>
-                    <p className="text-sm text-right mt-2 text-gray-600 flex flex-wrap">
+                    <p className="text-sm text-right mt-2 text-gray-600 dark:text-gray-300 flex flex-wrap">
                       {truncateText(card.description, 200)}
                     </p>
                   </div>
@@ -305,27 +338,26 @@ const MainContent = () => {
                 pagination={{ clickable: true }}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
                 modules={[Pagination, Autoplay]}
-                className="mySwiper rounded-xl box-shadow-custom bg-[#F7F7F7]"
+                className="mySwiper rounded-xl shadow-lg bg-gray-100 dark:bg-gray-700 "
               >
                 {projectCards.map((card) => (
-                  <SwiperSlide key={card.project_id}>
+                  <SwiperSlide
+                    key={card.project_id}
+                    className="rounded-xl h-full"
+                  >
                     <Link
                       to={`/detail/${card.project_id}`}
-                      className="bg-[#F7F7F7] flex flex-col relative"
+                      className="flex flex-col relative"
                     >
                       <div className="w-full px-2 pt-2">{card.image}</div>
                       <div className="p-4 pb-2 flex flex-col">
-                        <h4 className="text-[18px] text-right font-medium flex flex-wrap">
+                        <h4 className="text-[18px] text-right font-medium flex flex-wrap text-gray-800 dark:text-gray-200">
                           {card.projectname}
                         </h4>
-                        <p className="text-sm text-right text-gray-600 mt-2 flex flex-wrap">
+                        <p className="text-sm text-right text-gray-600 dark:text-gray-300 mt-2 flex flex-wrap">
                           {truncateText(card.description, 200)}
                         </p>
-                      </div>
-                      <div className="text-right p-4">
-                        {/* <p className="text-lg font-bold text-blue-600">
-                          {card.price}
-                        </p> */}
+                        <p className="my-4"></p>
                       </div>
                     </Link>
                   </SwiperSlide>
@@ -337,9 +369,9 @@ const MainContent = () => {
       </section>
 
       {/* Trending Freelancers */}
-      <section className="w-full md:mb-24 mb-12 py-10">
+      <section className="w-full md:mb-24 mb-12 py-10 bg-white dark:bg-gray-800">
         <div className="hidden md:block px-6 max-w-7xl mx-auto">
-          <h2 className="text-2xl font-bold text-right mb-12 text-[#333]">
+          <h2 className="text-2xl font-bold text-right mb-12 text-gray-800 dark:text-gray-200">
             فریلنسرهای محبوب 🔥
           </h2>
           <AnimatePresence mode="wait">
@@ -354,7 +386,7 @@ const MainContent = () => {
               {currentFreelancers.map((freelancer, index) => (
                 <div
                   key={index}
-                  className="bg-[#f0f0f0] rounded-lg overflow-hidden shadow"
+                  className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg"
                 >
                   <img
                     src={freelancer.image}
@@ -363,15 +395,15 @@ const MainContent = () => {
                   />
                   <div className="flex items-center justify-between px-4 py-3">
                     <div>
-                      <h3 className="text-xl text-right font-semibold text-[#333]">
+                      <h3 className="text-xl text-right font-semibold text-gray-800 dark:text-gray-200">
                         {freelancer.name}
                       </h3>
-                      <p className="text-sm text-right text-[#888]">
+                      <p className="text-sm text-right text-gray-600 dark:text-gray-300">
                         {freelancer.role}
                       </p>
                     </div>
                     <BsArrowLeft
-                      className="text-blue-500 cursor-pointer"
+                      className="text-blue-500 dark:text-blue-400 cursor-pointer"
                       size={26}
                     />
                   </div>
@@ -388,11 +420,14 @@ const MainContent = () => {
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             modules={[Pagination, Autoplay]}
-            className="mySwiper rounded-xl box-shadow-custom"
+            className="mySwiper rounded-xl shadow-lg"
           >
             {trendingFreelancers.map((freelancer, index) => (
-              <SwiperSlide key={index}>
-                <div className="rounded-lg relative overflow-hidden shadow pointer-events-none">
+              <SwiperSlide
+                key={index}
+                className="bg-gray-100 dark:bg-gray-700 rounded-xl shadow-lg"
+              >
+                <div className="relative overflow-hidden pointer-events-none">
                   <img
                     src={freelancer.image}
                     alt={freelancer.name}
@@ -401,15 +436,15 @@ const MainContent = () => {
                   />
                   <div className="flex items-center justify-between px-4 py-3 mb-8">
                     <div>
-                      <h3 className="text-xl text-right font-semibold text-[#333]">
+                      <h3 className="text-xl text-right font-semibold text-gray-800 dark:text-gray-200">
                         {freelancer.name}
                       </h3>
-                      <p className="text-sm text-right text-[#888]">
+                      <p className="text-sm text-right text-gray-600 dark:text-gray-300">
                         {freelancer.role}
                       </p>
                     </div>
                     <BsArrowLeft
-                      className="text-blue-500 cursor-pointer"
+                      className="text-blue-500 dark:text-blue-400 cursor-pointer"
                       size={26}
                     />
                   </div>
@@ -425,7 +460,9 @@ const MainContent = () => {
               key={index}
               onClick={() => handlePageChange(index + 1)}
               className={`w-8 h-2 cursor-pointer rounded-full mx-1 ${
-                currentPage === index + 1 ? "bg-blue-600" : "bg-gray-400"
+                currentPage === index + 1
+                  ? "bg-blue-600 dark:bg-blue-500"
+                  : "bg-gray-400 dark:bg-gray-600"
               }`}
             />
           ))}
@@ -435,29 +472,41 @@ const MainContent = () => {
         <div className="flex justify-center w-full px-4 mt-25">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 w-full md:scale-97 sm:scale-95 scale-93 ease-in-out duration-300 transition-all max-w-[1440px]">
             <div className="flex flex-col items-center text-center">
-              <BsCashCoin size={117} color="#808080" />
-              <h3 className="text-[20px] mt-2 font-semibold text-[#252525] leading-tight">
+              <BsCashCoin
+                size={117}
+                color="#808080"
+                className="dark:text-gray-300"
+              />
+              <h3 className="text-[20px] mt-2 font-semibold text-gray-800 dark:text-gray-200 leading-tight">
                 قیمت‌گذاری مناسب
               </h3>
-              <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
+              <p className="text-[16px] font-normal text-gray-600 dark:text-gray-300 mt-2 max-w-xs">
                 با سیستم مناقصه، مناسب‌ترین قیمت رو برای انجام هر پروژه پیدا کن!
               </p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <FaPeopleGroup size={117} color="#808080" />
-              <h3 className="text-[20px] mt-2 font-semibold text-[#252525] leading-tight">
+              <FaPeopleGroup
+                size={117}
+                color="#808080"
+                className="dark:text-gray-300"
+              />
+              <h3 className="text-[20px] mt-2 font-semibold text-gray-800 dark:text-gray-200 leading-tight">
                 جمعی برای بهترین‌ها
               </h3>
-              <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
+              <p className="text-[16px] font-normal text-gray-600 dark:text-gray-300 mt-2 max-w-xs">
                 با بهترین افراد در هر حوزه آشنا شو و باهاشون ارتباط بگیر!
               </p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <FaChartColumn size={117} color="#808080" />
-              <h3 className="text-[20px] mt-2 font-semibold text-[#252525] leading-tight">
+              <FaChartColumn
+                size={117}
+                color="#808080"
+                className="dark:text-gray-300"
+              />
+              <h3 className="text-[20px] mt-2 font-semibold text-gray-800 dark:text-gray-200 leading-tight">
                 سنجش مهارت‌ها
               </h3>
-              <p className="text-[16px] font-normal text-[#9D9D9D] mt-2 max-w-xs">
+              <p className="text-[16px] font-normal text-gray-600 dark:text-gray-300 mt-2 max-w-xs">
                 مناسب‌ترین توانایی و مهارت رو بر اساس نیازمندی انتخاب کن!
               </p>
             </div>

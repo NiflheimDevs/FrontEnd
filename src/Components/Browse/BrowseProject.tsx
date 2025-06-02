@@ -47,7 +47,7 @@ const BrowseProject: React.FC = () => {
         const formattedProjects: Project[] = response.map((project: any) => ({
           project_id: project.project_id,
           title: project.title || "بدون عنوان",
-          description: project.descriptoin || "بدون توضیحات",
+          description: project.descriptoin || "بدون توضیحات", // Note: 'descriptoin' typo in API response
           label: project.label,
           timeLeft: "14 روز و 23 ساعت",
           views: 42,
@@ -88,7 +88,7 @@ const BrowseProject: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-full py-6 px-4 sm:mt-0 mt-15">
+    <div className="flex flex-col w-full py-6 px-4 sm:mt-0 mt-15 bg-gray-100 dark:bg-gray-800">
       <SearchBar />
       <div className="relative flex justify-center gap-8 mb-6 flex-wrap">
         <FilterDropdown
@@ -135,11 +135,15 @@ const BrowseProject: React.FC = () => {
       </div>
       <div className="space-y-6">
         {loading ? (
-          <p className="text-center">در حال بارگذاری...</p>
+          <p className="text-center text-gray-700 dark:text-gray-300">
+            در حال بارگذاری...
+          </p>
         ) : error ? (
-          <p className="text-center text-red-500">{error}</p>
+          <p className="text-center text-red-500 dark:text-red-400">{error}</p>
         ) : projects.length === 0 ? (
-          <p className="text-center">هیچ پروژه‌ای یافت نشد</p>
+          <p className="text-center text-gray-700 dark:text-gray-300">
+            هیچ پروژه‌ای یافت نشد
+          </p>
         ) : (
           projects.map((project) => (
             <ProjectCard key={project.project_id} project={project} />

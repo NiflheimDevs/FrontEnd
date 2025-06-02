@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { motion, AnimatePresence } from "framer-motion";
 import OtpInput from "react-otp-input";
 import { useNotification } from "../../Notification/NotificationProvider";
@@ -144,7 +145,7 @@ export default function OtpSection({
                 </button>
               )}
               {timeLeft > 0 ? (
-                <span className="text-gray-600 font-[vazirmatn] mr-2">
+                <span className="text-gray-600 dark:text-gray-300 font-[vazirmatn] mr-2 flex">
                   {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
                 </span>
               ) : (
@@ -152,10 +153,10 @@ export default function OtpSection({
               )}
             </div>
             <button
-              className={`w-[160px] max-w-xs flex gap-2 flex-row justify-center items-center transition duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${
+              className={`w-[160px] max-w-xs flex gap-2 flex-row justify-center items-center transition duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] dark:bg-blue-600 shadow-[0_4px_10px_rgba(0,0,0,0.2)] py-3 ${
                 token.length !== 5
                   ? "opacity-60"
-                  : "hover:bg-blue-600 cursor-pointer"
+                  : "hover:bg-blue-600 dark:hover:bg-blue-700 cursor-pointer"
               }`}
               disabled={token.length !== 5}
               onClick={HandleVerify}
