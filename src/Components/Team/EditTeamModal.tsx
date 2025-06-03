@@ -152,19 +152,19 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
     <div className="fixed inset-0 backdrop-blur-xs bg-opacity-60 flex items-center justify-center z-50 p-4">
       <div
         ref={modalRef}
-        className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn"
+        className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn dark:bg-gray-900"
         style={{
           boxShadow:
             "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
           direction: "rtl",
         }}
       >
-        <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600">
+        <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-800 dark:to-blue-900">
           <h2 className="text-xl font-bold text-white">ویرایش تیم</h2>
 
           <button
             onClick={onClose}
-            className="text-white hover:bg-blue-700 hover:bg-opacity-30 p-2 cursor-pointer rounded-full transition-all duration-200"
+            className="text-white hover:bg-blue-700 hover:bg-opacity-30 p-2 cursor-pointer rounded-full transition-all duration-200 dark:hover:bg-blue-800"
             disabled={isSubmitting}
           >
             <svg
@@ -185,7 +185,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
 
         <form onSubmit={handleSubmit} className="p-6">
           {error && (
-            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-right animate-fadeIn">
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-right animate-fadeIn dark:bg-red-900 dark:text-red-300">
               {error}
             </div>
           )}
@@ -194,7 +194,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
           <div className="mb-6 flex flex-col items-center">
             <div className="relative">
               <div
-                className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 mb-2 border-4 border-white shadow-lg cursor-pointer"
+                className="w-32 h-32 rounded-full overflow-hidden bg-gray-200 mb-2 border-4 border-white shadow-lg cursor-pointer dark:bg-gray-800 dark:border-gray-900"
                 onClick={handlePictureClick}
               >
                 {ProfileExists && teamPicturePreview ? (
@@ -205,7 +205,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
                     onError={() => SetProfileExist(false)}
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                  <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-900">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="40"
@@ -216,7 +216,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="text-gray-400"
+                      className="text-gray-400 dark:text-gray-500"
                     >
                       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                       <circle cx="9" cy="7" r="4"></circle>
@@ -231,7 +231,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
                 <button
                   type="button"
                   onClick={handleRemovePicture}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full cursor-pointer p-1 shadow-md hover:bg-red-600 transition-colors"
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full cursor-pointer p-1 shadow-md hover:bg-red-600 transition-colors dark:bg-red-700 dark:hover:bg-red-800"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -262,7 +262,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
             <button
               type="button"
               onClick={handlePictureClick}
-              className="text-blue-500 text-sm mt-2 cursor-pointer hover:text-blue-600 transition-colors"
+              className="text-blue-500 text-sm mt-2 cursor-pointer hover:text-blue-600 transition-colors dark:text-blue-400 dark:hover:text-blue-300"
             >
               {teamPicturePreview ? "تغییر تصویر تیم" : "افزودن تصویر تیم"}
             </button>
@@ -271,7 +271,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
           <div className="mb-5">
             <label
               htmlFor="name"
-              className="block text-gray-700 text-right mb-2 font-medium"
+              className="block text-gray-700 text-right mb-2 font-medium dark:text-gray-200"
             >
               نام تیم
             </label>
@@ -280,7 +280,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
               placeholder="نام تیم را وارد کنید"
               required
               disabled={isSubmitting}
@@ -290,7 +290,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
           <div className="mb-5">
             <label
               htmlFor="description"
-              className="block text-gray-700 text-right mb-2 font-medium"
+              className="block text-gray-700 text-right mb-2 font-medium dark:text-gray-200"
             >
               توضیحات
             </label>
@@ -298,7 +298,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
               placeholder="توضیحات تیم را وارد کنید"
               rows={3}
               required
@@ -310,14 +310,14 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium"
+              className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
               disabled={isSubmitting}
             >
               انصراف
             </button>
             <button
               type="submit"
-              className={`bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium ${
+              className={`bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium dark:bg-blue-700 dark:hover:bg-blue-800 ${
                 isSubmitting || !name || !description
                   ? "opacity-70 cursor-not-allowed"
                   : ""

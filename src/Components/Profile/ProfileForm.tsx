@@ -35,59 +35,59 @@ import {
 import { errorMapper } from "../../pages/Error/Error";
 
 const renderSkeleton = () => (
-  <div className="animate-pulse justify-center items-center">
-    <div className="flex flex-col md:w-2/3 sm:w-full w-9/10 space-y-4 p-6 bg-white rounded-lg shadow-md justify-center items-center mx-auto mt-10">
+  <div className="justify-center items-center">
+    <div className="flex flex-col md:w-2/3 sm:w-full w-9/10 space-y-4 p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md justify-center items-center mx-auto mt-10">
       <div className="flex flex-col items-center">
         <Skeleton
           width="160px"
           height="160px"
-          className="shiny-skeleton full border rounded-full border-gray-300"
+          className="shiny-skeleton full border rounded-full border-gray-300 dark:!border-gray-600 dark:!bg-gray-600"
         />
         <Skeleton
           width="200px"
           height="30px"
-          className="shiny-skeleton mt-4 bg-gray-200 rounded-2xl"
+          className="shiny-skeleton mt-4 bg-gray-200 rounded-2xl dark:!bg-gray-600"
         />
       </div>
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
       <Skeleton
         width="100%"
         height="45px"
-        className="shiny-skeleton my-4 rounded-2xl"
+        className="shiny-skeleton my-4 rounded-2xl dark:!bg-gray-600"
       />
     </div>
   </div>
@@ -125,7 +125,6 @@ export default function ProfileForm() {
         const mappedProfile = await mapApiDataToProfile(apiData, apiResume);
         setLocalProfile(mappedProfile);
         dispatch(setProfile(mappedProfile));
-        setIsLoading(false);
       } catch (err: any) {
         setError(err.message || "خطا در بارگذاری اطلاعات کاربر");
         notifyError(err.message || "خطا در بارگذاری اطلاعات کاربر");
@@ -203,7 +202,7 @@ export default function ProfileForm() {
 
       if (profilePictureFile) {
         LocalProfile.append("file", profilePictureFile);
-        if (localProfile.resume) {
+        if (localProfile.newResume == 2 && localProfile.resume) {
           LocalResume.append("file", localProfile.resume);
           await Promise.all([
             PutUser(userData),
@@ -212,17 +211,24 @@ export default function ProfileForm() {
             UpdateProfile(LocalProfile),
             UpdateResume(LocalResume),
           ]);
-        } else {
+        } else if (localProfile.newResume == 1) {
           await Promise.all([
             PutUser(userData),
             PutTag(tagData),
             PutCareer(careerData),
             UpdateProfile(LocalProfile),
             DeleteResume(),
+          ]);
+        } else {
+          await Promise.all([
+            PutUser(userData),
+            PutTag(tagData),
+            PutCareer(careerData),
+            UpdateProfile(LocalProfile),
           ]);
         }
       } else if (localProfile.high_profile) {
-        if (localProfile.resume) {
+        if (localProfile.newResume == 2 && localProfile.resume) {
           LocalResume.append("file", localProfile.resume);
           await Promise.all([
             PutUser(userData),
@@ -230,12 +236,18 @@ export default function ProfileForm() {
             PutCareer(careerData),
             UpdateResume(LocalResume),
           ]);
-        } else {
+        } else if (localProfile.newResume == 1) {
           await Promise.all([
             PutUser(userData),
             PutTag(tagData),
             PutCareer(careerData),
             DeleteResume(),
+          ]);
+        } else {
+          await Promise.all([
+            PutUser(userData),
+            PutTag(tagData),
+            PutCareer(careerData),
           ]);
         }
       } else {
@@ -292,11 +304,13 @@ export default function ProfileForm() {
         renderSkeleton()
       ) : (
         <>
-          <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
-          <section className="p-4 md:p-6 lg:p-8 bg-[#F7F7F7]">
-            <h2 className="text-2xl font-bold mb-4 text-center">حساب کاربری</h2>
-            <div className="bg-white p-4 md:p-6 lg:p-8 rounded-lg shadow-md max-w-4xl mx-auto relative">
-              <div className="border-t border-gray-300 w-full mb-6"></div>
+          <div className="fixed inset-0 bg-[#F7F7F7] dark:bg-gray-800 z-[-1]"></div>
+          <section className="p-4 md:p-6 lg:p-8 bg-[#F7F7F7] dark:bg-gray-800">
+            <h2 className="text-2xl font-bold mb-4 text-center dark:text-gray-300 text-gray-600">
+              حساب کاربری
+            </h2>
+            <div className="bg-white dark:bg-gray-700 p-4 md:p-6 lg:p-8 rounded-lg shadow-md max-w-4xl mx-auto relative">
+              <div className="border-t border-gray-300 dark:border-gray-500 w-full mb-6"></div>
 
               <UserInfoSection
                 localProfile={localProfile}
@@ -337,7 +351,7 @@ export default function ProfileForm() {
 
                 <div className="flex flex-col items-end">
                   <button
-                    className="w-46 flex justify-center items-center gap-2 transition-all duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#3E79DE] py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 focus:shadow-lg"
+                    className="w-46 flex justify-center items-center gap-2 transition-all duration-200 ease-in-out cursor-pointer rounded-[20px] bg-[#3E79DE] dark:bg-blue-600 py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 dark:hover:bg-blue-700 dark:focus:bg-blue-700 focus:shadow-lg"
                     onClick={handleSubmit}
                     disabled={loading}
                     tabIndex={submitTabIndex}

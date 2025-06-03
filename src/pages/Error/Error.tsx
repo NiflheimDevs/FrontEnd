@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import ErrorSVG from "../../assets/err.svg";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 // Define the possible error codes as a union type
 type ErrorCode = keyof typeof errorMessages;
@@ -53,41 +54,49 @@ const errorMapper = (errorCode: ErrorCode): string => {
 
 const Error = () => {
   const location = useLocation();
-  // Type the location.state and handle undefined errorCode
   const { errorCode, title = "خطا" } = (location.state as
     | { errorCode?: ErrorCode; title?: string }
     | undefined) || {
-    errorCode: "error_404" as const, // Explicitly type as ErrorCode
+    errorCode: "error_404" as const,
     title: "خطا 404",
   };
 
-  // Ensure errorCode is always ErrorCode by providing a fallback
   const safeErrorCode: ErrorCode = errorCode ?? "error_404";
   const description = errorMapper(safeErrorCode);
 
+  const [isDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    return savedMode === "true";
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white rounded-2xl box-shadow-custom max-w-5xl w-full flex flex-col justify-between md:flex-row items-center overflow-hidden"
+        className="bg-white dark:bg-gray-700 rounded-2xl shadow-lg dark:shadow-xl max-w-5xl w-full flex flex-col justify-between md:flex-row items-center overflow-hidden"
       >
         <div className="w-fit flex md:hidden">
           <img
             src={ErrorSVG}
             alt="Error Illustration"
-            className="w-full h-full object-cover max-w-[570px] max-h-[570px]"
+            className="w-full h-full object-cover max-w-[570px] max-h-[570px] dark:brightness-90"
           />
         </div>
-        {/* Constrain text div size and reduce padding on small screens */}
-        <div className="flex p-6 md:py-12 md:pr-10 pl-8 md:text-right text-center space-y-4 max-w-[90%] md:max-w-[50%] flex-col">
-          {/* Reduced padding to p-6 on small screens and constrained max-width */}
+        <div className="flex p-6 md:py-12 md:pr-10 pl-8 md:text-right text-center space-y-4 max-w-[90%] md:max-w-[50%] flex-col bg-transparent">
           <motion.h1
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-3xl md:text-5xl font-extrabold text-gray-800"
+            className="text-3xl md:text-5xl font-extrabold text-gray-800 dark:text-white"
           >
             {title}
           </motion.h1>
@@ -95,7 +104,7 @@ const Error = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-base md:text-xl text-gray-600 leading-relaxed"
+            className="text-base md:text-xl text-gray-600 dark:text-gray-200 leading-relaxed"
           >
             {description}
           </motion.p>
@@ -105,7 +114,7 @@ const Error = () => {
             transition={{ delay: 0.4 }}
           >
             <Link to="/">
-              <button className="group cursor-pointer bg-blue-600 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-base md:text-lg font-semibold hover:bg-blue-700 transition-colors duration-300">
+              <button className="group cursor-pointer bg-blue-600 dark:bg-blue-700 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-base md:text-lg font-semibold hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-300">
                 <ArrowRight
                   className="group-hover:translate-x-1 transition-transform"
                   size={20}
@@ -119,7 +128,7 @@ const Error = () => {
           <img
             src={ErrorSVG}
             alt="Error Illustration"
-            className="w-full h-full object-cover max-w-[570px] max-h-[570px]"
+            className="w-full h-full object-cover max-w-[570px] max-h-[570px] dark:brightness-90 scale-95"
           />
         </div>
       </motion.div>

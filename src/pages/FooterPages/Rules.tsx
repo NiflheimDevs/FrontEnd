@@ -50,36 +50,39 @@ export default function Rules() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-[#F7F7F7]">
+    <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-800">
       <Header showSearch={false} />
       <motion.main
-        className="flex-grow "
+        className="flex-grow flex flex-col items-center px-4 py-16 bg-gray-100 dark:bg-gray-800"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
-      <main className="flex-grow flex flex-col items-center px-4 py-16 bg-[#F7F7F7]">
         <div className="max-w-3xl w-full">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-8 mt-10">
+          <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-gray-200 mb-8 mt-10">
             قوانین و مقررات استفاده از سایت
           </h2>
           <div className="space-y-4">
             {rules.map((rule, index) => (
               <div
                 key={index}
-                className={`rounded-2xl border bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-md ${
-                  openIndex === index ? "border-red-500 bg-red-50" : ""
+                className={`rounded-2xl border bg-white dark:bg-gray-700 p-5 shadow-sm transition-all duration-300 hover:shadow-md ${
+                  openIndex === index
+                    ? "border-red-500 dark:border-red-400 bg-red-50"
+                    : "border-gray-200 dark:border-gray-600"
                 }`}
                 onClick={() => toggleRule(index)}
               >
                 <div className="flex justify-between items-center cursor-pointer select-none">
-                  <p className="font-semibold text-gray-800 text-base md:text-lg">
+                  <p className="font-semibold text-gray-800 dark:text-gray-200 text-base md:text-lg">
                     {rule.question}
                   </p>
                   <ChevronDown
-                    className={`transition-transform duration-300 text-gray-500 ${
-                      openIndex === index ? "rotate-180 text-red-500" : ""
+                    className={`transition-transform duration-300 ${
+                      openIndex === index
+                        ? "rotate-180 text-red-500 dark:text-red-400"
+                        : "text-gray-500 dark:text-gray-300"
                     }`}
                     size={20}
                   />
@@ -95,7 +98,7 @@ export default function Rules() {
                       transition={{ duration: 0.3 }}
                       className="overflow-hidden"
                     >
-                      <p className="text-gray-700 mt-3 leading-relaxed text-sm md:text-base">
+                      <p className="text-gray-700 dark:text-gray-300 mt-3 leading-relaxed text-sm md:text-base">
                         {rule.answer}
                       </p>
                     </motion.div>
@@ -105,15 +108,14 @@ export default function Rules() {
             ))}
           </div>
 
-          <p className="text-sm mt-12 text-gray-600 text-center font-medium mb-3">
+          <p className="text-sm mt-12 text-gray-600 dark:text-gray-300 text-center font-medium mb-3">
             رعایت این قوانین برای استفاده از خدمات سایت الزامی است.
           </p>
         </div>
-        </main>
-        </motion.main>
-        <div className="bg-[#F7F7F7]">
+      </motion.main>
+      <div className="bg-gray-100 dark:bg-gray-800">
         <Footer />
-        </div>
       </div>
+    </div>
   );
 }

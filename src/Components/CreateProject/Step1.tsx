@@ -44,8 +44,9 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
     }
 
     if (id === "duration") {
-      if (!value || parseInt(value, -1) == -1) {
-        newErrors.duration = "زمان انتظار برای کارجو به شکل صحیح وارد نشده";
+      if (!value || parseInt(value, 10) <= 0) {
+        newErrors.duration =
+          "زمان انتظار برای کارجوPromise to shape correct باشد";
       } else {
         delete newErrors.duration;
       }
@@ -70,7 +71,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
       newErrors.description = "توضیحات پروژه باید حداقل 20 کلمه باشد";
     }
 
-    if (!formData.duration) {
+    if (!formData.duration || parseInt(formData.duration, 10) <= 0) {
       newErrors.duration = "زمان انتظار برای کارجو به شکل صحیح وارد نشده";
     }
 
@@ -116,11 +117,11 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
     : 0;
 
   return (
-    <form className="space-y-6">
+    <form className="space-y-6 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
       <div>
         <label
           htmlFor="name"
-          className="block mb-2 text-gray-700 font-semibold"
+          className="block mb-2 text-gray-700 dark:text-gray-200 font-semibold"
         >
           عنوان پروژه
         </label>
@@ -129,7 +130,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
           id="name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           placeholder="عنوان پروژه را وارد کنید"
         />
         <AnimatePresence>
@@ -140,7 +141,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4 }}
-              className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+              className="text-red-500 dark:text-red-400 text-sm text-right mt-1 font-[vazirmatn]"
             >
               <li>{errors.name}</li>
             </motion.ul>
@@ -151,7 +152,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
       <div>
         <label
           htmlFor="description"
-          className="block mb-2 text-gray-700 font-semibold"
+          className="block mb-2 text-gray-700 dark:text-gray-200 font-semibold"
         >
           توضیحات پروژه
         </label>
@@ -160,7 +161,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
             id="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full p-3 border min-h-[100px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none"
+            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-200 resize-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             rows={4}
             placeholder="توضیحات کامل پروژه را وارد کنید"
           />
@@ -173,23 +174,22 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4 }}
-                  className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+                  className="text-red-500 dark:text-red-400 text-sm text-right mt-1 font-[vazirmatn]"
                 >
                   <li>{errors.description}</li>
                 </motion.ul>
               )}
             </AnimatePresence>
-            <div className="flex text-sm absolute left-0 text-gray-500 mt-1 text-left">
+            <div className="flex text-sm absolute left-0 text-gray-500 dark:text-gray-400 mt-1 text-left">
               {wordCount} / {MAX_DESCRIPTION_WORDS} کلمه
             </div>
           </div>
         </div>
       </div>
-
       <div>
         <label
           htmlFor="duration"
-          className="block mb-2 text-gray-700 font-semibold"
+          className="block mb-2 text-gray-700 dark:text-gray-200 font-semibold"
         >
           زمان انتظار برای کارجو (روز):
         </label>
@@ -198,7 +198,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
             id="duration"
             value={formData.duration}
             onChange={handleChange}
-            className="w-full p-3 border no-spinner border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all duration-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 no-spinner"
             type="number"
             placeholder="زمان انتظار برای کارجو را وارد کنید"
           />
@@ -211,7 +211,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4 }}
-                  className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+                  className="text-red-500 dark:text-red-400 text-sm text-right mt-1 font-[vazirmatn]"
                 >
                   <li>{errors.duration}</li>
                 </motion.ul>
@@ -225,7 +225,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
         <button
           onClick={() => navigate("/dashboard")}
           type="button"
-          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer"
+          className="bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 px-6 py-2 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors flex items-center cursor-pointer"
         >
           بازگشت به داشبورد
         </button>
@@ -235,8 +235,8 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
           type="submit"
           className={`px-6 py-2 rounded-md transition-colors flex items-center cursor-pointer ${
             isFormValid
-              ? "bg-blue-500 text-white hover:bg-blue-600"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              ? "bg-blue-500 dark:bg-blue-600 text-white hover:bg-blue-600 dark:hover:bg-blue-700"
+              : "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
           }`}
         >
           مرحله بعد

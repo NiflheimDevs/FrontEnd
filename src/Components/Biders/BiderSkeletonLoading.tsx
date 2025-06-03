@@ -5,7 +5,7 @@ const BiderSkeletonLoading: React.FC = () => {
   return (
     <>
       {/* Filter Section Skeleton */}
-      <div className="mb-8 mt-2 bg-white shadow-xl rounded-2xl py-8 px-10 border border-gray-50">
+      <div className="mb-8 mt-2 bg-white dark:bg-gray-700 shadow-xl rounded-2xl py-8 px-10 border border-gray-50 dark:border-gray-600">
         <div className="flex flex-col space-y-8">
           <div className="flex md:flex-row sm:flex-row flex-col gap-[4vw]">
             {/* Left Section (Search and Price Range) */}
@@ -15,12 +15,12 @@ const BiderSkeletonLoading: React.FC = () => {
                 <Skeleton
                   width="30%"
                   height="1rem"
-                  className="shiny-skeleton mb-2"
+                  className="shiny-skeleton mb-2 dark:!border-gray-600 dark:!bg-gray-600"
                 />
                 <Skeleton
                   width="100%"
                   height="2.5rem"
-                  className="shiny-skeleton rounded-xl border border-gray-200"
+                  className="shiny-skeleton rounded-xl border !border-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                 />
               </div>
               {/* Price Range Skeleton */}
@@ -28,29 +28,29 @@ const BiderSkeletonLoading: React.FC = () => {
                 <Skeleton
                   width="30%"
                   height="1rem"
-                  className="shiny-skeleton mb-2"
+                  className="shiny-skeleton mb-2 dark:!border-gray-600 dark:!bg-gray-600"
                 />
                 <div className="flex items-center gap-4">
                   <Skeleton
                     width="100%"
                     height="2.5rem"
-                    className="shiny-skeleton rounded-xl border border-gray-200"
+                    className="shiny-skeleton rounded-xl border !border-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                   />
                   <Skeleton
                     width="2rem"
                     height="1rem"
-                    className="shiny-skeleton"
+                    className="shiny-skeleton dark:!border-gray-600 dark:!bg-gray-600"
                   />
                   <Skeleton
                     width="100%"
                     height="2.5rem"
-                    className="shiny-skeleton rounded-xl border border-gray-200"
+                    className="shiny-skeleton rounded-xl border !border-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                   />
                 </div>
                 <Skeleton
                   width="60%"
                   height="0.75rem"
-                  className="shiny-skeleton mt-3"
+                  className="shiny-skeleton mt-3 dark:!border-gray-600 dark:!bg-gray-600"
                 />
               </div>
             </div>
@@ -62,19 +62,19 @@ const BiderSkeletonLoading: React.FC = () => {
                 <Skeleton
                   width="30%"
                   height="1rem"
-                  className="shiny-skeleton"
+                  className="shiny-skeleton dark:!border-gray-600 dark:!bg-gray-600"
                 />
-                <div className="relative h-2 mt-1 bg-gray-200 rounded-full">
+                <div className="relative h-2 mt-1 bg-gray-200 dark:!bg-gray-600 rounded-full">
                   <Skeleton
                     width="50%"
                     height="0.5rem"
-                    className="shiny-skeleton absolute rounded-full px-2"
+                    className="absolute rounded-full px-2 dark:!border-gray-600 dark:!bg-gray-600"
                   />
                   <Skeleton
                     width="1.25rem"
                     height="1.25rem"
                     shape="circle"
-                    className="shiny-skeleton absolute -top-3.5 border-2"
+                    className="absolute z-40 -top-3.5 border-2 bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                   />
                 </div>
               </div>
@@ -83,19 +83,19 @@ const BiderSkeletonLoading: React.FC = () => {
                 <Skeleton
                   width="30%"
                   height="1rem"
-                  className="shiny-skeleton"
+                  className="shiny-skeleton dark:!border-gray-600 dark:!bg-gray-600"
                 />
-                <div className="relative h-2 mt-1 bg-gray-200 rounded-full">
+                <div className="relative h-2 mt-1 bg-gray-200 dark:!bg-gray-600 rounded-full">
                   <Skeleton
                     width="50%"
                     height="0.5rem"
-                    className="shiny-skeleton absolute rounded-full px-2"
+                    className="absolute rounded-full px-2 dark:!border-gray-600 dark:!bg-gray-600"
                   />
                   <Skeleton
                     width="1.25rem"
                     height="1.25rem"
                     shape="circle"
-                    className="shiny-skeleton absolute -top-3.5 border-2"
+                    className="absolute z-40 -top-3.5 border-2 bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                   />
                 </div>
               </div>
@@ -107,7 +107,7 @@ const BiderSkeletonLoading: React.FC = () => {
             <Skeleton
               width="10rem"
               height="2.5rem"
-              className="shiny-skeleton rounded-xl"
+              className="shiny-skeleton rounded-xl bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
             />
           </div>
         </div>
@@ -119,7 +119,7 @@ const BiderSkeletonLoading: React.FC = () => {
         {Array.from({ length: 3 }).map((_, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg border-gray-100 w-full p-6 box-shadow-custom duration-300"
+            className="bg-white rounded-lg border border-gray-100 dark:!border-gray-600 dark:!bg-gray-700 w-full p-6 box-shadow-custom duration-300"
           >
             <div className="flex flex-col md:flex-row gap-6">
               {/* Image Section Skeleton */}
@@ -127,7 +127,7 @@ const BiderSkeletonLoading: React.FC = () => {
                 <Skeleton
                   shape="circle"
                   size="6rem"
-                  className="shiny-skeleton border-2 border-gray-200"
+                  className="shiny-skeleton border-2 border-gray-200 bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                 />
               </div>
 
@@ -138,12 +138,12 @@ const BiderSkeletonLoading: React.FC = () => {
                     <Skeleton
                       width="60%"
                       height="1.5rem"
-                      className="shiny-skeleton mb-2 text-center md:text-right"
+                      className="shiny-skeleton mb-2 text-center md:text-right bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                     />
                     <Skeleton
                       width="90%"
                       height="2.5rem"
-                      className="shiny-skeleton text-center md:text-right"
+                      className="shiny-skeleton text-center md:text-right bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                     />
                   </div>
                   <div className="flex flex-col w-full items-center md:items-start space-y-2">
@@ -151,36 +151,36 @@ const BiderSkeletonLoading: React.FC = () => {
                       <Skeleton
                         width="1.25rem"
                         height="1.25rem"
-                        className="shiny-skeleton ml-2"
+                        className="shiny-skeleton ml-2 bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                       />
                       <Skeleton
                         width="50%"
                         height="0.875rem"
-                        className="shiny-skeleton"
+                        className="shiny-skeleton bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                       />
                     </div>
                     <div className="flex items-center w-full">
                       <Skeleton
                         width="1.25rem"
                         height="1.25rem"
-                        className="shiny-skeleton ml-2"
+                        className="shiny-skeleton ml-2 bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                       />
                       <Skeleton
                         width="50%"
                         height="0.875rem"
-                        className="shiny-skeleton"
+                        className="shiny-skeleton bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                       />
                     </div>
                     <div className="flex items-center w-full">
                       <Skeleton
                         width="1.25rem"
                         height="1.25rem"
-                        className="shiny-skeleton ml-2"
+                        className="shiny-skeleton ml-2 bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                       />
                       <Skeleton
                         width="50%"
                         height="0.875rem"
-                        className="shiny-skeleton"
+                        className="shiny-skeleton bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                       />
                     </div>
                   </div>
@@ -191,12 +191,12 @@ const BiderSkeletonLoading: React.FC = () => {
                   <Skeleton
                     width="100%"
                     height="2rem"
-                    className="shiny-skeleton rounded-md"
+                    className="shiny-skeleton rounded-md bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                   />
                   <Skeleton
                     width="100%"
                     height="2rem"
-                    className="shiny-skeleton rounded-md"
+                    className="shiny-skeleton rounded-md bg-gray-200 dark:!border-gray-600 dark:!bg-gray-600"
                   />
                 </div>
               </div>

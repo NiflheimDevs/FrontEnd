@@ -79,17 +79,12 @@ const Step2: React.FC<Step2Props> = ({
       newErrors.tags = "حداقل یک تگ را انتخاب کنید";
     }
 
-    if (!selectedLabel) {
-      newErrors.label = "یک برچسب را انتخاب کنید";
-    }
-
     setErrors(newErrors);
     const isValid = Object.keys(newErrors).length === 0;
     setIsFormValid(isValid);
     return isValid;
   };
 
-  // اعتبارسنجی بلادرنگ هنگام تغییر تگ‌ها
   const toggleTag = (tagId: number) => {
     const newSelectedTags = selectedTags.includes(tagId)
       ? selectedTags.filter((id) => id !== tagId)
@@ -98,22 +93,18 @@ const Step2: React.FC<Step2Props> = ({
     setSelectedTags(newSelectedTags);
     setDropdownOpenTags(false);
 
-    // به‌روزرسانی فرم و اعتبارسنجی
     dispatch(setProjectData({ tags: newSelectedTags }));
     validateForm();
   };
 
-  // اعتبارسنجی بلادرنگ هنگام تغییر برچسب
   const handleLabelSelect = (labelId: number) => {
     setSelectedLabel(labelId);
     setDropdownOpenLabels(false);
 
-    // به‌روزرسانی فرم و اعتبارسنجی
     dispatch(setProjectData({ label: [labelId] }));
     validateForm();
   };
 
-  // اعتبارسنجی اولیه
   useEffect(() => {
     validateForm();
   }, [selectedTags, selectedLabel]);
@@ -135,22 +126,24 @@ const Step2: React.FC<Step2Props> = ({
   );
 
   return (
-    <div className="space-y-6">
-      <div className="bg-gray-50 p-6 rounded-lg">
-        <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب تگ‌ها</h3>
+    <div className="space-y-6 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
+      <div className="bg-gray-50 dark:bg-gray-800 shadow p-6 rounded-lg">
+        <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+          انتخاب تگ‌ها
+        </h3>
         <div className="relative" ref={dropdownRefTags}>
           <button
             onClick={() => setDropdownOpenTags(!dropdownOpenTags)}
-            className="w-full p-3 border rounded-lg bg-white flex justify-between items-center cursor-pointer"
+            className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 flex justify-between items-center cursor-pointer text-gray-900 dark:text-gray-100"
           >
             انتخاب تگ‌ها
-            <FaChevronDown className="text-gray-500" />
+            <FaChevronDown className="text-gray-500 dark:text-gray-400" />
           </button>
           {dropdownOpenTags && (
-            <div className="absolute w-full bg-white border rounded-lg mt-2 shadow-lg p-2 max-h-60 overflow-y-auto z-10">
+            <div className="absolute w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg mt-2 shadow-lg p-2 max-h-60 overflow-y-auto z-10">
               <input
                 type="text"
-                className="w-full p-2 border-b outline-none"
+                className="w-full p-2 border-b border-gray-300 dark:border-gray-600 outline-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 placeholder="جستجو..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -164,15 +157,19 @@ const Step2: React.FC<Step2Props> = ({
                       className={`p-2 rounded-md flex items-center justify-between cursor-pointer transition-all ${
                         selectedTags.includes(tag.id)
                           ? "hidden"
-                          : "hover:bg-gray-100"
-                      }`}
+                          : "hover:bg-gray-100 dark:hover:bg-gray-900"
+                      } text-gray-900 dark:text-gray-100`}
                     >
                       {tag.name}
-                      {selectedTags.includes(tag.id) && <FaCheck />}
+                      {selectedTags.includes(tag.id) && (
+                        <FaCheck className="text-green-600 dark:text-green-400" />
+                      )}
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-center">موردی یافت نشد</p>
+                  <p className="text-gray-500 dark:text-gray-400 text-center">
+                    موردی یافت نشد
+                  </p>
                 )}
               </div>
             </div>
@@ -183,12 +180,12 @@ const Step2: React.FC<Step2Props> = ({
               return tag ? (
                 <span
                   key={tag.id}
-                  className="px-3 py-1 bg-blue-500 text-white rounded-full flex items-center gap-2"
+                  className="px-3 py-1 bg-blue-500 dark:bg-blue-600 text-white dark:text-gray-100 rounded-full flex items-center gap-2"
                 >
                   {tag.name}
                   <button
                     onClick={() => toggleTag(tag.id)}
-                    className="text-white"
+                    className="text-white dark:text-gray-100"
                   >
                     ×
                   </button>
@@ -204,7 +201,7 @@ const Step2: React.FC<Step2Props> = ({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.4 }}
-                className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+                className="text-red-500 dark:text-red-400 text-sm text-right mt-1 font-[vazirmatn]"
               >
                 <li>{errors.tags}</li>
               </motion.ul>
@@ -213,8 +210,10 @@ const Step2: React.FC<Step2Props> = ({
         </div>
       </div>
 
-      <div className="bg-gray-50 p-6 rounded-lg shadow-lg">
-        <h3 className="text-xl font-bold mb-4 text-gray-800">انتخاب برچسب</h3>
+      <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+          انتخاب برچسب
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {labels.map((label) => (
             <div
@@ -222,20 +221,22 @@ const Step2: React.FC<Step2Props> = ({
               onClick={() => handleLabelSelect(label.id)}
               className={`p-6 rounded-lg cursor-pointer transition-all duration-300 border-2 ${
                 selectedLabel === label.id
-                  ? "bg-green-100 border-green-500 shadow-md"
-                  : "bg-white border-gray-200 hover:bg-gray-50 hover:shadow-lg"
+                  ? "bg-green-100 dark:bg-green-900 border-green-500 dark:border-green-400 shadow-md"
+                  : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900 hover:shadow-lg"
               }`}
             >
               <div className="flex justify-between items-center">
-                <h4 className="font-bold text-lg text-gray-800">
+                <h4 className="font-bold text-lg text-gray-800 dark:text-gray-100">
                   {label.name}
                 </h4>
                 {selectedLabel === label.id && (
-                  <FaCheck className="text-green-600" />
+                  <FaCheck className="text-green-600 dark:text-green-400" />
                 )}
               </div>
-              <p className="text-gray-600 mt-2">{label.description}</p>
-              <p className="text-blue-600 font-bold mt-2">
+              <p className="text-gray-600 dark:text-gray-300 mt-2">
+                {label.description}
+              </p>
+              <p className="text-blue-600 dark:text-blue-400 font-bold mt-2">
                 {label.price === 0
                   ? "رایگان"
                   : `${label.price.toLocaleString()} تومان`}
@@ -251,7 +252,7 @@ const Step2: React.FC<Step2Props> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4 }}
-              className="text-red-500 text-sm text-right mt-1 font-[vazirmatn]"
+              className="text-red-500 dark:text-red-400 text-sm text-right mt-1 font-[vazirmatn]"
             >
               <li>{errors.label}</li>
             </motion.ul>
@@ -262,7 +263,7 @@ const Step2: React.FC<Step2Props> = ({
       <div className="flex justify-between mt-6">
         <button
           onClick={onPrev}
-          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer"
+          className="bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200 px-6 py-2 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors flex items-center cursor-pointer"
         >
           مرحله قبل
         </button>
@@ -271,8 +272,8 @@ const Step2: React.FC<Step2Props> = ({
           disabled={!isFormValid}
           className={`px-6 py-2 rounded-md transition-colors flex items-center cursor-pointer ${
             isFormValid
-              ? "bg-blue-500 text-white hover:bg-blue-600"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              ? "bg-blue-500 dark:bg-blue-600 text-white hover:bg-blue-600 dark:hover:bg-blue-700"
+              : "bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
           }`}
         >
           مرحله بعد

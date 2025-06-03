@@ -69,7 +69,7 @@ export default function SkillsSection({
 
   return (
     <div className="flex flex-col sm:flex-row gap-2 text-right">
-      <label className="font-semibold mt-2 text-gray-600 w-24 text-right">
+      <label className="font-semibold mt-2 text-gray-600 dark:text-gray-300 w-24 text-right">
         مهارت‌ها
       </label>
       <div className="w-full sm:flex-1">
@@ -83,7 +83,7 @@ export default function SkillsSection({
             onBlur={() =>
               setTimeout(() => setIsMainSkillsDropdownOpen(false), 200)
             }
-            className="w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white"
+            className="w-full p-2 border-2 rounded-lg text-right [direction:rtl] dark:border-gray-500"
             tabIndex={tabIndexStart}
           />
           <AnimatePresence>
@@ -93,7 +93,7 @@ export default function SkillsSection({
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto border-2 rounded-lg bg-white shadow-md"
+                className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto border-2 rounded-lg shadow-md dark:border-gray-600"
               >
                 {skills
                   .filter(
@@ -108,7 +108,7 @@ export default function SkillsSection({
                   .map((skill) => (
                     <motion.li
                       key={skill.id}
-                      className="p-2 text-right [direction:rtl] hover:bg-gray-100 cursor-pointer"
+                      className="p-2 text-right [direction:rtl] hover:bg-gray-100 dark:border-gray-500 dark:bg-gray-700 cursor-pointer"
                       onMouseDown={() =>
                         handleInputChange("skills", [
                           ...localProfile.skills,
@@ -124,7 +124,7 @@ export default function SkillsSection({
           </AnimatePresence>
         </div>
 
-        <div className="flex flex-wrap gap-2 mt-3 min-h-[40px] p-2 rounded-lg bg-gray-100">
+        <div className="flex flex-wrap gap-2 mt-3 min-h-[40px] p-2 rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-2 dark:border-gray-500">
           <AnimatePresence>
             {localProfile.skills.length > 0 ? (
               localProfile.skills.map((skill: Skill) => (
@@ -134,7 +134,7 @@ export default function SkillsSection({
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="flex items-center gap-1 bg-blue-500 text-white text-sm px-2 py-1 rounded-full cursor-pointer hover:bg-blue-600 transition-colors"
+                  className="flex items-center gap-1 bg-blue-500 text-white text-sm px-2 py-1 rounded-full cursor-pointer hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
                   onClick={() =>
                     handleInputChange(
                       "skills",
@@ -169,7 +169,7 @@ export default function SkillsSection({
 
         {localProfile.skills.length > 0 && (
           <div className="mt-4 space-y-3">
-            <h3 className="text-sm font-semibold text-gray-600 text-right flex gap-1">
+            <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-300 text-right flex gap-1">
               <span>میزان تسلط بر مهارت‌ها</span>
               <span className="text-red-400">*</span>
             </h3>
@@ -181,15 +181,17 @@ export default function SkillsSection({
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="flex items-center justify-between gap-2 p-2 bg-gray-100 rounded-lg"
+                  className="flex items-center justify-between gap-2 p-2 bg-gray-100 dark:bg-gray-700 dark:border-2 dark:border-gray-500 rounded-lg"
                 >
-                  <span className="text-sm text-gray-700">{skill.name}</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    {skill.name}
+                  </span>
                   <select
                     value={localProfile.skillProficiency[skill.name] || ""}
                     onChange={(e) =>
                       handleProficiencyChange(skill.name, e.target.value)
                     }
-                    className={`px-3 py-1 border-2 rounded-lg text-right [direction:rtl] bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-blue-400 ${
+                    className={`px-3 py-1 border-2 rounded-lg text-right [direction:rtl] bg-white dark:bg-[#364159] dark:border-gray-500 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-blue-400 ${
                       validationErrors.skills?.includes(skill.name)
                         ? "text-red-500"
                         : "text-gray-400"
