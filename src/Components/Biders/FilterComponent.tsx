@@ -101,22 +101,22 @@ const CustomSlider: React.FC<{
 
   return (
     <div className="space-y-2 flex flex-col w-full">
-      <span className="text-sm font-semibold text-gray-800 select-none">
+      <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 select-none">
         {label}: {value}
       </span>
       <div
         dir="ltr"
         ref={trackRef}
-        className="relative h-2 mt-1 bg-gray-200 rounded-full cursor-pointer transition-all duration-300 hover:bg-gray-300 touch-none"
+        className="relative h-2 mt-1 bg-gray-200 dark:bg-gray-600 rounded-full cursor-pointer transition-all duration-300 hover:bg-gray-300 dark:hover:bg-gray-500 touch-none"
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
       >
         <div
-          className="absolute h-2 bg-gradient-to-l from-blue-500 to-blue-600 rounded-full"
+          className="absolute h-2 bg-gradient-to-l from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-400 rounded-full"
           style={{ width: `${percentage}%` }}
         />
         <div
-          className="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full -top-1.5 shadow-lg transition-transform duration-200 hover:scale-110 active:scale-125"
+          className="absolute w-5 h-5 bg-white dark:bg-gray-700 border-2 border-blue-500 dark:border-blue-400 rounded-full -top-1.5 shadow-lg transition-transform duration-200 hover:scale-110 active:scale-125"
           style={{
             left: `${percentage}%`,
             transform: "translateX(-50%)",
@@ -153,13 +153,13 @@ const FilterComponent: React.FC<FilterProps> = ({
   };
 
   return (
-    <div className="mb-8 mt-2 bg-white shadow-xl rounded-2xl py-8 px-10 border border-gray-50">
+    <div className="mb-8 mt-2 bg-white dark:bg-gray-700 shadow-xl rounded-2xl py-8 px-10 border border-gray-50 dark:border-gray-600">
       <form className="flex flex-col space-y-8">
         <div className="flex md:flex-row sm:flex-row flex-col gap-[4vw]">
           <div className="flex-col w-full flex gap-[3vh]">
             {/* Search Input */}
             <div className="flex w-full flex-col">
-              <span className="text-sm font-semibold text-gray-800 block mb-2 select-none">
+              <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 block mb-2 select-none">
                 جستجوی پیمانکاران یا مهارت‌ها
               </span>
               <input
@@ -170,12 +170,12 @@ const FilterComponent: React.FC<FilterProps> = ({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setTempSearchTerm(e.currentTarget.value)
                 }
-                className="w-full h-fit rounded-xl border border-gray-200 px-3 py-2 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
+                className="w-full h-fit rounded-xl border border-gray-200 dark:border-gray-600 px-3 py-2 text-right transition-all duration-300 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-500/30"
               />
             </div>
             {/* Price Range Filter */}
             <div className="flex-col flex w-full">
-              <span className="text-sm font-semibold text-gray-800 block mb-2 select-none">
+              <span className="text-sm font-semibold text-gray-800 dark:text-gray-200 block mb-2 select-none">
                 محدوده قیمت (تومان)
               </span>
               <div className="flex items-center gap-4">
@@ -188,9 +188,9 @@ const FilterComponent: React.FC<FilterProps> = ({
                   onChange={(e) =>
                     handlePriceRangeChange(Number(e.target.value), 0)
                   }
-                  className="w-full rounded-xl border border-gray-200 px-3 py-2 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
+                  className="w-full rounded-xl border border-gray-200 dark:border-gray-600 px-3 py-2 text-right transition-all duration-300 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-500/30 no-spinner"
                 />
-                <span className="text-sm text-gray-500 font-medium select-none">
+                <span className="text-sm text-gray-500 dark:text-gray-400 font-medium select-none">
                   تا
                 </span>
                 <input
@@ -202,10 +202,10 @@ const FilterComponent: React.FC<FilterProps> = ({
                   onChange={(e) =>
                     handlePriceRangeChange(Number(e.target.value), 1)
                   }
-                  className="w-full rounded-xl border border-gray-200 px-3 py-2 text-right transition-all duration-300 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 no-spinner"
+                  className="w-full rounded-xl border border-gray-200 dark:border-gray-600 px-3 py-2 text-right transition-all duration-300 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-500/30 no-spinner"
                 />
               </div>
-              <span className="text-xs text-gray-500 mt-3 block select-none">
+              <span className="text-xs text-gray-500 dark:text-gray-400 mt-3 block select-none">
                 از {formatPrice(tempFilters.priceRange[0])} تومان تا{" "}
                 {formatPrice(tempFilters.priceRange[1])} تومان
               </span>
@@ -245,7 +245,7 @@ const FilterComponent: React.FC<FilterProps> = ({
               applyFilters();
             }}
             type="submit"
-            className="bg-gradient-to-r cursor-pointer from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl px-8 py-3 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+            className="bg-gradient-to-r cursor-pointer from-blue-600 to-blue-500 dark:from-blue-700 dark:to-blue-600 hover:from-blue-700 dark:hover:from-blue-600 hover:to-blue-600 dark:hover:to-blue-500 text-white rounded-xl px-8 py-3 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
           >
             اعمال فیلتر
           </button>

@@ -61,18 +61,30 @@ const UserStateToggle = ({
           : tab === "jobseeker"
             ? "green-600"
             : "gray-600",
+      darkhover:
+        tab === "employer"
+          ? "blue-800"
+          : tab === "jobseeker"
+            ? "green-800"
+            : "gray-800",
+      darkcolor:
+        tab === "employer"
+          ? "blue-700"
+          : tab === "jobseeker"
+            ? "green-700"
+            : "gray-700",
     });
   };
 
   return (
     <>
       <div className="w-full flex px-4 justify-center mb-6">
-        <div className="flex bg-white rounded-full shadow-sm p-1 border border-gray-200">
+        <div className="flex bg-white rounded-full shadow-sm p-1 border border-gray-200 dark:bg-gray-600 dark:border-gray-700">
           <button
             className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 cursor-pointer ${
               activeTab === "employer"
-                ? `border-2 border-${localcolor.color} text-${localcolor.hover} bg-blue-50`
-                : `border-2 border-transparent text-gray-600 hover:bg-gray-100`
+                ? `border-2 border-${localcolor.color} text-${localcolor.hover} dark:border-${localcolor.darkcolor} dark:text-${localcolor.darkhover} bg-blue-50 dark:bg-gray-400`
+                : `border-2 border-transparent text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700`
             }`}
             onClick={() => handleTabChange("employer")}
             aria-selected={activeTab === "employer"}
@@ -83,8 +95,8 @@ const UserStateToggle = ({
           <button
             className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 cursor-pointer ${
               activeTab === "teams"
-                ? `border-2 border-${localcolor.color} text-${localcolor.hover} bg-blue-50`
-                : `border-2 border-transparent text-gray-600 hover:bg-gray-100`
+                ? `border-2 border-${localcolor.color} text-${localcolor.hover} dark:border-${localcolor.darkcolor} dark:text-${localcolor.darkhover} bg-blue-50 dark:bg-gray-400`
+                : `border-2 border-transparent text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700`
             }`}
             onClick={() => handleTabChange("teams")}
             aria-selected={activeTab === "teams"}
@@ -95,8 +107,8 @@ const UserStateToggle = ({
           <button
             className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 cursor-pointer ${
               activeTab === "jobseeker"
-                ? `border-2 border-${localcolor.color} text-${localcolor.hover} bg-blue-50`
-                : `border-2 border-transparent text-gray-600 hover:bg-gray-100`
+                ? `border-2 border-${localcolor.color} text-${localcolor.hover} dark:border-${localcolor.darkcolor} dark:text-${localcolor.darkhover} bg-blue-50 dark:bg-gray-400`
+                : `border-2 border-transparent text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700`
             }`}
             onClick={() => handleTabChange("jobseeker")}
             aria-selected={activeTab === "jobseeker"}
@@ -140,15 +152,15 @@ const UserStateToggle = ({
               disabled={currentPage === 1}
               className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 ${
                 currentPage === 1
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : `bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover}`
+                  ? "bg-gray-200 dark:bg-gray-300 dark:text-gray-500 text-gray-400 cursor-not-allowed"
+                  : `bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover} dark:bg-${localcolor.darkcolor} dark:hover:bg-${localcolor.darkhover}`
               }`}
               aria-label="صفحه قبلی"
             >
               قبلی
             </button>
             <button
-              className={`px-4 py-2 rounded-full transition-all duration-200 bg-${localcolor.color} hover:bg-${localcolor.hover}`}
+              className={`px-4 py-2 rounded-full transition-all duration-200 bg-${localcolor.color} hover:bg-${localcolor.hover} dark:bg-${localcolor.darkcolor} dark:hover:bg-${localcolor.darkhover}`}
             >
               <span className="text-sm font-[vazirmatn] text-white">
                 {currentPage}
@@ -159,8 +171,8 @@ const UserStateToggle = ({
               disabled={currentPage === totalPages}
               className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 ${
                 currentPage === totalPages
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : `bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover}`
+                  ? "bg-gray-200 text-gray-400 dark:bg-gray-300 dark:text-gray-500 cursor-not-allowed"
+                  : `bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover} dark:bg-${localcolor.darkcolor} dark:hover:bg-${localcolor.darkhover}`
               }`}
               aria-label="صفحه بعدی"
             >

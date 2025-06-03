@@ -29,16 +29,16 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="flex h-screen w-full text-white relative overflow-hidden">
+    <div className="flex h-screen w-full text-white relative overflow-hidden dark:bg-gray-900">
       <motion.div
         initial={{ x: 0 }}
         animate={{ x: isLogin ? "0%" : "100%" }}
         transition={{ duration: 0.6, ease: "easeInOut" }}
-        className="w-1/2 h-full absolute top-0"
+        className="w-1/2 h-full absolute top-0 dark:bg-gray-800"
       ></motion.div>
 
       {/* Main Authentication Container */}
-      <div className={`flex w-full h-full justify-center ${Bg}`}>
+      <div className={`flex w-full h-full justify-center ${Bg} dark:bg-gray-900`}>
         {/* Right Side (Signup) */}
         <div
           className={`md:w-48/100 sm:w-full ${
@@ -65,14 +65,14 @@ const AuthPage = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="w-96 p-6 rounded-lg"
+                className="w-96 p-6 rounded-lg dark:bg-gray-800"
               >
                 <SignupForm />
-                <div className=" text-center md:w-full sm:w-8/10 text-[#D9D9D9] font-[vazirmatn] mt-8 text-[24px] font-bold text-sm">
+                <div className=" text-center md:w-full sm:w-8/10 text-[#D9D9D9] font-[vazirmatn] mt-8 text-[24px] font-bold text-sm dark:text-gray-300">
                   حساب کاربری دارید؟
                   <button
                     onClick={handleLoginClick}
-                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 transition duration-200 ease-in-out hover:text-green-600"
+                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 transition duration-200 ease-in-out hover:text-green-600 dark:hover:text-green-400"
                   >
                     ورود
                   </button>
@@ -107,14 +107,14 @@ const AuthPage = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 50 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="w-96 p-6 rounded-lg"
+                className="w-96 p-6 rounded-lg dark:bg-gray-800"
               >
                 <LoginForm />
-                <div className="text-center md:w-full sm:w-8/10 text-[#D9D9D9] font-[vazirmatn] mt-8 text-[24px] font-bold text-sm">
+                <div className="text-center md:w-full sm:w-8/10 text-[#D9D9D9] font-[vazirmatn] mt-8 text-[24px] font-bold text-sm dark:text-gray-300">
                   حساب کاربری ندارید؟
                   <button
                     onClick={handleSignupClick}
-                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 transition duration-200 ease-in-out hover:text-blue-600"
+                    className="text-[#D9D9D9] cursor-pointer font-[vazirmatn] font-extralight text-[24px] px-3 transition duration-200 ease-in-out hover:text-blue-600 dark:hover:text-blue-400"
                   >
                     ثبت نام
                   </button>

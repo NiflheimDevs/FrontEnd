@@ -39,25 +39,25 @@ const UserJobExperience = ({
 
   return (
     <div className="flex flex-col gap-4 px-4 mb-6">
-      <h3 className="text-xl font-bold text-gray-800 font-[vazirmatn]">
+      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-300 font-[vazirmatn]">
         سوابق شغلی
       </h3>
       {paginatedExperience.length > 0 ? (
         paginatedExperience.map((experience) => (
           <div
             key={experience.id || experience.companyName + experience.jobTitle}
-            className="bg-white p-4 rounded-xl shadow-md border border-gray-100 transition-all duration-300 hover:shadow-lg"
+            className="bg-white p-4 rounded-xl shadow-md border border-gray-100 dark:bg-gray-600 dark:border-gray-600 transition-all duration-300 hover:shadow-lg"
           >
             <div className="flex flex-col gap-2">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-                <h4 className="text-lg font-semibold text-gray-800 font-[vazirmatn]">
+                <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-300 font-[vazirmatn]">
                   {experience.jobTitle}
                 </h4>
-                <span className="text-sm text-gray-600 font-[vazirmatn]">
+                <span className="text-sm text-gray-600 dark:text-gray-400 font-[vazirmatn]">
                   {experience.companyName}
                 </span>
               </div>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-500 font-[vazirmatn]">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-500 dark:text-gray-300 font-[vazirmatn]">
                 <span>
                   {experience.startDate} -{" "}
                   {experience.isOngoing
@@ -73,7 +73,7 @@ const UserJobExperience = ({
                     }
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`flex items-center gap-1 text-${localcolor.color} hover:text-${localcolor.hover}`}
+                    className={`flex items-center gap-1 text-${localcolor.color} dark:text-${localcolor.darkcolor} hover:text-${localcolor.hover} dark:hover:text-${localcolor.darkhover}`}
                     aria-label={`وب‌سایت ${experience.companyName}`}
                   >
                     <Globe size={14} />
@@ -85,7 +85,7 @@ const UserJobExperience = ({
                 {experience.skills.map((skill) => (
                   <div
                     key={skill.id || skill.name}
-                    className={`flex items-center gap-1 px-2 py-1 rounded-full bg-${localcolor.color} hover:bg-${localcolor.hover} transition-colors duration-200`}
+                    className={`flex items-center gap-1 px-2 py-1 rounded-full bg-${localcolor.color} dark:bg-${localcolor.darkcolor} hover:bg-${localcolor.hover} dark:hover:bg-${localcolor.darkhover} transition-colors duration-200`}
                     aria-label={`مهارت: ${skill.name}`}
                   >
                     <span className="text-white text-xs font-[vazirmatn] pointer-events-none">
@@ -109,15 +109,15 @@ const UserJobExperience = ({
             disabled={currentPage === 1}
             className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 ${
               currentPage === 1
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : `bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover}`
+                ? "bg-gray-200 text-gray-400 dark:bg-gray-300 dark:text-gray-500 cursor-not-allowed"
+                : `bg-${localcolor.color} dark:bg-${localcolor.darkcolor} text-white cursor-pointer hover:bg-${localcolor.hover} dark:hover:bg-${localcolor.darkhover}`
             }`}
             aria-label="صفحه قبلی"
           >
             قبلی
           </button>
           <button
-            className={`px-4 py-2 rounded-full transition-all duration-200 bg-${localcolor.color} hover:bg-${localcolor.hover}`}
+            className={`px-4 py-2 rounded-full transition-all duration-200 bg-${localcolor.color} dark:bg-${localcolor.darkcolor} hover:bg-${localcolor.hover} dark:hover:bg-${localcolor.darkhover}`}
           >
             <span className="text-sm font-[vazirmatn] text-white px-3 py-1.5">
               {currentPage}
@@ -128,8 +128,8 @@ const UserJobExperience = ({
             disabled={currentPage === totalPages}
             className={`px-4 py-2 text-sm font-[vazirmatn] rounded-full transition-all duration-200 ${
               currentPage === totalPages
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : `bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover}`
+                ? "bg-gray-200 text-gray-400 dark:bg-gray-300 dark:text-gray-500 cursor-not-allowed"
+                : `bg-${localcolor.color} dark:bg-${localcolor.darkcolor} text-white cursor-pointer hover:bg-${localcolor.hover} dark:hover:bg-${localcolor.darkhover}`
             }`}
             aria-label="صفحه بعدی"
           >

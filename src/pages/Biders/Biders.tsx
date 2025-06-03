@@ -92,56 +92,63 @@ const Biders: React.FC = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      {/* Sidebar */}
-      <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+    <>
+      <div className="fixed inset-0 bg-gray-100 dark:bg-gray-800 z-[-1]"></div>
+      <div className="bg-gray-100 dark:bg-gray-800 min-h-screen overflow-auto">
+        {/* Sidebar */}
+        <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-20 max-w-[90rem] md:pr-24 sm:pr-24">
-        <Header toggleSidebar={toggleSidebar} />
-        {loading ? (
-          <BiderSkeletonLoading />
-        ) : (
-          <>
-            {/* Filter Section */}
-            <FilterComponent
-              maxDeliveryDays={maxExpectedTime}
-              key={`filter-${filterVersion}`}
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              filters={filters}
-              setFilters={setFilters}
-            />
+        {/* Main Content */}
+        <div className="container mx-auto px-4 py-20 max-w-[90rem] md:pr-24 sm:pr-24 dark:bg-gray-800">
+          <Header toggleSidebar={toggleSidebar} />
+          {loading ? (
+            <BiderSkeletonLoading />
+          ) : (
+            <>
+              {/* Filter Section */}
+              <FilterComponent
+                maxDeliveryDays={maxExpectedTime}
+                key={`filter-${filterVersion}`}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                filters={filters}
+                setFilters={setFilters}
+              />
 
-            {/* Biders List */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {error ? (
-                <div className="text-center bg-white shadow-md rounded-lg p-8 col-span-full">
-                  <p className="text-red-600 text-xl">{error}</p>
-                </div>
-              ) : filteredBiders.length > 0 ? (
-                filteredBiders.map((bider) => (
-                  <UserProfileCard
-                    key={bider.bid_id}
-                    bid_id={bider.bid_id}
-                    title={bider.title}
-                    prePayment={formatPrice(bider.pre_payment)}
-                    total={formatPrice(bider.total)}
-                    deliveryDays={bider.expected_time}
-                    imageUrl={bider.profile}
-                    description={bider.description}
-                  />
-                ))
-              ) : (
-                <div className="text-center bg-white shadow-md rounded-lg p-8 col-span-full">
-                  <p className="text-gray-600 text-xl">هیچ کارجویی یافت نشد.</p>
-                </div>
-              )}
-            </div>
-          </>
-        )}
+              {/* Biders List */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {error ? (
+                  <div className="text-center bg-white dark:bg-gray-700 shadow-md rounded-lg p-8 col-span-full">
+                    <p className="text-red-600 dark:text-red-400 text-xl">
+                      {error}
+                    </p>
+                  </div>
+                ) : filteredBiders.length > 0 ? (
+                  filteredBiders.map((bider) => (
+                    <UserProfileCard
+                      key={bider.bid_id}
+                      bid_id={bider.bid_id}
+                      title={bider.title}
+                      prePayment={formatPrice(bider.pre_payment)}
+                      total={formatPrice(bider.total)}
+                      deliveryDays={bider.expected_time}
+                      imageUrl={bider.profile}
+                      description={bider.description}
+                    />
+                  ))
+                ) : (
+                  <div className="text-center bg-white dark:bg-gray-700 shadow-md rounded-lg p-8 col-span-full">
+                    <p className="text-gray-600 dark:text-gray-300 text-xl">
+                      هیچ کارجویی یافت نشد.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

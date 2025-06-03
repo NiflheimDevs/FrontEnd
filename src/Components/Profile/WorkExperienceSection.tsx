@@ -143,7 +143,7 @@ export default function WorkExperienceSection({
 
   return (
     <div className="flex flex-col sm:flex-row gap-2 text-right">
-      <label className="font-semibold text-gray-600 w-24 text-right">
+      <label className="font-semibold text-gray-600 dark:text-gray-300 w-24 text-right">
         سوابق کاری
       </label>
       <div className="w-full sm:flex-1 space-y-4">
@@ -161,18 +161,18 @@ export default function WorkExperienceSection({
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="bg-gray-100 px-4 pb-4 pt-2 rounded-lg shadow-md border w-full border-gray-200 relative"
+                  className="bg-gray-100 dark:border-gray-500 dark:border-2 dark:bg-gray-700 px-4 pb-4 pt-2 rounded-lg shadow-md border w-full border-gray-200 relative"
                 >
                   <button
                     onClick={() => handleRemoveWorkExperience(index)}
-                    className="absolute top-2 right-2 bg-black bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-200 ease-in-out hover:scale-110 cursor-pointer"
+                    className="absolute top-2 right-2 bg-black dark:bg-gray-800 bg-opacity-50 rounded-full p-1 border-2 border-white transition duration-200 ease-in-out hover:scale-110 cursor-pointer"
                     tabIndex={baseTabIndex}
                   >
                     <X size={20} color="white" />
                   </button>
                   <div className="flex flex-col gap-3 mt-8">
                     <div className="flex items-center gap-2">
-                      <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right flex gap-1">
+                      <label className="text-sm mt-2 font-semibold text-gray-700 dark:text-gray-300 w-24 text-right flex gap-1">
                         <span>اسم شرکت</span>
                         <span className="text-red-400">*</span>
                       </label>
@@ -187,7 +187,7 @@ export default function WorkExperienceSection({
                           )
                         }
                         placeholder="گوگل"
-                        className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                        className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 dark:border-gray-500 dark:text-gray-300 dark:bg-gray-700 ${
                           workError?.fields.includes("companyName")
                             ? "placeholder-red-500"
                             : "placeholder-gray-400"
@@ -196,7 +196,7 @@ export default function WorkExperienceSection({
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right flex gap-1">
+                      <label className="text-sm mt-2 font-semibold text-gray-700 dark:text-gray-300 w-24 text-right flex gap-1">
                         <span>عنوان شغلی</span>
                         <span className="text-red-400">*</span>
                       </label>
@@ -211,7 +211,7 @@ export default function WorkExperienceSection({
                             e.target.value
                           )
                         }
-                        className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-700 ${
+                        className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-700 dark:border-gray-500 dark:text-gray-300 dark:bg-gray-700 ${
                           workError?.fields.includes("jobTitle")
                             ? "placeholder-red-500"
                             : "placeholder-gray-400"
@@ -220,7 +220,7 @@ export default function WorkExperienceSection({
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right">
+                      <label className="text-sm mt-2 font-semibold text-gray-700 dark:text-gray-300 w-24 text-right">
                         آدرس سایت
                       </label>
                       <input
@@ -234,12 +234,12 @@ export default function WorkExperienceSection({
                             e.target.value
                           )
                         }
-                        className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-700 placeholder-gray-400`}
+                        className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white dark:bg-gray-700 dark:border-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-700 dark:text-gray-300 placeholder-gray-400`}
                         tabIndex={baseTabIndex + 2}
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right flex gap-1">
+                      <label className="text-sm mt-2 font-semibold text-gray-700 dark:text-gray-300 w-24 text-right flex gap-1">
                         <span>تاریخ شروع</span>
                         <span className="text-red-400">*</span>
                       </label>
@@ -263,7 +263,7 @@ export default function WorkExperienceSection({
                             value={exp.startDate || ""}
                             onFocus={openCalendar}
                             placeholder="تاریخ شروع را انتخاب کنید"
-                            className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                            className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 dark:border-gray-500 dark:text-gray-300 dark:bg-gray-700 ${
                               workError?.fields.includes("startDate")
                                 ? "placeholder-red-500"
                                 : "placeholder-gray-400"
@@ -283,7 +283,7 @@ export default function WorkExperienceSection({
                           exit="hidden"
                           className="flex items-center gap-2"
                         >
-                          <label className="text-sm mt-2 font-semibold text-gray-700 w-24 text-right flex gap-1">
+                          <label className="text-sm mt-2 font-semibold text-gray-700 dark:text-gray-300 w-24 text-right flex gap-1">
                             <span>تاریخ پایان</span>
                             <span className="text-red-400">*</span>
                           </label>
@@ -307,7 +307,7 @@ export default function WorkExperienceSection({
                                 value={value}
                                 onFocus={openCalendar}
                                 placeholder="تاریخ اتمام را انتخاب کنید"
-                                className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${
+                                className={`w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 dark:border-gray-500 dark:text-gray-300 dark:bg-gray-700 ${
                                   workError?.fields.includes("endDate")
                                     ? "placeholder-red-500"
                                     : "placeholder-gray-400"
@@ -321,7 +321,7 @@ export default function WorkExperienceSection({
                       )}
                     </AnimatePresence>
                     <div className="flex items-center gap-2 justify-end">
-                      <label className="flex items-center mt-2 gap-2 text-sm text-gray-700 cursor-pointer">
+                      <label className="flex items-center mt-2 gap-2 text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
                         <input
                           type="checkbox"
                           checked={exp.isOngoing}
@@ -332,14 +332,14 @@ export default function WorkExperienceSection({
                               e.target.checked
                             )
                           }
-                          className="w-5 h-5 rounded border-2 border-gray-300 text-blue-500 focus:ring-blue-500 transition-all duration-200"
+                          className="w-5 h-5 rounded border-2 border-gray-300 text-blue-500 dark:text-blue-600 focus:ring-blue-500 dark:hover:bg-blue-700 dark:focus:bg-blue-700 transition-all duration-200"
                           tabIndex={baseTabIndex + 5}
                         />
                         هنوز در حال همکاری هستم
                       </label>
                     </div>
                     <div className="mt-4">
-                      <h3 className="text-sm font-semibold text-gray-600 text-right mb-2">
+                      <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-300 text-right mb-2">
                         مهارت‌های استفاده شده
                       </h3>
                       <div className="relative mb-2">
@@ -364,7 +364,7 @@ export default function WorkExperienceSection({
                               setWorkDropdowns(newDropdowns);
                             }, 200)
                           }
-                          className="w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white"
+                          className="w-full p-2 border-2 rounded-lg text-right [direction:rtl] bg-white dark:border-gray-500 dark:text-gray-300 dark:bg-gray-700"
                           tabIndex={baseTabIndex + 6}
                         />
                         <AnimatePresence>
@@ -374,7 +374,7 @@ export default function WorkExperienceSection({
                               initial="hidden"
                               animate="visible"
                               exit="exit"
-                              className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto border-2 rounded-lg bg-white shadow-md"
+                              className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto border-2 rounded-lg bg-white shadow-md dark:border-gray-600 dark:bg-gray-700"
                             >
                               {skills
                                 .filter(
@@ -420,7 +420,7 @@ export default function WorkExperienceSection({
                           )}
                         </AnimatePresence>
                       </div>
-                      <div className="flex flex-wrap mt-2 min-h-[40px] p-2 rounded-lg bg-gray-100 gap-2">
+                      <div className="flex flex-wrap mt-2 min-h-[40px] py-2 rounded-lg bg-gray-100 dark:bg-gray-700 dark:border-0 gap-2">
                         <AnimatePresence>
                           {exp.skills.length > 0 ? (
                             exp.skills.map((skill: Skill) => (
@@ -430,7 +430,7 @@ export default function WorkExperienceSection({
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
-                                className="flex items-center gap-2 bg-blue-500 text-white text-sm px-2 py-1 rounded-full cursor-pointer hover:bg-blue-600 transition-colors "
+                                className="flex items-center gap-2 bg-blue-500 text-white text-sm px-2 py-1 rounded-full cursor-pointer hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 transition-colors "
                                 onClick={() =>
                                   handleWorkExperienceChange(
                                     index,
@@ -473,14 +473,14 @@ export default function WorkExperienceSection({
               );
             })
           ) : (
-            <p className="text-gray-400 text-sm bg-gray-100 rounded-lg p-2">
+            <p className="text-gray-400 text-sm bg-gray-100 rounded-lg p-2 dark:bg-gray-500 dark:text-gray-300 border border-gray-200 dark:border-gray-500">
               سابقه کاری اضافه نشده
             </p>
           )}
         </AnimatePresence>
         <button
           onClick={handleAddWorkExperience}
-          className="mt-2 bg-[#3E79DE] text-white py-2 px-4 rounded-[20px] shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 focus:shadow-lg cursor-pointer"
+          className="mb-2 bg-[#3E79DE] text-white py-2 px-4 rounded-[20px] shadow-[0_4px_10px_rgba(0,0,0,0.2)] transition-all duration-200 ease-in-out hover:bg-blue-600 hover:shadow-lg focus:bg-blue-600 dark:hover:bg-blue-700 dark:focus:bg-blue-700 dark:bg-blue-600 focus:shadow-lg cursor-pointer"
           tabIndex={tabIndexStart + localProfile.workExperiences.length * 10}
         >
           + افزودن سابقه کاری

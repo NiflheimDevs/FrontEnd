@@ -164,25 +164,25 @@ const BidModal: React.FC<BidModalProps> = ({
     <form className="fixed px-2 inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
       <motion.div
         ref={modalRef}
-        className="bg-white p-4 rounded-lg shadow-xl w-full max-w-md mx-2 sm:mx-auto max-h-[90vh] overflow-y-auto"
+        className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-xl w-full max-w-md mx-2 sm:mx-auto max-h-[90vh] overflow-y-auto"
         initial={{ scale: 1, y: 50, opacity: 0 }}
         animate={{ scale: 1, y: 0, opacity: 1 }}
         exit={{ scale: 1, y: 50, opacity: 0 }}
         transition={{ duration: 0.3, ease: "circOut" }}
       >
-        <h2 className="text-lg font-semibold text-gray-800 text-right mb-4">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 text-right mb-4">
           ارسال پیشنهاد
         </h2>
         <div className="space-y-4">
           {/* Team Selection */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-800 text-right mb-2">
+            <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 text-right mb-2">
               انتخاب تیم
             </h3>
             <AnimatePresence>
               {errors.team_id.length > 0 && (
                 <motion.ul
-                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+                  className="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-400 px-4 py-3 rounded mb-4"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -242,10 +242,10 @@ const BidModal: React.FC<BidModalProps> = ({
 
           {/* Form Inputs */}
           <div>
-            <label className="flex justify-between items-center text-sm font-medium text-gray-800 text-right mb-2">
+            <label className="flex justify-between items-center text-sm font-medium text-gray-800 dark:text-gray-200 text-right mb-2">
               پیش پرداخت (تومان)
               {formData.pre_payment ? (
-                <span className="text-xs text-gray-500 mt-3 block select-none">
+                <span className="text-xs text-gray-500 dark:text-gray-300 mt-3 block select-none">
                   {`${formatPrice(formData.pre_payment)} تومان`}
                 </span>
               ) : (
@@ -257,13 +257,13 @@ const BidModal: React.FC<BidModalProps> = ({
               name="pre_payment"
               value={formData.pre_payment || ""}
               onChange={handleValidatedInputChange}
-              className={`w-full p-2 border rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-400 transition-colors no-spinner`}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg text-right bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 focus:border-blue-400 dark:focus:border-blue-500 transition-colors no-spinner"
               placeholder="400,000"
             />
             <AnimatePresence>
               {errors.pre_payment.length > 0 && (
                 <motion.ul
-                  className="bg-red-100 border border-red-400 text-red-700 px-2 rounded-lg py-1 mt-2"
+                  className="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-400 px-2 rounded-lg py-1 mt-2"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -285,10 +285,10 @@ const BidModal: React.FC<BidModalProps> = ({
             </AnimatePresence>
           </div>
           <div>
-            <label className="flex justify-between text-sm font-medium items-center text-gray-800 text-right mb-2">
+            <label className="flex justify-between text-sm font-medium items-center text-gray-800 dark:text-gray-200 text-right mb-2">
               مبلغ کل (تومان)
               {formData.total ? (
-                <span className="text-xs text-gray-500 mt-3 block select-none">
+                <span className="text-xs text-gray-500 dark:text-gray-300 mt-3 block select-none">
                   {`${formatPrice(formData.total)} تومان`}
                 </span>
               ) : (
@@ -300,13 +300,13 @@ const BidModal: React.FC<BidModalProps> = ({
               name="total"
               value={formData.total || ""}
               onChange={handleValidatedInputChange}
-              className={`w-full p-2 border rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-400 transition-colors no-spinner`}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg text-right bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 focus:border-blue-400 dark:focus:border-blue-500 transition-colors no-spinner"
               placeholder="2,000,000"
             />
             <AnimatePresence>
               {errors.total.length > 0 && (
                 <motion.ul
-                  className="bg-red-100 border border-red-400 text-red-700 px-2 rounded-lg py-1 mt-2"
+                  className="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-400 px-2 rounded-lg py-1 mt-2"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -328,20 +328,20 @@ const BidModal: React.FC<BidModalProps> = ({
             </AnimatePresence>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-800 text-right mb-1">
+            <label className="block text-sm font-medium text-gray-800 dark:text-gray-200 text-right mb-1">
               توضیحات
             </label>
             <textarea
               name="description"
               value={formData.description || ""}
               onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg text-right bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 focus:border-blue-400 dark:focus:border-blue-500 transition-colors"
               placeholder="توضیحات پیشنهاد"
               rows={4}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-800 text-right mb-1">
+            <label className="block text-sm font-medium text-gray-800 dark:text-gray-200 text-right mb-1">
               زمان مورد انتظار (روز)
             </label>
             <input
@@ -349,13 +349,13 @@ const BidModal: React.FC<BidModalProps> = ({
               name="expected_time"
               value={formData.expected_time || ""}
               onChange={handleValidatedInputChange}
-              className={`w-full p-2 border rounded-lg text-right bg-white focus:ring-2 focus:ring-blue-400 transition-colors no-spinner`}
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg text-right bg-white dark:bg-gray-700 focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500 focus:border-blue-400 dark:focus:border-blue-500 transition-colors no-spinner"
               placeholder="7"
             />
             <AnimatePresence>
               {errors.expected_time.length > 0 && (
                 <motion.ul
-                  className="bg-red-100 border border-red-400 text-red-700 px-2 rounded-lg py-1 mt-2"
+                  className="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-400 px-2 rounded-lg py-1 mt-2"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -389,7 +389,7 @@ const BidModal: React.FC<BidModalProps> = ({
               });
             }}
             type="button"
-            className="cursor-pointer bg-gray-500 hover:bg-gray-600 text-white px-14 py-2 rounded-lg text-sm shadow-md transition-colors"
+            className="cursor-pointer bg-gray-500 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-500 text-white px-14 py-2 rounded-lg text-sm shadow-md transition-colors"
           >
             لغو
           </button>
@@ -399,8 +399,8 @@ const BidModal: React.FC<BidModalProps> = ({
             disabled={isSubmitDisabled}
             className={`cursor-pointer w-full px-14 py-2 rounded-lg text-sm shadow-md transition-colors ${
               isSubmitDisabled
-                ? "bg-blue-300 text-white cursor-not-allowed"
-                : "bg-blue-400 hover:bg-blue-500 text-white"
+                ? "bg-blue-300 dark:bg-blue-600 text-white cursor-not-allowed"
+                : "bg-blue-400 dark:bg-blue-500 hover:bg-blue-500 dark:hover:bg-blue-400 text-white"
             }`}
           >
             ارسال

@@ -212,8 +212,8 @@ const MyProjects = () => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-[#F7F7F7] z-[-1]"></div>
-      <div className="min-h-screen flex flex-col relative overflow-hidden bg-[#F7F7F7]">
+      <div className="fixed inset-0 bg-[#F7F7F7] z-[-1] dark:bg-gray-800"></div>
+      <div className="min-h-screen flex flex-col relative overflow-hidden bg-[#F7F7F7] dark:bg-gray-800">
         <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <main
           className={`flex-1 flex flex-col pt-20 transition-all duration-400 sm:pr-24 pr-4 pl-4 relative z-10 ${
@@ -253,29 +253,29 @@ const MyProjects = () => {
                 {Array.from({ length: 4 }).map((_, index) => (
                   <div
                     key={`loading-${index}`}
-                    className="relative !bg-gradient-to-br !from-[#5189CA] !to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-fit min-h-[285px] flex flex-col p-6 glowing-card overflow-hidden mx-auto animate-pulse shiny-skeleton"
+                    className="relative !bg-gradient-to-br !from-[#5189CA] !to-[#1E3A8A] dark:!from-[#1C2B48] dark:!to-[#0B1226] rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-fit min-h-[285px] flex flex-col p-6 glowing-card overflow-hidden mx-auto animate-pulse shiny-skeleton "
                   >
                     <div className="flex flex-col justify-between flex-grow z-10">
                       <div>
                         <div className="flex flex-row justify-between gap-1">
-                          <div className="w-24 h-4 bg-white/50 rounded-full mb-4 animate-shine"></div>
-                          <div className="w-[107px] h-[29px] bg-white/50 rounded-full mb-4 animate-shine"></div>
+                          <div className="w-24 h-4 bg-white/50 dark:bg-gray-600/60 rounded-full mb-4 animate-shine"></div>
+                          <div className="w-[107px] h-[29px] bg-white/50 dark:bg-gray-600/60 rounded-full mb-4 animate-shine"></div>
                         </div>
-                        <div className="w-3/4 h-6 bg-white/70 rounded-full mt-3 mb-3 animate-shine"></div>
-                        <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
-                        <div className="w-full h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
-                        <div className="w-1/2 h-4 bg-white/50 rounded-full mt-2 mb-2 animate-shine"></div>
+                        <div className="w-3/4 h-6 bg-white/70 dark:bg-gray-500/70 rounded-full mt-3 mb-3 animate-shine"></div>
+                        <div className="w-full h-4 bg-white/50 dark:bg-gray-600/60 rounded-full mt-2 mb-2 animate-shine"></div>
+                        <div className="w-full h-4 bg-white/50 dark:bg-gray-600/60 rounded-full mt-2 mb-2 animate-shine"></div>
+                        <div className="w-1/2 h-4 bg-white/50 dark:bg-gray-600/60 rounded-full mt-2 mb-2 animate-shine"></div>
                       </div>
                       <div className="flex flex-wrap w-3/4 gap-2 mt-3">
-                        <div className="w-16 h-6 bg-white/30 rounded-full animate-shine"></div>
-                        <div className="w-16 h-6 bg-white/30 rounded-full animate-shine"></div>
+                        <div className="w-16 h-6 bg-white/30 dark:bg-gray-700/50 rounded-full animate-shine"></div>
+                        <div className="w-16 h-6 bg-white/30 dark:bg-gray-700/50 rounded-full animate-shine"></div>
                       </div>
                     </div>
                     <div className="flex w-16 flex-wrap gap-2 absolute bottom-[15px] left-[15px] z-10">
-                      <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
-                      <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
-                      <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
-                      <div className="w-6 h-6 bg-white/50 rounded-full animate-shine"></div>
+                      <div className="w-6 h-6 bg-white/50 dark:bg-gray-600/60 rounded-full animate-shine"></div>
+                      <div className="w-6 h-6 bg-white/50 dark:bg-gray-600/60 rounded-full animate-shine"></div>
+                      <div className="w-6 h-6 bg-white/50 dark:bg-gray-600/60 rounded-full animate-shine"></div>
+                      <div className="w-6 h-6 bg-white/50 dark:bg-gray-600/60 rounded-full animate-shine"></div>
                     </div>
                   </div>
                 ))}
@@ -297,7 +297,7 @@ const MyProjects = () => {
                     animate="visible"
                     exit="exit"
                     whileHover="hover"
-                    className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-fit min-h-[285px] flex flex-col p-6 glowing-card overflow-hidden mx-auto"
+                    className="relative bg-gradient-to-br from-[#5189CA] to-[#1E3A8A] rounded-3xl w-full min-w-[250px] max-w-[335.06px] h-fit min-h-[285px] flex flex-col p-6 glowing-card overflow-hidden mx-auto dark:from-[#1C2B48] dark:to-[#0B1226]"
                   >
                     <div className="flex flex-col justify-between flex-grow z-10">
                       <div>
@@ -433,16 +433,16 @@ const MyProjects = () => {
                 onClick={cancelDelete}
               />
               <motion.div
-                className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg z-10"
+                className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg z-10 dark:bg-black"
                 variants={modalVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
               >
-                <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center dark:text-[#E0D6C8]">
                   آیا مطمئن هستید؟
                 </h3>
-                <p className="text-gray-600 mb-6 text-center">
+                <p className="text-gray-600 mb-6 text-center dark:text-[#B4AA9C]">
                   آیا می‌خواهید این پروژه را حذف کنید؟
                 </p>
                 <div className="flex justify-center gap-4 space-x-4">
@@ -465,8 +465,8 @@ const MyProjects = () => {
         </AnimatePresence>
 
         <footer
-          className={`bg-[#F7F7F7] ltr place-items-center ${
-            currentProjects.length === 0 ? "" : "border-t border-gray-200 "
+          className={`bg-[#F7F7F7] ltr place-items-center dark:bg-gray-800 ${
+            currentProjects.length === 0 ? "" : "border-t border-gray-200 dark:border-[#1A1814]"
           } self-center p-4 w-full relative z-10 transition-all duration-400 sm:pr-24 pr-4 pl-4 ${
             isSidebarOpen ? "md:pr-52" : "md:pr-28"
           }`}

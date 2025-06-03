@@ -85,6 +85,9 @@ export const refreshAccessToken = async () => {
     }
     return newAccessToken;
   } catch (error: any) {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
+    window.location.href = "/auth";
     throw error.response?.data || "خطا در تمدید توکن!";
   }
 };
@@ -710,5 +713,26 @@ export const GetSpecificTeamProject = async (id: any) => {
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+
+
+export const getChats = async () => {
+  try {
+    const response = await apiClient.get("/chat");
+    console.log(response.data)
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت لیست چت‌ها";
+  }
+};
+
+export const getRoomMessages = async (chatId: string) => {
+  try {
+    const response = await apiClient.get(`/chat/${chatId}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در دریافت پیام‌ها";
   }
 };

@@ -108,7 +108,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
       <div>
         <label
           htmlFor="name"
-          className="block mb-2 text-gray-700 font-semibold"
+          className="block mb-2 text-gray-700 font-semibold dark:text-[#C8BEAE]"
         >
           عنوان پروژه
         </label>
@@ -117,7 +117,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
           id="name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+          className="w-full p-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
           placeholder="عنوان پروژه را وارد کنید"
         />
         <AnimatePresence>
@@ -139,7 +139,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
       <div>
         <label
           htmlFor="description"
-          className="block mb-2 text-gray-700 font-semibold"
+          className="block mb-2 text-gray-700 font-semibold dark:text-[#C8BEAE]"
         >
           توضیحات پروژه
         </label>
@@ -148,7 +148,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
             id="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full p-3 border min-h-[100px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none"
+            className="w-full p-3 border min-h-[100px] dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none"
             rows={4}
             placeholder="توضیحات کامل پروژه را وارد کنید"
           />
@@ -174,7 +174,7 @@ const EditStep1: React.FC<EditStep1Props> = ({ formData, onNext }) => {
       <div className="flex justify-between mt-4">
         <button
           onClick={() => navigate("/dashboard")}
-          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer"
+          className="bg-gray-300 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center cursor-pointer dark:bg-[#1E2126] dark:text-[#E0D6C8]"
         >
           بازگشت به داشبورد
         </button>

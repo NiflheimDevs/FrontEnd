@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User } from "./index";
 import { addMember } from "../../API";
+import {
+  TeamSearchSelectedMemberCard,
+  TeamSearchMemberCard,
+} from "./TeamSearchMemberCard";
 
 interface AddMemberModalProps {
   isOpen: boolean;
@@ -16,7 +20,7 @@ const sampleUsers: User[] = [
     id: 1,
     name: "علی محمدی",
     email: "ali@example.com",
-    avatar: "",
+    avatar: "hhhhhhhhhh",
     role: "توسعه دهنده",
     position: "مدیر",
   },
@@ -24,7 +28,7 @@ const sampleUsers: User[] = [
     id: 2,
     name: "سارا احمدی",
     email: "sara@example.com",
-    avatar: "",
+    avatar: "hhhhhhhhhh",
     role: "طراح",
     position: "مدیر",
   },
@@ -32,7 +36,7 @@ const sampleUsers: User[] = [
     id: 3,
     name: "رضا کریمی",
     email: "reza@example.com",
-    avatar: "",
+    avatar: "hhhhhhhhhh",
     role: "مدیر محصول",
     position: "مدیر",
   },
@@ -40,7 +44,7 @@ const sampleUsers: User[] = [
     id: 6,
     name: "مریم حسینی",
     email: "maryam@example.com",
-    avatar: "",
+    avatar: "hhhhhhhhhh",
     role: "توسعه دهنده",
     position: "مدیر",
   },
@@ -48,7 +52,7 @@ const sampleUsers: User[] = [
     id: 5,
     name: "امیر رضایی",
     email: "amir@example.com",
-    avatar: "",
+    avatar: "hhhhhhhhhh",
     role: "ادمین",
     position: "مدیر",
   },
@@ -176,19 +180,19 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
     <div className="fixed inset-0 bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-xs">
       <div
         ref={modalRef}
-        className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn"
+        className="bg-white rounded-lg shadow-2xl w-full max-w-md max-h-screen overflow-y-auto animate-fadeIn dark:bg-gray-900"
         style={{
           boxShadow:
             "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
           direction: "rtl",
         }}
       >
-        <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600">
+        <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-800 dark:to-blue-900">
           <h2 className="text-xl font-bold text-white">افزودن عضو به تیم</h2>
 
           <button
             onClick={onClose}
-            className="text-white hover:bg-blue-700 cursor-pointer hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
+            className="text-white hover:bg-blue-700 dark:hover:bg-blue-800 cursor-pointer hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
             disabled={loading}
           >
             <svg
@@ -209,13 +213,13 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
 
         <form onSubmit={handleSubmit} className="p-6">
           {error && (
-            <div className="mb-5 p-3 bg-red-100 text-red-700 rounded-lg text-right animate-fadeIn">
+            <div className="mb-5 p-3 bg-red-100 text-red-700 rounded-lg text-right animate-fadeIn dark:bg-red-900 dark:text-red-300">
               {error}
             </div>
           )}
 
           <div className="mb-5">
-            <label className="block text-gray-700 text-right mb-2 font-medium">
+            <label className="block text-gray-700 text-right mb-2 font-medium dark:text-gray-200">
               کاربر
             </label>
 
@@ -229,39 +233,23 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
                   setIsSearching(true);
                 }}
                 onClick={() => setIsSearching(true)}
-                className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full border border-gray-300 p-3 rounded-lg text-right focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white text-gray-800 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
                 placeholder="جستجوی کاربران..."
                 required
                 disabled={loading}
               />
 
               {isSearching && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                <div className="z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto dark:bg-gray-800 dark:border-gray-700">
                   {availableUsers.length > 0 ? (
                     availableUsers.map((user) => (
-                      <div
-                        key={user.id}
-                        onClick={() => selectUser(user)}
-                        className="flex items-center justify-between p-3 hover:bg-gray-100 cursor-pointer border-b"
-                      >
-                        <div className="flex items-center">
-                          <div className="mr-2 text-right">
-                            <p className="text-sm font-medium">{user.name}</p>
-                            <p className="text-xs text-gray-500">
-                              {user.email}
-                            </p>
-                          </div>
-                          <img
-                            src={user.avatar}
-                            alt={user.name}
-                            className="w-8 h-8 rounded-full"
-                          />
-                        </div>
-                        <div className="text-gray-500 text-sm">{user.role}</div>
-                      </div>
+                      <TeamSearchMemberCard
+                        user={user}
+                        selectUser={selectUser}
+                      />
                     ))
                   ) : (
-                    <div className="p-3 text-center text-gray-500">
+                    <div className="p-3 text-center text-gray-500 dark:text-gray-300">
                       کاربری یافت نشد
                     </div>
                   )}
@@ -270,42 +258,20 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
             </div>
           </div>
 
-          {selectedUser && (
-            <div className="mb-5 p-4 bg-gray-50 rounded-lg">
-              <h3 className="text-gray-700 text-right mb-2 font-medium">
-                کاربر انتخاب شده:
-              </h3>
-              <div className="flex items-center justify-end">
-                <div className="mr-3 text-right">
-                  <p className="font-medium">{selectedUser.name}</p>
-                  <p className="text-sm text-gray-500">{selectedUser.email}</p>
-                  <p className="text-sm text-gray-600">{selectedUser.role}</p>
-                </div>
-                <img
-                  src={selectedUser.avatar}
-                  alt={selectedUser.name}
-                  className="w-10 h-10 rounded-full"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/avatar-placeholder.png";
-                  }}
-                />
-              </div>
-            </div>
-          )}
+          {selectedUser && <TeamSearchSelectedMemberCard user={selectedUser} />}
 
           <div className="flex justify-between mt-8">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium"
+              className="bg-gray-100 hover:bg-gray-200 cursor-pointer text-gray-800 py-2 px-6 rounded-lg transition-colors duration-200 font-medium dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
               disabled={loading}
             >
               انصراف
             </button>
             <button
               type="submit"
-              className={`bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium ${
+              className={`bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-6 rounded-lg flex items-center transition-colors duration-200 font-medium dark:bg-blue-700 dark:hover:bg-blue-800 ${
                 loading || !selectedUser ? "opacity-70 cursor-not-allowed" : ""
               }`}
               disabled={!selectedUser || loading}
