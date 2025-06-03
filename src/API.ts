@@ -736,3 +736,12 @@ export const getRoomMessages = async (chatId: string) => {
     throw error.response?.data || "خطا در دریافت پیام‌ها";
   }
 };
+
+export const createChatRoom = async (target_user_id: any) => {
+  try {
+    const response = await apiClient.post("/chat/create", target_user_id);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ایجاد اتاق چت";
+  }
+};
