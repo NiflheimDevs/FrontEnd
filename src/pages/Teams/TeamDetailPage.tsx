@@ -136,8 +136,7 @@ const TeamDetailPage: React.FC = () => {
           setTeamProjects([]); // Set to empty array on error
           setError(projectErr.message || "خطا در دریافت پروژه‌های تیم");
         }
-      } catch (err: any)
-      {
+      } catch (err: any) {
         console.error("Error fetching data:", err);
         setError(err.message || "خطا در دریافت اطلاعات");
       } finally {
@@ -235,26 +234,6 @@ const TeamDetailPage: React.FC = () => {
     }
   };
 
-<<<<<<< HEAD
-  // const navigateToTeamProjects = () => {
-  //   navigate(`/Browsproject`);
-  // };
-
-  // const getStatusBadgeColor = (status: number) => {
-  //   switch (status) {
-  //     case 3:
-  //       return "bg-blue-100 text-blue-800";
-  //     case 1:
-  //       return "bg-green-100 text-green-800";
-  //     case 2:
-  //       return "bg-yellow-100 text-yellow-800";
-  //     default:
-  //       return "bg-gray-100 text-gray-800";
-  //   }
-  // };
-
-=======
->>>>>>> develop
   const getStatusText = (status: number) => {
     switch (status) {
       case 3:
@@ -271,55 +250,126 @@ const TeamDetailPage: React.FC = () => {
   if (isLoading) {
     return (
       <Layout>
-          <div className="dark:bg-gray-800">
-            <div className="bg-white rounded-lg shadow-md p-4 md:p-6 dark:bg-gray-800 dark:shadow-blue-900/30 animate-pulse">
-              {/* Header: Avatar + Name + Buttons */}
-              <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
-                <div className="flex items-center gap-3">
-                  <Skeleton shape="circle" size="3rem" className="shiny-skeleton bg-gray-200 dark:bg-gray-700 border-2 border-blue-500 dark:border-blue-400" />
-                  <Skeleton width="10rem" height="2.25rem" className="shiny-skeleton rounded-lg bg-gray-200 dark:bg-gray-700" />
-                </div>
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <Skeleton width="8rem" height="2.5rem" className="shiny-skeleton rounded-lg bg-blue-500 dark:bg-blue-900" />
-                  <Skeleton width="8rem" height="2.5rem" className="shiny-skeleton rounded-lg bg-blue-500 dark:bg-blue-900" />
-                </div>
+        <div className="dark:bg-gray-800">
+          <div className="bg-white rounded-lg shadow-md p-4 md:p-6 dark:bg-gray-800 dark:shadow-blue-900/30 animate-pulse">
+            {/* Header: Avatar + Name + Buttons */}
+            <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+              <div className="flex items-center gap-3">
+                <Skeleton
+                  shape="circle"
+                  size="3rem"
+                  className="shiny-skeleton bg-gray-200 dark:bg-gray-700 border-2 border-blue-500 dark:border-blue-400"
+                />
+                <Skeleton
+                  width="10rem"
+                  height="2.25rem"
+                  className="shiny-skeleton rounded-lg bg-gray-200 dark:bg-gray-700"
+                />
               </div>
-              {/* Description and Created At */}
-              <div className="text-right mb-8">
-                <Skeleton width="50%" height="1.5rem" className="shiny-skeleton mb-2 rounded bg-gray-200 dark:bg-gray-700" />
-                <Skeleton width="8rem" height="1rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
-              </div>
-              {/* Tabs */}
-              <div className="mb-6">
-                <div className="flex justify-center border-b border-gray-200 dark:border-gray-600 gap-2">
-                  <Skeleton width="6rem" height="2rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
-                  <Skeleton width="6rem" height="2rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
-                </div>
-              </div>
-              {/* Members/Projects Table Skeleton */}
-              <div className="mb-6">
-                <Skeleton width="10rem" height="1rem" className="shiny-skeleton mb-4 rounded bg-gray-200 dark:bg-gray-700" />
-                <Skeleton width="14rem" height="0.5rem" className="shiny-skeleton mb-6 rounded bg-gray-200 dark:bg-gray-700" />
-                <div className="border rounded-lg bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600">
-                  {/* Simulate 3 member/project rows */}
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex items-center gap-4 px-4 py-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
-                      <Skeleton shape="circle" size="2.5rem" className="shiny-skeleton bg-gray-200 dark:bg-gray-700" />
-                      <Skeleton width="8rem" height="1.25rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
-                      <Skeleton width="5rem" height="1rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
-                      <Skeleton width="4rem" height="1rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
-                      <Skeleton width="3rem" height="1rem" className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Action Buttons */}
-              <div className="mt-8 text-center flex justify-center gap-4">
-                <Skeleton width="10rem" height="2.5rem" className="shiny-skeleton rounded-lg bg-gray-200 dark:bg-gray-800" />
-                <Skeleton width="8rem" height="2.5rem" className="shiny-skeleton rounded-lg bg-red-500 dark:bg-red-900" />
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Skeleton
+                  width="8rem"
+                  height="2.5rem"
+                  className="shiny-skeleton rounded-lg bg-blue-500 dark:bg-blue-900"
+                />
+                <Skeleton
+                  width="8rem"
+                  height="2.5rem"
+                  className="shiny-skeleton rounded-lg bg-blue-500 dark:bg-blue-900"
+                />
               </div>
             </div>
+            {/* Description and Created At */}
+            <div className="text-right mb-8">
+              <Skeleton
+                width="50%"
+                height="1.5rem"
+                className="shiny-skeleton mb-2 rounded bg-gray-200 dark:bg-gray-700"
+              />
+              <Skeleton
+                width="8rem"
+                height="1rem"
+                className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700"
+              />
+            </div>
+            {/* Tabs */}
+            <div className="mb-6">
+              <div className="flex justify-center border-b border-gray-200 dark:border-gray-600 gap-2">
+                <Skeleton
+                  width="6rem"
+                  height="2rem"
+                  className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700"
+                />
+                <Skeleton
+                  width="6rem"
+                  height="2rem"
+                  className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700"
+                />
+              </div>
+            </div>
+            {/* Members/Projects Table Skeleton */}
+            <div className="mb-6">
+              <Skeleton
+                width="10rem"
+                height="1rem"
+                className="shiny-skeleton mb-4 rounded bg-gray-200 dark:bg-gray-700"
+              />
+              <Skeleton
+                width="14rem"
+                height="0.5rem"
+                className="shiny-skeleton mb-6 rounded bg-gray-200 dark:bg-gray-700"
+              />
+              <div className="border rounded-lg bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600">
+                {/* Simulate 3 member/project rows */}
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-4 px-4 py-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                  >
+                    <Skeleton
+                      shape="circle"
+                      size="2.5rem"
+                      className="shiny-skeleton bg-gray-200 dark:bg-gray-700"
+                    />
+                    <Skeleton
+                      width="8rem"
+                      height="1.25rem"
+                      className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700"
+                    />
+                    <Skeleton
+                      width="5rem"
+                      height="1rem"
+                      className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700"
+                    />
+                    <Skeleton
+                      width="4rem"
+                      height="1rem"
+                      className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700"
+                    />
+                    <Skeleton
+                      width="3rem"
+                      height="1rem"
+                      className="shiny-skeleton rounded bg-gray-200 dark:bg-gray-700"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Action Buttons */}
+            <div className="mt-8 text-center flex justify-center gap-4">
+              <Skeleton
+                width="10rem"
+                height="2.5rem"
+                className="shiny-skeleton rounded-lg bg-gray-200 dark:bg-gray-800"
+              />
+              <Skeleton
+                width="8rem"
+                height="2.5rem"
+                className="shiny-skeleton rounded-lg bg-red-500 dark:bg-red-900"
+              />
+            </div>
           </div>
+        </div>
       </Layout>
     );
   }
@@ -344,234 +394,34 @@ const TeamDetailPage: React.FC = () => {
 
   return (
     <div className="dark:bg-gray-800">
-    <Layout>
-      <div className="bg-white rounded-lg shadow-md p-4 md:p-6 dark:bg-gray-800 dark:shadow-blue-900/30">
-        <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
-          <div className="flex items-center gap-3">
-            {ProfileExists && teamData.profileImage ? (
-              <img
-                src={teamData.profileImage}
-                alt={teamData.name}
-                className="w-12 h-12 rounded-full object-cover border-2 border-blue-500 dark:border-blue-400 order-first md:order-first"
-                onError={() => SetProfileExist(false)}
-              />
-            ) : (
-              <div className="w-12 h-12 items-center justify-center flex bg-blue-100 text-blue-700 dark:bg-blue-700/40 dark:text-blue-100 text-xl font-semibold rounded-full object-cover border-2 border-blue-500 dark:border-blue-400 order-first md:order-first">
-                {teamData.name.charAt(0)}
-              </div>
-            )}
-            <h1 className="text-2xl font-bold text-right text-gray-900 dark:text-gray-200">
-              {teamData.name}
-            </h1>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2">
-            {hasPermission("ADD_MEMBER") && (
-              <button
-                onClick={() => setIsAddMemberModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded-lg flex items-center justify-center dark:bg-blue-600 dark:hover:bg-blue-700"
-              >
-                <svg
-                  className="w-5 h-5 ml-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                اضافه کردن عضو
-              </button>
-            )}
-            {hasPermission("EDIT_INFO") && (
-              <button
-                onClick={() => setIsEditTeamModalOpen(true)}
-                className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded-lg flex items-center justify-center dark:bg-blue-600 dark:hover:bg-blue-700"
-              >
-                <svg
-                  className="w-5 h-5 ml-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                  />
-                </svg>
-                ویرایش تیم
-              </button>
-            )}
-          </div>
-        </div>
-
-        <div className="text-right mb-8">
-          <p className="text-gray-700 pointer-events-none dark:text-gray-200">{teamData.description || " "}</p>
-          {teamData.createdAt && (
-            <p className="text-gray-500 text-sm mt-2 pointer-events-none dark:text-gray-400">
-              تاریخ ایجاد:{" "}
-              {new Date(teamData.createdAt).toLocaleDateString("fa-IR")}
-            </p>
-          )}
-        </div>
-
-        <div className="mb-6">
-          <div className="flex justify-center border-b border-gray-200 dark:border-gray-600">
-            <button
-              className={`py-2 px-4 md:px-8 cursor-pointer ${activeTab === "projects" ? "text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400" : "text-gray-500 dark:text-gray-400"}`}
-              onClick={() => setActiveTab("projects")}
-            >
-              پروژه
-            </button>
-            <button
-              className={`py-2 px-4 md:px-8 cursor-pointer ${activeTab === "members" ? "text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400" : "text-gray-500 dark:text-gray-400"}`}
-              onClick={() => setActiveTab("members")}
-            >
-              اعضاء
-            </button>
-          </div>
-        </div>
-
-        {activeTab === "members" && (
-          <div className="mb-6">
-            <h2 className="text-xl font-bold text-right mb-4 pointer-events-none text-gray-900 dark:text-gray-200">
-              اعضای تیم
-            </h2>
-            <p className="text-gray-600 text-right mb-6 pointer-events-none dark:text-gray-400">
-              مدیریت تیم و تقسیم نقش ها بین کاربران
-            </p>
-            <div className="border rounded-lg bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600">
-              {currentMembers.length > 0 ? (
-                currentMembers.map((member: User) => (
-                  <div className="bg-white dark:bg-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
-                    <TeamMemberCard
-                      key={member.id}
-                      user={member}
-                      onDelete={() => handleDeleteMember(member.id)}
-                      canDelete={hasPermission("REMOVE_MEMEBER")}
-                      canEditRole={hasPermission("EDIT_ROLE")}
-                      canEditNickname={hasPermission("EDIT_NICKNAME")}
-                      teamId={id ? parseInt(id) : undefined}
-                    />
-                  </div>
-                ))
+      <Layout>
+        <div className="bg-white rounded-lg shadow-md p-4 md:p-6 dark:bg-gray-800 dark:shadow-blue-900/30">
+          <div className="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+            <div className="flex items-center gap-3">
+              {ProfileExists && teamData.profileImage ? (
+                <img
+                  src={teamData.profileImage}
+                  alt={teamData.name}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-blue-500 dark:border-blue-400 order-first md:order-first"
+                  onError={() => SetProfileExist(false)}
+                />
               ) : (
-                <div className="py-4 text-center text-gray-500 dark:text-gray-400 dark:bg-gray-800">
-                  هیچ عضوی یافت نشد
+                <div className="w-12 h-12 items-center justify-center flex bg-blue-100 text-blue-700 dark:bg-blue-700/40 dark:text-blue-100 text-xl font-semibold rounded-full object-cover border-2 border-blue-500 dark:border-blue-400 order-first md:order-first">
+                  {teamData.name.charAt(0)}
                 </div>
               )}
+              <h1 className="text-2xl font-bold text-right text-gray-900 dark:text-gray-200">
+                {teamData.name}
+              </h1>
             </div>
-          </div>
-        )}
-
-        {activeTab === "projects" && (
-          <div className="mb-6">
-            <h2 className="text-xl font-bold text-right mb-4 text-gray-900 dark:text-gray-200">پروژه های تیم</h2>
-            <p className="text-gray-600 text-right mb-6 dark:text-gray-400">
-              پروژه های در حال انجام و اتمام شده
-            </p>
-            <div className="border rounded-lg overflow-hidden dark:border-gray-600">
-              {teamProjects.length > 0 ? (
-                <div>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
-                      <thead className="bg-gray-50 dark:bg-gray-700">
-                        <tr>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                            نام پروژه
-                          </th>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                            توضیحات
-                          </th>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                            تگ‌ها
-                          </th>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                            زمان شروع
-                          </th>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                            زمان پایان
-                          </th>
-                          <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
-                            وضعیت
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-600">
-                        {teamProjects.map((project: TeamProject) => (
-                          <tr
-                            key={project.project_id}
-                            className="hover:bg-gray-50 dark:hover:bg-gray-700"
-                          >
-                            <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <Link to={`/detail/${project.project_id}`}>
-<<<<<<< HEAD
-                                <div className="text-sm font-medium text-gray-900 hover:text-blue-600">
-=======
-                                <div className="text-sm font-medium text-gray-900 hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400">
->>>>>>> develop
-                                  {project.title}
-                                </div>
-                              </Link>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500 dark:text-gray-400">
-                              {project.description.substring(0, 60)}
-                              {project.description.length > 60 ? "..." : ""}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right">
-                              <div className="flex flex-wrap gap-1 justify-end">
-                                {project.tags.slice(0, 3).map((tag) => (
-                                  <span
-                                    key={tag.id}
-<<<<<<< HEAD
-                                    className="px-2 py-1 text-xs rounded-full bg-blue-50 border border-blue-200 text-blue-400"
-=======
-                                    className="px-2 py-1 text-xs rounded-full bg-blue-100 border border-blue-200 text-blue-600 dark:bg-blue-800/30 dark:border-blue-700 dark:text-blue-300"
->>>>>>> develop
-                                  >
-                                    {tag.name}
-                                  </span>
-                                ))}
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-600 dark:text-gray-400">
-                              {new Date(project.start_time).toLocaleDateString(
-                                "fa-IR"
-                              )}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-600 dark:text-gray-400">
-                              {project.end_time === "0001-01-01T00:00:00Z"
-                                ? "..."
-                                : new Date(project.end_time).toLocaleDateString(
-                                    "fa-IR"
-                                  )}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-semibold text-blue-600 dark:text-blue-400">
-                              {getStatusText(project.status)}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-<<<<<<< HEAD
-                  <div className="text-center p-4">
-                    {/* <p className="text-gray-600">
-                      {teamProjects.length} پروژه برای این تیم موجود است
-                    </p> */}
-                  </div>
-=======
->>>>>>> develop
-                </div>
-              ) : (
-                <div className="p-8 text-center">
+            <div className="flex flex-col sm:flex-row gap-2">
+              {hasPermission("ADD_MEMBER") && (
+                <button
+                  onClick={() => setIsAddMemberModalOpen(true)}
+                  className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded-lg flex items-center justify-center dark:bg-blue-600 dark:hover:bg-blue-700"
+                >
                   <svg
-                    className="w-16 h-16 mx-auto text-gray-400 dark:text-gray-400"
+                    className="w-5 h-5 ml-1"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -579,77 +429,251 @@ const TeamDetailPage: React.FC = () => {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth="1"
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      strokeWidth="2"
+                      d="M12 4v16m8-8H4"
                     />
                   </svg>
-                  <p className="mt-4 text-gray-600 dark:text-gray-400">
-                    هیچ پروژه ای برای این تیم ثبت نشده است
-                  </p>
-                </div>
+                  اضافه کردن عضو
+                </button>
               )}
-<<<<<<< HEAD
-
-              {/* <div className="text-center p-4">
-                {teamProjects.length > 0 && (
-                  <button
-                    onClick={navigateToTeamProjects}
-                    className="mr-4 bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded"
+              {hasPermission("EDIT_INFO") && (
+                <button
+                  onClick={() => setIsEditTeamModalOpen(true)}
+                  className="bg-blue-500 hover:bg-blue-600 cursor-pointer text-white py-2 px-4 rounded-lg flex items-center justify-center dark:bg-blue-600 dark:hover:bg-blue-700"
+                >
+                  <svg
+                    className="w-5 h-5 ml-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    مشاهده همه پروژه ها
-                  </button>
-                )}
-              </div> */}
-=======
->>>>>>> develop
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                  ویرایش تیم
+                </button>
+              )}
             </div>
           </div>
-        )}
 
-        <div className="mt-8 text-center">
-          <Link
-            to="/teams"
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg transition-colors cursor-pointer duration-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200"
-          >
-            بازگشت به صفحه تیم
-          </Link>
-          {hasPermission("DELETE_TEAM") && (
-            <button
-              onClick={() => setIsDeleteModalOpen(true)}
-              className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg cursor-pointer transition-colors duration-300 dark:bg-red-700 dark:hover:bg-red-800"
+          <div className="text-right mb-8">
+            <p className="text-gray-700 pointer-events-none dark:text-gray-200">
+              {teamData.description || " "}
+            </p>
+            {teamData.createdAt && (
+              <p className="text-gray-500 text-sm mt-2 pointer-events-none dark:text-gray-400">
+                تاریخ ایجاد:{" "}
+                {new Date(teamData.createdAt).toLocaleDateString("fa-IR")}
+              </p>
+            )}
+          </div>
+
+          <div className="mb-6">
+            <div className="flex justify-center border-b border-gray-200 dark:border-gray-600">
+              <button
+                className={`py-2 px-4 md:px-8 cursor-pointer ${activeTab === "projects" ? "text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400" : "text-gray-500 dark:text-gray-400"}`}
+                onClick={() => setActiveTab("projects")}
+              >
+                پروژه
+              </button>
+              <button
+                className={`py-2 px-4 md:px-8 cursor-pointer ${activeTab === "members" ? "text-blue-600 border-b-2 border-blue-600 dark:text-blue-400 dark:border-blue-400" : "text-gray-500 dark:text-gray-400"}`}
+                onClick={() => setActiveTab("members")}
+              >
+                اعضاء
+              </button>
+            </div>
+          </div>
+
+          {activeTab === "members" && (
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-right mb-4 pointer-events-none text-gray-900 dark:text-gray-200">
+                اعضای تیم
+              </h2>
+              <p className="text-gray-600 text-right mb-6 pointer-events-none dark:text-gray-400">
+                مدیریت تیم و تقسیم نقش ها بین کاربران
+              </p>
+              <div className="border rounded-lg bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600">
+                {currentMembers.length > 0 ? (
+                  currentMembers.map((member: User) => (
+                    <div className="bg-white dark:bg-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+                      <TeamMemberCard
+                        key={member.id}
+                        user={member}
+                        onDelete={() => handleDeleteMember(member.id)}
+                        canDelete={hasPermission("REMOVE_MEMEBER")}
+                        canEditRole={hasPermission("EDIT_ROLE")}
+                        canEditNickname={hasPermission("EDIT_NICKNAME")}
+                        teamId={id ? parseInt(id) : undefined}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <div className="py-4 text-center text-gray-500 dark:text-gray-400 dark:bg-gray-800">
+                    هیچ عضوی یافت نشد
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "projects" && (
+            <div className="mb-6">
+              <h2 className="text-xl font-bold text-right mb-4 text-gray-900 dark:text-gray-200">
+                پروژه های تیم
+              </h2>
+              <p className="text-gray-600 text-right mb-6 dark:text-gray-400">
+                پروژه های در حال انجام و اتمام شده
+              </p>
+              <div className="border rounded-lg overflow-hidden dark:border-gray-600">
+                {teamProjects.length > 0 ? (
+                  <div>
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+                        <thead className="bg-gray-50 dark:bg-gray-700">
+                          <tr>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                              نام پروژه
+                            </th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                              توضیحات
+                            </th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                              تگ‌ها
+                            </th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                              زمان شروع
+                            </th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                              زمان پایان
+                            </th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-400">
+                              وضعیت
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-600">
+                          {teamProjects.map((project: TeamProject) => (
+                            <tr
+                              key={project.project_id}
+                              className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                            >
+                              <td className="px-6 py-4 whitespace-nowrap text-right">
+                                <Link to={`/detail/${project.project_id}`}>
+                                  <div className="text-sm font-medium text-gray-900 hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400">
+                                    {project.title}
+                                  </div>
+                                </Link>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500 dark:text-gray-400">
+                                {project.description.substring(0, 60)}
+                                {project.description.length > 60 ? "..." : ""}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-right">
+                                <div className="flex flex-wrap gap-1 justify-end">
+                                  {project.tags.slice(0, 3).map((tag) => (
+                                    <span
+                                      key={tag.id}
+                                      className="px-2 py-1 text-xs rounded-full bg-blue-100 border border-blue-200 text-blue-600 dark:bg-blue-800/30 dark:border-blue-700 dark:text-blue-300"
+                                    >
+                                      {tag.name}
+                                    </span>
+                                  ))}
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-600 dark:text-gray-400">
+                                {new Date(
+                                  project.start_time
+                                ).toLocaleDateString("fa-IR")}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-600 dark:text-gray-400">
+                                {project.end_time === "0001-01-01T00:00:00Z"
+                                  ? "..."
+                                  : new Date(
+                                      project.end_time
+                                    ).toLocaleDateString("fa-IR")}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-semibold text-blue-600 dark:text-blue-400">
+                                {getStatusText(project.status)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-8 text-center">
+                    <svg
+                      className="w-16 h-16 mx-auto text-gray-400 dark:text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1"
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      />
+                    </svg>
+                    <p className="mt-4 text-gray-600 dark:text-gray-400">
+                      هیچ پروژه ای برای این تیم ثبت نشده است
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          <div className="mt-8 text-center">
+            <Link
+              to="/teams"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg transition-colors cursor-pointer duration-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200"
             >
-              حذف تیم
-            </button>
+              بازگشت به صفحه تیم
+            </Link>
+            {hasPermission("DELETE_TEAM") && (
+              <button
+                onClick={() => setIsDeleteModalOpen(true)}
+                className="mr-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg cursor-pointer transition-colors duration-300 dark:bg-red-700 dark:hover:bg-red-800"
+              >
+                حذف تیم
+              </button>
+            )}
+          </div>
+
+          {teamData && (
+            <>
+              <AddMemberModal
+                isOpen={isAddMemberModalOpen}
+                onClose={() => setIsAddMemberModalOpen(false)}
+                onSubmit={handleAddMember}
+                existingMemberIds={teamData.members.map((member) => member.id)}
+                teamId={0}
+              />
+              <EditTeamModal
+                isOpen={isEditTeamModalOpen}
+                onClose={() => setIsEditTeamModalOpen(false)}
+                onSubmit={handleEditTeam}
+                team={teamData}
+              />
+              <DeleteTeamModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={() => handleDeleteTeam()}
+                teamId={teamData.id.toString()}
+                teamName={teamData.name}
+                isDeleting={isDeleting}
+              />
+            </>
           )}
         </div>
-
-        {teamData && (
-          <>
-            <AddMemberModal
-              isOpen={isAddMemberModalOpen}
-              onClose={() => setIsAddMemberModalOpen(false)}
-              onSubmit={handleAddMember}
-              existingMemberIds={teamData.members.map((member) => member.id)}
-              teamId={0}
-            />
-            <EditTeamModal
-              isOpen={isEditTeamModalOpen}
-              onClose={() => setIsEditTeamModalOpen(false)}
-              onSubmit={handleEditTeam}
-              team={teamData}
-            />
-            <DeleteTeamModal
-              isOpen={isDeleteModalOpen}
-              onClose={() => setIsDeleteModalOpen(false)}
-              onConfirm={() => handleDeleteTeam()}
-              teamId={teamData.id.toString()}
-              teamName={teamData.name}
-              isDeleting={isDeleting}
-            />
-          </>
-        )}
-      </div>
-    </Layout>
+      </Layout>
     </div>
   );
 };
