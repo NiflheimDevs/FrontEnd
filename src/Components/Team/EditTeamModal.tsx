@@ -105,8 +105,7 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
         id: team.id,
       };
 
-      // Call the backend API to update team info
-      const updatedTeamResponse = await updateTeamInfo(updatePayload);
+      await updateTeamInfo(updatePayload);
 
       // Create updated team data object for frontend state
       const updatedTeam: TeamData = {
