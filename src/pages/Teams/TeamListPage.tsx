@@ -211,6 +211,7 @@ const TeamListPage: React.FC = () => {
         setTeams((prevTeams) => [newTeam, ...prevTeams]);
         setFilteredTeams((prevFiltered) => [newTeam, ...prevFiltered]);
         setIsModalOpen(false);
+        window.location.reload();
       } catch (err) {
         console.error("Error creating team:", err);
         const errorMessage = typeof err === "string" ? err : "خطا در ایجاد تیم";

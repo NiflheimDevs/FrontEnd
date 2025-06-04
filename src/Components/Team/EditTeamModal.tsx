@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useRef, useEffect } from "react";
 import { TeamData } from "./index";
-// import { UpdateProfileTeam, DeleteProfileTeam } from "../../API";
+import { updateTeamInfo } from "../../API";
 
 interface EditTeamModalProps {
   isOpen: boolean;
@@ -87,28 +86,6 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
     }
   };
 
-  // Handle profile picture upload
-  // const handleProfilePictureUpdate = async (teamId: number) => {
-  //   try {
-  //     if (removePicture) {
-  //       // Delete profile picture
-  //       await DeleteProfileTeam(teamId);
-  //       return null;
-  //     } else if (teamPictureFile) {
-  //       // Upload new profile picture
-  //       const formData = new FormData();
-  //       formData.append("file", teamPictureFile);
-
-  //       const result = await UpdateProfileTeam(teamId, formData);
-  //       return result?.profile || null;
-  //     }
-  //     return team.picture; // Return existing picture if no changes
-  //   } catch (error) {
-  //     console.error("Error updating profile picture:", error);
-  //     throw error;
-  //   }
-  // };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -116,31 +93,42 @@ const EditTeamModal: React.FC<EditTeamModalProps> = ({
       setError("لطفا همه فیلدهای ضروری را پر کنید");
       return;
     }
+
     try {
       setIsSubmitting(true);
+      setError("");
 
-      // Create basic team data object
-      const teamData = {
-        ...team,
-        name,
-        description,
-        picture: team.picture, // We'll update this after handling the picture
+      // Prepare the payload for backend API
+      const updatePayload = {
+        title: name, // Backend expects 'title' instead of 'name'
+        description: description,
+        id: team.id,
       };
 
-      // Update the team data (for frontend state)
+      // Call the backend API to update team info
+      const updatedTeamResponse = await updateTeamInfo(updatePayload);
+
+      // Create updated team data object for frontend state
       const updatedTeam: TeamData = {
-        ...teamData,
+        ...team,
+        name: name,
+        description: description,
         picture: teamPicturePreview || team.picture,
       };
 
       // Call parent onSubmit function with updated team data and picture file
       onSubmit(updatedTeam, teamPictureFile);
 
-      setError("");
       onClose();
     } catch (error: any) {
       console.error("Update team error:", error);
-      setError(typeof error === "string" ? error : "خطا در بروزرسانی تیم");
+      setError(
+        error?.message ||
+          error?.response?.data?.message ||
+          typeof error === "string"
+          ? error
+          : "خطا در بروزرسانی تیم"
+      );
     } finally {
       setIsSubmitting(false);
     }
