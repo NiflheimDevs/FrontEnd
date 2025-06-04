@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-// import { count } from "console";
 
 const BASE_URL = "https://103.75.196.227:8080";
 
@@ -51,8 +50,14 @@ apiClient.interceptors.response.use(
       try {
         // Attempt to refresh the token
         const newAccessToken = await refreshAccessToken();
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return apiClient(originalRequest); // Retry the original request with the new token
+        if (newAccessToken) {
+          // Update the Authorization header with the new token
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          // Retry the original request with the new token
+          return apiClient(originalRequest);
+        } else {
+          throw new Error("No new access token received");
+        }
       } catch (refreshError) {
         // If refresh fails, log out the user
         localStorage.removeItem("authToken");
@@ -77,18 +82,20 @@ export const refreshAccessToken = async () => {
     });
     const newAccessToken = response.data.access_token;
     if (newAccessToken) {
+      // Store the new access token
       localStorage.setItem("authToken", newAccessToken);
       // Optionally, if the refresh token is also updated, store it
       if (response.data.refresh_token) {
         localStorage.setItem("refreshToken", response.data.refresh_token);
       }
+      return newAccessToken;
+    } else {
+      throw new Error("No access token in response");
     }
-    return newAccessToken;
-  } catch (error: any) {
+  } catch {
     localStorage.removeItem("authToken");
     localStorage.removeItem("refreshToken");
     window.location.href = "/auth";
-    throw error.response?.data || "خطا در تمدید توکن!";
   }
 };
 
@@ -716,12 +723,10 @@ export const GetSpecificTeamProject = async (id: any) => {
   }
 };
 
-
-
 export const getChats = async () => {
   try {
     const response = await apiClient.get("/chat");
-    console.log(response.data)
+    console.log(response.data);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در دریافت لیست چت‌ها";
@@ -734,5 +739,14 @@ export const getRoomMessages = async (chatId: string) => {
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در دریافت پیام‌ها";
+  }
+};
+
+export const createChatRoom = async (target_user_id: any) => {
+  try {
+    const response = await apiClient.post("/chat/create", target_user_id);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ایجاد اتاق چت";
   }
 };

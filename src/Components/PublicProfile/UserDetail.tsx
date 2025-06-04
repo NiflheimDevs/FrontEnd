@@ -3,7 +3,8 @@ import { Color, Profile } from "./types";
 import UserCareerDetail from "./UserCareerDetail";
 import { useState } from "react";
 import { Download } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import { createChatRoom } from "../../API"; // Import the API function
 
 interface UserDetailProps {
   localprofile: Profile;
@@ -12,6 +13,30 @@ interface UserDetailProps {
 
 const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
   const [profileExists, setprofileExists] = useState<boolean>(true);
+  const navigate = useNavigate(); // Hook for navigation
+
+  // Handle "ارسال پیام" button click
+  const handleSendMessage = async () => {
+    try {
+      // Call the API to create a chat room with the target user
+      const response = await createChatRoom({ target_user_id: Number(localprofile.profile_id) });
+      const roomId = response.room_id; // Assuming the API returns the new room_id
+
+      // Navigate to the chat page, passing the roomId and target user info
+      navigate("/chat", {
+        state: {
+          roomId,
+          targetUser: {
+            id: localprofile.profile_id,
+            name: `${localprofile.firstName} ${localprofile.lastName}`,
+          },
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row items-start justify-center gap-6 sm:px-6 px-4 py-8 md:px-10 md:py-12">
       {/* Profile Image and Actions */}
@@ -60,6 +85,7 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
           )}
           {localprofile.profile_id != "0" ? (
             <button
+              onClick={handleSendMessage} // Add the onClick handler
               className={`flex items-center cursor-pointer gap-2 px-4 py-2 bg-${localcolor.color} dark:bg-${localcolor.darkcolor} text-white text-sm font-[vazirmatn] rounded-full shadow-md hover:bg-${localcolor.hover} dark:hover:bg-${localcolor.darkhover} focus:ring-2 focus:ring-${localcolor.color} dark:focus:ring-${localcolor.darkcolor} focus:ring-offset-2 transition-all duration-200`}
             >
               <Send size={18} />
@@ -94,10 +120,7 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
             </p>
           )}
           {localprofile.profile_id == "0" ? (
-            <Link
-              to="/profile"
-              className="md:justify-start justify-center flex"
-            >
+            <Link to="/profile" className="md:justify-start justify-center flex">
               <button
                 className={`px-4 py-2 w-fit h-fit gap-2 whitespace-nowrap text-sm font-[vazirmatn] flex justify-center items-center flex-row rounded-full transition-all duration-200 bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover} dark:bg-${localcolor.darkcolor} dark:hover:bg-${localcolor.darkhover}`}
                 aria-label="صفحه بعدی"
