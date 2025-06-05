@@ -6,7 +6,6 @@ import CreateTeamModal from "../../Components/Team/CreateTeamModal";
 import { Team, User } from "../../Components/Team/index";
 import { getTeams, createTeam } from "../../API";
 
-
 // Empty State Component - Memoized for performance
 const EmptyState = React.memo<{ onCreateTeam: () => void }>(
   ({ onCreateTeam }) => {
@@ -55,7 +54,8 @@ const EmptyState = React.memo<{ onCreateTeam: () => void }>(
           </h2>
 
           <p className="text-lg text-gray-600 mb-6 leading-relaxed dark:text-[#B4AA9C]">
-            هنوز هیچ تیمی ندارید! اولین تیم خود را بسازید و سفر همکاری را آغاز کنید.
+            هنوز هیچ تیمی ندارید! اولین تیم خود را بسازید و سفر همکاری را آغاز
+            کنید.
           </p>
 
           {/* Benefits List */}
@@ -70,7 +70,9 @@ const EmptyState = React.memo<{ onCreateTeam: () => void }>(
                 key={index}
                 className="flex items-center justify-center sm:justify-start gap-2 text-gray-700 dark:text-gray-300"
               >
-                <div className={`w-2 h-2 ${item.color} rounded-full dark:opacity-80`} />
+                <div
+                  className={`w-2 h-2 ${item.color} rounded-full dark:opacity-80`}
+                />
                 <span>{item.text}</span>
               </div>
             ))}
@@ -209,6 +211,7 @@ const TeamListPage: React.FC = () => {
         setTeams((prevTeams) => [newTeam, ...prevTeams]);
         setFilteredTeams((prevFiltered) => [newTeam, ...prevFiltered]);
         setIsModalOpen(false);
+        window.location.reload();
       } catch (err) {
         console.error("Error creating team:", err);
         const errorMessage = typeof err === "string" ? err : "خطا در ایجاد تیم";
@@ -367,7 +370,9 @@ const TeamListPage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <p className="text-xl font-bold mb-2 text-gray-800 dark:text-[#E0D6C8]">خطا</p>
+              <p className="text-xl font-bold mb-2 text-gray-800 dark:text-[#E0D6C8]">
+                خطا
+              </p>
               <p className="text-gray-600 mb-6 dark:text-[#B4AA9C]">{error}</p>
               <button
                 onClick={handleRetry}
