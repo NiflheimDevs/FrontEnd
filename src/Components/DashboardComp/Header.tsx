@@ -108,7 +108,7 @@ export default function Header({ toggleSidebar }: any) {
 
           {/* Logo and Title */}
           <Link to="/" className="h-11">
-            <button className="flex w-fit h-fit items-center cursor-pointer lg:flex md:flex sm:flex hidden">
+            <button className="w-fit h-fit items-center cursor-pointer lg:flex md:flex sm:flex hidden">
               <label className="text-lg font-semibold lg:flex md:flex sm:flex hidden pointer-events-none text-gray-900 dark:text-gray-200">
                 بیدلنسر
               </label>
