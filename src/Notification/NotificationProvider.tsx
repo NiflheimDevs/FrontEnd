@@ -10,18 +10,31 @@ type NotificationContextType = {
   warning: (message: string) => void;
 };
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
+const NotificationContext = createContext<NotificationContextType | undefined>(
+  undefined
+);
 
-export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const success = (message: string) => toast.success(<CustomNotification Message={message} />);
-  const error = (message: string) => toast.error(<CustomNotification Message={message} />);
-  const info = (message: string) => toast.info(<CustomNotification Message={message} />);
-  const warning = (message: string) => toast.warning(<CustomNotification Message={message} />);
+export const NotificationProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const success = (message: string) =>
+    toast.success(<CustomNotification Message={message} />);
+  const error = (message: string) =>
+    toast.error(<CustomNotification Message={message} />);
+  const info = (message: string) =>
+    toast.info(<CustomNotification Message={message} />);
+  const warning = (message: string) =>
+    toast.warning(<CustomNotification Message={message} />);
 
   return (
     <NotificationContext.Provider value={{ success, error, info, warning }}>
       {children}
-      <ToastContainer className={"pl-[8vw] font-[vazirmatn] bg-b"} position="top-right" autoClose={3000} />
+      <ToastContainer
+        className={"pl-[8vw] font-[vazirmatn] bg-b"}
+        position="top-right"
+        toastClassName={`themed-toast`}
+        autoClose={3000}
+      />
     </NotificationContext.Provider>
   );
 };
@@ -30,7 +43,9 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ childr
 export const useNotification = () => {
   const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error("useNotification must be used within a NotificationProvider");
+    throw new Error(
+      "useNotification must be used within a NotificationProvider"
+    );
   }
   return context;
 };

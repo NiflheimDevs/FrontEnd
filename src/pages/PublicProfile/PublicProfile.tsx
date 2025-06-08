@@ -73,7 +73,7 @@ const PublicProfile = () => {
   const renderSkeleton = () => (
     <div className="flex flex-col w-full max-w-5xl sm:my-0 mt-10 md:my-8 px-4 py-8 md:px-0 bg-white dark:bg-gray-700 dark:border-gray-800 rounded-3xl shadow-lg gap-8">
       {/* UserDetail Skeleton */}
-      <div className="flex flex-col md:flex-row items-start justify-center gap-6 sm:px-6 px-4 py-8 md:px-10 md:py-12 mt-[-2rem]">
+      <div className="flex flex-col md:flex-row items-start justify-center gap-6 sm:px-6 px-4 py-8 md:px-10 md:py-12 md:mt-[-2rem] lg:mt-[-2rem] sm:mt-[-2rem] mt-[1rem]">
         <div className="flex flex-col items-center gap-4 w-full md:w-1/4 min-w-[160px]">
           <div className="relative flex justify-center items-center w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-blue-400 overflow-hidden bg-gray-100 dark:bg-gray-800 shadow-md shiny-skeleton" />
           <div className="flex flex-col items-center gap-3 w-full">
