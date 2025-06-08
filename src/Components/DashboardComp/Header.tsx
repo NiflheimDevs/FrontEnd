@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Search, Menu } from "lucide-react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
-import SearchIcon from "@/assets/Dashboard/Search.svg";
 import { FaRegBell } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
 import { GetProfile } from "../../API";
@@ -108,9 +107,9 @@ export default function Header({ toggleSidebar }: any) {
           </button>
 
           {/* Logo and Title */}
-          <Link to="/">
-            <button className="flex w-fit h-fit items-center cursor-pointer">
-              <label className="text-lg font-semibold md:flex sm:flex hidden pointer-events-none text-gray-900 dark:text-gray-200">
+          <Link to="/" className="h-11">
+            <button className="flex w-fit h-fit items-center cursor-pointer lg:flex md:flex sm:flex hidden">
+              <label className="text-lg font-semibold lg:flex md:flex sm:flex hidden pointer-events-none text-gray-900 dark:text-gray-200">
                 بیدلنسر
               </label>
               <img
@@ -130,24 +129,12 @@ export default function Header({ toggleSidebar }: any) {
             className="border py-2 pr-14 mx-2 rounded w-[80%] border-blue-600 dark:border-blue-400 text-right bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-300"
           />
           <button className="absolute right-2 top-0 bottom-0 bg-blue-600 hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400 transition-all duration-300 text-white px-4 rounded-r flex items-center cursor-pointer">
-            <Search size={18} />
+            <Search size={18} className="text-gray-600 dark:text-gray-200" />
           </button>
         </div>
 
         {/* Right Section: Icons */}
         <div className="flex w-fit h-fit items-center md:gap-5 sm:gap-5 gap-[3vw]">
-          <button
-            className="w-fit h-fit md:hidden sm:hidden flex cursor-pointer hover:scale-115 transition-transform"
-            onClick={openModal}
-            aria-label="Search"
-          >
-            <img
-              src={SearchIcon}
-              className="h-6 scale-95 pointer-events-none"
-              tabIndex={-1}
-              alt="Search"
-            />
-          </button>
           {/* Dark Mode Toggle Button */}
           <button
             onClick={toggleDarkMode}
@@ -159,6 +146,13 @@ export default function Header({ toggleSidebar }: any) {
             ) : (
               <IoMdMoon className="icon" color="#9CA3AF" size={26} />
             )}
+          </button>
+          <button
+            className="w-fit h-fit md:hidden sm:hidden flex cursor-pointer hover:scale-115 transition-transform"
+            onClick={openModal}
+            aria-label="Search"
+          >
+            <Search size={24} className="text-gray-600 dark:text-gray-200" />
           </button>
           <div className="flex justify-center items-center rounded-lg transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-600 p-1">
             <button className="w-fit h-fit cursor-pointer hover:scale-110 transition-transform">
