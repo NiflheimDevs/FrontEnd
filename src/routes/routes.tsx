@@ -31,7 +31,8 @@ import ProjectDetail from "../pages/ProjectDetail/ProjectDetail";
 
 import TeamListPage from "../pages/Teams/TeamListPage";
 import TeamDetailPage from "../pages/Teams/TeamDetailPage";
-import BrowseLayout from "../pages/Browse/BrowseLayout";
+import BrowseLayout from "../Components/Browse/BrowseLayout";
+import BrowseNewLayout from "../Components/Browse/BrowseNewLayout";
 
 // Utility function to check if user is authenticated
 const isAuthenticated = () => {
@@ -80,6 +81,7 @@ export const publicRoutes = [
   },
   { path: "/Resetpass", element: <ChangePasswordonForget /> },
   { path: "/Browseproject", element: <BrowseLayout /> },
+  { path: "/browse", element: <BrowseNewLayout /> },
   { path: "/detail/:project_id", element: <ProjectDetail /> },
 ];
 

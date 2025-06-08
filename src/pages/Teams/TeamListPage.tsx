@@ -10,7 +10,7 @@ import { getTeams, createTeam } from "../../API";
 const EmptyState = React.memo<{ onCreateTeam: () => void }>(
   ({ onCreateTeam }) => {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 relative bg-[#F7F7F7] dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 relative bg-[#F7F7F7] dark:bg-gray-800">
         {/* Animated Icon Container */}
         <div className="relative mb-8">
           <div className="w-32 h-32 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center animate-pulse dark:from-[#1C2B48] dark:to-[#0B1226] dark:bg-gradient-to-br">
