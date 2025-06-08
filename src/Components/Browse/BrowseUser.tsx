@@ -1,26 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
-import { GetLandingProjects } from "../../API";
-// import SearchBar from "./SearchBar";
 import SearchResultCard from "./SearchResultCard";
 import FilterDropdown from "./FilterDropdown";
 
-interface Project {
-  project_id: number;
-  title: string;
-  description: string;
-  label: string;
-  timeLeft?: string;
-  views?: number;
-  tags?: string[];
+interface User {
+  user_id: number;
+  name: string;
+  role: string;
+  skill: string;
+  avatar: string;
 }
 
-const BrowseProject: React.FC = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
+const BrowseUser: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
   const [search, setSearch] = useState("");
- // State for filter dropdowns
+  // State for filter dropdowns
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [skillsOpen, setSkillsOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
@@ -29,78 +25,62 @@ const BrowseProject: React.FC = () => {
   const [selectedSort, setSelectedSort] = useState("نوع مرتب‌سازی");
 
   // Sample filter options
-  const categories = ["همه", "توسعه وب", "طراحی گرافیک", "دیجیتال مارکتینگ"];
+  const categories = ["همه", "توسعه‌دهندگان", "طراحان", "بازاریابان"];
   const skills = ["React", "Node.js", "Photoshop", "SEO"];
   const sortOptions = [
     "جدیدترین",
     "قدیمی‌ترین",
-    "بیشترین پیشنهاد",
-    "کمترین پیشنهاد",
+    "بیشترین امتیاز",
+    "کمترین امتیاز",
   ];
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setLoading(true);
-        const response = await GetLandingProjects();
-        const formattedProjects: Project[] = response.map((project: any) => ({
-          project_id: project.project_id,
-          title: project.title || "بدون عنوان",
-          description: project.descriptoin || "بدون توضیحات", // Note: 'descriptoin' typo in API response
-          label: project.label,
-          timeLeft: "14 روز و 23 ساعت",
-          views: 42,
-          tags: [
-            "SEO",
-            "Photoshop",
-            "Freelancing",
-            "eCommerce",
-            "Social Media",
-          ],
-        }));
-        setProjects(formattedProjects);
-      } catch (err) {
-        setError("خطا در دریافت پروژه‌ها");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProjects();
+    // Mock data for users since API is not available
+    const mockUsers: User[] = [
+        { user_id: 1, name: "علی رضایی", role: "توسعه‌دهنده وب با تجربه در React و Node.js", skill: "React, Node.js, JavaScript", avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
+        { user_id: 2, name: "مریم کاظمی", role: "طراح گرافیک متخصص در Photoshop و Illustrator", skill: "Photoshop, Illustrator, طراحی", avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
+        { user_id: 3, name: "محمد حسینی", role: "متخصص دیجیتال مارکتینگ با تمرکز بر SEO", skill: "SEO, بازاریابی, محتوا", avatar: "https://randomuser.me/api/portraits/men/45.jpg" },
+        { user_id: 4, name: "سارا احمدی", role: "برنامه‌نویس موبایل با تخصص در Flutter و Dart", skill: "Flutter, Dart, موبایل", avatar: "https://randomuser.me/api/portraits/women/46.jpg" },
+        { user_id: 5, name: "رضا محمدی", role: "متخصص امنیت سایبری و تست نفوذ", skill: "امنیت, تست نفوذ, شبکه", avatar: "https://randomuser.me/api/portraits/men/47.jpg" },
+        { user_id: 6, name: "نازنین زهرا", role: "طراح تجربه کاربری (UX) و رابط کاربری (UI)", skill: "UX, UI, طراحی", avatar: "https://randomuser.me/api/portraits/women/48.jpg" },
+    ];
+    setUsers(mockUsers);
+    setLoading(false);
   }, []);
-    // Toggle skill selection
-    const toggleSkill = (skill: string) => {
-      if (selectedSkills.includes(skill)) {
-        setSelectedSkills(selectedSkills.filter((s) => s !== skill));
-      } else {
-        setSelectedSkills([...selectedSkills, skill]);
-      }
-    };
-  
-    // Display text for skills dropdown
-    const getSkillsDisplayText = () => {
-      if (selectedSkills.length === 0) return "مهارت‌ها";
-      if (selectedSkills.length === 1) return selectedSkills[0];
-      return `${selectedSkills[0]} +${selectedSkills.length - 1}`;
-    };
 
-  const filtered = projects.filter((project) => {
+  // Toggle skill selection
+  const toggleSkill = (skill: string) => {
+    if (selectedSkills.includes(skill)) {
+      setSelectedSkills(selectedSkills.filter((s) => s !== skill));
+    } else {
+      setSelectedSkills([...selectedSkills, skill]);
+    }
+  };
+
+  // Display text for skills dropdown
+  const getSkillsDisplayText = () => {
+    if (selectedSkills.length === 0) return "مهارت‌ها";
+    if (selectedSkills.length === 1) return selectedSkills[0];
+    return `${selectedSkills[0]} +${selectedSkills.length - 1}`;
+  };
+
+  const filtered = users.filter((user) => {
     if (!search) return true;
-    const text = `${project.title} ${project.description} ${(project.tags || []).join(" ")}`;
+    const text = `${user.name} ${user.role} ${user.skill ? user.skill.split(',').join(' ') : ''}`;
     return text.includes(search);
   });
 
   return (
     <div className="flex flex-col w-full py-6 px-4 sm:mt-0 mt-15 bg-gray-100 dark:bg-gray-900">
-      <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-2 text-center">جستجوی پروژه‌ها</h2>
-      <p className="text-gray-600 dark:text-gray-300 text-center mb-8">در این بخش می‌توانید پروژه‌های مختلف را جستجو و مشاهده کنید.</p>
+      <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-2 text-center">جستجوی کاربران</h2>
+      <p className="text-gray-600 dark:text-gray-300 text-center mb-8">در این بخش می‌توانید کاربران مختلف را جستجو و مشاهده کنید.</p>
       <div className="flex flex-col items-center gap-2 mb-6">
         <div className="w-full max-w-xl">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="جستجوی پروژه..."
+            placeholder="جستجوی کاربر..."
             className="w-full py-3 pr-12 pl-4 text-right bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-400 text-sm text-gray-700 dark:text-gray-200"
           />
         </div>
@@ -147,20 +127,19 @@ const BrowseProject: React.FC = () => {
             setSortOpen(false);
           }}
         />
-        </div>
-      
+      </div>
       <div className="flex flex-col gap-0 mt-4">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
-            <SearchResultCard key={i} type="project" data={{}} loading />
+            <SearchResultCard key={i} type="user" data={{}} loading />
           ))
         ) : error ? (
           <p className="text-center text-red-500 dark:text-red-400">{error}</p>
         ) : filtered.length === 0 ? (
-          <p className="text-center text-gray-700 dark:text-gray-300">هیچ پروژه‌ای یافت نشد</p>
+          <p className="text-center text-gray-700 dark:text-gray-300">هیچ کاربری یافت نشد</p>
         ) : (
-          filtered.map((project) => (
-            <SearchResultCard key={project.project_id} type="project" data={project} />
+          filtered.map((user) => (
+            <SearchResultCard key={user.user_id} type="user" data={user} />
           ))
         )}
       </div>
@@ -168,4 +147,4 @@ const BrowseProject: React.FC = () => {
   );
 };
 
-export default BrowseProject;
+export default BrowseUser; 

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../MainContent/Header";
 import BrowseProject from "./BrowseProject";
 
-const BrowseLayout: React.FC = () => {
+const BrowseProjectLayout: React.FC = () => {
   return (
     <>
       <div className="fixed inset-0 bg-[#F7F7F7] dark:bg-gray-800 z-[-1]"></div>
@@ -14,4 +14,4 @@ const BrowseLayout: React.FC = () => {
   );
 };
 
-export default BrowseLayout;
+export default BrowseProjectLayout;

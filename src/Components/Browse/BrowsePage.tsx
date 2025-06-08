@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import SearchResultCard from "./SearchResultCard";
-import { Search } from "lucide-react";
+// import { Search } from "lucide-react";
 // import SearchBar from "./SearchBar";
 
 
 
 const mockUsers = [
-  { name: "پارسا آ.", role: "توسعه‌دهنده فول‌استک", skill: "React", avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
-  { name: "سارا ب.", role: "طراح UI", skill: "Figma", avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
-  { name: "علی ج.", role: "توسعه‌دهنده بک‌اند", skill: "Node.js", avatar: "https://randomuser.me/api/portraits/men/45.jpg" },
+  { user_id: 1, name: "علی رضایی", role: "توسعه‌دهنده وب با تجربه در React و Node.js", skill: "React, Node.js, JavaScript", avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
+  { user_id: 2, name: "مریم کاظمی", role: "طراح گرافیک متخصص در Photoshop و Illustrator", skill: "Photoshop, Illustrator, طراحی", avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
+  { user_id: 3, name: "محمد حسینی", role: "متخصص دیجیتال مارکتینگ با تمرکز بر SEO", skill: "SEO, بازاریابی, محتوا", avatar: "https://randomuser.me/api/portraits/men/45.jpg" },
+  { user_id: 4, name: "سارا احمدی", role: "برنامه‌نویس موبایل با تخصص در Flutter و Dart", skill: "Flutter, Dart, موبایل", avatar: "https://randomuser.me/api/portraits/women/46.jpg" },
+  { user_id: 5, name: "رضا محمدی", role: "متخصص امنیت سایبری و تست نفوذ", skill: "امنیت, تست نفوذ, شبکه", avatar: "https://randomuser.me/api/portraits/men/47.jpg" },
+  { user_id: 6, name: "نازنین زهرا", role: "طراح تجربه کاربری (UX) و رابط کاربری (UI)", skill: "UX, UI, طراحی", avatar: "https://randomuser.me/api/portraits/women/48.jpg" },
 ];
 
 const mockProjects = [
@@ -107,9 +110,6 @@ const BrowsePage: React.FC = () => {
             placeholder="جستجو..."
             className="w-full py-3 pr-12 pl-4 text-right bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-300 placeholder-gray-400 dark:placeholder-gray-400 text-sm text-gray-700 dark:text-gray-200"
           />
-          <button className="absolute right-13 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-200">
-            <Search size={24} />
-          </button>
         </div>
         {/* Filter tags */}
         <div className="flex flex-row gap-2 mt-2">
