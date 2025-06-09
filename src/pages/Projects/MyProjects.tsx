@@ -4,12 +4,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "../../Components/DashboardComp/Sidebar";
 import Header from "../../Components/DashboardComp/Header";
 import { Button } from "../../Components/ui/button";
-import { FaArrowLeftLong, FaArrowRight } from "react-icons/fa6";
+import { errorMapper } from "../Error/Error";
+import {
+  FaArrowLeftLong,
+  FaArrowRight,
+  FaCheck,
+  FaStar,
+  FaRegCommentDots,
+} from "react-icons/fa6";
 import { SquarePen, Eye } from "lucide-react";
 import { RiAuctionLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
-import { getUserProject, deleteProject } from "../../API";
+import {
+  getUserProject,
+  deleteProject,
+  EndOfProject,
+  PutComment,
+} from "../../API";
 import { AiOutlineProject } from "react-icons/ai";
 import { useNotification } from "../../Notification/NotificationProvider";
 
@@ -83,12 +95,19 @@ export const getStatusText = (statusNumber: number) => {
 };
 
 const MyProjects = () => {
+  const { error: notifyError, success: notifySuccess } = useNotification();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [projects, setProjects] = useState<Project[]>([]);
   const [totalProjects, setTotalProjects] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  const [ConfirmProjectID, setConfirmProjectID] = useState<number | string>(0);
+  const [comment, setComment] = useState("");
+  const [showEndProjectModal, setShowEndProjectModal] = useState(false);
+  const [showCommentModal, setshowCommentModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState<
     number | string | null
   >(null);
@@ -176,6 +195,52 @@ const MyProjects = () => {
   const cancelDelete = () => {
     setShowModal(false);
     setProjectToDelete(null);
+  };
+
+  const initConfirm = (id: string | number) => {
+    setRating(0);
+    setHover(0);
+    setComment("");
+    setConfirmProjectID(id);
+  };
+
+  const cancelConfirm = () => {
+    setShowEndProjectModal(false);
+    initConfirm(0);
+  };
+
+  const cancelComment = () => {
+    setshowCommentModal(false);
+    initConfirm(0);
+  };
+
+  const ConfirmEndProject = async () => {
+    try {
+      if (ConfirmProjectID) {
+        await EndOfProject(ConfirmProjectID);
+        notifySuccess("تأیید انجام پروژه با موفقیت انجام شد.");
+        window.location.reload();
+      }
+    } catch (error: any) {
+      notifyError(`${errorMapper(error)}`);
+    }
+  };
+
+  const ConfirmComment = async () => {
+    try {
+      if (ConfirmProjectID) {
+        const commentData = {
+          project_id: parseInt(ConfirmProjectID.toString()),
+          content: comment,
+          rating: rating,
+        };
+        await PutComment(commentData);
+        notifySuccess("ثبت نظر برای پروژه با موفقیت انجام شد.");
+        window.location.reload();
+      }
+    } catch (error: any) {
+      notifyError(`${errorMapper(error)}`);
+    }
   };
 
   const totalPages = Math.ceil(totalProjects / projectsPerPage) || 1;
@@ -346,31 +411,71 @@ const MyProjects = () => {
                         )}
                       </div>
                     </div>
-                    <div className="flex flex-row justify-between gap-2 px-1 absolute bottom-[15px] left-[15px] z-10 w-16 flex-wrap">
-                      <Link to={`/biders/${project.project_id}`}>
+                    <div className="flex flex-row justify-between items-center ltr gap-2 px-1 absolute bottom-[15px] left-[15px] z-10 w-16 flex-wrap-reverse">
+                      <motion.button
+                        onClick={() => handleDeleteProject(project.project_id)}
+                        className={`bg-transparent text-red-500 h-fit ${project.status > 2 ? "hidden cursor-default" : "cursor-pointer hover:scale-[115%]"} transition-all duration-300`}
+                      >
+                        <FaTrash size={22} />
+                      </motion.button>
+                      <motion.button
+                        disabled={project.status != 3}
+                        onClick={() => {
+                          setShowEndProjectModal(true);
+                          initConfirm(project.project_id);
+                        }}
+                        className={`bg-transparent h-fit transition-all duration-300 ${
+                          project.status != 3
+                            ? "hidden cursor-default"
+                            : "text-green-400 cursor-pointer hover:scale-[115%]"
+                        }`}
+                      >
+                        <FaCheck size={22} />
+                      </motion.button>
+                      <motion.button
+                        disabled={project.status < 3}
+                        onClick={() => {
+                          setshowCommentModal(true);
+                          initConfirm(project.project_id);
+                        }}
+                        className={`bg-transparent h-fit transition-all duration-300 ${
+                          project.status < 3
+                            ? "hidden cursor-default"
+                            : "text-white cursor-pointer hover:scale-[115%]"
+                        }`}
+                      >
+                        <FaRegCommentDots size={22} />
+                      </motion.button>
+                      <Link
+                        to={`/detail/${project.project_id}`}
+                        className="items-center flex"
+                      >
+                        <motion.button className="bg-transparent h-fit cursor-pointer hover:scale-[115%] transition-all duration-300">
+                          <Eye color="white" />
+                        </motion.button>
+                      </Link>
+                      <Link
+                        to={`/biders/${project.project_id}`}
+                        className={`${project.status != 2 ? "hidden" : "items-center flex"}`}
+                      >
                         <motion.button
-                          className={`bg-transparent h-fit transition-all duration-300 ${project.status != 2 ? "opacity-70 cursor-default" : "cursor-pointer hover:scale-[115%]"}`}
+                          className={`bg-transparent h-fit transition-all duration-300 ${project.status != 2 ? "hidden cursor-default" : "cursor-pointer hover:scale-[115%]"}`}
                           disabled={project.status != 2}
                         >
                           <RiAuctionLine color="white" size={23} />
                         </motion.button>
                       </Link>
-                      <Link to={`/ProjectDetail/${project.project_id}`}>
-                        <motion.button className="bg-transparent h-fit cursor-pointer hover:scale-[115%] transition-all duration-300">
-                          <Eye color="white" />
-                        </motion.button>
-                      </Link>
-                      <Link to={`/edit-project/${project.project_id}`}>
-                        <motion.button className="bg-transparent h-fit cursor-pointer hover:scale-[115%] transition-all duration-300">
+                      <Link
+                        to={`/edit-project/${project.project_id}`}
+                        className={`${project.status > 1 ? "hidden" : "items-center flex"}`}
+                      >
+                        <motion.button
+                          className={`bg-transparent h-fit transition-all duration-300 ${project.status > 1 ? "hidden cursor-default" : "cursor-pointer hover:scale-[115%]"}`}
+                          disabled={project.status > 1}
+                        >
                           <SquarePen color="white" size={22} />
                         </motion.button>
                       </Link>
-                      <motion.button
-                        onClick={() => handleDeleteProject(project.project_id)}
-                        className="bg-transparent text-red-500 h-fit cursor-pointer hover:scale-[115%] transition-all duration-300"
-                      >
-                        <FaTrash size={22} />
-                      </motion.button>
                     </div>
                   </motion.div>
                 ))}
@@ -418,6 +523,136 @@ const MyProjects = () => {
           </AnimatePresence>
         </main>
 
+        {/* Modal for confirm project End */}
+        <AnimatePresence>
+          {showEndProjectModal && (
+            <motion.div
+              className="fixed inset-0 flex items-center justify-center z-50"
+              variants={backdropVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <motion.div
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                onClick={cancelConfirm}
+              />
+
+              <motion.div
+                className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg z-10 dark:bg-gray-900"
+                variants={modalVariants}
+              >
+                <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center dark:text-white">
+                  تأیید انجام پروژه
+                </h3>
+                <p className="text-gray-600 mb-4 text-center dark:text-gray-300">
+                  آیا از ثبت پروژه مطمئن هستید؟
+                </p>
+                <div className="flex justify-center gap-4 mt-6">
+                  <button
+                    className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
+                    onClick={ConfirmEndProject}
+                  >
+                    تأیید و ثبت
+                  </button>
+                  <button
+                    onClick={cancelConfirm}
+                    className="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors cursor-pointer"
+                  >
+                    لغو
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Modal for confirm project End */}
+        <AnimatePresence>
+          {showCommentModal && (
+            <motion.div
+              className="fixed inset-0 flex items-center justify-center z-50"
+              variants={backdropVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <motion.div
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                onClick={cancelComment}
+              />
+
+              <motion.div
+                className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg z-10 dark:bg-gray-900"
+                variants={modalVariants}
+              >
+                <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center dark:text-white">
+                  ثبت نظر
+                </h3>
+                <p className="text-gray-600 mb-4 text-center dark:text-gray-300">
+                  لطفاً نظر و امتیاز خود را برای این پروژه ثبت کنید.
+                </p>
+
+                {/* سیستم امتیازدهی ستاره‌ای */}
+                <div className="flex justify-center items-center gap-2 mb-4">
+                  {[...Array(5)].map((_, index) => {
+                    const starValue = index + 1;
+                    return (
+                      <label key={starValue}>
+                        <input
+                          type="radio"
+                          name="rating"
+                          className="hidden"
+                          value={starValue}
+                          onClick={() => setRating(starValue)}
+                        />
+                        <FaStar
+                          size={30}
+                          className="cursor-pointer transition-colors"
+                          color={
+                            starValue <= rating
+                              ? "#ffc107"
+                              : starValue <= hover
+                                ? "#FFECB3"
+                                : "#e4e5e9"
+                          }
+                          onMouseEnter={() => setHover(starValue)}
+                          onMouseLeave={() => setHover(0)}
+                        />
+                      </label>
+                    );
+                  })}
+                </div>
+
+                {/* بخش کامنت */}
+                <textarea
+                  className="w-full p-2 border border-gray-300 rounded-md bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  rows={4}
+                  placeholder="نظر خود را اینجا بنویسید..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                ></textarea>
+
+                {/* دکمه‌های عملیات */}
+                <div className="flex justify-center gap-4 mt-6">
+                  <button
+                    className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
+                    onClick={ConfirmComment}
+                  >
+                    تأیید و ثبت
+                  </button>
+                  <button
+                    onClick={cancelComment}
+                    className="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors cursor-pointer"
+                  >
+                    لغو
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Modal for delete confirmation */}
         <AnimatePresence>
           {showModal && (
@@ -433,7 +668,7 @@ const MyProjects = () => {
                 onClick={cancelDelete}
               />
               <motion.div
-                className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg z-10 dark:bg-black"
+                className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg z-10 dark:bg-gray-900"
                 variants={modalVariants}
                 initial="hidden"
                 animate="visible"
@@ -466,7 +701,9 @@ const MyProjects = () => {
 
         <footer
           className={`bg-[#F7F7F7] ltr place-items-center dark:bg-gray-800 ${
-            currentProjects.length === 0 ? "" : "border-t border-gray-200 dark:border-[#1A1814]"
+            currentProjects.length === 0
+              ? ""
+              : "border-t border-gray-200 dark:border-[#1A1814]"
           } self-center p-4 w-full relative z-10 transition-all duration-400 sm:pr-24 pr-4 pl-4 ${
             isSidebarOpen ? "md:pr-52" : "md:pr-28"
           }`}
