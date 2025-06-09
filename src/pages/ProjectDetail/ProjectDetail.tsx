@@ -18,6 +18,7 @@ import { ApiTeamResponse, mapApiData } from "./types";
 import { getStatusText } from "../Projects/MyProjects";
 import { RiTeamFill } from "react-icons/ri";
 import { motion } from "framer-motion";
+import InProgressProject from "./InProgressProject";
 
 const ProjectDetail = () => {
   const { project_id } = useParams();
@@ -188,6 +189,10 @@ const ProjectDetail = () => {
         </div>
       </>
     );
+  }
+
+  if (projectData.status === 3) {
+    return <InProgressProject />;
   }
 
   return (

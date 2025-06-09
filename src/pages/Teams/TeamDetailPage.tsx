@@ -563,7 +563,9 @@ const TeamDetailPage: React.FC = () => {
                               className="hover:bg-gray-50 dark:hover:bg-gray-700"
                             >
                               <td className="px-6 py-4 whitespace-nowrap text-right">
-                                <Link to={`/detail/${project.project_id}`}>
+                                <Link
+                                  to={`/ProjectDetail/${project.project_id}`}
+                                >
                                   <div className="text-sm font-medium text-gray-900 hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-400">
                                     {project.title}
                                   </div>

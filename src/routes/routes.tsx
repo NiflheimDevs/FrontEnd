@@ -31,7 +31,10 @@ import ProjectDetail from "../pages/ProjectDetail/ProjectDetail";
 
 import TeamListPage from "../pages/Teams/TeamListPage";
 import TeamDetailPage from "../pages/Teams/TeamDetailPage";
-import BrowseLayout from "../pages/Browse/BrowseLayout";
+import BrowseProjectLayout from "../Components/Browse/BrowseProjectLayout";
+import BrowsePageLayout from "../Components/Browse/BrowsePageLayout";
+import BrowseTeamLayout from "../Components/Browse/BrowseTeamLayout";
+import BrowseUserLayout from "../Components/Browse/BrowseUserLayout";
 
 // Utility function to check if user is authenticated
 const isAuthenticated = () => {
@@ -69,7 +72,7 @@ export const publicRoutes = [
     ),
   },
   { path: "/profile/:profile_id", element: <PublicProfile /> },
-  { path: "/detail/:project_id", element: <ProjectDetail /> },
+  { path: "/ProjectDetail/:project_id", element: <ProjectDetail /> },
   {
     path: "/ForgetPassVerify",
     element: (
@@ -79,8 +82,11 @@ export const publicRoutes = [
     ),
   },
   { path: "/Resetpass", element: <ChangePasswordonForget /> },
-  { path: "/Browseproject", element: <BrowseLayout /> },
-  { path: "/detail/:project_id", element: <ProjectDetail /> },
+  { path: "/Browse", element: <BrowsePageLayout /> },
+  { path: "/Browse/Projects", element: <BrowseProjectLayout /> },
+  { path: "/Browse/Teams", element: <BrowseTeamLayout/>},
+  { path: "/Browse/Users", element: <BrowseUserLayout /> },
+  { path: "/ProjectDetail/:project_id", element: <ProjectDetail /> },
 ];
 
 // Private routes (require authentication)
