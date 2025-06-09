@@ -161,7 +161,9 @@ const EditProject: React.FC = () => {
       <div className="container mx-auto px-4 py-8 h-screen flex items-center justify-center dark:bg-gray-800">
         <div className="flex flex-col items-center">
           <FaSpinner className="text-4xl text-blue-500 animate-spin mb-4" />
-          <p className="text-gray-600 dark:text-gray-300">در حال بارگذاری اطلاعات پروژه...</p>
+          <p className="text-gray-600 dark:text-gray-300">
+            در حال بارگذاری اطلاعات پروژه...
+          </p>
         </div>
       </div>
     );
@@ -170,12 +172,12 @@ const EditProject: React.FC = () => {
   if (error) {
     return (
       <div className="container mx-auto px-4 py-8 h-screen flex items-center justify-center dark:bg-gray-800">
-        <div className="bg-red-50 border border-red-300 text-red-800 p-6 rounded-lg max-w-md text-center dark:bg-black dark:border-red-900 dark:text-red-300">
+        <div className="bg-red-50 border border-red-300 text-red-800 p-6 rounded-lg max-w-md text-center dark:bg-gray-900 dark:border-red-900 dark:text-red-300">
           <p className="text-xl font-bold mb-2 dark:text-[#E0D6C8]">خطا</p>
           <p className="dark:text-[#B4AA9C]">{error}</p>
           <button
             onClick={() => navigate("/myprojects")}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="mt-4 bg-blue-500 dark:bg-blue-600 cursor-pointer text-white px-4 py-2 rounded hover:bg-blue-600 dark:hover:bg-blue-700"
           >
             بازگشت به لیست پروژه‌ها
           </button>
@@ -189,7 +191,10 @@ const EditProject: React.FC = () => {
       <div className="fixed inset-0 bg-[#F7F7F7] dark:bg-gray-800 z-[-1]"></div>
       <div className="dark:bg-gray-800">
         <div className="container mx-auto md:pr-8 sm:pr-8 pr-0 py-8 mt-15 lg:max-w-4xl dark:bg-gray-800">
-          <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+          <Sidebar
+            isSidebarOpen={isSidebarOpen}
+            toggleSidebar={toggleSidebar}
+          />
           <Header toggleSidebar={toggleSidebar} />
           <div className="flex justify-center md:mb-12 mb-0 space-x-4 lg:space-x-8 transition-all duration-400 md:scale-100 sm:scale-[90%] scale-[85%] dark:bg-gray-800">
             {StepIcons.map((step, index) => (
