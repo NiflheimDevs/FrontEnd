@@ -190,7 +190,7 @@ body {
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
+  --background: oklch(27.8% 0.033 256.848);
   --foreground: oklch(0.985 0 0);
   --toast-background: #2d3748;
   --toast-text-color: #edf2f7;
