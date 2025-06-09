@@ -95,7 +95,7 @@ const BrowsePage: React.FC = () => {
   });
 
   return (
-    <div className="mx-full bg-[#F7F7F7] dark:bg-gray-900 py-10 px-2 sm:px-8 animate-fadeIn">
+    <div className="mx-full bg-[#F7F7F7] dark:bg-gray-900 py-10 px-2 sm:px-8 animate-fadeIn min-h-screen h-screen">
       <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-2 text-center">جستجو</h2>
       <p className="text-gray-600 dark:text-gray-300 text-center mb-8">
          در این بخش، پروژه‌ها ٬ تیم‌ها یا کاربرانی که با عبارت جستجوی شما مطابقت دارند نمایش داده می‌شوند. برای مشاهده جزئیات بیشتر، روی هر نتیجه کلیک کنید.

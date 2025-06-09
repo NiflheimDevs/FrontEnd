@@ -35,7 +35,7 @@ const getTag = (type: SearchResultType, data: any) => {
 
 const getLink = (type: SearchResultType, data: any) => {
   if (type === "user") return `/profile/${data.id || data.name}`;
-  if (type === "project") return `/detail/${data.project_id}`;
+  if (type === "project") return `/ProjectDetail/${data.project_id}`;
   if (type === "team") return `/teams/${data.id}`;
   return "#";
 };
