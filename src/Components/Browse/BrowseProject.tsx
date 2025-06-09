@@ -91,7 +91,7 @@ const BrowseProject: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col w-full min-h-screen py-6 px-4 sm:mt-0 mt-15 bg-gray-100 dark:bg-gray-900">
+    <div className="flex flex-col w-full min-h-screen py-6 px-4 sm:mt-0 mt-15 bg-gray-100 dark:bg-gray-800">
       <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-2 text-center">جستجوی پروژه‌ها</h2>
       <p className="text-gray-600 dark:text-gray-300 text-center mb-8">در این بخش می‌توانید پروژه‌های مختلف را جستجو و مشاهده کنید.</p>
       <div className="flex flex-col items-center gap-2 mb-6">

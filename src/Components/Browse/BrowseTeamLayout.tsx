@@ -30,7 +30,7 @@ const browseteamlayout: React.FC = () => {
   return (
     <div>
     <Header showSearch={false} />
-    <div className="w-screen max-auto mx-auto min-h-screen h-screen bg-[#F7F7F7] dark:bg-gray-900 py-10 px-2 sm:px-8 animate-fadeIn">
+    <div className="w-screen max-auto mx-auto min-h-screen h-screen bg-[#F7F7F7] dark:bg-gray-800 py-10 px-2 sm:px-8 animate-fadeIn">
       <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-2 text-center">جستجوی تیم‌ها</h2>
       <p className="text-gray-600 dark:text-gray-300 text-center mb-8">در این بخش می‌توانید تیم‌های مختلف را جستجو و مشاهده کنید.</p>
       <div className="flex flex-col items-center gap-2 mb-6">

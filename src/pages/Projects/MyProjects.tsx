@@ -447,7 +447,7 @@ const MyProjects = () => {
                         <FaRegCommentDots size={22} />
                       </motion.button>
                       <Link
-                        to={`/detail/${project.project_id}`}
+                        to={`/Projectdetail/${project.project_id}`}
                         className="items-center flex"
                       >
                         <motion.button className="bg-transparent h-fit cursor-pointer hover:scale-[115%] transition-all duration-300">

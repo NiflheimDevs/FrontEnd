@@ -73,7 +73,7 @@ const typeLabels = {
 const SearchResultCard: React.FC<SearchResultCardProps> = ({ type, data, loading }) => {
   if (loading) {
     return (
-      <div className="relative flex items-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 w-full mb-6 transition-all min-h-[6.5rem] hover:scale-102 hover:shadow-[0_0_24px_0_rgba(59,130,246,0.25)] hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 duration-200 outline-none focus:ring-2 focus:ring-blue-400" style={{ direction: 'rtl' }}>
+      <div className="relative flex items-center bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 w-full mb-6 transition-all min-h-[6.5rem] hover:scale-102 hover:shadow-[0_0_24px_0_rgba(59,130,246,0.25)] hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 duration-200 outline-none focus:ring-2 focus:ring-blue-400" style={{ direction: 'rtl' }}>
         <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border-4 border-blue-200 dark:border-blue-900 ml-6 shiny-skeleton"></div>
         <div className="flex flex-col justify-center flex-grow text-right">
           <h3 className="text-xl font-extrabold mb-2 leading-tight shiny-skeleton h-6 w-1/3 rounded-full"></h3>
@@ -87,7 +87,7 @@ const SearchResultCard: React.FC<SearchResultCardProps> = ({ type, data, loading
   return (
     <Link
       to={getLink(type, data)}
-      className="relative flex items-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 w-full mb-6 transition-all min-h-[6.5rem] hover:scale-102 duration-300 hover:shadow-[0_0_24px_0_rgba(59,130,246,0.25)] hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 duration-200 outline-none focus:ring-2 focus:ring-blue-400"
+      className="relative flex items-center bg-white dark:bg-gray-700 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 w-full mb-6 transition-all min-h-[6.5rem] hover:scale-102 duration-400 hover:shadow-[0_0_24px_0_rgba(59,130,246,0.25)] hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 duration-200 outline-none focus:ring-2 focus:ring-blue-400"
       style={{ direction: 'rtl' }}
     >
       {/* Type Tag */}

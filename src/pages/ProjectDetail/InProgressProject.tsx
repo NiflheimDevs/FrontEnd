@@ -109,7 +109,7 @@ const InProgressProject = () => {
             className="shadow-lg rounded-2xl bg-white dark:bg-gray-700 flex flex-col w-full max-w-4xl mx-auto h-fit gap-6 p-4 sm:p-6"
           >
             <div className="flex flex-col space-y-4">
-              <h2 className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400 text-right">
+              <h2 className="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400 text-right">
                 پروژه در حال انجام: {projectData.title}
               </h2>
               <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 gap-2">
@@ -129,7 +129,7 @@ const InProgressProject = () => {
                   project_id={project_id}
                   teamData={teams}
                   bider={selectedBid}
-                  color={1}
+                  color={2}
                   status={projectData.status}
                 />
               ) : (
