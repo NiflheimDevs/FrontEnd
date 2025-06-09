@@ -1,11 +1,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import DatePicker from "react-multi-date-picker";
+import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import { Profile, Skill, WorkExperience } from "./types";
 import { skills } from "./types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface WorkExperienceSectionProps {
   localProfile: Profile;
@@ -24,6 +25,27 @@ export default function WorkExperienceSection({
 }: WorkExperienceSectionProps) {
   const [workSearchTerms, setWorkSearchTerms] = useState<string[]>([]);
   const [workDropdowns, setWorkDropdowns] = useState<boolean[]>([]);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem("darkMode") === "true";
+  });
+
+  useEffect(() => {
+    const handleDarkModeChange = () => {
+      setIsDarkMode(document.documentElement.classList.contains("dark"));
+    };
+
+    // Listen for changes in dark mode
+    const observer = new MutationObserver(handleDarkModeChange);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    // Initial check
+    handleDarkModeChange();
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleAddWorkExperience = () => {
     setLocalProfile((prev) => ({
@@ -244,6 +266,7 @@ export default function WorkExperienceSection({
                         <span className="text-red-400">*</span>
                       </label>
                       <DatePicker
+                        className={`${isDarkMode ? "bg-dark" : ""}`}
                         value={exp.startDate || ""}
                         onChange={(date) =>
                           handleWorkExperienceChange(
@@ -288,6 +311,7 @@ export default function WorkExperienceSection({
                             <span className="text-red-400">*</span>
                           </label>
                           <DatePicker
+                            className={`${isDarkMode ? "bg-dark" : ""}`}
                             value={exp.endDate || ""}
                             onChange={(date) =>
                               handleWorkExperienceChange(

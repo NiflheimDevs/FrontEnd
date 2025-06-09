@@ -17,6 +17,13 @@ html {
   scrollbar-width: none;
 }
 
+.themed-toast {
+  background-color: var(--toast-background) !important;
+  color: var(--toast-text-color) !important;
+  font-family: 'vazirmatn', sans-serif; 
+}
+
+
 body {
   padding-top: env(safe-area-inset-top);
   padding-right: env(safe-area-inset-right);
@@ -147,6 +154,8 @@ body {
 :root {
   --background: #F7F7F7;
   --foreground: oklch(0.141 0.005 285.823);
+  --toast-background: #ffffff;
+  --toast-text-color: #1a202c;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
@@ -181,8 +190,10 @@ body {
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
+  --background: oklch(27.8% 0.033 256.848);
   --foreground: oklch(0.985 0 0);
+  --toast-background: #2d3748;
+  --toast-text-color: #edf2f7;
   --card: oklch(0.141 0.005 285.823);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.141 0.005 285.823);
