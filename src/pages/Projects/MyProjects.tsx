@@ -10,12 +10,18 @@ import {
   FaArrowRight,
   FaCheck,
   FaStar,
+  FaRegCommentDots,
 } from "react-icons/fa6";
 import { SquarePen, Eye } from "lucide-react";
 import { RiAuctionLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
-import { getUserProject, deleteProject, EndOfProject } from "../../API";
+import {
+  getUserProject,
+  deleteProject,
+  EndOfProject,
+  PutComment,
+} from "../../API";
 import { AiOutlineProject } from "react-icons/ai";
 import { useNotification } from "../../Notification/NotificationProvider";
 
@@ -101,6 +107,7 @@ const MyProjects = () => {
   const [ConfirmProjectID, setConfirmProjectID] = useState<number | string>(0);
   const [comment, setComment] = useState("");
   const [showEndProjectModal, setShowEndProjectModal] = useState(false);
+  const [showCommentModal, setshowCommentModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState<
     number | string | null
   >(null);
@@ -202,11 +209,33 @@ const MyProjects = () => {
     initConfirm(0);
   };
 
+  const cancelComment = () => {
+    setshowCommentModal(false);
+    initConfirm(0);
+  };
+
   const ConfirmEndProject = async () => {
     try {
       if (ConfirmProjectID) {
         await EndOfProject(ConfirmProjectID);
         notifySuccess("تأیید انجام پروژه با موفقیت انجام شد.");
+        window.location.reload();
+      }
+    } catch (error: any) {
+      notifyError(`${errorMapper(error)}`);
+    }
+  };
+
+  const ConfirmComment = async () => {
+    try {
+      if (ConfirmProjectID) {
+        const commentData = {
+          project_id: parseInt(ConfirmProjectID.toString()),
+          content: comment,
+          rating: rating,
+        };
+        await PutComment(commentData);
+        notifySuccess("ثبت نظر برای پروژه با موفقیت انجام شد.");
         window.location.reload();
       }
     } catch (error: any) {
@@ -403,6 +432,20 @@ const MyProjects = () => {
                       >
                         <FaCheck size={22} />
                       </motion.button>
+                      <motion.button
+                        disabled={project.status < 3}
+                        onClick={() => {
+                          setshowCommentModal(true);
+                          initConfirm(project.project_id);
+                        }}
+                        className={`bg-transparent h-fit transition-all duration-300 ${
+                          project.status < 3
+                            ? "hidden cursor-default"
+                            : "text-white cursor-pointer hover:scale-[115%]"
+                        }`}
+                      >
+                        <FaRegCommentDots size={22} />
+                      </motion.button>
                       <Link
                         to={`/detail/${project.project_id}`}
                         className="items-center flex"
@@ -503,6 +546,50 @@ const MyProjects = () => {
                   تأیید انجام پروژه
                 </h3>
                 <p className="text-gray-600 mb-4 text-center dark:text-gray-300">
+                  آیا از ثبت پروژه مطمئن هستید؟
+                </p>
+                <div className="flex justify-center gap-4 mt-6">
+                  <button
+                    className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
+                    onClick={ConfirmEndProject}
+                  >
+                    تأیید و ثبت
+                  </button>
+                  <button
+                    onClick={cancelConfirm}
+                    className="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors cursor-pointer"
+                  >
+                    لغو
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Modal for confirm project End */}
+        <AnimatePresence>
+          {showCommentModal && (
+            <motion.div
+              className="fixed inset-0 flex items-center justify-center z-50"
+              variants={backdropVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <motion.div
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                onClick={cancelComment}
+              />
+
+              <motion.div
+                className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg z-10 dark:bg-gray-900"
+                variants={modalVariants}
+              >
+                <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center dark:text-white">
+                  ثبت نظر
+                </h3>
+                <p className="text-gray-600 mb-4 text-center dark:text-gray-300">
                   لطفاً نظر و امتیاز خود را برای این پروژه ثبت کنید.
                 </p>
 
@@ -550,12 +637,12 @@ const MyProjects = () => {
                 <div className="flex justify-center gap-4 mt-6">
                   <button
                     className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors cursor-pointer"
-                    onClick={ConfirmEndProject}
+                    onClick={ConfirmComment}
                   >
                     تأیید و ثبت
                   </button>
                   <button
-                    onClick={cancelConfirm}
+                    onClick={cancelComment}
                     className="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors cursor-pointer"
                   >
                     لغو
