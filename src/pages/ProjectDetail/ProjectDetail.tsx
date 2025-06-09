@@ -221,13 +221,11 @@ const ProjectDetail = () => {
                     <label className="font-semibold">تعداد پیشنهادها: </label>
                     <span>{biders.length} پیشنهاد</span>
                   </div>
-                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-4">
+                  <div className="flex mt-4">
                     <FlipClockCountdown
-                      className="ltr"
+                      className="ltr flip-clock"
                       to={formatDuration(projectData.duration)}
                       labels={["روز", "ساعت", "دقیقه", "ثانیه"]}
-                      digitBlockStyle={{ width: 40, height: 60, fontSize: 30 }}
-                      separatorStyle={{ size: "6px" }}
                       hideOnComplete={false}
                     />
                   </div>
