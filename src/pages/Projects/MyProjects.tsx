@@ -89,6 +89,8 @@ export const getStatusText = (statusNumber: number) => {
       return "درحال انجام";
     case 4:
       return "انجام شده";
+    case 5:
+      return "انجام شده";
     default:
       return "نامشخص";
   }
@@ -433,13 +435,13 @@ const MyProjects = () => {
                         <FaCheck size={22} />
                       </motion.button>
                       <motion.button
-                        disabled={project.status < 3}
+                        disabled={project.status != 4}
                         onClick={() => {
                           setshowCommentModal(true);
                           initConfirm(project.project_id);
                         }}
                         className={`bg-transparent h-fit transition-all duration-300 ${
-                          project.status < 3
+                          project.status != 4
                             ? "hidden cursor-default"
                             : "text-white cursor-pointer hover:scale-[115%]"
                         }`}

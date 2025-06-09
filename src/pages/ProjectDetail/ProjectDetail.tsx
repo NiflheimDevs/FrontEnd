@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import Header from "../../Components/MainContent/Header";
 import { useParams, useNavigate } from "react-router-dom";
+import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
+import "@leenguyen/react-flip-clock-countdown/dist/index.css";
 import {
   GetProject,
   GetProjectBid,
@@ -40,10 +42,8 @@ const ProjectDetail = () => {
 
   const formatDuration = (dateString: string) => {
     const projectDate = new Date(dateString);
-    const currentDate = new Date();
-    const diffTime = currentDate.getTime() - projectDate.getTime();
-    const diffDays = Math.ceil(Math.abs(diffTime) / (1000 * 60 * 60 * 24));
-    return diffTime < 0 ? `${diffDays} روز بعد` : `${diffDays} روز پیش`;
+    const diffTime = projectDate.getTime();
+    return diffTime <= 0 ? new Date().getTime() : diffTime;
   };
 
   useEffect(() => {
@@ -221,9 +221,15 @@ const ProjectDetail = () => {
                     <label className="font-semibold">تعداد پیشنهادها: </label>
                     <span>{biders.length} پیشنهاد</span>
                   </div>
-                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 gap-2">
-                    <label className="font-semibold">مهلت ارسال پیشنهاد:</label>
-                    <span>{formatDuration(projectData.duration)}</span>
+                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-4">
+                    <FlipClockCountdown
+                      className="ltr"
+                      to={formatDuration(projectData.duration)}
+                      labels={["روز", "ساعت", "دقیقه", "ثانیه"]}
+                      digitBlockStyle={{ width: 40, height: 60, fontSize: 30 }}
+                      separatorStyle={{ size: "6px" }}
+                      hideOnComplete={false}
+                    />
                   </div>
                 </div>
               </div>
