@@ -44,8 +44,11 @@ const BrowseUser: React.FC = () => {
         { user_id: 5, name: "رضا محمدی", role: "متخصص امنیت سایبری و تست نفوذ", skill: "امنیت, تست نفوذ, شبکه", avatar: "https://randomuser.me/api/portraits/men/47.jpg" },
         { user_id: 6, name: "نازنین زهرا", role: "طراح تجربه کاربری (UX) و رابط کاربری (UI)", skill: "UX, UI, طراحی", avatar: "https://randomuser.me/api/portraits/women/48.jpg" },
     ];
-    setUsers(mockUsers);
-    setLoading(false);
+    // Simulate loading delay of 2 seconds
+    setTimeout(() => {
+      setUsers(mockUsers);
+      setLoading(false);
+    }, 2000);
   }, []);
 
   // Toggle skill selection

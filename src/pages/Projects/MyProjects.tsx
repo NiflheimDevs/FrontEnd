@@ -355,7 +355,7 @@ const MyProjects = () => {
                           <RiAuctionLine color="white" size={23} />
                         </motion.button>
                       </Link>
-                      <Link to={`/detail/${project.project_id}`}>
+                      <Link to={`/ProjectDetail/${project.project_id}`}>
                         <motion.button className="bg-transparent h-fit cursor-pointer hover:scale-[115%] transition-all duration-300">
                           <Eye color="white" />
                         </motion.button>

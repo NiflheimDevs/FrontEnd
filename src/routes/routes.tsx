@@ -72,7 +72,7 @@ export const publicRoutes = [
     ),
   },
   { path: "/profile/:profile_id", element: <PublicProfile /> },
-  { path: "/detail/:project_id", element: <ProjectDetail /> },
+  { path: "/ProjectDetail/:project_id", element: <ProjectDetail /> },
   {
     path: "/ForgetPassVerify",
     element: (
@@ -86,7 +86,7 @@ export const publicRoutes = [
   { path: "/Browse/Projects", element: <BrowseProjectLayout /> },
   { path: "/Browse/Teams", element: <BrowseTeamLayout/>},
   { path: "/Browse/Users", element: <BrowseUserLayout /> },
-  { path: "/detail/:project_id", element: <ProjectDetail /> },
+  { path: "/ProjectDetail/:project_id", element: <ProjectDetail /> },
 ];
 
 // Private routes (require authentication)

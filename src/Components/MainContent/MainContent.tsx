@@ -315,7 +315,7 @@ const MainContent = () => {
             <div className="md:flex sm:flex hidden flex-wrap justify-center gap-8 px-6 max-w-7xl mx-auto">
               {projectCards.map((card) => (
                 <Link
-                  to={`/detail/${card.project_id}`}
+                  to={`/ProjectDetail/${card.project_id}`}
                   key={card.project_id}
                   className="bg-gray-100 dark:bg-gray-700 rounded-xl shadow-lg flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px] transition-all duration-300"
                 >
@@ -346,7 +346,7 @@ const MainContent = () => {
                     className="rounded-xl h-full"
                   >
                     <Link
-                      to={`/detail/${card.project_id}`}
+                      to={`/ProjectDetail/${card.project_id}`}
                       className="flex flex-col relative"
                     >
                       <div className="w-full px-2 pt-2">{card.image}</div>
@@ -369,11 +369,19 @@ const MainContent = () => {
       </section>
 
       {/* Trending Freelancers */}
-      <section className="w-full md:mb-24 mb-12 py-10 bg-white dark:bg-gray-800">
-        <div className="hidden md:block px-6 max-w-7xl mx-auto">
-          <h2 className="text-2xl font-bold text-right mb-12 text-gray-800 dark:text-gray-200">
-            فریلنسرهای محبوب 🔥
-          </h2>
+      <section className="w-full py-12 rounded-3xl bg-white dark:bg-gray-800">
+        <div className=" px-6 max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="md:text-2xl sm:text-2xl text-[18px] font-bold text-gray-800 dark:text-gray-200">
+             فریلنسرهای محبوب 🔥
+            </h2>
+            <Link
+              to="/Browse/Users"
+              className="bg-blue-600 text-white md:px-6 sm:px-6 px-4 py-2 rounded-full hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-400 duration-300 ease-in-out transition-all text-sm font-medium"
+            >
+              مشاهده همه
+            </Link>
+          </div>
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPage}

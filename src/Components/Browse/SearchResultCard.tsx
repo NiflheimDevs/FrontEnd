@@ -44,21 +44,21 @@ const typeColors = {
   user: {
     bg: "bg-green-50 dark:bg-green-950",
     border: "border-green-200 dark:border-green-700",
-    hover: "hover:bg-green-100/60 dark:hover:bg-green-900/40",
+    hover: "hover:bg-green-100/60 dark:hover:bg-green-900/40 duration-300",
     tagBg: "bg-green-100 dark:bg-green-900",
     tagText: "text-green-600 dark:text-green-300"
   },
   project: {
     bg: "bg-blue-50 dark:bg-blue-950",
     border: "border-blue-200 dark:border-blue-700",
-    hover: "hover:bg-blue-100/60 dark:hover:bg-blue-900/40",
+    hover: "hover:bg-blue-100/60 dark:hover:bg-blue-900/40 duration-300",
     tagBg: "bg-blue-100 dark:bg-blue-900",
     tagText: "text-blue-600 dark:text-blue-300"
   },
   team: {
     bg: "bg-orange-100 dark:bg-orange-900",
     border: "border-purple-200 dark:border-purple-700",
-    hover: "hover:bg-purple-100/60 dark:hover:bg-purple-900/40",
+    hover: "hover:bg-purple-100/60 dark:hover:bg-purple-900/40 duration-300",
     tagBg: "bg-orange-100 dark:bg-orange-900",
     tagText: "text-orange-600 dark:text-orange-300"
   }
@@ -73,13 +73,21 @@ const typeLabels = {
 const SearchResultCard: React.FC<SearchResultCardProps> = ({ type, data, loading }) => {
   if (loading) {
     return (
-      <div className="shiny-skeleton h-28 rounded-2xl w-full mb-6" />
-    );
+      <div className="relative flex items-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 w-full mb-6 transition-all min-h-[6.5rem] hover:scale-102 hover:shadow-[0_0_24px_0_rgba(59,130,246,0.25)] hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 duration-200 outline-none focus:ring-2 focus:ring-blue-400" style={{ direction: 'rtl' }}>
+        <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border-4 border-blue-200 dark:border-blue-900 ml-6 shiny-skeleton"></div>
+        <div className="flex flex-col justify-center flex-grow text-right">
+          <h3 className="text-xl font-extrabold mb-2 leading-tight shiny-skeleton h-6 w-1/3 rounded-full"></h3>
+            <p className="text-sm mb-2 line-clamp-2 shiny-skeleton h-4 w-2/3 rounded-full"></p>
+            {/* <p className="text-sm mb-2 line-clamp-2 shiny-skeleton h-4 w-1/2 rounded-full"></p> */}
+            <span className="text-sm px-3 py-1 rounded-full font-semibold mt-1 inline-block shiny-skeleton h-5 w-20 "></span>
+      </div>
+    </div>
+  );
   }
   return (
     <Link
       to={getLink(type, data)}
-      className="relative flex items-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 w-full mb-6 transition-all min-h-[6.5rem] hover:scale-102 hover:shadow-[0_0_24px_0_rgba(59,130,246,0.25)] hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 duration-200 outline-none focus:ring-2 focus:ring-blue-400"
+      className="relative flex items-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 w-full mb-6 transition-all min-h-[6.5rem] hover:scale-102 duration-300 hover:shadow-[0_0_24px_0_rgba(59,130,246,0.25)] hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/30 duration-200 outline-none focus:ring-2 focus:ring-blue-400"
       style={{ direction: 'rtl' }}
     >
       {/* Type Tag */}

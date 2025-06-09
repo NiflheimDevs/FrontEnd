@@ -50,19 +50,19 @@ type FilterColor = "gray" | "green" | "blue" | "orange";
 const COLOR_MAP: Record<FilterColor, { active: string; inactive: string }> = {
   gray: {
     active: "bg-gray-400 text-white border-gray-400 dark:bg-gray-600 dark:border-gray-600",
-    inactive: "bg-white dark:bg-gray-700 text-gray-500 border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
+    inactive: "bg-white dark:bg-gray-700 text-gray-500 border-gray-300 dark:border-gray-600 hover:bg-gray-100 duration-300 dark:hover:bg-gray-800"
   },
   green: {
     active: "bg-green-600 text-white border-green-600 dark:bg-green-500 dark:border-green-500",
-    inactive: "bg-white dark:bg-gray-700 text-green-600 border-green-400 dark:border-green-700 hover:bg-green-50 dark:hover:bg-green-900"
+    inactive: "bg-white dark:bg-gray-700 text-green-600 border-green-400 dark:border-green-700 hover:bg-green-50 duration-300 dark:hover:bg-green-900"
   },
   blue: {
     active: "bg-blue-600 text-white border-blue-600 dark:bg-blue-600 dark:border-blue-600",
-    inactive: "bg-white dark:bg-gray-700 text-blue-600 border-blue-500 dark:text-blue-300 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-600"
+    inactive: "bg-white dark:bg-gray-700 text-blue-600 border-blue-500 dark:text-blue-300 dark:border-blue-400 hover:bg-blue-50 duration-300 dark:hover:bg-blue-600 " 
   },
   orange: {
     active: "bg-orange-600 text-white border-orange-600 dark:bg-orange-500 dark:border-orange-500",
-    inactive: "bg-white dark:bg-gray-700 text-orange-600 border-orange-300 dark:border-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900"
+    inactive: "bg-white dark:bg-gray-700 text-orange-600 border-orange-300 dark:border-orange-600 hover:bg-orange-50 duration-300 dark:hover:bg-orange-900"
   }
 };
 
