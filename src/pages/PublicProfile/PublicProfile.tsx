@@ -80,28 +80,28 @@ const PublicProfile = () => {
             <div className="flex items-center gap-2">
               <span className="shiny-skeleton w-20 h-4 rounded dark:!bg-gray-600" />
             </div>
-            <span className="shiny-skeleton w-24 h-8 rounded-full dark:!bg-gray-700" />
+            <span className="shiny-skeleton w-24 h-8 rounded-full dark:!bg-gray-600" />
           </div>
         </div>
         <div className="flex flex-col md:px-0 px-6 gap-6 w-full md:text-start text-center md:w-1/2 mt-10">
           <div className="flex flex-col gap-2">
-            <span className="shiny-skeleton w-40 h-8 rounded mb-2 dark:!bg-gray-700" />
+            <span className="shiny-skeleton w-40 h-8 rounded mb-2 dark:!bg-gray-600" />
             <span className="shiny-skeleton w-4/5 h-4 rounded mb-1 dark:!bg-gray-600" />
             <span className="shiny-skeleton w-3/4 h-4 rounded mb-1 dark:!bg-gray-600" />
           </div>
         </div>
         <div className="w-full md:px-0 h-full px-4 md:w-1/4 min-w-[200px] flex flex-col gap-2 mt-10">
-          <span className="shiny-skeleton w-32 h-6 rounded mb-2 mr-3 dark:!bg-gray-700" />
+          <span className="shiny-skeleton w-32 h-6 rounded mb-2 mr-3 dark:!bg-gray-600" />
           <span className="shiny-skeleton w-24 h-4 rounded mb-1 mr-3 dark:!bg-gray-600" />
           <span className="shiny-skeleton w-20 h-4 rounded mb-1 mr-3 dark:!bg-gray-600" />
         </div>
       </div>
-      <span className="shiny-skeleton w-32 h-6 rounded mb-2 mx-8 dark:!bg-gray-700" />
+      <span className="shiny-skeleton w-32 h-6 rounded mb-2 mx-8 dark:!bg-gray-600" />
       {/* UserStateToggle Skeleton */}
       <div className="flex bg-white dark:bg-gray-800 rounded-full shadow-sm p-1 border border-gray-200 dark:border-gray-700 w-fit mx-auto ">
-        <span className="shiny-skeleton w-24 h-8 rounded-full mx-2 dark:!bg-gray-700" />
-        <span className="shiny-skeleton w-24 h-8 rounded-full mx-2 dark:!bg-gray-700" />
-        <span className="shiny-skeleton w-24 h-8 rounded-full mx-2 dark:!bg-gray-700" />
+        <span className="shiny-skeleton w-24 h-8 rounded-full mx-2 dark:!bg-gray-600" />
+        <span className="shiny-skeleton w-24 h-8 rounded-full mx-2 dark:!bg-gray-600" />
+        <span className="shiny-skeleton w-24 h-8 rounded-full mx-2 dark:!bg-gray-600" />
       </div>
       {/* UserJobExperience Skeleton */}
       <div className="flex flex-col gap-4 px-4">
@@ -110,7 +110,7 @@ const PublicProfile = () => {
             key={i}
             className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 shiny-skeleton flex flex-col gap-2 mb-2"
           >
-            <span className="shiny-skeleton w-24 h-4 rounded mb-1 !bg-gray-200 dark:!bg-gray-700" />
+            <span className="shiny-skeleton w-24 h-4 rounded mb-1 !bg-gray-200 dark:!bg-gray-600" />
             <span className="shiny-skeleton w-20 h-3 rounded mb-1 !bg-gray-200 dark:!bg-gray-600" />
             <div className="flex gap-2 mt-2">
               <span className="shiny-skeleton w-12 h-4 rounded-full !bg-gray-200 dark:!bg-gray-600" />
@@ -123,7 +123,7 @@ const PublicProfile = () => {
             key={i}
             className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 shiny-skeleton flex flex-col gap-2 mb-2"
           >
-            <span className="shiny-skeleton w-24 h-4 rounded mb-1 !bg-gray-200 dark:!bg-gray-700" />
+            <span className="shiny-skeleton w-24 h-4 rounded mb-1 !bg-gray-200 dark:!bg-gray-600" />
             <span className="shiny-skeleton w-20 h-3 rounded mb-1 !bg-gray-200 dark:!bg-gray-600" />
             <div className="flex gap-2 mt-2">
               <span className="shiny-skeleton w-12 h-4 rounded-full !bg-gray-200 dark:!bg-gray-600" />
