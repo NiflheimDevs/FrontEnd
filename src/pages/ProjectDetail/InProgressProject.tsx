@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Header from "../../Components/MainContent/Header";
 import { useParams, useNavigate } from "react-router-dom";
-import { GetProject, GetProjectBid } from "../../API";
+import { GetCommentOfProject, GetProject, GetProjectBid } from "../../API";
 import { errorMapper } from "../Error/Error";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { Bider, ProjectData } from "../../Components/Biders/types";
@@ -10,6 +11,7 @@ import ProjectDetailSkeletonLoading from "../../Components/ProjectDetail/Project
 import { ApiTeamResponse } from "./types";
 import { getStatusText } from "../Projects/MyProjects";
 import { motion } from "framer-motion";
+import { FaStar } from "react-icons/fa";
 
 const InProgressProject = () => {
   const { project_id } = useParams();
@@ -20,6 +22,8 @@ const InProgressProject = () => {
   const [teams, setTeams] = useState<ApiTeamResponse>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [rating, setRating] = useState(4);
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     const fetchProjectData = async () => {
@@ -28,6 +32,11 @@ const InProgressProject = () => {
           setLoading(true);
           const response = await GetProject(project_id);
           setProjectData(response);
+          if (response && response.status > 4) {
+            const commentData = await GetCommentOfProject(project_id);
+            setComment(commentData.content || "");
+            setRating(commentData.rating || 0);
+          }
         }
       } catch (error: any) {
         notifyError(`${errorMapper(error)}`);
@@ -122,7 +131,9 @@ const InProgressProject = () => {
               </div>
             </div>
             <div className="flex flex-col space-y-4 mt-4">
-              <h3 className="text-lg font-semibold text-green-600 dark:text-green-400 text-right">تیم منتخب (برنده):</h3>
+              <h3 className="text-lg font-semibold text-green-600 dark:text-green-400 text-right">
+                تیم منتخب (برنده):
+              </h3>
               {selectedBid ? (
                 <ProjectBiderCard
                   setTeams={setTeams}
@@ -133,12 +144,42 @@ const InProgressProject = () => {
                   status={projectData.status}
                 />
               ) : (
-                <div className="text-gray-500 dark:text-gray-400 text-sm">هیچ تیمی انتخاب نشده است.</div>
+                <div className="text-gray-500 dark:text-gray-400 text-sm">
+                  هیچ تیمی انتخاب نشده است.
+                </div>
               )}
             </div>
+            {projectData.status > 4 ? (
+              <div className="flex flex-col space-y-4 mt-4">
+                <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-300 text-right">
+                  امتیاز و نظر:
+                </h3>
+                {/* سیستم امتیازدهی ستاره‌ای */}
+                <div className="flex justify-start items-center gap-2 mb-4">
+                  {[...Array(5)].map((_, index) => {
+                    const starValue = index + 1;
+                    return (
+                      <FaStar
+                        key={starValue}
+                        size={30}
+                        color={starValue <= rating ? "#ffc107" : "#e4e5e9"}
+                      />
+                    );
+                  })}
+                </div>
+                {/* بخش کامنت */}
+                <div className="w-full p-2 border border-gray-300 rounded-md bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+                  {comment || "هیچ نظری ثبت نشده است..."}
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
             {otherBids.length > 0 && (
               <div className="flex flex-col space-y-4 mt-4">
-                <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-300 text-right">سایر پیشنهادها:</h3>
+                <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-300 text-right">
+                  سایر پیشنهادها:
+                </h3>
                 {otherBids.map((bider) => (
                   <ProjectBiderCard
                     setTeams={setTeams}

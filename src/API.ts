@@ -305,6 +305,15 @@ export const PutComment = async (userData: any) => {
   }
 };
 
+export const GetCommentOfProject = async (project_id: string | number) => {
+  try {
+    const response = await apiClient.get(`/project/comment/${project_id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const UpdateResume = async (userData: any) => {
   try {
     const response = await apiClient.post("/user/resume", userData, {
