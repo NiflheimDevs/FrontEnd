@@ -45,13 +45,18 @@ const ChatMessageArea = () => {
   const [newMessage, setNewMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const wsRef = useRef<WebSocket | null>(null);
   const location = useLocation();
   const locationState = location.state as LocationState;
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, []);
 
   const setupWebSocket = useCallback((chat: Chat) => {
@@ -206,6 +211,10 @@ const ChatMessageArea = () => {
     };
   }, [locationState, handleChatSelect]);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
+
   return (
     <div
       className="flex flex-col md:flex-row mt-6 p-3 md:p-5 w-full max-w-[1080px] h-[85vh] gap-4 mx-auto rounded-2xl shadow-2xl bg-white dark:bg-gray-900"
@@ -275,7 +284,10 @@ const ChatMessageArea = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex flex-col w-full flex-1 p-5 bg-gray-200 dark:bg-gray-800 rounded-b-2xl overflow-y-auto">
+        <div
+          ref={messagesContainerRef}
+          className="flex flex-col w-full flex-1 p-5 bg-gray-200 dark:bg-gray-800 rounded-b-2xl overflow-y-auto"
+        >
           {error && (
             <p className="text-center text-red-500 dark:text-red-400 text-sm mt-2">
               {error}
@@ -310,7 +322,6 @@ const ChatMessageArea = () => {
               </p>
             )}
           </AnimatePresence>
-          <div ref={messagesEndRef} />
         </div>
 
         {/* Input */}

@@ -37,6 +37,7 @@ const InProgressProject = () => {
             setComment(commentData.content || "");
             setRating(commentData.rating || 0);
           }
+          console.log(response);  
         }
       } catch (error: any) {
         notifyError(`${errorMapper(error)}`);
@@ -102,8 +103,13 @@ const InProgressProject = () => {
   }
 
   // The first bid is the selected/accepted one (API returns only accepted bid for status 3)
-  const selectedBid = biders.length > 0 ? biders[0] : null;
-  const otherBids = biders.length > 1 ? biders.slice(1) : [];
+  const selectedBid = biders && projectData?.selected_bid 
+  ? biders.find(bider => bider.bid_id === projectData?.selected_bid?.toString())
+  : null;
+
+const otherBids = biders 
+  ? biders.filter(bider => bider.bid_id !== projectData?.selected_bid?.toString()) 
+  : [];
 
   return (
     <>
