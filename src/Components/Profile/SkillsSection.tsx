@@ -93,7 +93,7 @@ export default function SkillsSection({
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto border-2 rounded-lg shadow-md dark:border-gray-600"
+                className="absolute z-10 w-full mt-1 max-h-40 overflow-y-auto border-2 rounded-lg bg-white shadow-md dark:border-gray-600"
               >
                 {skills
                   .filter(

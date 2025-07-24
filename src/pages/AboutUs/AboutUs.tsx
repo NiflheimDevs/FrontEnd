@@ -9,7 +9,7 @@ import Footer from "../../Components/Footer/Footer";
 
 const AboutUs: React.FC = () => {
   return (
-    <div className="flex flex-col bg-white dark:bg-gray-800">
+    <div className="flex flex-col bg-white dark:bg-gray-800 h-screen">
       {/* Header */}
       <Header showSearch={false} />
 
