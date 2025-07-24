@@ -35,6 +35,7 @@ import BrowseProjectLayout from "../Components/Browse/BrowseProjectLayout";
 import BrowsePageLayout from "../Components/Browse/BrowsePageLayout";
 import BrowseTeamLayout from "../Components/Browse/BrowseTeamLayout";
 import BrowseUserLayout from "../Components/Browse/BrowseUserLayout";
+import EmailVerificationResult from "../pages/Auth/EmailVerificationResult";
 
 // Utility function to check if user is authenticated
 const isAuthenticated = () => {
@@ -87,6 +88,7 @@ export const publicRoutes = [
   { path: "/Browse/Teams", element: <BrowseTeamLayout/>},
   { path: "/Browse/Users", element: <BrowseUserLayout /> },
   { path: "/ProjectDetail/:project_id", element: <ProjectDetail /> },
+  { path: "/email-verify-result/:token", element: <EmailVerificationResult /> },
 ];
 
 // Private routes (require authentication)
