@@ -1,12 +1,17 @@
 import { Link, useParams } from "react-router-dom";
-import { Card, CardTitle, CardContent, CardFooter } from "../../Components/ui/card";
+import {
+  Card,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "../../Components/ui/card";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 
 const EmailVerificationResult = () => {
   const { token } = useParams();
   const isSuccess = token === "success";
-  
+
   const [isDarkMode] = useState(() => {
     const savedMode = localStorage.getItem("darkMode");
     return savedMode === "true";
@@ -21,7 +26,10 @@ const EmailVerificationResult = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4" dir="rtl">
+    <div
+      className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4"
+      dir="rtl"
+    >
       <Card className="max-w-md w-full mx-auto items-center text-center dark:bg-gray-700 shadow-lg dark:shadow-xl">
         <div className="flex flex-col items-center justify-center w-full">
           {isSuccess ? (
@@ -55,8 +63,12 @@ const EmailVerificationResult = () => {
               />
             </svg>
           )}
-          <CardTitle className={`text-2xl font-bold ${isSuccess ? "text-green-600 dark:text-green-500" : "text-red-600 dark:text-red-500"}`}>
-            {isSuccess ? "ایمیل شما با موفقیت تایید شد!" : "تایید ایمیل ناموفق بود"}
+          <CardTitle
+            className={`text-2xl font-bold ${isSuccess ? "text-green-600 dark:text-green-500" : "text-red-600 dark:text-red-500"}`}
+          >
+            {isSuccess
+              ? "ایمیل شما با موفقیت تایید شد!"
+              : "تایید ایمیل ناموفق بود"}
           </CardTitle>
         </div>
         <CardContent>
