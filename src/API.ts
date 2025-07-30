@@ -211,6 +211,29 @@ export const GetUserTeams = async (id: number) => {
   }
 };
 
+export const GetUserSerachTeam = async (
+  query: string,
+  page: number = 1,
+  limit: number = 10
+) => {
+  try {
+    const response = await apiClient.get(`/search/users`, {
+      params: {
+        query: query,
+        // tags: [],
+        page: page,
+        limit: limit,
+        sort_by: "",
+        order: "",
+      },
+    });
+    // console.log(response.data);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const GetUserDashboard = async () => {
   try {
     const response = await apiClient.get("/user/0?include=info");
@@ -672,6 +695,7 @@ export const deleteTeam = async (id: any) => {
 };
 
 export const addMember = async (addMemberData: any) => {
+  // console.log(addMember);
   try {
     const response = await apiClient.post("/team/member", addMemberData);
     return response.data;

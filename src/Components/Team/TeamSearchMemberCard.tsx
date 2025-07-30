@@ -49,13 +49,17 @@ export const TeamSearchMemberCard: React.FC<TeamSearchMemberCardProps> = ({
           />
         )}
         <div className="mr-3 text-right flex-1">
-          <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{user.name}</p>
-          <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">{user.email}</p>
+          <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+            {user.name}
+          </p>
+          <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">
+            {user.email}
+          </p>
         </div>
       </div>
-      <div className="text-sm bg-blue-50 border border-blue-200 text-blue-400 font-medium px-2 py-1 rounded-md mt-2 sm:mt-0 w-full sm:w-auto text-center sm:text-left dark:bg-blue-900 dark:border-blue-700 dark:text-blue-300">
+      {/* <div className="text-sm bg-blue-50 border border-blue-200 text-blue-400 font-medium px-2 py-1 rounded-md mt-2 sm:mt-0 w-full sm:w-auto text-center sm:text-left dark:bg-blue-900 dark:border-blue-700 dark:text-blue-300">
         {user.role}
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -87,8 +91,12 @@ export const TeamFilterSearchMemberCard: React.FC<
             />
           )}
           <div className="mr-0 sm:mr-4 text-right flex-1 pointer-events-none">
-            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{user.name}</p>
-            <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">{user.email}</p>
+            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+              {user.name}
+            </p>
+            <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">
+              {user.email}
+            </p>
           </div>
         </div>
         <div className="text-sm bg-blue-50 border  pointer-events-none border-blue-200 text-blue-400 font-medium px-2 py-1 rounded-md w-full sm:w-auto text-center sm:text-left mb-2 sm:mb-0 dark:bg-blue-900 dark:border-blue-700 dark:text-blue-300">
@@ -125,12 +133,13 @@ export const TeamSearchSelectedMemberCard: React.FC<
             />
           )}
           <div className="mr-0 sm:mr-4 text-right flex-1 pointer-events-none">
-            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{user.name}</p>
-            <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">{user.email}</p>
+            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+              {user.name}
+            </p>
+            <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">
+              {user.email}
+            </p>
           </div>
-        </div>
-        <div className="text-sm bg-blue-50 border  pointer-events-none border-blue-200 text-blue-400 font-medium px-2 py-1 rounded-md w-full sm:w-auto text-center sm:text-left mb-2 sm:mb-0 dark:bg-blue-900 dark:border-blue-700 dark:text-blue-300">
-          {user.role}
         </div>
       </div>
     </div>
@@ -164,8 +173,12 @@ export const CreateTeamSearchSelectedMemberCard: React.FC<
               />
             )}
             <div className="mr-4 text-right flex-1 pointer-events-none">
-              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{user.name}</p>
-              <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">{user.email}</p>
+              <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                {user.name}
+              </p>
+              <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">
+                {user.email}
+              </p>
               <div className="text-sm bg-blue-50 border mt-1 flex w-fit  pointer-events-none border-blue-200 text-blue-400 font-medium px-2 py-1 rounded-md text-center sm:text-left mb-2 sm:mb-0 dark:bg-blue-900 dark:border-blue-700 dark:text-blue-300">
                 {user.role}
               </div>
