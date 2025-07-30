@@ -45,8 +45,7 @@ const Step1: React.FC<Step1Props> = ({ formData, onNext }) => {
 
     if (id === "duration") {
       if (!value || parseInt(value, 10) <= 0) {
-        newErrors.duration =
-          "زمان انتظار برای کارجوPromise to shape correct باشد";
+        newErrors.duration = "زمان انتظار برای کارجو باید معتبر باشد";
       } else {
         delete newErrors.duration;
       }

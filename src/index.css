@@ -17,6 +17,13 @@ html {
   scrollbar-width: none;
 }
 
+.themed-toast {
+  background-color: var(--toast-background) !important;
+  color: var(--toast-text-color) !important;
+  font-family: 'vazirmatn', sans-serif; 
+}
+
+
 body {
   padding-top: env(safe-area-inset-top);
   padding-right: env(safe-area-inset-right);
@@ -40,6 +47,47 @@ body::-webkit-scrollbar,
   scrollbar-width: none;
   -ms-overflow-style: none; /* IE/Edge */
 }
+
+.flip-clock {
+  --fcc-flip-duration: 0.5s; /* transition duration when flip card */
+  --fcc-spacing: 8px; /* space between unit times and separators */
+  --fcc-digit-block-width: 32px; /* width of digit card */
+  --fcc-digit-block-height: 60px; /* height of digit card, highly recommend in even number */
+  --fcc-digit-block-radius: 5px; /* border radius of digit card */
+  --fcc-digit-block-spacing: 5px; /* space between blocks in each unit of time */
+  --fcc-digit-font-size: 30px; /* font size of digit */
+  --fcc-digit-color: white; /* color of digit */
+  --fcc-label-font-size: 15px; /* font size of label */
+  --fcc-label-color: #black; /* color of label */
+  --fcc-background: black; /* background of digit card */
+  --fcc-divider-color: #333333; /* color of divider */
+  --fcc-divider-height: 0.25px; /* height of divider */
+  --fcc-separator-size: 6px; /* size of colon */
+  --fcc-separator-color: gray; /* color of colon */
+}
+
+@media (max-width: 48rem) and (min-width: 40rem) {
+  .flip-clock {
+    --fcc-digit-block-width: 28px;
+    --fcc-digit-block-height: 55px; 
+    --fcc-separator-size: 4px; 
+    --fcc-spacing: 6px; 
+    --fcc-label-font-size: 13px; 
+  }
+}
+
+
+@media (max-width: 40rem) {
+  .flip-clock {
+    --fcc-digit-block-width: 25px;
+    --fcc-digit-block-height: 50px; 
+    --fcc-separator-size: 4px; 
+    --fcc-spacing: 3.5px; 
+    --fcc-label-font-size: 12px; 
+  }
+}
+
+
 
 /* Remove default spinner arrows from number inputs */
 .no-spinner[type="number"]::-webkit-inner-spin-button,
@@ -147,6 +195,8 @@ body {
 :root {
   --background: #F7F7F7;
   --foreground: oklch(0.141 0.005 285.823);
+  --toast-background: #ffffff;
+  --toast-text-color: #1a202c;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
@@ -181,8 +231,10 @@ body {
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
+  --background: oklch(27.8% 0.033 256.848);
   --foreground: oklch(0.985 0 0);
+  --toast-background: #2d3748;
+  --toast-text-color: #edf2f7;
   --card: oklch(0.141 0.005 285.823);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.141 0.005 285.823);

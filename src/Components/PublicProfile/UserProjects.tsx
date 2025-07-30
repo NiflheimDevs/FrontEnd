@@ -45,7 +45,7 @@ const UserProjects = ({ project, localcolor }: UserProjectsProps) => {
           ))}
         </div>
         <Link
-          to={`/detail/${project.id}`}
+          to={`/ProjectDetail/${project.id}`}
           className="flex items-end"
           key={project.id}
         >

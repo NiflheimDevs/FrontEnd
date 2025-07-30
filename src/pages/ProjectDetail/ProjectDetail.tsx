@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import Header from "../../Components/MainContent/Header";
 import { useParams, useNavigate } from "react-router-dom";
+import FlipClockCountdown from "@leenguyen/react-flip-clock-countdown";
+import "@leenguyen/react-flip-clock-countdown/dist/index.css";
 import {
   GetProject,
   GetProjectBid,
@@ -18,6 +20,7 @@ import { ApiTeamResponse, mapApiData } from "./types";
 import { getStatusText } from "../Projects/MyProjects";
 import { RiTeamFill } from "react-icons/ri";
 import { motion } from "framer-motion";
+import InProgressProject from "./InProgressProject";
 
 const ProjectDetail = () => {
   const { project_id } = useParams();
@@ -39,10 +42,8 @@ const ProjectDetail = () => {
 
   const formatDuration = (dateString: string) => {
     const projectDate = new Date(dateString);
-    const currentDate = new Date();
-    const diffTime = currentDate.getTime() - projectDate.getTime();
-    const diffDays = Math.ceil(Math.abs(diffTime) / (1000 * 60 * 60 * 24));
-    return diffTime < 0 ? `${diffDays} روز بعد` : `${diffDays} روز پیش`;
+    const diffTime = projectDate.getTime();
+    return diffTime <= 0 ? new Date().getTime() : diffTime;
   };
 
   useEffect(() => {
@@ -190,6 +191,10 @@ const ProjectDetail = () => {
     );
   }
 
+  if (projectData.status >= 3) {
+    return <InProgressProject />;
+  }
+
   return (
     <>
       <div className="fixed inset-0 bg-gray-100 dark:bg-gray-800 z-[-1]"></div>
@@ -216,9 +221,13 @@ const ProjectDetail = () => {
                     <label className="font-semibold">تعداد پیشنهادها: </label>
                     <span>{biders.length} پیشنهاد</span>
                   </div>
-                  <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 gap-2">
-                    <label className="font-semibold">مهلت ارسال پیشنهاد:</label>
-                    <span>{formatDuration(projectData.duration)}</span>
+                  <div className="flex mt-4">
+                    <FlipClockCountdown
+                      className="ltr flip-clock"
+                      to={formatDuration(projectData.duration)}
+                      labels={["روز", "ساعت", "دقیقه", "ثانیه"]}
+                      hideOnComplete={false}
+                    />
                   </div>
                 </div>
               </div>
