@@ -656,7 +656,7 @@ const TeamDetailPage: React.FC = () => {
                 onClose={() => setIsAddMemberModalOpen(false)}
                 onSubmit={handleAddMember}
                 existingMemberIds={teamData.members.map((member) => member.id)}
-                teamId={0}
+                teamId={Number(id)}
               />
               <EditTeamModal
                 isOpen={isEditTeamModalOpen}

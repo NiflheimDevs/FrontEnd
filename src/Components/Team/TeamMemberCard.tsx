@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User } from "./index";
-import { updateTeamMemberRole, updateTeamMemberPosition } from "../../API"; // Import the API functions
+import { updateTeamMemberRole, updateTeamMemberPosition } from "../../API";
 
 interface TeamMemberCardProps {
   user: User;
@@ -194,7 +194,9 @@ const TeamMemberCard: React.FC<TeamMemberCardProps> = ({
           >
             {user.username}
           </p>
-          <p className="text-gray-500 text-sm dark:text-gray-400">{user.name || "عضو"}</p>
+          <p className="text-gray-500 text-sm dark:text-gray-400">
+            {user.name || "عضو"}
+          </p>
         </div>
       </div>
 
