@@ -10,6 +10,7 @@ interface Chat {
   id: string;
   name: string;
   user_id: string;
+  username: string;
 }
 
 interface Message {
@@ -33,6 +34,10 @@ const messageVariants = {
 const generateUniqueId = () =>
   `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
+const getDisplayName = (chat: Chat) => {
+  return chat.name && chat.name.trim() !== "" ? chat.name : chat.username;
+};
+
 const ChatMessageArea = () => {
   const [chatList, setChatList] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
@@ -40,13 +45,18 @@ const ChatMessageArea = () => {
   const [newMessage, setNewMessage] = useState("");
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const wsRef = useRef<WebSocket | null>(null);
   const location = useLocation();
   const locationState = location.state as LocationState;
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, []);
 
   const setupWebSocket = useCallback((chat: Chat) => {
@@ -161,7 +171,8 @@ const ChatMessageArea = () => {
         const chats: Chat[] = data.map((item: any) => ({
           id: String(item.room_id),
           user_id: String(item.user_id),
-          name: `${item.firstname} ${item.lastname}`,
+          name: `${item.firstname} ${item.lastname}`.trim(),
+          username: item.username,
         }));
 
         const { roomId, targetUser } = locationState || {};
@@ -172,6 +183,7 @@ const ChatMessageArea = () => {
               id: roomId,
               user_id: targetUser.id,
               name: targetUser.name,
+              username: '',
             });
           }
           const selected = chats.find((chat) => chat.id === roomId) || chats[0];
@@ -198,6 +210,10 @@ const ChatMessageArea = () => {
       }
     };
   }, [locationState, handleChatSelect]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
 
   return (
     <div
@@ -230,7 +246,7 @@ const ChatMessageArea = () => {
                 />
                 <div className="flex-1 text-right">
                   <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
-                    {chat.name}
+                    {getDisplayName(chat)}
                   </p>
                 </div>
               </motion.div>
@@ -263,12 +279,15 @@ const ChatMessageArea = () => {
             className="w-10 h-10 rounded-full mx-3"
           />
           <h2 className="text-lg font-semibold">
-            {selectedChat?.name || "Select a chat"}
+            {selectedChat ? getDisplayName(selectedChat) : "Select a chat"}
           </h2>
         </div>
 
         {/* Messages */}
-        <div className="flex flex-col w-full flex-1 p-5 bg-gray-200 dark:bg-gray-800 rounded-b-2xl overflow-y-auto">
+        <div
+          ref={messagesContainerRef}
+          className="flex flex-col w-full flex-1 p-5 bg-gray-200 dark:bg-gray-800 rounded-b-2xl overflow-y-auto"
+        >
           {error && (
             <p className="text-center text-red-500 dark:text-red-400 text-sm mt-2">
               {error}
@@ -303,7 +322,6 @@ const ChatMessageArea = () => {
               </p>
             )}
           </AnimatePresence>
-          <div ref={messagesEndRef} />
         </div>
 
         {/* Input */}

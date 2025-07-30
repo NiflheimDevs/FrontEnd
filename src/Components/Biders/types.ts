@@ -38,6 +38,7 @@ export interface Label {
 
 export interface ProjectData {
   project_id: number;
+  selected_bid?: number;
   Owner_id: number;
   title: string;
   description: string;
