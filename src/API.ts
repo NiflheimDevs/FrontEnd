@@ -193,9 +193,9 @@ export const GetUser = async (id: number) => {
   }
 };
 
-export const GetTeamsForBidding = async (userData: any) => {
+export const GetTeamsForBidding = async () => {
   try {
-    const response = await apiClient.get(`/team/bidding`, userData);
+    const response = await apiClient.get(`/team/bidding`);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
