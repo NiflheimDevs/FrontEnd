@@ -4,6 +4,7 @@ import {
   CreateTeamSearchSelectedMemberCard,
   TeamFilterSearchMemberCard,
 } from "./TeamSearchMemberCard";
+import { GetUserSerachTeam } from "../../API";
 
 interface CreateTeamModalProps {
   isOpen: boolean;
@@ -16,48 +17,36 @@ interface CreateTeamModalProps {
   isSubmitting?: boolean;
 }
 
-const mockUsers: User[] = [
-  {
-    id: 5,
-    name: "شما",
-    email: "your.email@example.com",
-    role: "مدیر",
-    avatar: "hhhhhhhhhh",
-    position: "",
-  },
-  {
-    id: 1,
-    name: "رضا احمدی",
-    email: "reza.ahmadi@example.com",
-    role: "توسعه دهنده",
-    avatar: "hhhhhhhhhh",
-    position: "",
-  },
-  {
-    id: 2,
-    name: "سارا محمدی",
-    email: "sara.mohammadi@example.com",
-    role: "طراح",
-    avatar: "hhhhhhhhhh",
-    position: "",
-  },
-  {
-    id: 3,
-    name: "امیر حسینی",
-    email: "amir.hosseini@example.com",
-    role: "مدیر محصول",
-    avatar: "hhhhhhhhhh",
-    position: "",
-  },
-  {
-    id: 4,
-    name: "نازنین کریمی",
-    email: "nazanin.karimi@example.com",
-    role: "بازاریاب",
-    avatar: "hhhhhhhhhh",
-    position: "",
-  },
-];
+interface APIUser {
+  bio: string;
+  created_time: string;
+  email: string;
+  firstname: string;
+  id: number;
+  lastname: string;
+  phone: string;
+  profile: string;
+  username: string;
+}
+
+const convertAPIUserToUser = (apiUser: APIUser): User => ({
+  id: apiUser.id,
+  name: `${apiUser.firstname} ${apiUser.lastname}`,
+  email: apiUser.email,
+  avatar: apiUser.profile,
+  role: "",
+  position: "عضو",
+});
+
+const searchUsers = async (query: string): Promise<APIUser[]> => {
+  try {
+    const response = await GetUserSerachTeam(query);
+    return response;
+  } catch (error) {
+    console.error("Error searching users:", error);
+    return [];
+  }
+};
 
 const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   isOpen,
@@ -70,16 +59,39 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   const [selectedMembers, setSelectedMembers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<User[]>([]);
+  const [isLoadingSearch, setIsLoadingSearch] = useState(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const filteredUsers = mockUsers.filter(
-    (user) =>
-      !selectedMembers.find((member) => member.id === user.id) &&
-      user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    //  ||user.email.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  // Search functionality with debouncing
+  useEffect(() => {
+    const timeoutId = setTimeout(async () => {
+      if (searchTerm.trim() && isSearching) {
+        setIsLoadingSearch(true);
+        try {
+          const apiUsers = await searchUsers(searchTerm.trim());
+          const filteredUsers = apiUsers
+            .filter(
+              (apiUser) =>
+                !selectedMembers.find((member) => member.id === apiUser.id)
+            )
+            .map(convertAPIUserToUser);
+          setSearchResults(filteredUsers);
+        } catch (error) {
+          console.error("Search error:", error);
+          setSearchResults([]);
+        } finally {
+          setIsLoadingSearch(false);
+        }
+      } else {
+        setSearchResults([]);
+      }
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, isSearching, selectedMembers]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -127,8 +139,6 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({ name, description, members: selectedMembers });
-    // We'll reset the form only when submission is successful
-    // This will be handled by the parent component closing the modal
   };
 
   const resetForm = () => {
@@ -136,6 +146,8 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
     setDescription("");
     setSelectedMembers([]);
     setSearchTerm("");
+    setSearchResults([]);
+    setIsSearching(false);
   };
 
   // Reset form when modal closes
@@ -149,6 +161,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
     setSelectedMembers([...selectedMembers, user]);
     setSearchTerm("");
     setIsSearching(false);
+    setSearchResults([]);
   };
 
   const removeMember = (userId: number) => {
@@ -171,7 +184,9 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
         }}
       >
         <div className="flex justify-between items-center border-b p-4 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-700 dark:to-blue-800">
-          <h2 className="text-xl font-bold text-white dark:text-gray-200">ساخت تیم جدید</h2>
+          <h2 className="text-xl font-bold text-white dark:text-gray-200">
+            ساخت تیم جدید
+          </h2>
           <button
             onClick={onClose}
             className="text-white dark:text-gray-300 cursor-pointer hover:bg-blue-700 dark:hover:bg-blue-800 hover:bg-opacity-30 p-2 rounded-full transition-all duration-200"
@@ -269,16 +284,47 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
 
               {isSearching && !isSubmitting && (
                 <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-auto animate-fadeIn">
-                  {filteredUsers.length > 0 ? (
-                    filteredUsers.map((user) => (
+                  {isLoadingSearch ? (
+                    <div className="p-4 text-center text-gray-500">
+                      <div className="flex items-center justify-center">
+                        <svg
+                          className="animate-spin -ml-1 mr-2 h-5 w-5 text-gray-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        در حال جستجو...
+                      </div>
+                    </div>
+                  ) : searchResults.length > 0 ? (
+                    searchResults.map((user) => (
                       <TeamFilterSearchMemberCard
+                        key={user.id}
                         user={user}
                         addMember={addMember}
                       />
                     ))
-                  ) : (
+                  ) : searchTerm.trim() ? (
                     <div className="p-4 text-center text-gray-500">
                       کاربری یافت نشد
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center text-gray-500">
+                      نام کاربر را تایپ کنید
                     </div>
                   )}
                 </div>
@@ -294,6 +340,7 @@ const CreateTeamModal: React.FC<CreateTeamModalProps> = ({
               <div className="border rounded-lg overflow-hidden bg-gray-50">
                 {selectedMembers.map((member) => (
                   <CreateTeamSearchSelectedMemberCard
+                    key={member.id}
                     user={member}
                     isSubmitting={isSubmitting}
                     removeMember={removeMember}

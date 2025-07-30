@@ -193,9 +193,9 @@ export const GetUser = async (id: number) => {
   }
 };
 
-export const GetTeamsForBidding = async () => {
+export const GetTeamsForBidding = async (userData: any) => {
   try {
-    const response = await apiClient.get(`/team/bidding`);
+    const response = await apiClient.get(`/team/bidding`, userData);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
@@ -205,6 +205,29 @@ export const GetTeamsForBidding = async () => {
 export const GetUserTeams = async (id: number) => {
   try {
     const response = await apiClient.get(`/team/user/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const GetUserSerachTeam = async (
+  query: string,
+  page: number = 1,
+  limit: number = 10
+) => {
+  try {
+    const response = await apiClient.get(`/search/users`, {
+      params: {
+        query: query,
+        // tags: [],
+        page: page,
+        limit: limit,
+        sort_by: "",
+        order: "",
+      },
+    });
+    // console.log(response.data);
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ارسال درخواست!";
@@ -672,6 +695,7 @@ export const deleteTeam = async (id: any) => {
 };
 
 export const addMember = async (addMemberData: any) => {
+  // console.log(addMember);
   try {
     const response = await apiClient.post("/team/member", addMemberData);
     return response.data;
