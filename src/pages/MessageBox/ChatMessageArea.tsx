@@ -94,7 +94,7 @@ const ChatMessageArea = () => {
       }
     };
 
-    ws.onerror = () => setError("WebSocket connection error");
+    ws.onerror = () => setError("Internet Connection not established");
     ws.onclose = () => console.log(`WebSocket closed for chat ID: ${chat.id}`);
     wsRef.current = ws;
   }, []);
@@ -172,16 +172,20 @@ const ChatMessageArea = () => {
 
         const { roomId, targetUser } = locationState || {};
         if (roomId && targetUser) {
-          const chatExists = chats.find((chat) => chat.id === roomId);
+          const chatExists = chats.some(
+            (chat) => String(chat.id) === String(roomId)
+          );
           if (!chatExists) {
             chats.push({
-              id: roomId,
-              user_id: targetUser.id,
+              id: String(roomId),
+              user_id: String(targetUser.id),
               name: targetUser.name,
-              username: '',
+              username: "",
             });
           }
-          const selected = chats.find((chat) => chat.id === roomId) || chats[0];
+          const selected =
+            chats.find((chat) => String(chat.id) === String(roomId)) ||
+            chats[0];
           setChatList(chats);
           await handleChatSelect(selected);
         } else if (chats.length > 0) {
@@ -204,7 +208,7 @@ const ChatMessageArea = () => {
         wsRef.current.close();
       }
     };
-  }, [locationState, handleChatSelect]);
+  }, [handleChatSelect]);
 
   return (
     <div
@@ -217,7 +221,7 @@ const ChatMessageArea = () => {
           isChatOpen ? "hidden md:flex" : "flex"
         }`}
       >
-        <div className="space-y-3 flex-1 overflow-y-auto">
+        <div className="space-y-3 flex-1 overflow-y-auto scrollbar-hide">
           {chatList.length > 0 ? (
             chatList.map((chat) => (
               <motion.div
