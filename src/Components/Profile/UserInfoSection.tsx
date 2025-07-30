@@ -10,6 +10,7 @@ import { errorMapper } from "../../pages/Error/Error";
 import Cropper from "react-easy-crop";
 import { useDropzone } from "react-dropzone";
 import { Area } from "react-easy-crop";
+import { BiMailSend } from "react-icons/bi";
 
 // Utility function to resize image before cropping
 const resizeImage = (imageSrc: string, maxSize: number): Promise<string> => {
@@ -449,11 +450,23 @@ export default function UserInfoSection({
               tabIndex={7}
             />
             <span
-              className={`absolute h-full justify-center items-center px-2 rounded-lg shadow-lg ${
+              className={`group absolute h-full justify-center items-center px-2 rounded-lg shadow-lg ${
                 localProfile.is_verified ? `bg-green-500` : `bg-gray-500`
               } flex left-0 top-1/2 transform -translate-y-1/2 text-sm text-white`}
             >
-              {localProfile.is_verified ? `تایید شده` : `تایید نشده`}
+              {localProfile.is_verified ? (
+                `تایید شده`
+              ) : (
+                <>
+                  <button className="cursor-pointer flex gap-1 justify-center items-center">
+                    <BiMailSend className="flex mr-1" size={20} />
+                    تایید نشده
+                  </button>
+                  <span className="absolute left-full ml-2 top-1/2 transform pointer-events-none whitespace-nowrap -translate-y-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    ارسال مجدد ایمیل
+                  </span>
+                </>
+              )}
             </span>
           </div>
           <button
