@@ -81,14 +81,13 @@ jobs:
             echo "📦 Pulling latest image..."
             docker compose pull
 
-            echo "🧼 Force-stopping and removing old containers..."
-            docker ps -aq --filter "name=frontend" | xargs -r docker rm -f || true
+            echo "🧼 Stopping and removing old frontend container..."
             docker compose down --remove-orphans || true
-                  
+
             echo "🚀 Starting new container..."
             docker compose up -d --remove-orphans
-                  
+
             echo "🧹 Cleaning up unused images..."
             docker image prune -f
-                  
+
             echo "✅ Deployment complete!"
