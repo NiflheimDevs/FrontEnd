@@ -318,7 +318,14 @@ export const GetProfile = async () => {
     throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
-
+export const GetUserComment = async (id: number) => {
+  try {
+    const response = await apiClient.get(`/user/comment/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
 export const GetResume = async (id: number) => {
   try {
     const response = await apiClient.get(`/user/resume/${id}`);

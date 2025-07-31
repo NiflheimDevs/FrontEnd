@@ -39,7 +39,7 @@ const PublicProfile = () => {
           const apiTeams = await GetUserTeams(userId);
           const apiEmployer = await getUserProject(0, 1000, userId);
           const apiResume = await GetResume(userId);
-          console.log(apiResume);
+          // console.log(apiData);
           const mappedProfile = await mapApiDataToProfile(
             profile_id,
             apiData,

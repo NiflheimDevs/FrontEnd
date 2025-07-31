@@ -19,7 +19,9 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
   const handleSendMessage = async () => {
     try {
       // Call the API to create a chat room with the target user
-      const response = await createChatRoom({ target_user_id: Number(localprofile.profile_id) });
+      const response = await createChatRoom({
+        target_user_id: Number(localprofile.profile_id),
+      });
       const roomId = response.room_id; // Assuming the API returns the new room_id
 
       // Navigate to the chat page, passing the roomId and target user info
@@ -120,7 +122,10 @@ const UserDetail = ({ localprofile, localcolor }: UserDetailProps) => {
             </p>
           )}
           {localprofile.profile_id == "0" ? (
-            <Link to="/profile" className="md:justify-start justify-center flex">
+            <Link
+              to="/profile"
+              className="md:justify-start justify-center flex"
+            >
               <button
                 className={`px-4 py-2 w-fit h-fit gap-2 whitespace-nowrap text-sm font-[vazirmatn] flex justify-center items-center flex-row rounded-full transition-all duration-200 bg-${localcolor.color} text-white cursor-pointer hover:bg-${localcolor.hover} dark:bg-${localcolor.darkcolor} dark:hover:bg-${localcolor.darkhover}`}
                 aria-label="صفحه بعدی"

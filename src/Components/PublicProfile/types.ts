@@ -167,8 +167,8 @@ export const mapApiDataToProfile = async (
             : [],
         }))
       : [],
-    rate: initialProfile.rate,
-    comments: initialProfile.comments,
+    rate: apiData.info?.rating || initialProfile.rate,
+    comments: apiData.info?.comments || initialProfile.comments,
     high_profile: apiData.info?.high_profile || initialProfile.high_profile,
   };
 };

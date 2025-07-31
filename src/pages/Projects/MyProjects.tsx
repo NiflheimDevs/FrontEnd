@@ -116,7 +116,6 @@ const MyProjects = () => {
   const projectsPerPage = 4;
 
   const { success, error } = useNotification();
-
   // Track if the title animation has already played
   const hasAnimatedTitle = useRef(false);
 
@@ -224,7 +223,8 @@ const MyProjects = () => {
         window.location.reload();
       }
     } catch (error: any) {
-      notifyError(`${errorMapper(error)}`);
+      // console.log(error);
+      notifyError(`${errorMapper(error.errors)}`);
     }
   };
 

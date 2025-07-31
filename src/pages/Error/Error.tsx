@@ -115,6 +115,7 @@ const errorMessages = {
 
 // Type the errorMapper function
 const errorMapper = (errorCode: ErrorCode): string => {
+  // console.log(errorCode);
   return errorMessages[errorCode] || "مشکلی پیش آمده است.";
 };
 
