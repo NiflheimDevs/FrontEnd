@@ -47,6 +47,9 @@ export default function OtpSection({
       setShowOtpSection(false);
       setTimeLeft(120);
       setTokens("");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error: any) {
       const errorData = error;
       if (errorData.tag && errorData.errors?.length > 0) {

@@ -413,6 +413,9 @@ export default function UserInfoSection({
                 const usernameData = { username: localProfile.username };
                 await PutUserName(usernameData);
                 notifySuccess("نام کاربری با موفقیت تغییر کرد");
+                setTimeout(() => {
+                  window.location.reload();
+                }, 2000);
               } catch (error: any) {
                 const errorData = error;
                 if (errorData.tag && errorData.errors?.length > 0) {
@@ -467,7 +470,8 @@ export default function UserInfoSection({
               className="w-full py-2 pr-2 pl-20 border-2 rounded-lg text-right dark:border-gray-500 [direction:rtl]"
               tabIndex={7}
             />
-            {localProfile.hasEmail ? (
+            {localProfile.hasEmail &&
+            localProfile.email === profileFromRedux.email ? (
               <span
                 className={`absolute h-full flex justify-center items-center px-3 rounded-lg shadow-lg ${
                   localProfile.is_verified ? `bg-green-500` : `bg-gray-500`
@@ -517,6 +521,9 @@ export default function UserInfoSection({
                 const emailData = { email: localProfile.email };
                 await PutEmail(emailData);
                 notifySuccess("ایمیل با موفقیت تغییر کرد");
+                setTimeout(() => {
+                  window.location.reload();
+                }, 2000);
               } catch (error: any) {
                 const errorData = error;
                 if (errorData.tag && errorData.errors?.length > 0) {
