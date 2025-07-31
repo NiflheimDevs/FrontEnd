@@ -75,21 +75,21 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/${{ secrets.SSH_USER }}/FrontEnd
-            docker logout ghcr.io
-            docker login ghcr.io -u ${{ secrets.USERNAME }} -p ${{ secrets.PAT }}
-            # testing
-            docker container prune
+            sudo docker logout ghcr.io
+            echo "${{ secrets.PAT }}" | sudo docker login ghcr.io -u ${{ secrets.USERNAME }} --password-stdin
+            
+            sudo docker container prune -f
             echo "📦 Pulling latest image..."
-            docker compose pull
+            sudo docker-compose pull
 
             echo "🧼 Stopping and removing old frontend container..."
-            # docker compose down --remove-orphans || true
-            docker compose down --remove-orphans
-            
+            sudo docker-compose down --remove-orphans
+
             echo "🚀 Starting new container..."
-            docker compose up -d
+            sudo docker-compose up -d
 
             echo "🧹 Cleaning up unused images..."
-            docker image prune -f
+            sudo docker image prune -f
 
             echo "✅ Deployment complete!"
+
