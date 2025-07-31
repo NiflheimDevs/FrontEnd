@@ -3,13 +3,19 @@
 import { Image, X } from "lucide-react";
 import { Profile, useOtpTimer } from "./types";
 import { useNotification } from "../../Notification/NotificationProvider";
-import { PutUserName, PutEmail, PutPhoneSendOtp } from "../../API";
+import {
+  PutUserName,
+  PutEmail,
+  PutPhoneSendOtp,
+  resendemailverify,
+} from "../../API";
 import React, { useState, useCallback } from "react";
 import OtpSection from "./OtpSection";
 import { errorMapper } from "../../pages/Error/Error";
 import Cropper from "react-easy-crop";
 import { useDropzone } from "react-dropzone";
 import { Area } from "react-easy-crop";
+import { BiMailSend } from "react-icons/bi";
 
 // Utility function to resize image before cropping
 const resizeImage = (imageSrc: string, maxSize: number): Promise<string> => {
@@ -220,6 +226,15 @@ export default function UserInfoSection({
     },
     []
   );
+
+  const resendemailver = async () => {
+    try {
+      await resendemailverify();
+      notifySuccess("ارسال مجدد ایمیل تایید با موفقیت انجام شد");
+    } catch (err: any) {
+      notifyError(err.message || "خطا در بارگذاری اطلاعات کاربر");
+    }
+  };
 
   const handleCropConfirm = useCallback(async () => {
     if (!imageSrc) {
@@ -441,20 +456,55 @@ export default function UserInfoSection({
               value={localProfile.email}
               onChange={(e) => {
                 const value = e.target.value;
-                setLocalProfile((prev) => ({ ...prev, email: value }));
+                setLocalProfile((prev) => ({
+                  ...prev,
+                  email: value,
+                  hasEmail: value.trim() !== "",
+                }));
                 setChangedEmail(value !== profileFromRedux.email);
               }}
               placeholder="example@gmail.com"
               className="w-full py-2 pr-2 pl-20 border-2 rounded-lg text-right dark:border-gray-500 [direction:rtl]"
               tabIndex={7}
             />
-            <span
-              className={`absolute h-full justify-center items-center px-2 rounded-lg shadow-lg ${
-                localProfile.is_verified ? `bg-green-500` : `bg-gray-500`
-              } flex left-0 top-1/2 transform -translate-y-1/2 text-sm text-white`}
-            >
-              {localProfile.is_verified ? `تایید شده` : `تایید نشده`}
-            </span>
+            {localProfile.hasEmail ? (
+              <span
+                className={`absolute h-full flex justify-center items-center px-3 rounded-lg shadow-lg ${
+                  localProfile.is_verified ? `bg-green-500` : `bg-gray-500`
+                } left-0 top-1/2 transform -translate-y-1/2 text-sm text-white transition-colors duration-200`}
+                role="status"
+                aria-label={
+                  localProfile.is_verified
+                    ? "پروفایل تایید شده"
+                    : "پروفایل تایید نشده"
+                }
+              >
+                {localProfile.is_verified ? (
+                  `تایید شده`
+                ) : (
+                  <div className="relative flex items-center">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        resendemailver();
+                      }}
+                      className="group cursor-pointer flex flex-row justify-center gap-1 items-center text-white hover:text-gray-100 transition-colors duration-200"
+                      aria-label="ارسال مجدد ایمیل تایید"
+                    >
+                      <span className="text-sm">تایید نشده</span>
+                      <div className="flex items-center gap-1 rounded-full border border-gray-300 bg-gray-600 px-2 py-1 hover:bg-gray-700 transition-colors duration-200">
+                        <BiMailSend className="flex" size={18} />
+                        <span className="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-200 whitespace-nowrap">
+                          ارسال مجدد ایمیل
+                        </span>
+                      </div>
+                    </button>
+                  </div>
+                )}
+              </span>
+            ) : (
+              <></>
+            )}
           </div>
           <button
             className={`flex items-center gap-2 md:w-[170px] sm:w-[160px] justify-center transition-all duration-200 ease-in-out rounded-[20px] bg-[#3E79DE] dark:bg-blue-600 py-2.5 text-white shadow-[0_4px_10px_rgba(0,0,0,0.2)] ${
