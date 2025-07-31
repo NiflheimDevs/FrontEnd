@@ -16,6 +16,7 @@ import {
 } from "../../API";
 import { User, TeamData, Permission } from "../../Components/Team/index";
 import { Skeleton } from "primereact/skeleton";
+import { getStatusText } from "../Projects/MyProjects";
 // Define types based on the API response structure
 interface TeamMember {
   member_info: {
@@ -231,19 +232,6 @@ const TeamDetailPage: React.FC = () => {
       setError(error.response?.data || "خطا در حذف عضو تیم");
     } finally {
       setIsDeleting(false);
-    }
-  };
-
-  const getStatusText = (status: number) => {
-    switch (status) {
-      case 3:
-        return "در حال انجام";
-      case 1:
-        return "تکمیل شده";
-      case 2:
-        return "برنامه‌ریزی شده";
-      default:
-        return "نامشخص";
     }
   };
 
