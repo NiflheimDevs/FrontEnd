@@ -47,7 +47,6 @@ const PublicProfile = () => {
           const apiEmployer = await getUserProject(0, 1000, userId);
           const apiResume = await GetResume(userId);
           const apiComments = await GetComments(userId);
-          console.log(apiComments);
           const mappedProfile = await mapApiDataToProfile(
             profile_id,
             apiData,
