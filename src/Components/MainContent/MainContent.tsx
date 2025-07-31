@@ -220,29 +220,31 @@ const MainContent = () => {
       >
         <div className="hidden md:flex sm:flex flex-row flex-wrap justify-center gap-8 px-6 mx-auto">
           {categories.map((cat, idx) => (
-            <div
-              key={idx}
-              className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group hover:scale-105 transition-all ease-in-out duration-300 min-w-[260px]"
-            >
-              <img
-                src={cat.bg}
-                alt={cat.title}
-                className="absolute w-full h-full object-cover"
-              />
+            <Link to="/Browse/Projects">
               <div
-                className={`absolute inset-0 bg-gradient-to-br ${cat.overlay} opacity-70`}
-              ></div>
-              <div className="z-10 flex flex-col items-center justify-center text-white px-2">
+                key={idx}
+                className="relative cursor-pointer rounded-xl overflow-hidden h-48 flex items-center justify-center text-center shadow-lg group hover:scale-105 transition-all ease-in-out duration-300 min-w-[260px]"
+              >
                 <img
-                  src={cat.icon}
+                  src={cat.bg}
                   alt={cat.title}
-                  className="w-10 h-10 mb-2"
+                  className="absolute w-full h-full object-cover"
                 />
-                <h3 className="text-sm font-bold tracking-wide uppercase">
-                  {cat.title}
-                </h3>
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${cat.overlay} opacity-70`}
+                ></div>
+                <div className="z-10 flex flex-col items-center justify-center text-white px-2">
+                  <img
+                    src={cat.icon}
+                    alt={cat.title}
+                    className="w-10 h-10 mb-2"
+                  />
+                  <h3 className="text-sm font-bold tracking-wide uppercase">
+                    {cat.title}
+                  </h3>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         <div className="md:hidden sm:hidden px-6">
@@ -373,7 +375,7 @@ const MainContent = () => {
         <div className=" px-6 max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <h2 className="md:text-2xl sm:text-2xl text-[18px] font-bold text-gray-800 dark:text-gray-200">
-             فریلنسرهای محبوب 🔥
+              فریلنسرهای محبوب 🔥
             </h2>
             <Link
               to="/Browse/Users"

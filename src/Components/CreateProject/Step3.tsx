@@ -76,7 +76,6 @@ const Step3: React.FC<Step3Props> = ({
     const projectPrice = getSelectedLabel()?.price || 0;
     return walletBalance >= projectPrice;
   };
-
   return (
     <div className="space-y-6 bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
@@ -215,7 +214,6 @@ const Step3: React.FC<Step3Props> = ({
           </div>
         </div>
       )}
-
       <div className="flex justify-between mt-6">
         <button
           onClick={onPrev}

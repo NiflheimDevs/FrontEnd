@@ -93,7 +93,6 @@ const CreateProject: React.FC = () => {
     { icon: FaTags, text: "انتخاب برچسب‌ها" },
     { icon: FaCheckCircle, text: "تأیید نهایی" },
   ];
-
   return (
     <>
       <div className="fixed inset-0 bg-[#F7F7F7] dark:bg-gray-800 z-[-1]"></div>

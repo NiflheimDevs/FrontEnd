@@ -307,7 +307,7 @@ export default function ProfileForm() {
           <div className="fixed inset-0 bg-[#F7F7F7] dark:bg-gray-800 z-[-1]"></div>
           <section className="p-4 md:p-6 lg:p-8 bg-[#F7F7F7] dark:bg-gray-800">
             <h2 className="text-2xl font-bold mb-4 text-center dark:text-gray-300 text-gray-600">
-              حساب کارنبری
+              حساب کاربری
             </h2>
             <div className="bg-white dark:bg-gray-700 p-4 md:p-6 lg:p-8 rounded-lg shadow-md max-w-4xl mx-auto relative">
               <div className="border-t border-gray-300 dark:border-gray-500 w-full mb-6"></div>
