@@ -36,6 +36,7 @@ export interface Profile {
   workExperiences: WorkExperience[];
   resume: File | null;
   newResume: number;
+  hasEmail: boolean;
   resumeAddress?: string | null;
   high_profile?: string;
   low_profile?: string;
@@ -58,6 +59,7 @@ export const initialProfile: Profile = {
   high_profile: "",
   low_profile: "",
   SessionID: "",
+  hasEmail: false,
 };
 
 export const proficiencyLevels = ["مبتدی", "متوسط", "حرفه‌ای", "متخصص"];
@@ -75,6 +77,7 @@ export const mapApiDataToProfile = async (
     firstName: apiData.info?.firstname || initialProfile.firstName,
     lastName: apiData.info?.lastname || initialProfile.lastName,
     email: apiData.info?.email || initialProfile.email,
+    hasEmail: apiData.info?.email.trim() !== "",
     is_verified: apiData.info?.is_verified || initialProfile.is_verified,
     bio: apiData.info?.bio || initialProfile.bio,
     skills: apiData.tag

@@ -234,6 +234,24 @@ export const GetUserSerachTeam = async (
   }
 };
 
+export const resendemailverify = async () => {
+  try {
+    const response = await apiClient.post("/user/resend-email-verification");
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+export const verifyemail = async (userData: any) => {
+  try {
+    const response = await apiClient.patch("/user/verify-email", userData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const GetUserDashboard = async () => {
   try {
     const response = await apiClient.get("/user/0?include=info");
