@@ -21,7 +21,6 @@ interface CreateTeamSearchSelectedMemberCardProps {
   removeMember: (userId: number) => void;
   isSubmitting: boolean;
 }
-
 export const TeamSearchMemberCard: React.FC<TeamSearchMemberCardProps> = ({
   user,
   selectUser,
@@ -39,7 +38,7 @@ export const TeamSearchMemberCard: React.FC<TeamSearchMemberCardProps> = ({
             src={user.avatar}
             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-blue-200 dark:border-blue-700"
             onError={() => setProfileExists(false)}
-            alt={`${user.name}'s avatar`}
+            alt={`${user.username}'s avatar`}
           />
         ) : (
           <CgProfile
@@ -50,7 +49,7 @@ export const TeamSearchMemberCard: React.FC<TeamSearchMemberCardProps> = ({
         )}
         <div className="mr-3 text-right flex-1">
           <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-            {user.name}
+            {user.username}
           </p>
           <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">
             {user.email}
@@ -81,7 +80,7 @@ export const TeamFilterSearchMemberCard: React.FC<
               src={user.avatar}
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-blue-200 dark:border-blue-700"
               onError={() => setProfileExists(false)}
-              alt={`${user.name}'s avatar`}
+              alt={`${user.username}'s avatar`}
             />
           ) : (
             <CgProfile
@@ -92,7 +91,7 @@ export const TeamFilterSearchMemberCard: React.FC<
           )}
           <div className="mr-0 sm:mr-4 text-right flex-1 pointer-events-none">
             <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-              {user.name}
+              {user.username}
             </p>
             <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">
               {user.email}
@@ -123,7 +122,7 @@ export const TeamSearchSelectedMemberCard: React.FC<
               src={user.avatar}
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-blue-200 dark:border-blue-700"
               onError={() => setProfileExists(false)}
-              alt={`${user.name}'s avatar`}
+              alt={`${user.username}'s avatar`}
             />
           ) : (
             <CgProfile
@@ -134,7 +133,7 @@ export const TeamSearchSelectedMemberCard: React.FC<
           )}
           <div className="mr-0 sm:mr-4 text-right flex-1 pointer-events-none">
             <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-              {user.name}
+              {user.username}
             </p>
             <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">
               {user.email}
@@ -163,7 +162,7 @@ export const CreateTeamSearchSelectedMemberCard: React.FC<
                 src={user.avatar}
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-blue-200 dark:border-blue-700"
                 onError={() => setProfileExists(false)}
-                alt={`${user.name}'s avatar`}
+                alt={`${user.username}'s avatar`}
               />
             ) : (
               <CgProfile
@@ -174,7 +173,7 @@ export const CreateTeamSearchSelectedMemberCard: React.FC<
             )}
             <div className="mr-4 text-right flex-1 pointer-events-none">
               <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                {user.name}
+                {user.username}
               </p>
               <p className="text-xs text-gray-600 mt-1 dark:text-gray-400">
                 {user.email}
@@ -194,7 +193,7 @@ export const CreateTeamSearchSelectedMemberCard: React.FC<
           }`}
           type="button"
           disabled={isSubmitting}
-          aria-label={`Remove ${user.name}`}
+          aria-label={`Remove ${user.username}`}
         >
           <svg
             className="w-5 h-5 sm:w-6 sm:h-6 mx-auto"

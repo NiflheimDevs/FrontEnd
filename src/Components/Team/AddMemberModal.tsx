@@ -39,9 +39,10 @@ const searchUsers = async (query: string): Promise<APIUser[]> => {
 
 const convertAPIUserToUser = (apiUser: APIUser): User => ({
   id: apiUser.id,
-  name: `${apiUser.firstname} ${apiUser.lastname}`,
+  name: `${apiUser.firstname || ""} ${apiUser.lastname || ""}`,
   email: apiUser.email,
   avatar: apiUser.profile,
+  username: apiUser.username,
   role: "",
   position: "عضو",
 });
