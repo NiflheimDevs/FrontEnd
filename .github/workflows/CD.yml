@@ -76,7 +76,7 @@ jobs:
           script: |
             cd /home/${{ secrets.SSH_USER }}/FrontEnd
             sudo docker logout ghcr.io
-            echo "${{ secrets.PAT }}" | sudo docker login ghcr.io -u ${{ secrets.USERNAME }} --password-stdin
+            echo "${{ secrets.PAT }}" | docker login ghcr.io -u ${{ secrets.USERNAME }} --password-stdin
             
             sudo docker container prune -f
             echo "📦 Pulling latest image..."
