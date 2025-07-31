@@ -220,28 +220,6 @@ export const GetUserTeams = async (id: number) => {
   }
 };
 
-export const GetUserSerachTeam = async (
-  query: string,
-  page: number = 1,
-  limit: number = 10
-) => {
-  try {
-    const response = await apiClient.get(`/search/users`, {
-      params: {
-        query: query,
-        // tags: [],
-        page: page,
-        limit: limit,
-        sort_by: "",
-        order: "",
-      },
-    });
-    // console.log(response.data);
-    return response.data;
-  } catch (error: any) {
-    throw error.response?.data || "خطا در ارسال درخواست!";
-  }
-};
 
 export const resendemailverify = async () => {
   try {
@@ -833,5 +811,88 @@ export const createChatRoom = async (target_user_id: any) => {
     return response.data;
   } catch (error: any) {
     throw error.response?.data || "خطا در ایجاد اتاق چت";
+  }
+};
+
+export const searchProjects = async (
+  query: string,
+  tags: string[] = [],
+  page: number = 1,
+  limit: number = 10,
+  order: string = "",
+  sort_by: string = ""
+) => {
+  try {
+    const params: any = {
+      page,
+      limit,
+    };
+    if (query && query.trim() !== "") {
+      params.query = query;
+    }
+    if (tags && tags.length > 0) {
+      params.tags = tags.join(",");
+    }
+    if (order && order.trim() !== "") {
+      params.order = order;
+    }
+    if (sort_by && sort_by.trim() !== "") {
+      params.sort_by = sort_by;
+    }
+    const response = await apiClient.get(`/search/projects`, { params });
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+export const GetUserSerachTeam = async (
+  query: string,
+  page: number = 1,
+  limit: number = 10,
+  tags: string[] = [],
+  sort_by: string = "",
+  order: string = ""
+) => {
+  try {
+    const response = await apiClient.get(`/search/users`, {
+      params: {
+        ...(query && query.trim() !== "" ? { query } : {}),
+        tags: tags.length > 0 ? tags.join(",") : undefined,
+        page,
+        limit,
+        sort_by,
+        order,
+      },
+    });
+    // console.log(response.data);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
+
+export const searchTeams = async (
+  query: string,
+  tags: string[] = [],
+  page: number = 1,
+  limit: number = 10,
+  order: string = "",
+  sort_by: string = ""
+) => {
+  try {
+    const response = await apiClient.get(`/search/teams`, {
+      params: {
+        query,
+        tags: tags.join(","),
+        page,
+        limit,
+        order,
+        sort_by,
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
   }
 };
