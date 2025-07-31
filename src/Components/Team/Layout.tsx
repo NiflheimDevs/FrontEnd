@@ -10,7 +10,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    // <div className="flex min-h-screen bg-gray-100">
     <>
       <div className="fixed inset-0 bg-[#F7F7F7] z-[-1] dark:bg-gray-800"></div>
       <div className="flex w-full h-screen overflow-auto bg-[#F7F7F7] scrollbar-hide dark:bg-gray-800">
