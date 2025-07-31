@@ -202,6 +202,15 @@ export const GetTeamsForBidding = async () => {
   }
 };
 
+export const verifyTeamMembership = async (userData: any) => {
+  try {
+    const response = await apiClient.post(`/team/invite`, userData);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const GetUserTeams = async (id: number) => {
   try {
     const response = await apiClient.get(`/team/user/${id}`);

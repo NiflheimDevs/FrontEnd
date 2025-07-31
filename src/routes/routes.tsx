@@ -94,7 +94,7 @@ export const publicRoutes = [
     element: <EmailVerificationResult />,
   },
   {
-    path: "/membership-verification/:groupId",
+    path: "/team/invite",
     element: <TeamMembershipVerification />,
   },
 ];
