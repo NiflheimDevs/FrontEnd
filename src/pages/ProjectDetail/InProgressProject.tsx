@@ -130,7 +130,7 @@ const InProgressProject = () => {
           >
             <div className="flex flex-col space-y-4">
               <h2 className="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400 text-right">
-                پروژه در حال انجام: {projectData.title}
+                پروژه: {projectData.title}
               </h2>
               <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 gap-2">
                 <label className="font-semibold">وضعیت پروژه: </label>

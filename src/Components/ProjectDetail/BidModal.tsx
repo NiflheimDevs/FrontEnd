@@ -2,7 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice, FormBiderData } from "../Biders/types";
 import BidModalTeams from "./BidModalTeams";
-import { ApiTeamResponse } from "../../pages/ProjectDetail/types";
+import {
+  ApiTeamResponse,
+  mapApiTeamResponseToTeam,
+} from "../../pages/ProjectDetail/types";
 
 interface BidModalProps {
   isOpen: boolean;
@@ -177,7 +180,7 @@ const BidModal: React.FC<BidModalProps> = ({
           {/* Team Selection */}
           <div>
             <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 text-right mb-2">
-              انتخاب تیم
+              انتخاب پیشنهاد دهنده
             </h3>
             <AnimatePresence>
               {errors.team_id.length > 0 && (
@@ -205,6 +208,16 @@ const BidModal: React.FC<BidModalProps> = ({
             <div className="max-h-40 pl-2 overflow-y-auto space-y-2">
               {teamData ? (
                 <>
+                  <BidModalTeams
+                    key={teamData.onemanteamid}
+                    formData={formData}
+                    team={mapApiTeamResponseToTeam(teamData)}
+                    handleTeamSelect={handleValidatedTeamSelect}
+                    profileExists={!profileErrors[teamData.onemanteamid]}
+                    onProfileError={() =>
+                      handleProfileError(teamData.onemanteamid)
+                    }
+                  />
                   {teamData.teams
                     .filter(
                       (team) => team.isValid && ids.includes(team.team_id)

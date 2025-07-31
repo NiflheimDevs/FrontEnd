@@ -193,6 +193,15 @@ export const GetUser = async (id: number) => {
   }
 };
 
+export const GetComments = async (id: number) => {
+  try {
+    const response = await apiClient.get(`/user/comment/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const GetTeamsForBidding = async () => {
   try {
     const response = await apiClient.get(`/team/bidding`);

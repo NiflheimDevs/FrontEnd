@@ -2,7 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice, FormBiderData } from "../Biders/types";
 import BidEditModalTeams from "./BidModalTeams";
-import { ApiTeamResponse } from "../../pages/ProjectDetail/types";
+import {
+  ApiTeamResponse,
+  mapApiTeamResponseToTeam,
+} from "../../pages/ProjectDetail/types";
 
 interface BidEditModalProps {
   isOpen: boolean;
@@ -205,6 +208,20 @@ const BidEditModal: React.FC<BidEditModalProps> = ({
             <div className="max-h-40 pl-2 overflow-y-auto space-y-2">
               {teamData ? (
                 <>
+                  {ids.includes(teamData.onemanteamid) ? (
+                    <BidEditModalTeams
+                      key={teamData.onemanteamid}
+                      formData={formData}
+                      team={mapApiTeamResponseToTeam(teamData)}
+                      handleTeamSelect={handleValidatedTeamSelect}
+                      profileExists={!profileErrors[teamData.onemanteamid]}
+                      onProfileError={() =>
+                        handleProfileError(teamData.onemanteamid)
+                      }
+                    />
+                  ) : (
+                    <></>
+                  )}
                   {teamData.teams
                     .filter(
                       (team) => team.isValid && ids.includes(team.team_id)

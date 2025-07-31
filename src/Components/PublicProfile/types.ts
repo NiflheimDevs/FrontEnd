@@ -13,6 +13,7 @@ export interface Skill {
 export const TogglePageSize = 4;
 export const JobPageSize = 4;
 export const SkillPageSize = 4;
+export const commentsPageSize = 4;
 export interface Teams {
   id: number;
   title: string;
@@ -61,6 +62,7 @@ export interface Profile {
   workExperience?: WorkExperience[];
   freelancerprojects?: Projects[];
   employerprojects?: Projects[];
+  commentList: Comment[];
   teams?: Teams[];
   rate?: string;
   comments?: string;
@@ -76,6 +78,17 @@ export interface Color {
   darkhover: string;
 }
 
+export interface Comment {
+  id: number;
+  project_id: number;
+  content: string;
+  rating: number;
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
+}
+
 export const initialColor: Color = {
   color: "blue-500",
   hover: "blue-600",
@@ -88,7 +101,8 @@ export const mapApiDataToProfile = async (
   apiData: any,
   apiEmployer: any,
   apiTeams: any,
-  apiResume: any
+  apiResume: any,
+  apiComment: any
 ): Promise<Profile> => {
   return {
     profile_id: profile_id,
@@ -167,8 +181,20 @@ export const mapApiDataToProfile = async (
             : [],
         }))
       : [],
-    rate: initialProfile.rate,
-    comments: initialProfile.comments,
+    commentList: apiComment
+      ? apiComment.map((comment: any) => ({
+          id: comment.id,
+          project_id: comment.project_id,
+          content: comment.content || "",
+          rating: comment.rating || 0,
+          user_id: comment.user_id,
+          first_name: comment.first_name || "",
+          last_name: comment.last_name || "",
+          username: comment.username || "",
+        }))
+      : [],
+    rate: apiData.info?.rating || initialProfile.rate,
+    comments: apiData.info?.comments || initialProfile.comments,
     high_profile: apiData.info?.high_profile || initialProfile.high_profile,
   };
 };
@@ -185,6 +211,7 @@ export const initialProfile: Profile = {
   workExperience: [],
   freelancerprojects: [],
   employerprojects: [],
+  commentList: [],
   rate: "_",
   comments: "_",
   high_profile: "",

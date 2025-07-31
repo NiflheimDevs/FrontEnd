@@ -11,10 +11,17 @@ import {
 } from "../../Components/PublicProfile/types";
 import UserStateToggle from "../../Components/PublicProfile/UserStateToggle";
 import UserJobExperience from "../../Components/PublicProfile/UserJobExperience";
-import { GetResume, GetUser, getUserProject, GetUserTeams } from "../../API";
+import {
+  GetComments,
+  GetResume,
+  GetUser,
+  getUserProject,
+  GetUserTeams,
+} from "../../API";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { useNavigate, useParams } from "react-router-dom";
 import { errorMapper } from "../Error/Error";
+import UserComments from "../../Components/PublicProfile/UserComments";
 
 const PublicProfile = () => {
   const { profile_id } = useParams();
@@ -39,13 +46,15 @@ const PublicProfile = () => {
           const apiTeams = await GetUserTeams(userId);
           const apiEmployer = await getUserProject(0, 1000, userId);
           const apiResume = await GetResume(userId);
-          console.log(apiResume);
+          const apiComments = await GetComments(userId);
+          console.log(apiComments);
           const mappedProfile = await mapApiDataToProfile(
             profile_id,
             apiData,
             apiEmployer,
             apiTeams,
-            apiResume
+            apiResume,
+            apiComments
           );
           setLocalProfile(mappedProfile);
         }
@@ -147,6 +156,10 @@ const PublicProfile = () => {
             <UserDetail localprofile={localProfile} localcolor={localColor} />
             <UserJobExperience
               localprofile={localProfile}
+              localcolor={localColor}
+            />
+            <UserComments
+              comments={localProfile.commentList}
               localcolor={localColor}
             />
             <UserStateToggle
