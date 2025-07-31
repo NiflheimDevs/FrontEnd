@@ -191,7 +191,7 @@ const ProjectDetail = () => {
     );
   }
 
-  if (projectData.status >= 3) {
+  if (projectData.status >= 2) {
     return <InProgressProject />;
   }
 

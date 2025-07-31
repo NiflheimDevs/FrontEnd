@@ -48,26 +48,13 @@ const MobileVerify = () => {
   const seconds = timeLeft % 60;
 
   const HandleVerify = async () => {
-    try {
-      await signupVerifyOTP({
-        code: token,
-        sessionid: SessionID?.toString() ?? "",
-      });
+    await signupVerifyOTP({
+      code: token,
+      sessionid: SessionID?.toString() ?? "",
+    });
 
-      notifySuccess(`ورود شما با موفقیت انجام شد`);
-      navigate("/Dashboard");
-    } catch (error: any) {
-      const errorData = error;
-      if (errorData.tag && errorData.errors?.length > 0) {
-        const allErrors = errorData.errors;
-
-        const errorMessages = allErrors.map((err: any) => errorMapper(err));
-
-        notifyError(`${errorMessages.join(" ")}`);
-      } else {
-        notifyError(`${errorMapper(errorData)}`);
-      }
-    }
+    notifySuccess(`ورود شما با موفقیت انجام شد`);
+    navigate("/Dashboard");
   };
 
   const handleTimeOut = async () => {

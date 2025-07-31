@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from "react";
 import LOGO from "@/assets/Dashboard/BIDLANCERLOGO.svg";
 import SearchIcon from "@/assets/Dashboard/Search.svg";
-import { FaRegBell } from "react-icons/fa6";
 import { IoMdPerson } from "react-icons/io";
 import { Link, useLocation } from "react-router-dom";
 import { Search } from "lucide-react";
@@ -165,17 +164,6 @@ const Header = ({ showSearch = false }) => {
                 />
               </button>
             )}
-            <div
-              className={`flex justify-center items-center rounded-lg transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-600 p-1`}
-            >
-              <button className="w-fit h-fit cursor-pointer hover:scale-110 transition-transform">
-                <FaRegBell
-                  className="icon"
-                  color={isDarkMode ? "#E5E7EB" : "#74767E"}
-                  size={26}
-                />
-              </button>
-            </div>
             <Link
               to="/"
               className={`flex justify-center items-center rounded-lg transition-all duration-300 ${

@@ -37,7 +37,7 @@ const InProgressProject = () => {
             setComment(commentData.content || "");
             setRating(commentData.rating || 0);
           }
-          console.log(response);  
+          console.log(response);
         }
       } catch (error: any) {
         notifyError(`${errorMapper(error)}`);
@@ -103,13 +103,18 @@ const InProgressProject = () => {
   }
 
   // The first bid is the selected/accepted one (API returns only accepted bid for status 3)
-  const selectedBid = biders && projectData?.selected_bid 
-  ? biders.find(bider => bider.bid_id === projectData?.selected_bid?.toString())
-  : null;
+  const selectedBid =
+    biders && projectData?.selected_bid
+      ? biders.find(
+          (bider) => bider.bid_id === projectData?.selected_bid?.toString()
+        )
+      : null;
 
-const otherBids = biders 
-  ? biders.filter(bider => bider.bid_id !== projectData?.selected_bid?.toString()) 
-  : [];
+  const otherBids = biders
+    ? biders.filter(
+        (bider) => bider.bid_id !== projectData?.selected_bid?.toString()
+      )
+    : [];
 
   return (
     <>
@@ -134,6 +139,20 @@ const otherBids = biders
               <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 gap-2">
                 <label className="font-semibold">توضیحات پروژه: </label>
                 <span>{projectData.description}</span>
+              </div>
+              <div className="flex flex-row text-right text-xs sm:text-sm text-gray-600 dark:text-gray-300 gap-2">
+                <label className="font-semibold">مهارت‌های مورد نیاز:</label>
+                <div className="flex flex-wrap gap-2 justify-start">
+                  {projectData.tags &&
+                    projectData.tags.map((tag) => (
+                      <span
+                        key={tag.id}
+                        className="bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-700 text-green-600 dark:text-green-400 px-2 sm:px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 ease-in-out hover:bg-green-200 dark:hover:bg-green-800/50"
+                      >
+                        {tag.name}
+                      </span>
+                    ))}
+                </div>
               </div>
             </div>
             <div className="flex flex-col space-y-4 mt-4">
