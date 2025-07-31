@@ -1,4 +1,5 @@
-import { Link, useParams } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Link, useSearchParams } from "react-router-dom";
 import {
   Card,
   CardTitle,
@@ -7,10 +8,15 @@ import {
 } from "../../Components/ui/card";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { verifyemail } from "../../API";
+import { Skeleton } from "primereact/skeleton";
 
 const EmailVerificationResult = () => {
-  const { token } = useParams();
-  const isSuccess = token === "success";
+  const [searchParams] = useSearchParams();
+  const userid = searchParams.get("userid");
+  const token = searchParams.get("token");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [isDarkMode] = useState(() => {
     const savedMode = localStorage.getItem("darkMode");
@@ -25,6 +31,29 @@ const EmailVerificationResult = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const verify = async () => {
+      try {
+        setIsLoading(true);
+        if (!userid || !token) {
+          throw new Error("پارامترهای userid یا token وجود ندارند");
+        }
+        const userData = {
+          userid: parseInt(userid.toString()),
+          token: token,
+        };
+        await verifyemail(userData);
+        setIsSuccess(true);
+      } catch {
+        setIsSuccess(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    verify();
+  }, [userid, token]);
+
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4"
@@ -32,7 +61,13 @@ const EmailVerificationResult = () => {
     >
       <Card className="max-w-md w-full mx-auto items-center text-center dark:bg-gray-700 shadow-lg dark:shadow-xl">
         <div className="flex flex-col items-center justify-center w-full">
-          {isSuccess ? (
+          {isLoading ? (
+            <Skeleton
+              shape="circle"
+              size="7rem"
+              className="shiny-skeleton mb-4 mx-auto border-2 border-gray-200 bg-gray-300 dark:border-gray-600 dark:bg-gray-600"
+            />
+          ) : isSuccess ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-28 h-28 mb-4 mx-auto text-green-600 dark:text-green-500"
@@ -63,31 +98,70 @@ const EmailVerificationResult = () => {
               />
             </svg>
           )}
-          <CardTitle
-            className={`text-2xl font-bold ${isSuccess ? "text-green-600 dark:text-green-500" : "text-red-600 dark:text-red-500"}`}
-          >
-            {isSuccess
-              ? "ایمیل شما با موفقیت تایید شد!"
-              : "تایید ایمیل ناموفق بود"}
+          <CardTitle className="text-2xl font-bold w-full">
+            {isLoading ? (
+              <div className="w-full flex justify-center">
+                <Skeleton
+                  width="60%"
+                  height="1.5rem"
+                  className="shiny-skeleton rounded-sm bg-gray-300 dark:bg-gray-600"
+                />
+              </div>
+            ) : (
+              <span
+                className={
+                  isSuccess
+                    ? "text-green-600 dark:text-green-500"
+                    : "text-red-600 dark:text-red-500"
+                }
+              >
+                {isSuccess
+                  ? "ایمیل شما با موفقیت تایید شد!"
+                  : "تایید ایمیل ناموفق بود"}
+              </span>
+            )}
           </CardTitle>
         </div>
-        <CardContent>
-          <p className="text-gray-600 dark:text-gray-300 text-base sm:w-[90%] w-full mx-auto">
-            {isSuccess
-              ? "اکنون می‌توانید از تمام امکانات سایت استفاده کنید."
-              : "متاسفانه تایید ایمیل شما با خطا مواجه شد. لطفا مجددا تلاش کنید."}
-          </p>
+        <CardContent className="w-full">
+          {isLoading ? (
+            <div className="space-y-2 sm:w-[90%] w-full mx-auto">
+              <Skeleton
+                width="100%"
+                height="1rem"
+                className="shiny-skeleton rounded-sm bg-gray-300 dark:bg-gray-600"
+              />
+              <Skeleton
+                width="75%"
+                height="1rem"
+                className="shiny-skeleton rounded-sm bg-gray-300 dark:bg-gray-600"
+              />
+            </div>
+          ) : (
+            <p className="text-gray-600 dark:text-gray-300 text-base sm:w-[90%] w-full mx-auto">
+              {isSuccess
+                ? "اکنون می‌توانید از تمام امکانات سایت استفاده کنید."
+                : "متاسفانه تایید ایمیل شما با خطا مواجه شد. لطفا مجددا تلاش کنید."}
+            </p>
+          )}
         </CardContent>
         <CardFooter className="flex flex-col gap-2">
-          <Link to="/">
-            <button className="group cursor-pointer bg-blue-600 dark:bg-blue-700 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-base md:text-lg font-semibold hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-300">
-              <ArrowRight
-                className="group-hover:translate-x-1 transition-transform"
-                size={20}
-              />
-              بازگشت به خانه
-            </button>
-          </Link>
+          {isLoading ? (
+            <Skeleton
+              width="10rem"
+              height="2.5rem"
+              className="shiny-skeleton rounded-xl bg-gray-300 dark:bg-gray-600"
+            />
+          ) : (
+            <Link to="/">
+              <button className="group cursor-pointer bg-blue-600 dark:bg-blue-700 text-white px-4 py-2.5 rounded-lg flex items-center gap-2 text-base md:text-lg font-semibold hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors duration-300">
+                <ArrowRight
+                  className="group-hover:translate-x-1 transition-transform"
+                  size={20}
+                />
+                بازگشت به خانه
+              </button>
+            </Link>
+          )}
         </CardFooter>
       </Card>
     </div>

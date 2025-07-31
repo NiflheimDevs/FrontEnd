@@ -89,7 +89,10 @@ export const publicRoutes = [
   { path: "/Browse/Teams", element: <BrowseTeamLayout /> },
   { path: "/Browse/Users", element: <BrowseUserLayout /> },
   { path: "/ProjectDetail/:project_id", element: <ProjectDetail /> },
-  { path: "/email-verify-result/:token", element: <EmailVerificationResult /> },
+  {
+    path: "/verify/email",
+    element: <EmailVerificationResult />,
+  },
   {
     path: "/membership-verification/:groupId",
     element: <TeamMembershipVerification />,
