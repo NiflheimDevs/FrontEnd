@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Color, Comment, commentsPageSize } from "./types";
 import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 interface UserCommentsProps {
   comments: Comment[];
@@ -44,9 +45,11 @@ const UserComments = ({ comments, localcolor }: UserCommentsProps) => {
                 <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-300 font-[vazirmatn]">
                   {`${comment.first_name} ${comment.last_name}`}
                 </h4>
-                <span className="text-sm text-gray-500 dark:text-gray-400 font-[vazirmatn]">
-                  @{comment.username}
-                </span>
+                <Link to={`/profile/${comment.user_id}`}>
+                  <span className="text-sm text-gray-500 dark:text-gray-400 font-[vazirmatn]">
+                    {comment.username}
+                  </span>
+                </Link>
               </div>
               <div className="flex justify-start items-center gap-2 mb-2">
                 {[...Array(5)].map((_, index) => {
