@@ -102,8 +102,37 @@ export const mapApiDataToProfile = async (
   apiEmployer: any,
   apiTeams: any,
   apiResume: any,
-  apiComment: any
+  apiComment: any,
+  apiEmployee: any
 ): Promise<Profile> => {
+  const freelancerprojects = [
+    ...(apiEmployee.team || []).map((project: any) => ({
+      id: project.project_id,
+      title: project.title || "",
+      description: project.description || "",
+      label: project.label?.name || "",
+      skills: project.tags
+        ? project.tags.map((tag: any) => ({
+            id: tag.id,
+            name: tag.name || tag.id,
+            level: -1,
+          }))
+        : [],
+    })),
+    ...(apiEmployee.user || []).map((project: any) => ({
+      id: project.project_id,
+      title: project.title || "",
+      description: project.description || "",
+      label: project.label?.name || "",
+      skills: project.tags
+        ? project.tags.map((tag: any) => ({
+            id: tag.id,
+            name: tag.name || tag.id,
+            level: -1,
+          }))
+        : [],
+    })),
+  ];
   return {
     profile_id: profile_id,
     firstName: apiData.info?.firstname || initialProfile.firstName,
@@ -181,6 +210,7 @@ export const mapApiDataToProfile = async (
             : [],
         }))
       : [],
+    freelancerprojects: freelancerprojects,
     commentList: apiComment
       ? apiComment.map((comment: any) => ({
           id: comment.id,

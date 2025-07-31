@@ -202,6 +202,17 @@ export const GetComments = async (id: number) => {
   }
 };
 
+export const GetProjectsParticipated = async (id: number) => {
+  try {
+    const response = await apiClient.get(
+      `/project/participated/${id}?include=user&include=team`
+    );
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "خطا در ارسال درخواست!";
+  }
+};
+
 export const GetTeamsForBidding = async () => {
   try {
     const response = await apiClient.get(`/team/bidding`);

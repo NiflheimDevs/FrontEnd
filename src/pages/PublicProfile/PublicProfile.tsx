@@ -13,6 +13,7 @@ import UserStateToggle from "../../Components/PublicProfile/UserStateToggle";
 import UserJobExperience from "../../Components/PublicProfile/UserJobExperience";
 import {
   GetComments,
+  GetProjectsParticipated,
   GetResume,
   GetUser,
   getUserProject,
@@ -47,13 +48,16 @@ const PublicProfile = () => {
           const apiEmployer = await getUserProject(0, 1000, userId);
           const apiResume = await GetResume(userId);
           const apiComments = await GetComments(userId);
+          const apiEmployee = await GetProjectsParticipated(userId);
+          console.log(apiEmployee);
           const mappedProfile = await mapApiDataToProfile(
             profile_id,
             apiData,
             apiEmployer,
             apiTeams,
             apiResume,
-            apiComments
+            apiComments,
+            apiEmployee
           );
           setLocalProfile(mappedProfile);
         }
