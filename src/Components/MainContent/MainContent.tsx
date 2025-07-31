@@ -312,12 +312,12 @@ const MainContent = () => {
           </p>
         ) : (
           <>
-            <div className="md:flex sm:flex hidden flex-wrap justify-center gap-8 px-6 max-w-7xl mx-auto">
+            <div className="md:flex sm:flex hidden flex-wrap justify-center gap-8 px-6 max-w-7xl mx-auto ">
               {projectCards.map((card) => (
                 <Link
                   to={`/ProjectDetail/${card.project_id}`}
                   key={card.project_id}
-                  className="bg-gray-100 dark:bg-gray-700 rounded-xl shadow-lg flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px] transition-all duration-300"
+                  className="bg-gray-100 dark:bg-gray-700 rounded-xl shadow-lg flex flex-col relative w-[calc(82%-1rem)] sm:w-[calc(50%-1rem)] md:w-[calc(25%-1.5rem)] min-w-[260px] transition-all duration-300 hover:scale-105"
                 >
                   <div className="w-full px-2 pt-2">{card.image}</div>
                   <div className="p-4 pb-9 flex flex-col">
