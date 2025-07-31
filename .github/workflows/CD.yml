@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-    branches:
-      - develop
-    types: [opened, reopened, synchronize, ready_for_review]
+  # pull_request:
+  #   branches:
+  #     - develop
+  #   types: [opened, reopened, synchronize, ready_for_review]
 
 permissions:
   pull-requests: write
@@ -77,15 +77,17 @@ jobs:
             cd /home/${{ secrets.SSH_USER }}/FrontEnd
             docker logout ghcr.io
             docker login ghcr.io -u ${{ secrets.USERNAME }} -p ${{ secrets.PAT }}
-
+            # testing
+            docker container prune
             echo "📦 Pulling latest image..."
             docker compose pull
 
             echo "🧼 Stopping and removing old frontend container..."
-            docker compose down --remove-orphans || true
-
+            # docker compose down --remove-orphans || true
+            docker compose down --remove-orphans
+            
             echo "🚀 Starting new container..."
-            docker compose up -d --remove-orphans
+            docker compose up -d
 
             echo "🧹 Cleaning up unused images..."
             docker image prune -f
