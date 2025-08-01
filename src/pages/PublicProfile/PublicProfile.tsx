@@ -49,7 +49,6 @@ const PublicProfile = () => {
           const apiResume = await GetResume(userId);
           const apiComments = await GetComments(userId);
           const apiEmployee = await GetProjectsParticipated(userId);
-          console.log(apiEmployee);
           const mappedProfile = await mapApiDataToProfile(
             profile_id,
             apiData,
@@ -164,6 +163,7 @@ const PublicProfile = () => {
             <UserComments
               comments={localProfile.commentList}
               localcolor={localColor}
+              projects={localProfile.freelancerprojects}
             />
             <UserStateToggle
               localprofile={localProfile}

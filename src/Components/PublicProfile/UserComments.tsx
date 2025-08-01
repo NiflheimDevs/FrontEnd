@@ -1,16 +1,21 @@
 import { useState } from "react";
-import { Color, Comment, commentsPageSize } from "./types";
+import { Color, Comment, commentsPageSize, Projects } from "./types";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 interface UserCommentsProps {
   comments: Comment[];
+  projects: Projects[] | undefined;
   localcolor: Color;
 }
 
 const PAGE_SIZE = commentsPageSize;
 
-const UserComments = ({ comments, localcolor }: UserCommentsProps) => {
+const UserComments = ({
+  comments,
+  localcolor,
+  projects,
+}: UserCommentsProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(comments.length / PAGE_SIZE);
@@ -38,34 +43,49 @@ const UserComments = ({ comments, localcolor }: UserCommentsProps) => {
         paginatedComments.map((comment) => (
           <div
             key={comment.id}
-            className="bg-white p-4 rounded-xl shadow-md border border-gray-100 dark:bg-gray-600 dark:border-gray-600 transition-all duration-300 hover:shadow-lg"
+            className="bg-white p-4 rounded-xl shadow-md border border-gray-100 dark:bg-gray-800 dark:border-gray-600 transition-all duration-300 hover:shadow-lg"
           >
-            <div className="flex flex-col gap-2">
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-                <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-300 font-[vazirmatn]">
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                <h4 className="text-lg font-semibold text-gray-800 dark:text-gray-200 font-[vazirmatn]">
                   {`${comment.first_name} ${comment.last_name}`}
                 </h4>
-                <Link to={`/profile/${comment.user_id}`}>
-                  <span className="text-sm text-gray-500 dark:text-gray-400 font-[vazirmatn]">
-                    {comment.username}
-                  </span>
-                </Link>
+                <div className="flex flex-row items-center gap-3">
+                  <Link
+                    to={`/ProjectDetail/${comment.project_id}`}
+                    className={`text-sm font-medium text-${localcolor.color} dark:text-${localcolor.darkcolor} hover:text-${localcolor.hover} dark:hover:text-${localcolor.darkhover} font-[vazirmatn] px-2 py-1 rounded-md`}
+                  >
+                    {projects?.find((p) => p.id === comment.project_id)
+                      ?.title || "پروژه نامشخص"}
+                  </Link>
+                  <span className="text-gray-400 dark:text-gray-500">|</span>
+                  <Link to={`/profile/${comment.user_id}`}>
+                    <span
+                      className={`text-sm font-medium text-${localcolor.color} dark:text-${localcolor.darkcolor} hover:text-${localcolor.hover} dark:hover:text-${localcolor.darkhover} transition-colors`}
+                    >
+                      {comment.username}
+                    </span>
+                  </Link>
+                </div>
               </div>
-              <div className="flex justify-start items-center gap-2 mb-2">
+
+              <div className="flex justify-start items-center gap-1 mb-2">
                 {[...Array(5)].map((_, index) => {
                   const starValue = index + 1;
                   return (
                     <FaStar
                       key={starValue}
-                      size={20}
+                      size={18}
+                      className="transition-colors"
                       color={
-                        starValue <= comment.rating ? "#ffc107" : "#e4e5e9"
+                        starValue <= comment.rating ? "#ffc107" : "#d1d5db"
                       }
                     />
                   );
                 })}
               </div>
-              <div className="w-full p-2 border border-gray-300 rounded-md bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-white font-[vazirmatn] text-sm">
+
+              <div className="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 font-[vazirmatn] text-sm leading-relaxed">
                 {comment.content || "هیچ نظری ثبت نشده است..."}
               </div>
             </div>
