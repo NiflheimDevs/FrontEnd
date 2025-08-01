@@ -11,6 +11,14 @@ export interface ApiTeamResponse {
   lastname: string;
 }
 
+export const mapApiTeamResponseToTeam = (apiTeam: ApiTeamResponse): Team => ({
+  team_id: apiTeam.onemanteamid,
+  title: apiTeam.username,
+  description: `${apiTeam.firstname || ""} ${apiTeam.lastname || ""}`,
+  profile: apiTeam.profile,
+  isValid: true,
+});
+
 export const mapApiData = (apiData: any): ApiTeamResponse => {
   return {
     ...apiData,

@@ -78,6 +78,7 @@ const ProjectDetail = () => {
     try {
       const teams = await GetTeamsForBidding();
       setTeams(mapApiData(teams));
+      console.log(teams);
     } catch (error: any) {
       const errorData = error;
       if (errorData.tag && errorData.errors?.length > 0) {
@@ -97,6 +98,7 @@ const ProjectDetail = () => {
       try {
         if (project_id) {
           const bids = await GetProjectBid(project_id);
+          console.log(bids);
           if (bids) {
             const mappedBiders: Bider[] = bids.bids
               ? bids.bids.map((bid: any) => ({
