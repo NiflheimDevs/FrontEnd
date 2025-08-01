@@ -8,7 +8,7 @@ import BidEditModal from "./BidEditModal";
 import { errorMapper } from "../../pages/Error/Error";
 import { useNotification } from "../../Notification/NotificationProvider";
 import { GetTeamsForBidding, UpdateBid } from "../../API";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface ProjectBiderCardProps {
   bider: Bider;
@@ -17,6 +17,8 @@ interface ProjectBiderCardProps {
   project_id: string | undefined;
   teamData: ApiTeamResponse | undefined;
   status: number;
+  isuser: boolean;
+  id: number;
 }
 
 const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
@@ -26,6 +28,8 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
   teamData,
   project_id,
   status,
+  isuser,
+  id,
 }) => {
   const [profileExists, setProfileExists] = useState<boolean>(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -88,7 +92,6 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
       }
     }
   };
-
   return (
     <>
       <BidEditModal
@@ -103,11 +106,17 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
       />
       <div
         className={`flex items-center gap-2 w-full justify-between py-3 px-1 rounded-lg shadow-md transition-colors ${
-          color === 1 ? "bg-blue-400" : color === 2 ? "bg-green-700" :"bg-blue-300"
-          
+          color === 1
+            ? "bg-blue-400"
+            : color === 2
+              ? "bg-green-700"
+              : "bg-blue-300"
         }`}
       >
-        <div className="flex items-center space-x-3 gap-2 space-x-reverse">
+        <Link
+          to={isuser ? `/profile/${id}` : `/teams/${id}`}
+          className="flex items-center space-x-3 gap-2 space-x-reverse"
+        >
           {profileExists ? (
             <img
               className="w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 border border-gray-200 rounded-full flex items-center justify-center"
@@ -130,7 +139,7 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
               {truncateText(bider.description, 50)}
             </div>
           </div>
-        </div>
+        </Link>
         <p className="text-white text-[12px] md:text-xs lg:text-xs text-center font-semibold p-2 items-center justify-center flex gap-3">
           <div className="flex flex-col whitespace-nowrap gap-1">
             <span>{`${formatPrice(bider.total)} تومان`}</span>

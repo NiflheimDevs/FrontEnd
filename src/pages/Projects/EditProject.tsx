@@ -135,7 +135,7 @@ const EditProject: React.FC = () => {
       tags: project.tags,
       label: project.label[0] ?? null,
     };
-    console.log(projectData);
+    // console.log(projectData);
     try {
       if (projectId) {
         await dispatch(

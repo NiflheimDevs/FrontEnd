@@ -238,7 +238,7 @@ const TeamListPage: React.FC = () => {
 
         // Check if teamsData is null, undefined, or not an array
         if (!teamsData || !Array.isArray(teamsData)) {
-          console.log("No teams data received or invalid format");
+          // console.log("No teams data received or invalid format");
           setTeams([]);
           setFilteredTeams([]);
           setIsLoading(false);
