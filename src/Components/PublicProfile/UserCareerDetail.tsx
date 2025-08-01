@@ -50,7 +50,7 @@ const UserCareerDetail = ({
         <div className="flex flex-row gap-1">
           <Star color="#FFD700" />
           <span className="text-lg font-bold text-[#FFD700] font-[vazirmatn]">
-            {localprofile.rate}
+            {localprofile.rate?.toString().slice(0, 3)}
           </span>
         </div>
       </div>
