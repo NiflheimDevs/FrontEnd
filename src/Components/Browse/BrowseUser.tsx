@@ -12,44 +12,41 @@ interface User {
   avatar: string;
 }
 
+// --- CHANGE: Use a constant for the limit ---
+const LIMIT = 6;
+
 const BrowseUser: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
-  // Debounced search state
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  // State for filter dropdowns
   const [, setCategoryOpen] = useState(false);
   const [skillsOpen, setSkillsOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
-  // const [] = useState("دسته‌بندی");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [selectedSort, setSelectedSort] = useState("نوع مرتب‌سازی");
-  const page = 1;
-  const [limit] = useState(10); // Default page size
-
-  // Sample filter options
-  // Tags/skills state and search for skills dropdown
   const [skills, setSkills] = useState<string[]>([]);
   const [, setSkillsLoading] = useState(true);
   const [skillsSearch, setSkillsSearch] = useState("");
-  const sortOptions = [
-    "جدیدترین",
-    "قدیمی‌ترین",
-    // "بیشترین امتیاز",
-    // "کمترین امتیاز",
-  ];
+  const sortOptions = ["جدیدترین", "قدیمی‌ترین"];
+
+  // --- CHANGE: Added state for pagination and total count ---
+  const [page, setPage] = useState(1);
+  const [, setTotalCount] = useState(0);
 
   // Debounce effect for search input
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 500); // 500ms debounce
-    return () => {
-      clearTimeout(handler);
-    };
+    }, 500);
+    return () => clearTimeout(handler);
   }, [search]);
+
+  // --- CHANGE: Added effect to reset page when filters change ---
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, selectedSkills, selectedSort]);
 
   // Fetch tags for skills dropdown
   useEffect(() => {
@@ -76,16 +73,13 @@ const BrowseUser: React.FC = () => {
     fetchTags();
   }, []);
 
+  // --- CHANGE: Modified fetching logic ---
   useEffect(() => {
     const fetchUsers = async () => {
-      // Only call API if there is a search query or selected skills
-      if (!debouncedSearch && (!selectedSkills || selectedSkills.length === 0)) {
-        setUsers([]);
-        setLoading(false);
-        return;
-      }
+      setLoading(true);
+      setError(null);
+      // This logic no longer prevents fetching on an empty search bar.
       try {
-        setLoading(true);
         let sort_by = "";
         let order = "";
         if (selectedSort === "جدیدترین") {
@@ -94,39 +88,35 @@ const BrowseUser: React.FC = () => {
         } else if (selectedSort === "قدیمی‌ترین") {
           order = "created_time";
           sort_by = "asc";
-        } 
-        // else if (selectedSort === "بیشترین امتیاز") {
-        //   order = "score";
-        //   sort_by = "desc";
-        // } else if (selectedSort === "کمترین امتیاز") {
-        //   order = "score";
-        //   sort_by = "asc";
-        // }
-        const response = await GetUserSerachTeam(
-          debouncedSearch, // query: string
-          page,            // page: number
-          limit,           // limit: number
-          selectedSkills,  // skills: string[]
-          order,           // order: string
-          sort_by          // sort_by: string
-        );
-        if (Array.isArray(response)) {
-          setUsers(response);
-        } else if (response && Array.isArray(response.users)) {
-          setUsers(response.users);
-        } else {
-          setUsers([]);
         }
+        const response = await GetUserSerachTeam(
+          debouncedSearch, // query
+          page,            // page (now from state)
+          LIMIT,           // limit (now a constant)
+          selectedSkills,  // skills
+          order,
+          sort_by
+        );
+        
+        // Handle response consistently
+        const usersArr = response?.users || response || [];
+        setTotalCount(response?.count || usersArr.length);
+        setUsers(usersArr);
+
       } catch (err: any) {
-        setTimeout(() => {
-          setError(err?.message || "خطا در دریافت کاربران");
-          setUsers([]);
-        }, 100);
+        setError(err?.message || "خطا در دریافت کاربران");
+        setUsers([]);
+        setTotalCount(0);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchUsers();
-  }, [debouncedSearch, selectedSkills, selectedSort]);
+  }, [debouncedSearch, selectedSkills, selectedSort, page]); // --- CHANGE: Added `page` to dependency array
+
+  // --- CHANGE: Added pagination handlers ---
+  const handlePrev = () => setPage((p) => Math.max(1, p - 1));
+  const handleNext = () => setPage((p) => p + 1);
 
   // Toggle skill selection
   const toggleSkill = (skill: string) => {
@@ -145,7 +135,7 @@ const BrowseUser: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-full py-6 px-4 sm:mt-0 mt-15 bg-gray-100 dark:bg-gray-800">
+    <div className="flex flex-col w-full min-h-screen py-6 px-4 sm:mt-0 mt-15 bg-gray-100 dark:bg-gray-800">
       <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-2 text-center">جستجوی کاربران</h2>
       <p className="text-gray-600 dark:text-gray-300 text-center mb-8">در این بخش می‌توانید کاربران مختلف را جستجو و مشاهده کنید.</p>
       <div className="flex flex-col items-center gap-2 mb-6">
@@ -160,20 +150,6 @@ const BrowseUser: React.FC = () => {
         </div>
       </div>
       <div className="relative flex justify-center gap-8 mb-6 flex-wrap">
-        {/* <FilterDropdown
-          isOpen={categoryOpen}
-          toggleDropdown={() => {
-            setCategoryOpen(!categoryOpen);
-            setSkillsOpen(false);
-            setSortOpen(false);
-          }}
-          selectedValue={selectedCategory}
-          options={categories}
-          onSelect={(value) => {
-            setSelectedCategory(value);
-            setCategoryOpen(false);
-          }}
-        /> */}
         <FilterDropdown
           isOpen={skillsOpen}
           toggleDropdown={() => {
@@ -211,14 +187,10 @@ const BrowseUser: React.FC = () => {
           }}
         />
       </div>
+
+      {/* --- CHANGE: Removed special case for empty search --- */}
       <div className="flex flex-col gap-0 mt-4">
-        {search.trim() === "" ? (
-          <div className="flex flex-col items-center justify-center py-16">
-            <span className="text-5xl mb-4">🔎</span>
-            <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">جستجو کن!</h3>
-            <p className="text-gray-500 dark:text-gray-400 text-center max-w-md">برای پیدا کردن کاربران مورد علاقه‌ات، کلمه کلیدی یا مهارت مورد نظر را در نوار جستجو وارد کن.</p>
-          </div>
-        ) : loading ? (
+        {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
             <SearchResultCard key={i} type="user" data={{}} loading />
           ))
@@ -232,8 +204,30 @@ const BrowseUser: React.FC = () => {
           ))
         )}
       </div>
-    </div>
+
+      {/* --- CHANGE: Added pagination controls --- */}
+ {/* --- CHANGE: Added bottom margin `mb-8` --- */}
+ <div className="flex justify-center items-center gap-2 my-4 mb-8">
+        <button
+          onClick={handlePrev}
+          disabled={page === 1}
+          className="px-3 py-1 rounded border bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50"
+        >
+          قبلی
+        </button>
+        <span className="px-3 py-1 rounded border bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200">
+          {page}
+        </span>
+        <button
+          onClick={handleNext}
+          disabled={users.length < LIMIT}
+          className="px-3 py-1 rounded border bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50"
+        >
+          بعدی
+        </button>
+      </div>
+      </div>
   );
 };
 
-export default BrowseUser; 
+export default BrowseUser;

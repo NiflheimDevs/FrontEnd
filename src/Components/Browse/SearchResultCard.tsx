@@ -13,6 +13,7 @@ interface SearchResultCardProps {
 }
 
 const getAvatar = (type: SearchResultType, data: any) => {
+
   if (type === "user")
     return (
       data?.profile ||
@@ -73,6 +74,7 @@ const getAllTags = (type: SearchResultType, data: any) => {
 };
 
 const getLink = (type: SearchResultType, data: any) => {
+
   if (type === "user")
     return `/profile/${data?.user_id || data?.id || data?.name || "unknown"}`;
   if (type === "project")
@@ -160,6 +162,7 @@ const SearchResultCard: React.FC<SearchResultCardProps> = ({
       data-tags={tags.join(",")} // Store all tags for search purposes
     >
       {/* Type Tag */}
+
       <div
         className={`absolute top-3 left-3 text-sm px-3 py-1 rounded-full ${typeColors[type].tagBg} ${typeColors[type].tagText} font-bold shadow-sm`}
       >
