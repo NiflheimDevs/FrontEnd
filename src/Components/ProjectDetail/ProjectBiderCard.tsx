@@ -109,23 +109,31 @@ const ProjectBiderCard: React.FC<ProjectBiderCardProps> = ({
       >
         <div className="flex items-center space-x-3 gap-2 space-x-reverse">
           {profileExists ? (
-            <img
-              className="w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 border border-gray-200 rounded-full flex items-center justify-center"
-              alt={bider.title}
-              src={bider.profile}
-              onError={() => setProfileExists(false)}
-            />
+            <a href={`/teams/${bider.teamid}`} target="_blank" rel="noopener noreferrer">
+              <img
+                className="w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 border border-gray-200 rounded-full flex items-center justify-center"
+                alt={bider.title}
+                src={bider.profile}
+                onError={() => setProfileExists(false)}
+              />
+            </a>
           ) : bider.title ? (
-            <div className="w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 p-1 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">
-              {bider.title.charAt(0)}
-            </div>
+            <a href={`/teams/${bider.teamid}`} target="_blank" rel="noopener noreferrer">
+              <div className="w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 p-1 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">
+                {bider.title.charAt(0)}
+              </div>
+            </a>
           ) : (
-            <RiTeamFill className="border-gray-200 border-2 text-gray-600 rounded-full w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 p-1" />
+            <a href={`/teams/${bider.teamid}`} target="_blank" rel="noopener noreferrer">
+              <RiTeamFill className="border-gray-200 border-2 text-gray-600 rounded-full w-8 sm:w-9 h-8 sm:h-9 min-h-8 min-w-8 sm:min-h-9 sm:min-w-9 p-1" />
+            </a>
           )}
           <div className="text-right">
-            <p className="font-semibold text-xs sm:text-sm text-white">
-              {bider.title}
-            </p>
+            <a href={`/teams/${bider.teamid}`} target="_blank" rel="noopener noreferrer">
+              <p className="font-semibold text-xs sm:text-sm text-white">
+                {bider.title}
+              </p>
+            </a>
             <div className="mt-1 flex items-center gap-1 text-gray-100 text-xs">
               {truncateText(bider.description, 50)}
             </div>

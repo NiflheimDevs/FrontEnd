@@ -37,8 +37,8 @@ const BrowseUser: React.FC = () => {
   const sortOptions = [
     "جدیدترین",
     "قدیمی‌ترین",
-    "بیشترین امتیاز",
-    "کمترین امتیاز",
+    // "بیشترین امتیاز",
+    // "کمترین امتیاز",
   ];
 
   // Debounce effect for search input
@@ -78,11 +78,38 @@ const BrowseUser: React.FC = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      setLoading(true);
-      setError(null);
+      // Only call API if there is a search query or selected skills
+      if (!debouncedSearch && (!selectedSkills || selectedSkills.length === 0)) {
+        setUsers([]);
+        setLoading(false);
+        return;
+      }
       try {
-        const response = await GetUserSerachTeam(debouncedSearch, page, limit, selectedSkills);
-        // The API may return { users: [...], total: ... } or just an array
+        setLoading(true);
+        let sort_by = "";
+        let order = "";
+        if (selectedSort === "جدیدترین") {
+          order = "created_time";
+          sort_by = "desc";
+        } else if (selectedSort === "قدیمی‌ترین") {
+          order = "created_time";
+          sort_by = "asc";
+        } 
+        // else if (selectedSort === "بیشترین امتیاز") {
+        //   order = "score";
+        //   sort_by = "desc";
+        // } else if (selectedSort === "کمترین امتیاز") {
+        //   order = "score";
+        //   sort_by = "asc";
+        // }
+        const response = await GetUserSerachTeam(
+          debouncedSearch, // query: string
+          page,            // page: number
+          limit,           // limit: number
+          selectedSkills,  // skills: string[]
+          order,           // order: string
+          sort_by          // sort_by: string
+        );
         if (Array.isArray(response)) {
           setUsers(response);
         } else if (response && Array.isArray(response.users)) {
@@ -99,7 +126,7 @@ const BrowseUser: React.FC = () => {
       setLoading(false);
     };
     fetchUsers();
-  }, [debouncedSearch]);
+  }, [debouncedSearch, selectedSkills, selectedSort]);
 
   // Toggle skill selection
   const toggleSkill = (skill: string) => {
