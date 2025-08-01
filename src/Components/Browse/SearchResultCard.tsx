@@ -42,7 +42,7 @@ const getTitle = (type: SearchResultType, data: any) => {
 };
 
 const getUsername = (type: SearchResultType, data: any) => {
-  if (type === "user") return data?.username ? `@${data.username}` : "";
+  if (type === "user") return data?.username ? `${data.username}` : "";
   return "";
 };
 
