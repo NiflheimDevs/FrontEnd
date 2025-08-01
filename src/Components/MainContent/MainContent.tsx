@@ -393,32 +393,46 @@ const MainContent = () => {
               transition={{ duration: 0.4 }}
               className="grid grid-cols-1 md:grid-cols-3 gap-8"
             >
-              {currentFreelancers.map((freelancer, index) => (
-                <div
-                  key={index}
-                  className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg"
-                >
-                  <img
-                    src={freelancer.image}
-                    alt={freelancer.name}
-                    className="w-full h-72 object-cover"
-                  />
-                  <div className="flex items-center justify-between px-4 py-3">
-                    <div>
-                      <h3 className="text-xl text-right font-semibold text-gray-800 dark:text-gray-200">
-                        {freelancer.name}
-                      </h3>
-                      <p className="text-sm text-right text-gray-600 dark:text-gray-300">
-                        {freelancer.role}
-                      </p>
-                    </div>
-                    <BsArrowLeft
-                      className="text-blue-500 dark:text-blue-400 cursor-pointer"
-                      size={26}
+              {currentFreelancers.map((freelancer, index) => {
+                let profileLink = null;
+                if (freelancer.name === "پارسا") profileLink = "/profile/3";
+                else if (freelancer.name === "سامان") profileLink = "/profile/4";
+                else if (freelancer.name === "علی") profileLink = "/profile/11";
+                else if (freelancer.name === "امیرمحمد") profileLink = "/profile/7";
+                else if (freelancer.name === "کیا") profileLink = "/profile/9";
+
+                const card = (
+                  <div
+                    key={index}
+                    className="bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg"
+                  >
+                    <img
+                      src={freelancer.image}
+                      alt={freelancer.name}
+                      className="w-full h-72 object-cover"
                     />
+                    <div className="flex items-center justify-between px-4 py-3">
+                      <div>
+                        <h3 className="text-xl text-right font-semibold text-gray-800 dark:text-gray-200">
+                          {freelancer.name}
+                        </h3>
+                        <p className="text-sm text-right text-gray-600 dark:text-gray-300">
+                          {freelancer.role}
+                        </p>
+                      </div>
+                      <BsArrowLeft
+                        className="text-blue-500 dark:text-blue-400 cursor-pointer"
+                        size={26}
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+                return profileLink ? (
+                  <a href={profileLink} target="_blank" rel="noopener noreferrer" key={index} style={{ textDecoration: 'none' }}>
+                    {card}
+                  </a>
+                ) : card;
+              })}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -432,11 +446,15 @@ const MainContent = () => {
             modules={[Pagination, Autoplay]}
             className="mySwiper rounded-xl shadow-lg"
           >
-            {trendingFreelancers.map((freelancer, index) => (
-              <SwiperSlide
-                key={index}
-                className="bg-gray-100 dark:bg-gray-700 rounded-xl shadow-lg"
-              >
+            {trendingFreelancers.map((freelancer, index) => {
+              let profileLink = null;
+              if (freelancer.name === "پارسا") profileLink = "/profile/3";
+              else if (freelancer.name === "سامان") profileLink = "/profile/4";
+              else if (freelancer.name === "علی") profileLink = "/profile/11";
+              else if (freelancer.name === "امیرمحمد") profileLink = "/profile/7";
+              else if (freelancer.name === "کیا") profileLink = "/profile/9";
+
+              const card = (
                 <div className="relative overflow-hidden pointer-events-none">
                   <img
                     src={freelancer.image}
@@ -459,8 +477,17 @@ const MainContent = () => {
                     />
                   </div>
                 </div>
-              </SwiperSlide>
-            ))}
+              );
+              return (
+                <SwiperSlide key={index} className="bg-gray-100 dark:bg-gray-700 rounded-xl shadow-lg">
+                  {profileLink ? (
+                    <a href={profileLink} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                      {card}
+                    </a>
+                  ) : card}
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </div>
 

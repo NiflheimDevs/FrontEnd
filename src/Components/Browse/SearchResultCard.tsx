@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaMedal } from "react-icons/fa6";
 
 type SearchResultType = "user" | "project" | "team";
 
@@ -10,33 +11,53 @@ interface SearchResultCardProps {
 }
 
 const getAvatar = (type: SearchResultType, data: any) => {
-  if (type === "user") return data.avatar;
+  if (type === "user") return data?.profile || data?.picture || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
   if (type === "project") return "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"; // generic project icon
-  if (type === "team") return data.profile;
+  if (type === "team") return data?.profile || "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
 };
 
 const getTitle = (type: SearchResultType, data: any) => {
-  if (type === "user") return data.name;
-  if (type === "project") return data.title;
-  if (type === "team") return data.name;
+  if (type === "user") {
+    const first = data?.firstname || "";
+    const last = data?.lastname || "";
+    const fullName = `${first} ${last}`.trim();
+    if (fullName !== "") return fullName;
+    if (data?.name && data.name.trim() !== "") return data.name;
+    if (data?.username) return `@${data.username}`;
+    return "";
+  }
+  if (type === "project") return data?.title || "بدون عنوان";
+  if (type === "team") return data?.name || "بدون نام تیم";
+};
+
+const getUsername = (type: SearchResultType, data: any) => {
+  if (type === "user") return data?.username ? `@${data.username}` : "";
+  return "";
 };
 
 const getSubtitle = (type: SearchResultType, data: any) => {
-  if (type === "user") return `نقش: ${data.role}`;
-  if (type === "project") return `توضیحات: ${data.description}`;
-  if (type === "team") return `توضیحات تیم: ${data.description}`;
+  if (type === "user") return data?.bio ? `بیوگرافی: ${data.bio}` : "بیوگرافی: -";
+  if (type === "project") return data?.description ? `توضیحات: ${data.description}` : "توضیحات: -";
+  if (type === "team") return data?.description ? `توضیحات تیم: ${data.description}` : "توضیحات تیم: -";
 };
 
 const getTag = (type: SearchResultType, data: any) => {
-  if (type === "user") return `مهارت: ${data.skill}`;
-  if (type === "project") return data.tags?.length ? `تگ: ${data.tags[0]}` : "";
-  if (type === "team") return data.members?.[0]?.name ? `عضو: ${data.members[0].name}` : "";
+  if (type === "user") return data?.skill ? `مهارت: ${data.skill}` : "";
+  if (type === "project") return data?.tags?.length ? `تگ: ${data.tags[0]}` : "";
+  if (type === "team") return data?.members?.[0]?.name ? `عضو: ${data.members[0].name}` : "";
+};
+
+const getTags = (type: SearchResultType, data: any) => {
+  if (type === "user" && Array.isArray(data?.tags)) {
+    return data.tags;
+  }
+  return [];
 };
 
 const getLink = (type: SearchResultType, data: any) => {
-  if (type === "user") return `/profile/${data.id || data.name}`;
-  if (type === "project") return `/ProjectDetail/${data.project_id}`;
-  if (type === "team") return `/teams/${data.id}`;
+  if (type === "user") return `/profile/${data?.user_id || data?.id || data?.name || "unknown"}`;
+  if (type === "project") return `/ProjectDetail/${data?.project_id || data?.id || "unknown"}`;
+  if (type === "team") return `/teams/${data?.id || "unknown"}`;
   return "#";
 };
 
@@ -70,6 +91,23 @@ const typeLabels = {
   team: "تیم"
 };
 
+// Medal icon logic for project label
+const getMedalIcon = (label: string | number | undefined) => {
+  switch (label) {
+    case "Urgent":
+    case 1:
+      return <FaMedal size={44} color="#FFD700" title="Urgent" />;
+    case "Bold":
+    case 2:
+      return <FaMedal size={44} color="#A6A6A6" title="Bold" />;
+    case "Free":
+    case 3:
+      return <FaMedal size={44} color="#CD7F32" title="Free" />;
+    default:
+      return <FaMedal size={44} color="#A6A6A6" title="Project" />;
+  }
+};
+
 const SearchResultCard: React.FC<SearchResultCardProps> = ({ type, data, loading }) => {
   if (loading) {
     return (
@@ -92,13 +130,33 @@ const SearchResultCard: React.FC<SearchResultCardProps> = ({ type, data, loading
     >
       {/* Type Tag */}
       <div className={`absolute top-3 left-3 text-sm px-3 py-1 rounded-full ${typeColors[type].tagBg} ${typeColors[type].tagText} font-bold shadow-sm`}>{typeLabels[type]}</div>
-      <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border-4 border-blue-200 dark:border-blue-900 ml-6">
-        <img src={getAvatar(type, data)} alt={getTitle(type, data)} className="w-full h-full object-cover" />
+      <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border-4 border-blue-200 dark:border-blue-900 ml-6 flex items-center justify-center bg-blue-50 dark:bg-blue-900">
+        {type === "project"
+          ? getMedalIcon(data?.label)
+          : <img src={getAvatar(type, data)} alt={getTitle(type, data)} className="w-full h-full object-cover" />}
       </div>
       <div className="flex flex-col justify-center flex-grow text-right">
-        <h3 className="text-xl font-extrabold text-gray-800 dark:text-gray-100 mb-2 leading-tight">{getTitle(type, data)}</h3>
+        <h3 className="text-xl font-extrabold text-gray-800 dark:text-gray-100 mb-1 leading-tight">{getTitle(type, data)}</h3>
+        {type === "user" && getUsername(type, data) && (
+          <div className="text-xs text-gray-500 dark:text-gray-400 mb-1 ltr:text-left rtl:text-right">{getUsername(type, data)}</div>
+        )}
+        {/* Show bio if present for user
+        {type === "user" && data?.bio && data.bio.trim() !== "" && (
+          <div className="text-xs text-gray-600 dark:text-gray-300 mb-1 ltr:text-left rtl:text-right line-clamp-2">{data.bio}</div>
+        )} */}
         <p className="text-sm text-gray-500 dark:text-gray-400 mb-2 line-clamp-2">{getSubtitle(type, data)}</p>
-        {getTag(type, data) && (
+        {/* Render all tags for user */}
+        {type === "user" && getTags(type, data).length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-1">
+            {getTags(type, data).map((tag: any, idx: number) => (
+              <span key={idx} className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-2 py-1 rounded-full font-semibold inline-block">
+                {tag.name || String(tag)}
+              </span>
+            ))}
+          </div>
+        )}
+        {/* Keep the old tag for other types */}
+        {type !== "user" && getTag(type, data) && (
           <span className="text-sm bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-3 py-1 rounded-full w-fit font-semibold mt-1 inline-block">{getTag(type, data)}</span>
         )}
       </div>

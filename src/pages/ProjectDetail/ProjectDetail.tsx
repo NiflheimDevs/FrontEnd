@@ -104,6 +104,7 @@ const ProjectDetail = () => {
               ? bids.bids.map((bid: any) => ({
                   teamid: bid.team_info.id,
                   type: bid.team_info.type,
+                  ownerid: bid.team_info.owner_id,
                   bid_id: bid.bid_id.toString(),
                   title: bid.team_info.title,
                   pre_payment: bid.pre_payment,
@@ -279,6 +280,8 @@ const ProjectDetail = () => {
                             bider={bider}
                             color={1}
                             status={projectData.status}
+                            isuser={bider.type == 2}
+                            id={bider.type == 2 ? bider.ownerid : bider.teamid}
                           />
                         ))}
                       {biders
@@ -292,6 +295,8 @@ const ProjectDetail = () => {
                             bider={bider}
                             color={0}
                             status={projectData.status}
+                            isuser={bider.type == 2}
+                            id={bider.type == 2 ? bider.ownerid : bider.teamid}
                           />
                         ))}
                     </>

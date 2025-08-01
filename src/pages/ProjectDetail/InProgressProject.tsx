@@ -37,7 +37,7 @@ const InProgressProject = () => {
             setComment(commentData.content || "");
             setRating(commentData.rating || 0);
           }
-          console.log(response);
+          // console.log(response);
         }
       } catch (error: any) {
         notifyError(`${errorMapper(error)}`);
@@ -59,6 +59,7 @@ const InProgressProject = () => {
               teamid: bid.team_info.id,
               type: bid.team_info.type,
               bid_id: bid.bid_id.toString(),
+              ownerid: bid.team_info.owner_id,
               title: bid.team_info.title,
               pre_payment: bid.pre_payment,
               total: bid.total,
@@ -167,6 +168,12 @@ const InProgressProject = () => {
                   bider={selectedBid}
                   color={2}
                   status={projectData.status}
+                  isuser={selectedBid.type == 2}
+                  id={
+                    selectedBid.type == 2
+                      ? selectedBid.ownerid
+                      : selectedBid.teamid
+                  }
                 />
               ) : (
                 <div className="text-gray-500 dark:text-gray-400 text-sm">
@@ -214,6 +221,8 @@ const InProgressProject = () => {
                     bider={bider}
                     color={0}
                     status={projectData.status}
+                    isuser={bider.type == 2}
+                    id={bider.type == 2 ? bider.ownerid : bider.teamid}
                   />
                 ))}
               </div>

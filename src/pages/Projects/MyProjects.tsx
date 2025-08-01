@@ -132,10 +132,10 @@ const MyProjects = () => {
         0
       );
 
-      console.log(
-        `Fetching projects for page ${page}, offset ${offset}:`,
-        data
-      );
+      // console.log(
+      //   `Fetching projects for page ${page}, offset ${offset}:`,
+      //   data
+      // );
 
       const projectData = data.projects || [];
       const totalCount = data.total || 0;
@@ -144,7 +144,7 @@ const MyProjects = () => {
       setTotalProjects(totalCount);
 
       if (projectData.length === 0 && page > 1) {
-        console.log(`Page ${page} is empty, navigating to page ${page - 1}`);
+        // console.log(`Page ${page} is empty, navigating to page ${page - 1}`);
         setCurrentPage(page - 1);
       }
     } catch (err: any) {
@@ -156,7 +156,7 @@ const MyProjects = () => {
       setProjects([]);
       setTotalProjects(0);
       if (page !== 1) {
-        console.log("Fetching failed, falling back to page 1");
+        // console.log("Fetching failed, falling back to page 1");
         setCurrentPage(1);
       }
     } finally {

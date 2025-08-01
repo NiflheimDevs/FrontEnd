@@ -6,6 +6,7 @@ export interface Bider {
   bid_id: string;
   title: string;
   pre_payment: number;
+  ownerid: number;
   total: number;
   expected_time: number;
   profile: string;
@@ -85,6 +86,7 @@ export interface FormBiderData {
 export const mapApiDataToProfile = async (apiData: any): Promise<Bider> => {
   return {
     teamid: apiData.team_info.id,
+    ownerid: apiData.team_info.owner_id,
     bid_id: apiData.bid_id,
     title: apiData.team_info?.title,
     description: apiData.team_info?.description,

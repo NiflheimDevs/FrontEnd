@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import SearchResultCard from "./SearchResultCard";
 import FilterDropdown from "./FilterDropdown";
+import { GetUserSerachTeam, getTags } from "../../API";
 
 interface User {
   user_id: number;
@@ -14,42 +15,118 @@ interface User {
 const BrowseUser: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  // Debounced search state
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   // State for filter dropdowns
-  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [, setCategoryOpen] = useState(false);
   const [skillsOpen, setSkillsOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("دسته‌بندی");
+  // const [] = useState("دسته‌بندی");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [selectedSort, setSelectedSort] = useState("نوع مرتب‌سازی");
+  const page = 1;
+  const [limit] = useState(10); // Default page size
 
   // Sample filter options
-  const categories = ["همه", "توسعه‌دهندگان", "طراحان", "بازاریابان"];
-  const skills = ["React", "Node.js", "Photoshop", "SEO"];
+  // Tags/skills state and search for skills dropdown
+  const [skills, setSkills] = useState<string[]>([]);
+  const [, setSkillsLoading] = useState(true);
+  const [skillsSearch, setSkillsSearch] = useState("");
   const sortOptions = [
     "جدیدترین",
     "قدیمی‌ترین",
-    "بیشترین امتیاز",
-    "کمترین امتیاز",
+    // "بیشترین امتیاز",
+    // "کمترین امتیاز",
   ];
 
+  // Debounce effect for search input
   useEffect(() => {
-    // Mock data for users since API is not available
-    const mockUsers: User[] = [
-        { user_id: 1, name: "علی رضایی", role: "توسعه‌دهنده وب با تجربه در React و Node.js", skill: "React, Node.js, JavaScript", avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
-        { user_id: 2, name: "مریم کاظمی", role: "طراح گرافیک متخصص در Photoshop و Illustrator", skill: "Photoshop, Illustrator, طراحی", avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
-        { user_id: 3, name: "محمد حسینی", role: "متخصص دیجیتال مارکتینگ با تمرکز بر SEO", skill: "SEO, بازاریابی, محتوا", avatar: "https://randomuser.me/api/portraits/men/45.jpg" },
-        { user_id: 4, name: "سارا احمدی", role: "برنامه‌نویس موبایل با تخصص در Flutter و Dart", skill: "Flutter, Dart, موبایل", avatar: "https://randomuser.me/api/portraits/women/46.jpg" },
-        { user_id: 5, name: "رضا محمدی", role: "متخصص امنیت سایبری و تست نفوذ", skill: "امنیت, تست نفوذ, شبکه", avatar: "https://randomuser.me/api/portraits/men/47.jpg" },
-        { user_id: 6, name: "نازنین زهرا", role: "طراح تجربه کاربری (UX) و رابط کاربری (UI)", skill: "UX, UI, طراحی", avatar: "https://randomuser.me/api/portraits/women/48.jpg" },
-    ];
-    // Simulate loading delay of 2 seconds
-    setTimeout(() => {
-      setUsers(mockUsers);
-      setLoading(false);
-    }, 2000);
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500); // 500ms debounce
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search]);
+
+  // Fetch tags for skills dropdown
+  useEffect(() => {
+    const fetchTags = async () => {
+      setSkillsLoading(true);
+      try {
+        const tagsData = await getTags();
+        if (Array.isArray(tagsData)) {
+          if (typeof tagsData[0] === "string") {
+            setSkills(tagsData);
+          } else if (typeof tagsData[0] === "object" && tagsData[0] !== null) {
+            setSkills(tagsData.map((tag: any) => tag.name || tag.title || tag.value || ""));
+          } else {
+            setSkills([]);
+          }
+        } else {
+          setSkills([]);
+        }
+      } catch (err: any) {
+        setSkills([]);
+      }
+      setSkillsLoading(false);
+    };
+    fetchTags();
   }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      // Only call API if there is a search query or selected skills
+      if (!debouncedSearch && (!selectedSkills || selectedSkills.length === 0)) {
+        setUsers([]);
+        setLoading(false);
+        return;
+      }
+      try {
+        setLoading(true);
+        let sort_by = "";
+        let order = "";
+        if (selectedSort === "جدیدترین") {
+          order = "created_time";
+          sort_by = "desc";
+        } else if (selectedSort === "قدیمی‌ترین") {
+          order = "created_time";
+          sort_by = "asc";
+        } 
+        // else if (selectedSort === "بیشترین امتیاز") {
+        //   order = "score";
+        //   sort_by = "desc";
+        // } else if (selectedSort === "کمترین امتیاز") {
+        //   order = "score";
+        //   sort_by = "asc";
+        // }
+        const response = await GetUserSerachTeam(
+          debouncedSearch, // query: string
+          page,            // page: number
+          limit,           // limit: number
+          selectedSkills,  // skills: string[]
+          order,           // order: string
+          sort_by          // sort_by: string
+        );
+        if (Array.isArray(response)) {
+          setUsers(response);
+        } else if (response && Array.isArray(response.users)) {
+          setUsers(response.users);
+        } else {
+          setUsers([]);
+        }
+      } catch (err: any) {
+        setTimeout(() => {
+          setError(err?.message || "خطا در دریافت کاربران");
+          setUsers([]);
+        }, 100);
+      }
+      setLoading(false);
+    };
+    fetchUsers();
+  }, [debouncedSearch, selectedSkills, selectedSort]);
 
   // Toggle skill selection
   const toggleSkill = (skill: string) => {
@@ -67,12 +144,6 @@ const BrowseUser: React.FC = () => {
     return `${selectedSkills[0]} +${selectedSkills.length - 1}`;
   };
 
-  const filtered = users.filter((user) => {
-    if (!search) return true;
-    const text = `${user.name} ${user.role} ${user.skill ? user.skill.split(',').join(' ') : ''}`;
-    return text.includes(search);
-  });
-
   return (
     <div className="flex flex-col w-full py-6 px-4 sm:mt-0 mt-15 bg-gray-100 dark:bg-gray-800">
       <h2 className="text-3xl font-extrabold text-gray-800 dark:text-gray-100 mb-2 text-center">جستجوی کاربران</h2>
@@ -89,7 +160,7 @@ const BrowseUser: React.FC = () => {
         </div>
       </div>
       <div className="relative flex justify-center gap-8 mb-6 flex-wrap">
-        <FilterDropdown
+        {/* <FilterDropdown
           isOpen={categoryOpen}
           toggleDropdown={() => {
             setCategoryOpen(!categoryOpen);
@@ -102,7 +173,7 @@ const BrowseUser: React.FC = () => {
             setSelectedCategory(value);
             setCategoryOpen(false);
           }}
-        />
+        /> */}
         <FilterDropdown
           isOpen={skillsOpen}
           toggleDropdown={() => {
@@ -111,10 +182,19 @@ const BrowseUser: React.FC = () => {
             setSortOpen(false);
           }}
           selectedValue={getSkillsDisplayText()}
-          options={skills}
+          options={skills.filter((skill) => skill.toLowerCase().includes(skillsSearch.toLowerCase()))}
           onSelect={toggleSkill}
           isMultiSelect
           selectedValues={selectedSkills}
+          renderSearchBar={() => (
+            <input
+              type="text"
+              value={skillsSearch}
+              onChange={(e) => setSkillsSearch(e.target.value)}
+              placeholder="جستجوی مهارت..."
+              className="w-full py-2 px-3 mb-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          )}
         />
         <FilterDropdown
           isOpen={sortOpen}
@@ -132,16 +212,22 @@ const BrowseUser: React.FC = () => {
         />
       </div>
       <div className="flex flex-col gap-0 mt-4">
-        {loading ? (
+        {search.trim() === "" ? (
+          <div className="flex flex-col items-center justify-center py-16">
+            <span className="text-5xl mb-4">🔎</span>
+            <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">جستجو کن!</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-center max-w-md">برای پیدا کردن کاربران مورد علاقه‌ات، کلمه کلیدی یا مهارت مورد نظر را در نوار جستجو وارد کن.</p>
+          </div>
+        ) : loading ? (
           Array.from({ length: 4 }).map((_, i) => (
             <SearchResultCard key={i} type="user" data={{}} loading />
           ))
         ) : error ? (
           <p className="text-center text-red-500 dark:text-red-400">{error}</p>
-        ) : filtered.length === 0 ? (
+        ) : users.length === 0 ? (
           <p className="text-center text-gray-700 dark:text-gray-300">هیچ کاربری یافت نشد</p>
         ) : (
-          filtered.map((user) => (
+          users.map((user) => (
             <SearchResultCard key={user.user_id} type="user" data={user} />
           ))
         )}
