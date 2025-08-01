@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
-import { searchProjects } from "../../API";
+import { searchProjects, getTags } from "../../API";
 // import SearchBar from "./SearchBar";it
 import SearchResultCard from "./SearchResultCard";
 import FilterDropdown from "./FilterDropdown";
-import { getTags } from "../../API";
 
 interface Project {
   project_id: number;
@@ -16,42 +15,38 @@ interface Project {
   // tags?: string[];
 }
 
+const LIMIT = 6;
+
 const BrowseProject: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
-  // Debounced search state
   const [debouncedSearch, setDebouncedSearch] = useState("");
- // State for filter dropdowns
-  const [, setCategoryOpen] = useState(false);
   const [skillsOpen, setSkillsOpen] = useState(false);
   const [sortOpen, setSortOpen] = useState(false);
-  // const [selectedCategory, setSelectedCategory] = useState("دسته‌بندی");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [selectedSort, setSelectedSort] = useState("نوع مرتب‌سازی");
-
-  // Tags state and search for skills dropdown
   const [tags, setTags] = useState<string[]>([]);
   const [, setTagsLoading] = useState(true);
   const [, setTagsError] = useState<string | null>(null);
   const [tagsSearch, setTagsSearch] = useState("");
-  const sortOptions = [
-    "جدیدترین",
-    "قدیمی‌ترین",
-    // "بیشترین پیشنهاد",
-    // "کمترین پیشنهاد",
-  ];
+  const sortOptions = ["جدیدترین", "قدیمی‌ترین"];
+  const [page, setPage] = useState(1);
+  const [, setTotalCount] = useState(0);
 
   // Debounce effect for search input
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-    }, 500); // 500ms debounce
-    return () => {
-      clearTimeout(handler);
-    };
+    }, 500);
+    return () => clearTimeout(handler);
   }, [search]);
+
+  // Reset page to 1 when search or filters change
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, selectedSkills, selectedSort]);
 
   // Fetch tags for skills dropdown
   useEffect(() => {
@@ -80,16 +75,12 @@ const BrowseProject: React.FC = () => {
     fetchTags();
   }, []);
 
+  // Always use searchProjects, even if search is empty
   useEffect(() => {
     const fetchProjects = async () => {
-      // Only call API if there is a search query or selected skills
-      if (!debouncedSearch && (!selectedSkills || selectedSkills.length === 0)) {
-        setProjects([]);
-        setLoading(false);
-        return;
-      }
+      setLoading(true);
+      setError(null);
       try {
-        setLoading(true);
         let sort_by = "";
         let order = "";
         if (selectedSort === "جدیدترین") {
@@ -100,31 +91,39 @@ const BrowseProject: React.FC = () => {
           order = "asc";
         }
         const response = await searchProjects(
-          debouncedSearch,      // query: string
-          selectedSkills,       // tags: string[]
-          1,                    // page: number
-          10,                   // limit: number
-          order,                // order: string
-          sort_by               // sort_by: string
+          debouncedSearch, // query (can be empty string)
+          selectedSkills,   // tags
+          page,             // page
+          LIMIT,            // limit
+          order,
+          sort_by
         );
-        //console.log("API response:", response);
-        const formattedProjects: Project[] = (response?.projects || response || []).map((project: any) => ({
+        const projectsArr = response?.projects || response || [];
+        setTotalCount(response?.count || projectsArr.length);
+        const formattedProjects: Project[] = projectsArr.map((project: any) => ({
           project_id: project.project_id || project.id || "unknown",
           title: project.title || "بدون عنوان",
-          description: project.description || "بدون توضیحات",
+          description: project.description || project.descriptoin || "بدون توضیحات",
           label: typeof project.label === 'number' ? project.label : Number(project.label ?? ""),
           tags: Array.isArray(project.tags) ? project.tags : [],
         }));
         setProjects(formattedProjects);
       } catch (err) {
         setError("خطا در دریافت پروژه‌ها");
-        console.error("Error fetching projects:", err);
+        setProjects([]);
+        setTotalCount(0);
       } finally {
         setLoading(false);
       }
     };
     fetchProjects();
-  }, [debouncedSearch, selectedSkills, selectedSort]);
+  }, [debouncedSearch, selectedSkills, selectedSort, page]);
+
+  // Remove totalPages and page number buttons
+  // Pagination controls
+  const handlePrev = () => setPage((p) => Math.max(1, p - 1));
+  const handleNext = () => setPage((p) => p + 1);
+
     // Toggle skill selection
     const toggleSkill = (skill: string) => {
       if (selectedSkills.includes(skill)) {
@@ -175,7 +174,7 @@ const BrowseProject: React.FC = () => {
           isOpen={skillsOpen}
           toggleDropdown={() => {
             setSkillsOpen(!skillsOpen);
-            setCategoryOpen(false);
+            // setCategoryOpen(false); // Removed as per new_code
             setSortOpen(false);
           }}
           selectedValue={getSkillsDisplayText()}
@@ -197,7 +196,7 @@ const BrowseProject: React.FC = () => {
           isOpen={sortOpen}
           toggleDropdown={() => {
             setSortOpen(!sortOpen);
-            setCategoryOpen(false);
+            // setCategoryOpen(false); // Removed as per new_code
             setSkillsOpen(false);
           }}
           selectedValue={selectedSort}
@@ -210,13 +209,7 @@ const BrowseProject: React.FC = () => {
         </div>
       
       <div className="flex flex-col gap-0 mt-4">
-        {search.trim() === "" ? (
-          <div className="flex flex-col items-center justify-center py-16">
-            <span className="text-5xl mb-4">🔎</span>
-            <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">جستجو کن!</h3>
-            <p className="text-gray-500 dark:text-gray-400 text-center max-w-md">برای پیدا کردن پروژه‌های مورد علاقه‌ات، کلمه کلیدی یا مهارت مورد نظر را در نوار جستجو وارد کن.</p>
-          </div>
-        ) : loading ? (
+        {loading ? (
           Array.from({ length: 4 }).map((_, i) => (
             <SearchResultCard key={i} type="project" data={{}} loading />
           ))
@@ -230,8 +223,27 @@ const BrowseProject: React.FC = () => {
           ))
         )}
       </div>
-    </div>
-  );
+      <div className="flex justify-center items-center gap-2 mb-4">
+  <button
+    onClick={handlePrev}
+    disabled={page === 1}
+    className="px-3 py-1 rounded border bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50"
+  >
+    قبلی
+  </button>
+  <span className="px-3 py-1 rounded border bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200">
+    {page}
+  </span>
+  <button
+    onClick={handleNext}
+    disabled={projects.length < LIMIT}
+    className="px-3 py-1 rounded border bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 disabled:opacity-50"
+  >
+    بعدی
+  </button>
+  </div>
+  </div>
+);
 };
 
 export default BrowseProject;
