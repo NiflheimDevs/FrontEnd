@@ -76,45 +76,91 @@ interface TeamMemberCardProps {
 }
 
 const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ person }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
-    className="p-4 bg-[#e5e5e5] dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-xl shadow-md flex flex-col items-center space-y-2 w-full hover:scale-105 transform duration-300"
-  >
-    <img
-      src={person.image}
-      alt={`تصویر ${person.name}`}
-      className="w-20 h-20 rounded-full border-2 border-gray-300 dark:border-gray-600 hover:border-blue-600 dark:hover:border-blue-400 transition-all"
-    />
-    <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-4 text-center">
-      {person.name}
-    </h3>
-    <p className="text-base text-gray-700 dark:text-gray-300 mt-2 text-center leading-relaxed">
-      {person.description}
-    </p>
-    <div className="flex justify-center gap-4 mt-4">
-      <a
-        href={person.instagram}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Instagram ${person.name}`}
-        className="hover:scale-110 transition-all duration-200"
+  person.id === 4 ? (
+    <a href="/profile/3" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+        className="p-4 bg-[#e5e5e5] dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-xl shadow-md flex flex-col items-center space-y-2 w-full hover:scale-105 transform duration-300"
       >
-        <FaInstagram className="text-pink-500 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-600 text-lg" />
-      </a>
-      <a
-        href={person.linkedin}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`LinkedIn ${person.name}`}
-        className="hover:scale-110 transition-all duration-200"
-      >
-        <FaLinkedin className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-600 text-lg" />
-      </a>
-    </div>
-  </motion.div>
+        <img
+          src={person.image}
+          alt={`تصویر ${person.name}`}
+          className="w-20 h-20 rounded-full border-2 border-gray-300 dark:border-gray-600 hover:border-blue-600 dark:hover:border-blue-400 transition-all"
+        />
+        <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-4 text-center">
+          {person.name}
+        </h3>
+        <p className="text-base text-gray-700 dark:text-gray-300 mt-2 text-center leading-relaxed">
+          {person.description}
+        </p>
+        <div className="flex justify-center gap-4 mt-4">
+          <a
+            href={person.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Instagram ${person.name}`}
+            className="hover:scale-110 transition-all duration-200"
+            onClick={e => e.stopPropagation()}
+          >
+            <FaInstagram className="text-pink-500 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-600 text-lg" />
+          </a>
+          <a
+            href={person.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`LinkedIn ${person.name}`}
+            className="hover:scale-110 transition-all duration-200"
+            onClick={e => e.stopPropagation()}
+          >
+            <FaLinkedin className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-600 text-lg" />
+          </a>
+        </div>
+      </motion.div>
+    </a>
+  ) : (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className="p-4 bg-[#e5e5e5] dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-xl shadow-md flex flex-col items-center space-y-2 w-full hover:scale-105 transform duration-300"
+    >
+      <img
+        src={person.image}
+        alt={`تصویر ${person.name}`}
+        className="w-20 h-20 rounded-full border-2 border-gray-300 dark:border-gray-600 hover:border-blue-600 dark:hover:border-blue-400 transition-all"
+      />
+      <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mt-4 text-center">
+        {person.name}
+      </h3>
+      <p className="text-base text-gray-700 dark:text-gray-300 mt-2 text-center leading-relaxed">
+        {person.description}
+      </p>
+      <div className="flex justify-center gap-4 mt-4">
+        <a
+          href={person.instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Instagram ${person.name}`}
+          className="hover:scale-110 transition-all duration-200"
+        >
+          <FaInstagram className="text-pink-500 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-600 text-lg" />
+        </a>
+        <a
+          href={person.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`LinkedIn ${person.name}`}
+          className="hover:scale-110 transition-all duration-200"
+        >
+          <FaLinkedin className="text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-600 text-lg" />
+        </a>
+      </div>
+    </motion.div>
+  )
 );
 
 const TeamSection: React.FC = () => {
